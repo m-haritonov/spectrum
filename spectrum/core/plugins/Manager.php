@@ -122,9 +122,9 @@ class Manager implements ManagerInterface
 		return array_key_exists($accessName, static::$registeredPlugins);
 	}
 
-	static public function createPluginInstance(\net\mkharitonov\spectrum\core\SpecInterface $owner, $accessName)
+	static public function createPluginInstance(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName)
 	{
 		$pluginInfo = static::getRegisteredPlugin($accessName);
-		return new $pluginInfo['class']($owner, $accessName);
+		return new $pluginInfo['class']($ownerSpec, $accessName);
 	}
 }

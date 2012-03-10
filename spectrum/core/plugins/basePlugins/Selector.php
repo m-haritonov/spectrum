@@ -20,7 +20,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 {
 	public function getRoot()
 	{
-		$root = $this->getOwner();
+		$root = $this->getOwnerSpec();
 		while ($root->getParent())
 		{
 			$root = $root->getParent();
@@ -31,7 +31,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	
 	public function getNearestNotContextAncestor()
 	{
-		$parent = $this->getOwner();
+		$parent = $this->getOwnerSpec();
 		while ($parent = $parent->getParent())
 		{
 			if ($parent instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface && !($parent instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface))
@@ -48,7 +48,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	{
 		$specs = array();
 
-		$parent = $this->getOwner();
+		$parent = $this->getOwnerSpec();
 		while ($parent)
 		{
 			$specs = array_merge($parent->selector->getNotContextChildren(), $specs);
@@ -116,7 +116,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function getChildRunningContext()
 	{
-		if (!($this->getOwner() instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface))
+		if (!($this->getOwnerSpec() instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface))
 			return null;
 
 		foreach ($this->getSpecs() as $spec)
@@ -158,7 +158,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	{
 		$stack = array();
 
-		$parent = $this->getOwner();
+		$parent = $this->getOwnerSpec();
 		while ($parent = $parent->getParent())
 		{
 			$stack[] = $parent;
@@ -236,7 +236,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	public function getUidForSpec()
 	{
 		$stack = $this->getAncestorsStack();
-		$stack[] = $this->getOwner();
+		$stack[] = $this->getOwnerSpec();
 		return 'spec' . $this->getUidIndexes($stack);
 	}
 
@@ -257,7 +257,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		$uid = '';
 		foreach ($stack as $spec)
 		{
-			if ($omitSelf && $spec === $this->getOwner())
+			if ($omitSelf && $spec === $this->getOwnerSpec())
 				continue;
 
 			$uid .= '_' . (int) $spec->selector->getIndexInParent();
@@ -302,12 +302,12 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function getIndexInParent()
 	{
-		$parent = $this->getOwner()->getParent();
+		$parent = $this->getOwnerSpec()->getParent();
 		if ($parent)
 		{
 			foreach ($parent->getSpecs() as $index => $spec)
 			{
-				if ($spec === $this->getOwner())
+				if ($spec === $this->getOwnerSpec())
 					return $index;
 			}
 		}
@@ -320,8 +320,8 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	 */
 	private function getSpecs()
 	{
-		if ($this->getOwner() instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface)
-			return $this->getOwner()->getSpecs();
+		if ($this->getOwnerSpec() instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface)
+			return $this->getOwnerSpec()->getSpecs();
 		else
 			return array();
 	}

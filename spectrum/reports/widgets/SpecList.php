@@ -59,20 +59,20 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	{
 		$output = '';
 
-		if (!$this->getOwnerPlugin()->getOwner()->getParent())
+		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 		{
 			static::$depth = 0;
 			$output .= $this->getIndention(static::$depth + 1) . '<ol class="g-specList">' . $this->getNewline();
 		}
 
-		if (!$this->getOwnerPlugin()->getOwner()->isAnonymous())
+		if (!$this->getOwnerPlugin()->getOwnerSpec()->isAnonymous())
 		{
-			$output .= $this->getIndention(static::$depth * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwner()->selector->getUidForSpec() . '">' . $this->getNewline();
+			$output .= $this->getIndention(static::$depth * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
 			$output .= $this->getIndention(static::$depth * 2 + 3) . '<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline();
 			$output .= $this->getIndention(static::$depth * 2 + 3) . '<span class="separator"> — </span>' . $this->getNewline();
 			$output .= $this->getIndention(static::$depth * 2 + 3) . '<span class="finalResult">wait...</span>' . $this->getNewline();
 
-			if ($this->getOwnerPlugin()->getOwner() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwner()->getParent())
+			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			{
 				$output .= $this->getIndention(static::$depth * 2 + 3) . '<ol class="g-specList">' . $this->getNewline();
 				static::$depth++;
@@ -86,15 +86,15 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	{
 		$output = '';
 
-		if (!$this->getOwnerPlugin()->getOwner()->isAnonymous())
+		if (!$this->getOwnerPlugin()->getOwnerSpec()->isAnonymous())
 		{
-			if ($this->getOwnerPlugin()->getOwner() instanceof SpecContainerInterface)
+			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface)
 			{
 				static::$depth--;
 				$output .= $this->getIndention(static::$depth * 2 + 3) . '</ol>' . $this->getNewline();
 			}
 
-			$output .= $this->getScriptForResultUpdate($this->getOwnerPlugin()->getOwner()->selector->getUidForSpec(), $this->getSpecResultCssClass($finalResult)) . $this->getNewline();
+			$output .= $this->getScriptForResultUpdate($this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec(), $this->getSpecResultCssClass($finalResult)) . $this->getNewline();
 			if ($finalResult === false)
 			{
 				$runResultsBufferWidget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer($this->getOwnerPlugin());
@@ -107,7 +107,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			$output .= $this->getIndention(static::$depth * 2 + 2) . '</li>' . $this->getNewline();
 		}
 
-		if (!$this->getOwnerPlugin()->getOwner()->getParent())
+		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			$output .= $this->getIndention(static::$depth + 1) . '</ol>' . $this->getNewline();
 
 		return $output;
@@ -124,8 +124,8 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	protected function getSpecName()
 	{
-		$parent = $this->getOwnerPlugin()->getOwner()->getParent();
-		$name = $this->getOwnerPlugin()->getOwner()->getName();
+		$parent = $this->getOwnerPlugin()->getOwnerSpec()->getParent();
+		$name = $this->getOwnerPlugin()->getOwnerSpec()->getName();
 
 		if ($name == '' && $parent && $parent instanceof \net\mkharitonov\spectrum\core\SpecContainerArgumentsProviderInterface)
 			return $this->getAdditionalArgumentsDumpOut();
@@ -136,7 +136,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	protected function getAdditionalArgumentsDumpOut()
 	{
 		$output = '';
-		foreach ($this->getOwnerPlugin()->getOwner()->getAdditionalArguments() as $arg)
+		foreach ($this->getOwnerPlugin()->getOwnerSpec()->getAdditionalArguments() as $arg)
 			$output .= $arg . ', ';
 
 		return mb_substr($output, 0, -2);
@@ -144,15 +144,15 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	protected function getSpecCssClass()
 	{
-		if ($this->getOwnerPlugin()->getOwner() instanceof SpecContainerDescribeInterface)
+		if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerDescribeInterface)
 			return 'describe';
-		else if ($this->getOwnerPlugin()->getOwner() instanceof SpecContainerContextInterface)
+		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerContextInterface)
 			return 'context';
-		else if ($this->getOwnerPlugin()->getOwner() instanceof SpecItemItInterface)
+		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecItemItInterface)
 			return 'it';
-		else if ($this->getOwnerPlugin()->getOwner() instanceof SpecContainerInterface)
+		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface)
 			return 'container';
-		else if ($this->getOwnerPlugin()->getOwner() instanceof SpecItemInterface)
+		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecItemInterface)
 			return 'item';
 		else
 			return 'spec';

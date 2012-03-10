@@ -249,7 +249,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\core\Test
 		$plugin = Manager::createPluginInstance($spec, 'foo');
 
 		$this->assertEquals('foo', $plugin->getAccessName());
-		$this->assertSame($spec, $plugin->getOwner());
+		$this->assertSame($spec, $plugin->getOwnerSpec());
 	}
 
 	public function testCreatePluginInstance_ShouldBeReturnNewInstanceAlways()

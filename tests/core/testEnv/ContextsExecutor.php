@@ -93,7 +93,7 @@ class ContextsExecutor
 
 		\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub::setOnBeforeCallback(function($plugin) use($callback, $spec)
 		{
-			if ($plugin->getOwner() === $spec)
+			if ($plugin->getOwnerSpec() === $spec)
 				$callback();
 		});
 

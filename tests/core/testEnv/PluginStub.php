@@ -36,9 +36,9 @@ class PluginStub extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		static::$lastInstance = null;
 	}
 
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $owner, $accessName)
+	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName)
 	{
-		parent::__construct($owner, $accessName);
+		parent::__construct($ownerSpec, $accessName);
 		static::$activationsCount++;
 		static::$lastInstance = $this;
 	}

@@ -18,18 +18,18 @@ namespace net\mkharitonov\spectrum\core\plugins;
 class Plugin implements PluginInterface
 {
 	/** @var \net\mkharitonov\spectrum\core\Spec */
-	protected $owner;
+	protected $ownerSpec;
 	protected $accessName;
 
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $owner, $accessName)
+	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName)
 	{
-		$this->owner = $owner;
+		$this->ownerSpec = $ownerSpec;
 		$this->accessName = $accessName;
 	}
 
-	public function getOwner()
+	public function getOwnerSpec()
 	{
-		return $this->owner;
+		return $this->ownerSpec;
 	}
 
 	public function getAccessName()
@@ -39,8 +39,8 @@ class Plugin implements PluginInterface
 
 	protected function callCascadeThroughRunningContexts($methodName, $args = array(), $defaultReturnValue = null, $emptyReturnValue = null)
 	{
-		$stack = $this->getOwner()->selector->getAncestorsWithRunningContextsStack();
-		$stack[] = $this->getOwner();
+		$stack = $this->getOwnerSpec()->selector->getAncestorsWithRunningContextsStack();
+		$stack[] = $this->getOwnerSpec();
 		$stack = array_reverse($stack);
 
 		$accessName = $this->accessName;

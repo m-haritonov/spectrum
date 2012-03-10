@@ -30,7 +30,7 @@ class Messages extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	public function getHtml()
 	{
-		$messages = $this->getOwnerPlugin()->getOwner()->messages->getAll();
+		$messages = $this->getOwnerPlugin()->getOwnerSpec()->messages->getAll();
 
 		if (!count($messages))
 			return null;

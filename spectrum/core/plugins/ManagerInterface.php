@@ -25,5 +25,5 @@ interface ManagerInterface
 	static public function getAccessNamesForEventPlugins($eventName);
 	static public function getRegisteredPlugin($accessName);
 	static public function hasRegisteredPlugin($accessName);
-	static public function createPluginInstance(\net\mkharitonov\spectrum\core\SpecInterface $owner, $accessName);
+	static public function createPluginInstance(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName);
 }

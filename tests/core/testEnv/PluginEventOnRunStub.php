@@ -29,8 +29,8 @@ class PluginEventOnRunStub extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		\net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
-			'isRunning' => $this->getOwner()->isRunning(),
-			'owner' => $this->getOwner(),
+			'isRunning' => $this->getOwnerSpec()->isRunning(),
+			'owner' => $this->getOwnerSpec(),
 		);
 
 		if (static::$onBeforeCallback)
@@ -42,8 +42,8 @@ class PluginEventOnRunStub extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		\net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
-			'isRunning' => $this->getOwner()->isRunning(),
-			'owner' => $this->getOwner(),
+			'isRunning' => $this->getOwnerSpec()->isRunning(),
+			'owner' => $this->getOwnerSpec(),
 		);
 	}
 }

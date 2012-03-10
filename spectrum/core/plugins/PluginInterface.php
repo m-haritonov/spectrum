@@ -18,11 +18,11 @@ namespace net\mkharitonov\spectrum\core\plugins;
 interface PluginInterface
 {
 	/**
-	 * For example, call parent spec plugin: $owner->getParent()->$accessName()
+	 * For example, call parent spec plugin: $ownerSpec->getParent()->$accessName()
 	 * @param $owner
 	 * @param string $accessName
 	 */
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $owner, $accessName);
-	public function getOwner();
+	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName);
+	public function getOwnerSpec();
 	public function getAccessName();
 }

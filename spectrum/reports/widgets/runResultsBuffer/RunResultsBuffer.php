@@ -119,7 +119,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	public function getHtml()
 	{
-		if (!($this->getOwnerPlugin()->getOwner() instanceof SpecItemInterface))
+		if (!($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecItemInterface))
 			return null;
 
 		$output = '';
@@ -128,7 +128,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$output .= $this->getIndention() . '<h1>Run results buffer contains:</h1>' . $this->getNewline();
 		$output .= $this->getIndention() . '<div class="results">' . $this->getNewline();
 		$num = 0;
-		foreach ($this->getOwnerPlugin()->getOwner()->getRunResultsBuffer()->getResults() as $result)
+		foreach ($this->getOwnerPlugin()->getOwnerSpec()->getRunResultsBuffer()->getResults() as $result)
 		{
 			$num++;
 			$output .= $this->getIndention(2) . '<div class="result ' . ($result['result'] ? 'true' : 'false') . '">' . $this->getNewline();

@@ -66,8 +66,8 @@ abstract class Stack extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function isExistsCascade($key)
 	{
-		$stack = $this->getOwner()->selector->getAncestorsWithRunningContextsStack();
-		$stack[] = $this->getOwner();
+		$stack = $this->getOwnerSpec()->selector->getAncestorsWithRunningContextsStack();
+		$stack[] = $this->getOwnerSpec();
 		$stack = array_reverse($stack);
 
 		$accessName = $this->accessName;
@@ -90,8 +90,8 @@ abstract class Stack extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function getCascadeThroughRunningContexts($key)
 	{
-		$stack = $this->getOwner()->selector->getAncestorsWithRunningContextsStack();
-		$stack[] = $this->getOwner();
+		$stack = $this->getOwnerSpec()->selector->getAncestorsWithRunningContextsStack();
+		$stack[] = $this->getOwnerSpec();
 		$stack = array_reverse($stack);
 
 		$accessName = $this->accessName;
@@ -119,8 +119,8 @@ abstract class Stack extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	 */
 	public function getAllPrependAncestorsWithRunningContexts()
 	{
-		$stack = $this->getOwner()->selector->getAncestorsWithRunningContextsStack();
-		$stack[] = $this->getOwner();
+		$stack = $this->getOwnerSpec()->selector->getAncestorsWithRunningContextsStack();
+		$stack[] = $this->getOwnerSpec();
 
 		$accessName = $this->accessName;
 		$result = array();
@@ -137,8 +137,8 @@ abstract class Stack extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	 */
 	public function getAllAppendAncestorsWithRunningContexts()
 	{
-		$stack = $this->getOwner()->selector->getAncestorsWithRunningContextsStack();
-		$stack[] = $this->getOwner();
+		$stack = $this->getOwnerSpec()->selector->getAncestorsWithRunningContextsStack();
+		$stack[] = $this->getOwnerSpec();
 
 		$accessName = $this->accessName;
 		$result = array();

@@ -68,22 +68,22 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 
 	public function onRunBefore()
 	{
-		if (!$this->getOwner()->getParent())
-			$this->getOwner()->output->put($this->getHeader());
+		if (!$this->getOwnerSpec()->getParent())
+			$this->getOwnerSpec()->output->put($this->getHeader());
 
 		$specListWidget = new \net\mkharitonov\spectrum\reports\widgets\SpecList($this);
-		$this->getOwner()->output->put($specListWidget->getHtmlBegin());
+		$this->getOwnerSpec()->output->put($specListWidget->getHtmlBegin());
 		$this->flush();
 	}
 
 	public function onRunAfter($finalResult)
 	{
 		$specListWidget = new \net\mkharitonov\spectrum\reports\widgets\SpecList($this);
-		$this->getOwner()->output->put($specListWidget->getHtmlEnd($finalResult));
+		$this->getOwnerSpec()->output->put($specListWidget->getHtmlEnd($finalResult));
 		$this->flush();
 
-		if (!$this->getOwner()->getParent())
-			$this->getOwner()->output->put($this->getFooter());
+		if (!$this->getOwnerSpec()->getParent())
+			$this->getOwnerSpec()->output->put($this->getFooter());
 	}
 
 /**/
@@ -186,7 +186,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	protected function flush()
 	{
 		// TODO убрать span
-		$this->getOwner()->output->put('<span style="display: none;">' . str_repeat(' ', 256) . '</span>' . $this->getNewline());
+		$this->getOwnerSpec()->output->put('<span style="display: none;">' . str_repeat(' ', 256) . '</span>' . $this->getNewline());
 		flush();
 	}
 }
