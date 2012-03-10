@@ -348,9 +348,9 @@ printExample('Пример переопределения стандартных
 			be(new Spaceship())->not->ident(new Spaceship());
 
 			be(5)->lt(10); // Less than
-			be(10)->ltOrEq(10); // Less than or equal
+			be(10)->lte(10); // Less than or equal
 			be(10)->gt(5); // Greater than
-			be(10)->gtOrEq(10); // Greater than or equal
+			be(10)->gte(10); // Greater than or equal
 
 			be(function(){
 				throw new Exception();

@@ -30,9 +30,9 @@ class Manager implements ManagerInterface
 		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\eq', $spec);
 		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\ident', $spec);
 		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\lt', $spec);
-		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\ltOrEq', $spec);
+		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\lte', $spec);
 		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\gt', $spec);
-		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\gtOrEq', $spec);
+		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\gte', $spec);
 		static::addMatcherToSpec('\net\mkharitonov\spectrum\matchers\base\throwException', $spec);
 	}
 	

@@ -29,9 +29,9 @@ class ManagerTest extends Test
 		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\eq', $spec->matchers->get('eq'));
 		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\ident', $spec->matchers->get('ident'));
 		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\lt', $spec->matchers->get('lt'));
-		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\ltOrEq', $spec->matchers->get('ltOrEq'));
+		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\lte', $spec->matchers->get('lte'));
 		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\gt', $spec->matchers->get('gt'));
-		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\gtOrEq', $spec->matchers->get('gtOrEq'));
+		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\gte', $spec->matchers->get('gte'));
 		$this->assertEquals('\net\mkharitonov\spectrum\matchers\base\throwException', $spec->matchers->get('throwException'));
 
 		$this->assertEquals(10, count($spec->matchers->getAll()));
@@ -48,9 +48,9 @@ class ManagerTest extends Test
 		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\eq'));
 		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\ident'));
 		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\lt'));
-		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\ltOrEq'));
+		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\lte'));
 		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\gt'));
-		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\gtOrEq'));
+		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\gte'));
 		$this->assertTrue(function_exists('\net\mkharitonov\spectrum\matchers\base\throwException'));
 	}
 }
