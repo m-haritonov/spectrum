@@ -18,17 +18,17 @@ namespace net\mkharitonov\spectrum\core;
 class RunResultsBuffer implements RunResultsBufferInterface
 {
 	/** @var \net\mkharitonov\spectrum\core\SpecInterface */
-	protected $owner;
+	protected $ownerSpec;
 	protected $results = array();
 
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $owner)
+	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec)
 	{
-		$this->owner = $owner;
+		$this->ownerSpec = $ownerSpec;
 	}
 
-	public function getOwner()
+	public function getOwnerSpec()
 	{
-		return $this->owner;
+		return $this->ownerSpec;
 	}
 
 	/**

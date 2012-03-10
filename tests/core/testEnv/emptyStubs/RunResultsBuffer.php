@@ -17,8 +17,8 @@ namespace net\mkharitonov\spectrum\core\testEnv\emptyStubs;
  */
 class RunResultsBuffer implements \net\mkharitonov\spectrum\core\RunResultsBufferInterface
 {
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $owner){}
-	public function getOwner(){}
+	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec){}
+	public function getOwnerSpec(){}
 	public function addResult($result, $details = null){}
 	public function getResults(){}
 	public function calculateFinalResult(){}
