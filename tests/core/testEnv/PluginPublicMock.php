@@ -21,9 +21,9 @@ class PluginPublicMock extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function callCascadeThroughRunningContexts()
 	{
-//		if ($this->owner->getParent())
+//		if ($this->ownerSpec->getParent())
 //		{
-//			if ($this->owner->getParent()->testPlugin->getFoo() === true)
+//			if ($this->ownerSpec->getParent()->testPlugin->getFoo() === true)
 //				return false;
 //		}
 

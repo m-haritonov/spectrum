@@ -19,7 +19,7 @@ interface PluginInterface
 {
 	/**
 	 * For example, call parent spec plugin: $ownerSpec->getParent()->$accessName()
-	 * @param $owner
+	 * @param $ownerSpec
 	 * @param string $accessName
 	 */
 	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName);
