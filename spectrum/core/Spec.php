@@ -22,7 +22,7 @@ namespace net\mkharitonov\spectrum\core;
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Output output
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Messages messages
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Patterns patterns
- * @property \net\mkharitonov\spectrum\reports\ReportsPlugin reports
+ * @property \net\mkharitonov\spectrum\reports\Plugin reports
  */
 abstract class Spec implements SpecInterface
 {

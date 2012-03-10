@@ -17,7 +17,7 @@ namespace net\mkharitonov\spectrum\reports\widgets;
  */
 interface WidgetInterface
 {
-	public function __construct(\net\mkharitonov\spectrum\reports\ReportsPlugin $report);
+	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $report);
 	public function getReport();
 	public function getStyles();
 	public function getScripts();

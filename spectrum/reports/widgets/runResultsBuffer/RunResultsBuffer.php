@@ -21,7 +21,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
 	protected $codeWidget;
 
-	public function __construct(\net\mkharitonov\spectrum\reports\ReportsPlugin $report)
+	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $report)
 	{
 		parent::__construct($report);
 		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getReport());

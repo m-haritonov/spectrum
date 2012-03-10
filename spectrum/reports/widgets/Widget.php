@@ -19,7 +19,7 @@ class Widget implements WidgetInterface
 {
 	protected $report;
 
-	public function __construct(\net\mkharitonov\spectrum\reports\ReportsPlugin $report)
+	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $report)
 	{
 		$this->report = $report;
 	}

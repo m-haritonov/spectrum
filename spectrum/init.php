@@ -14,5 +14,5 @@
  * @link   http://www.mkharitonov.net/spectrum/
  */
 require_once dirname(__FILE__) . '/autoload.php';
-\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('reports', '\net\mkharitonov\spectrum\reports\ReportsPlugin', 'whenCallOnce');
+\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('reports', '\net\mkharitonov\spectrum\reports\Plugin', 'whenCallOnce');
 require_once dirname(__FILE__) . '/constructionCommands/globalAliases.php';

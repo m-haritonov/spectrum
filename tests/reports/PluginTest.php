@@ -16,7 +16,7 @@ require_once dirname(__FILE__) . '/../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class ReportsPluginTest extends Test
+class PluginTest extends Test
 {
 	public function testSetIndention_ShouldBeThrowExceptionIfNotAllowReportSettingsModify()
 	{
