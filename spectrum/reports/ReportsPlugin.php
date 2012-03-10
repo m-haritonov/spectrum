@@ -71,15 +71,15 @@ class ReportsPlugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implem
 		if (!$this->getOwner()->getParent())
 			$this->getOwner()->output->put($this->getHeader());
 
-		$specListComponent = new \net\mkharitonov\spectrum\reports\components\SpecList($this);
-		$this->getOwner()->output->put($specListComponent->getHtmlBegin());
+		$specListWidget = new \net\mkharitonov\spectrum\reports\widgets\SpecList($this);
+		$this->getOwner()->output->put($specListWidget->getHtmlBegin());
 		$this->flush();
 	}
 
 	public function onRunAfter($finalResult)
 	{
-		$specListComponent = new \net\mkharitonov\spectrum\reports\components\SpecList($this);
-		$this->getOwner()->output->put($specListComponent->getHtmlEnd($finalResult));
+		$specListWidget = new \net\mkharitonov\spectrum\reports\widgets\SpecList($this);
+		$this->getOwner()->output->put($specListWidget->getHtmlEnd($finalResult));
 		$this->flush();
 
 		if (!$this->getOwner()->getParent())
@@ -124,8 +124,8 @@ class ReportsPlugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implem
 		$output = '';
 		$output .= $this->trimNewline($this->getCommonStyles()) . $this->getNewline(2);
 
-		foreach ($this->getAllComponents() as $component)
-			$output .= $this->trimNewline($component->getStyles()) . $this->getNewline(2);
+		foreach ($this->getAllWidgets() as $widget)
+			$output .= $this->trimNewline($widget->getStyles()) . $this->getNewline(2);
 
 		return $output;
 	}
@@ -147,32 +147,32 @@ class ReportsPlugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implem
 		$output = '';
 		$output .= $this->trimNewline($this->getCommonScripts()) . $this->getNewline(2);
 
-		foreach ($this->getAllComponents() as $component)
-			$output .= $this->trimNewline($component->getScripts()) . $this->getNewline(2);
+		foreach ($this->getAllWidgets() as $widget)
+			$output .= $this->trimNewline($widget->getScripts()) . $this->getNewline(2);
 
 		return $output;
 	}
 
-	protected function getAllComponents()
+	protected function getAllWidgets()
 	{
 		return array(
-			new \net\mkharitonov\spectrum\reports\components\Clearfix($this),
-			new \net\mkharitonov\spectrum\reports\components\Messages($this),
-			new \net\mkharitonov\spectrum\reports\components\runResultsBuffer\RunResultsBuffer($this),
-			new \net\mkharitonov\spectrum\reports\components\runResultsBuffer\details\MatcherCall($this),
-			new \net\mkharitonov\spectrum\reports\components\runResultsBuffer\details\Unknown($this),
-			new \net\mkharitonov\spectrum\reports\components\SpecList($this),
-			new \net\mkharitonov\spectrum\reports\components\code\Code($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\ArrayVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\BoolVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\FloatVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\ClosureVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\IntVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\NullVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\ObjectVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\ResourceVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\StringVar($this),
-			new \net\mkharitonov\spectrum\reports\components\code\variables\UnknownVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\Clearfix($this),
+			new \net\mkharitonov\spectrum\reports\widgets\Messages($this),
+			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer($this),
+			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall($this),
+			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown($this),
+			new \net\mkharitonov\spectrum\reports\widgets\SpecList($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\Code($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\FloatVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ClosureVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\IntVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\NullVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ObjectVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ResourceVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\StringVar($this),
+			new \net\mkharitonov\spectrum\reports\widgets\code\variables\UnknownVar($this),
 		);
 	}
 

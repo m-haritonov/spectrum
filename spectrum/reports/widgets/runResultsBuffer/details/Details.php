@@ -9,21 +9,21 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\components\runResultsBuffer\details;
+namespace net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details;
 use \net\mkharitonov\spectrum\core\asserts\MatcherCallDetailsInterface;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Details extends \net\mkharitonov\spectrum\reports\Component
+abstract class Details extends \net\mkharitonov\spectrum\reports\Widget
 {
-	protected $codeComponent;
+	protected $codeWidget;
 
 	public function __construct(\net\mkharitonov\spectrum\reports\ReportsPlugin $report)
 	{
 		parent::__construct($report);
-		$this->codeComponent = new \net\mkharitonov\spectrum\reports\components\code\Code($this->getReport());
+		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getReport());
 	}
 
 	public function getStyles()

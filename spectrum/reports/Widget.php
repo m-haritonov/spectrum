@@ -15,7 +15,7 @@ namespace net\mkharitonov\spectrum\reports;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Component implements ComponentInterface
+class Widget implements WidgetInterface
 {
 	protected $report;
 

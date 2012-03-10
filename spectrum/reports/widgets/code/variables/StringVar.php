@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\components\code\variables;
+namespace net\mkharitonov\spectrum\reports\widgets\code\variables;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -21,12 +21,12 @@ class StringVar extends Variable
 
 	public function getStyles()
 	{
-		$componentSelector = '.g-code-variables-' . htmlspecialchars($this->type);
+		$widgetSelector = '.g-code-variables-' . htmlspecialchars($this->type);
 
 		return
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value { white-space: pre; }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector .value { white-space: pre; }" . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 

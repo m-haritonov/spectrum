@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\components\code\variables;
+namespace net\mkharitonov\spectrum\reports\widgets\code\variables;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -21,13 +21,13 @@ class ObjectVar extends VariableHierarchical
 
 	public function getStyles()
 	{
-		$componentSelector = '.g-code-variables-' . htmlspecialchars($this->type);
+		$widgetSelector = '.g-code-variables-' . htmlspecialchars($this->type);
 
 		return
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$componentSelector>.type>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector>.type>.class { display: inline; overflow: visible; max-width: auto; white-space: normal; vertical-align: baseline; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector>.type>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.type>.class { display: inline; overflow: visible; max-width: auto; white-space: normal; vertical-align: baseline; }" . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
@@ -38,7 +38,7 @@ class ObjectVar extends VariableHierarchical
 		$output = '';
 		$output .= '<span class="g-code-variables g-code-variables-' . htmlspecialchars($this->type) . '">';
 		$output .= $this->getIndention() . $this->getHtmlForType($variable, $properties) . $this->getNewline();
-		$output .= $this->getIndention() . $this->codeComponent->getHtmlForOperator('{');
+		$output .= $this->getIndention() . $this->codeWidget->getHtmlForOperator('{');
 
 		if (count($properties))
 		{
@@ -49,7 +49,7 @@ class ObjectVar extends VariableHierarchical
 			$output .= '</span>';
 		}
 
-		$output .= $this->codeComponent->getHtmlForOperator('}');
+		$output .= $this->codeWidget->getHtmlForOperator('}');
 		$output .= '</span>';
 
 		return $output;

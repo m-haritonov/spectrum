@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\components\code\variables;
+namespace net\mkharitonov\spectrum\reports\widgets\code\variables;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -24,7 +24,7 @@ class ArrayVar extends VariableHierarchical
 		$output = '';
 		$output .= '<span class="g-code-variables g-code-variables-' . htmlspecialchars($this->type) . '">';
 		$output .= $this->getIndention() . $this->getHtmlForType($variable) . $this->getNewline();
-		$output .= $this->getIndention() . $this->codeComponent->getHtmlForOperator('{');
+		$output .= $this->getIndention() . $this->codeWidget->getHtmlForOperator('{');
 
 		if (count($variable))
 		{
@@ -35,7 +35,7 @@ class ArrayVar extends VariableHierarchical
 			$output .= '</span>';
 		}
 
-		$output .= $this->codeComponent->getHtmlForOperator('}');
+		$output .= $this->codeWidget->getHtmlForOperator('}');
 		$output .= '</span>';
 
 		return $output;

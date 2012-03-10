@@ -15,7 +15,7 @@ namespace net\mkharitonov\spectrum\reports;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-interface ComponentInterface
+interface WidgetInterface
 {
 	public function __construct(\net\mkharitonov\spectrum\reports\ReportsPlugin $report);
 	public function getReport();

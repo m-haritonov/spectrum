@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\components;
+namespace net\mkharitonov\spectrum\reports\widgets;
 use \net\mkharitonov\spectrum\core\SpecContainerDescribeInterface;
 use \net\mkharitonov\spectrum\core\SpecContainerContextInterface;
 use \net\mkharitonov\spectrum\core\SpecItemItInterface;
@@ -20,7 +20,7 @@ use \net\mkharitonov\spectrum\core\SpecItemInterface;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SpecList extends \net\mkharitonov\spectrum\reports\Component
+class SpecList extends \net\mkharitonov\spectrum\reports\Widget
 {
 	static protected $depth;
 
@@ -97,12 +97,12 @@ class SpecList extends \net\mkharitonov\spectrum\reports\Component
 			$output .= $this->getScriptForResultUpdate($this->getReport()->getOwner()->selector->getUidForSpec(), $this->getSpecResultCssClass($finalResult)) . $this->getNewline();
 			if ($finalResult === false)
 			{
-				$runResultsBufferComponent = new \net\mkharitonov\spectrum\reports\components\runResultsBuffer\RunResultsBuffer($this->getReport());
-				$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($runResultsBufferComponent->getHtml()), static::$depth * 2 + 3) . $this->getNewline();
+				$runResultsBufferWidget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer($this->getReport());
+				$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($runResultsBufferWidget->getHtml()), static::$depth * 2 + 3) . $this->getNewline();
 			}
 
-			$messagesComponent = new \net\mkharitonov\spectrum\reports\components\Messages($this->getReport());
-			$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($messagesComponent->getHtml()), static::$depth * 2 + 3) . $this->getNewline();
+			$messagesWidget = new \net\mkharitonov\spectrum\reports\widgets\Messages($this->getReport());
+			$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($messagesWidget->getHtml()), static::$depth * 2 + 3) . $this->getNewline();
 
 			$output .= $this->getIndention(static::$depth * 2 + 2) . '</li>' . $this->getNewline();
 		}

@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\components\runResultsBuffer\details;
+namespace net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details;
 use \net\mkharitonov\spectrum\core\asserts\MatcherCallDetailsInterface;
 
 /**
@@ -33,8 +33,8 @@ class MatcherCall extends Details
 		$output = '';
 		$output .= '<div class="g-runResultsBuffer-details g-runResultsBuffer-details-matcherCall">' . $this->getNewline();
 		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getHtmlForMatcherCall($details))) . $this->getNewline();
-		$output .= $this->getIndention() . '<div class="returnValue"><span class="title" title="Matcher return value">Return:</span> ' . $this->codeComponent->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>' . $this->getNewline();
-		$output .= $this->getIndention() . '<div class="thrownException"><span class="title" title="Matcher thrown exception">Thrown:</span> ' . $this->codeComponent->getHtmlForVariable($details->getException()) . '</div>' . $this->getNewline();
+		$output .= $this->getIndention() . '<div class="returnValue"><span class="title" title="Matcher return value">Return:</span> ' . $this->codeWidget->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>' . $this->getNewline();
+		$output .= $this->getIndention() . '<div class="thrownException"><span class="title" title="Matcher thrown exception">Thrown:</span> ' . $this->codeWidget->getHtmlForVariable($details->getException()) . '</div>' . $this->getNewline();
 		$output .= '</div>' . $this->getNewline();
 		return $output;
 	}
@@ -44,16 +44,16 @@ class MatcherCall extends Details
 		$output = '';
 
 		$output .= '<div class="matcherCall">';
-		$output .= $this->codeComponent->getHtmlForMethod('be', array($details->getActualValue()));
+		$output .= $this->codeWidget->getHtmlForMethod('be', array($details->getActualValue()));
 
 		if ($details->getIsNot())
 		{
-			$output .= $this->codeComponent->getHtmlForOperator('->');
-			$output .= $this->codeComponent->getHtmlForPropertyAccess('not');
+			$output .= $this->codeWidget->getHtmlForOperator('->');
+			$output .= $this->codeWidget->getHtmlForPropertyAccess('not');
 		}
 
-		$output .= $this->codeComponent->getHtmlForOperator('->');
-		$output .= $this->codeComponent->getHtmlForMethod($details->getMatcherName(), $details->getMatcherArgs());
+		$output .= $this->codeWidget->getHtmlForOperator('->');
+		$output .= $this->codeWidget->getHtmlForMethod($details->getMatcherName(), $details->getMatcherArgs());
 		$output .= '</div>' . $this->getNewline();
 
 		return $output;

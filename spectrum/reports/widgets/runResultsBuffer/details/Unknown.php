@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\components\runResultsBuffer\details;
+namespace net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -30,7 +30,7 @@ class Unknown extends Details
 	{
 		return
 			'<div class="g-runResultsBuffer-details g-runResultsBuffer-details-unknown">' . $this->getNewline() .
-				$this->getIndention() . $this->codeComponent->getHtmlForVariable($details) . $this->getNewline() .
+				$this->getIndention() . $this->codeWidget->getHtmlForVariable($details) . $this->getNewline() .
 			'</div>' . $this->getNewline();
 	}
 }
