@@ -15,7 +15,7 @@ namespace net\mkharitonov\spectrum\reports\widgets\code\variables;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Variable extends \net\mkharitonov\spectrum\reports\Widget
+abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
 	protected $type;
 	protected $expandedParentSelector = '.g-runResultsBuffer>.results>.result.expand';

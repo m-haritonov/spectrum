@@ -17,7 +17,7 @@ use \net\mkharitonov\spectrum\core\SpecItemInterface;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\Widget
+class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
 	protected $codeWidget;
 

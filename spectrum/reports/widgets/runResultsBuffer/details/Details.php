@@ -16,7 +16,7 @@ use \net\mkharitonov\spectrum\core\asserts\MatcherCallDetailsInterface;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Details extends \net\mkharitonov\spectrum\reports\Widget
+abstract class Details extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
 	protected $codeWidget;
 

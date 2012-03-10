@@ -15,7 +15,7 @@ namespace net\mkharitonov\spectrum\reports\widgets\code;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Code extends \net\mkharitonov\spectrum\reports\Widget
+class Code extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
 	public function getStyles()
 	{
