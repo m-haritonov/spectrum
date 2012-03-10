@@ -21,10 +21,10 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
 	protected $codeWidget;
 
-	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $report)
+	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin)
 	{
-		parent::__construct($report);
-		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getReport());
+		parent::__construct($ownerPlugin);
+		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getOwnerPlugin());
 	}
 
 	public function getStyles()
@@ -119,7 +119,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	public function getHtml()
 	{
-		if (!($this->getReport()->getOwner() instanceof SpecItemInterface))
+		if (!($this->getOwnerPlugin()->getOwner() instanceof SpecItemInterface))
 			return null;
 
 		$output = '';
@@ -128,7 +128,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$output .= $this->getIndention() . '<h1>Run results buffer contains:</h1>' . $this->getNewline();
 		$output .= $this->getIndention() . '<div class="results">' . $this->getNewline();
 		$num = 0;
-		foreach ($this->getReport()->getOwner()->getRunResultsBuffer()->getResults() as $result)
+		foreach ($this->getOwnerPlugin()->getOwner()->getRunResultsBuffer()->getResults() as $result)
 		{
 			$num++;
 			$output .= $this->getIndention(2) . '<div class="result ' . ($result['result'] ? 'true' : 'false') . '">' . $this->getNewline();
@@ -149,9 +149,9 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	protected function getHtmlForResultDetails($details)
 	{
 		if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
-			$widget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall($this->getReport());
+			$widget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall($this->getOwnerPlugin());
 		else
-			$widget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown($this->getReport());
+			$widget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown($this->getOwnerPlugin());
 
 		return $widget->getHtml($details);
 	}

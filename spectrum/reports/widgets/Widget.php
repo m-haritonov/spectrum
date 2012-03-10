@@ -17,16 +17,16 @@ namespace net\mkharitonov\spectrum\reports\widgets;
  */
 class Widget implements WidgetInterface
 {
-	protected $report;
+	protected $ownerPlugin;
 
-	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $report)
+	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin)
 	{
-		$this->report = $report;
+		$this->ownerPlugin = $ownerPlugin;
 	}
 
-	public function getReport()
+	public function getOwnerPlugin()
 	{
-		return $this->report;
+		return $this->ownerPlugin;
 	}
 
 	public function getStyles()
@@ -41,21 +41,21 @@ class Widget implements WidgetInterface
 
 	protected function getIndention($repeat = 1)
 	{
-		return $this->getReport()->getIndention($repeat);
+		return $this->getOwnerPlugin()->getIndention($repeat);
 	}
 
 	protected function prependIndentionToEachTagOnNewline($text, $repeat = 1)
 	{
-		return $this->getReport()->prependIndentionToEachTagOnNewline($text, $repeat);
+		return $this->getOwnerPlugin()->prependIndentionToEachTagOnNewline($text, $repeat);
 	}
 
 	protected function getNewline($repeat = 1)
 	{
-		return $this->getReport()->getNewline($repeat);
+		return $this->getOwnerPlugin()->getNewline($repeat);
 	}
 
 	protected function trimNewline($text)
 	{
-		return $this->getReport()->trimNewline($text);
+		return $this->getOwnerPlugin()->trimNewline($text);
 	}
 }

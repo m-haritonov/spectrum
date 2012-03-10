@@ -24,10 +24,10 @@ abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	protected $codeWidget;
 
-	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $report)
+	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin)
 	{
-		parent::__construct($report);
-		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getReport());
+		parent::__construct($ownerPlugin);
+		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getOwnerPlugin());
 	}
 
 	public function getStyles()

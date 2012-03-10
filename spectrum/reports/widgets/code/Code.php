@@ -61,7 +61,7 @@ class Code extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$type = $this->getVariableType($variable);
 		$variableWidgetClassName = mb_strtoupper(mb_substr($type, 0, 1)) . mb_substr($type, 1) . 'Var';
 		$variableWidgetClass = '\net\mkharitonov\spectrum\reports\widgets\code\variables\\' . $variableWidgetClassName;
-		$variableWidget = new $variableWidgetClass($this->getReport());
+		$variableWidget = new $variableWidgetClass($this->getOwnerPlugin());
 		return $variableWidget->getHtml($variable);
 	}
 
