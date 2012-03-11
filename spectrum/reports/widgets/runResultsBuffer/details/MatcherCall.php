@@ -31,11 +31,11 @@ class MatcherCall extends Details
 	public function getHtml(MatcherCallDetailsInterface $details)
 	{
 		$output = '';
-		$output .= '<div class="g-runResultsBuffer-details g-runResultsBuffer-details-matcherCall">' . $this->getNewline();
-		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getHtmlForMatcherCall($details))) . $this->getNewline();
-		$output .= $this->getIndention() . '<div class="returnValue"><span class="title" title="Matcher return value">Return:</span> ' . $this->codeWidget->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>' . $this->getNewline();
-		$output .= $this->getIndention() . '<div class="thrownException"><span class="title" title="Matcher thrown exception">Thrown:</span> ' . $this->codeWidget->getHtmlForVariable($details->getException()) . '</div>' . $this->getNewline();
-		$output .= '</div>' . $this->getNewline();
+		$output .= '<div class="g-runResultsBuffer-details g-runResultsBuffer-details-matcherCall">';
+		$output .= $this->getHtmlForMatcherCall($details);
+		$output .= '<div class="returnValue"><span class="title" title="Matcher return value">Return:</span> ' . $this->codeWidget->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>';
+		$output .= '<div class="thrownException"><span class="title" title="Matcher thrown exception">Thrown:</span> ' . $this->codeWidget->getHtmlForVariable($details->getException()) . '</div>';
+		$output .= '</div>';
 		return $output;
 	}
 
@@ -54,7 +54,7 @@ class MatcherCall extends Details
 
 		$output .= $this->codeWidget->getHtmlForOperator('->');
 		$output .= $this->codeWidget->getHtmlForMethod($details->getMatcherName(), $details->getMatcherArgs());
-		$output .= '</div>' . $this->getNewline();
+		$output .= '</div>';
 
 		return $output;
 	}

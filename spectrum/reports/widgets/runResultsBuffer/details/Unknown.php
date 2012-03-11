@@ -29,8 +29,8 @@ class Unknown extends Details
 	public function getHtml($details)
 	{
 		return
-			'<div class="g-runResultsBuffer-details g-runResultsBuffer-details-unknown">' . $this->getNewline() .
-				$this->getIndention() . $this->codeWidget->getHtmlForVariable($details) . $this->getNewline() .
-			'</div>' . $this->getNewline();
+			'<div class="g-runResultsBuffer-details g-runResultsBuffer-details-unknown">' .
+				$this->codeWidget->getHtmlForVariable($details) .
+			'</div>';
 	}
 }

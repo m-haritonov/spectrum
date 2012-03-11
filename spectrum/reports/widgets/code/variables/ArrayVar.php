@@ -23,8 +23,8 @@ class ArrayVar extends VariableHierarchical
 	{
 		$output = '';
 		$output .= '<span class="g-code-variables g-code-variables-' . htmlspecialchars($this->type) . '">';
-		$output .= $this->getIndention() . $this->getHtmlForType($variable) . $this->getNewline();
-		$output .= $this->getIndention() . $this->codeWidget->getHtmlForOperator('{');
+		$output .= $this->getHtmlForType($variable) . $this->getNewline();
+		$output .= $this->codeWidget->getHtmlForOperator('{');
 
 		if (count($variable))
 		{

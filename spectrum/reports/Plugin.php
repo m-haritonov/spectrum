@@ -38,7 +38,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	public function prependIndentionToEachTagOnNewline($text, $repeat = 1)
 	{
 		if ($text != '')
-			return $this->getIndention($repeat) . str_replace($this->getNewline() . '<', $this->getNewline() . $this->getIndention($repeat) . '<', $text);
+			return preg_replace('/' . preg_quote($this->getNewline(), '/') . '(<[^\/])/s', $this->getNewline() . $this->getIndention($repeat) . '$1', $text);
 		else
 			return $text;
 	}

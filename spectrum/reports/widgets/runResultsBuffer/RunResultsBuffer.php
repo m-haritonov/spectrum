@@ -135,7 +135,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="Show full details (also available by double click on the card)">+</a>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="num" title="Order in run results buffer">No. ' . $num . '</div>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="value" title="Result">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
-			$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getHtmlForResultDetails($result['details'])), 3) . $this->getNewline();
+			$output .= $this->getHtmlForResultDetails($result['details']) . $this->getNewline();
 			$output .= $this->getIndention(2) . '</div>' . $this->getNewline();
 		}
 

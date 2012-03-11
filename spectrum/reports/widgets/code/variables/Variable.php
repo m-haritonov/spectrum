@@ -36,10 +36,10 @@ abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 		return
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$widgetSelector { font-family: monospace; font-size: 12px; }" . $this->getNewline() .
-				$this->getIndention() . "$widgetSelector .value { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
-				$this->getIndention() . "$widgetSelector .type { font-size: 0.9em; color: rgba(0, 0, 0, 0.6); }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $widgetSelector .value { display: inline; overflow: visible; max-width: auto; white-space: normal; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector { font-size: 12px; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector .value { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; border-radius: 4px; background: rgba(255, 255, 255, 0.5); white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector .type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector .value { overflow: visible; max-width: none; white-space: normal; }" . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 

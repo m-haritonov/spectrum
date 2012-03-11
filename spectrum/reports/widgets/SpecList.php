@@ -98,7 +98,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			if ($finalResult === false)
 			{
 				$runResultsBufferWidget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer($this->getOwnerPlugin());
-				$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($runResultsBufferWidget->getHtml()), static::$depth * 2 + 3) . $this->getNewline();
+				$output .= $runResultsBufferWidget->getHtml() . $this->getNewline();
 			}
 
 			$messagesWidget = new \net\mkharitonov\spectrum\reports\widgets\Messages($this->getOwnerPlugin());
