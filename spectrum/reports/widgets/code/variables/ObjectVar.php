@@ -26,8 +26,8 @@ class ObjectVar extends VariableHierarchical
 		return
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$widgetSelector>.type>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.type>.class { display: inline; overflow: visible; max-width: auto; white-space: normal; vertical-align: baseline; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.class { display: inline; overflow: visible; max-width: auto; white-space: normal; vertical-align: baseline; }" . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
@@ -37,7 +37,8 @@ class ObjectVar extends VariableHierarchical
 
 		$output = '';
 		$output .= '<span class="g-code-variables g-code-variables-' . htmlspecialchars($this->type) . '">';
-		$output .= $this->getHtmlForType($variable, $properties) . $this->getNewline();
+		$output .= $this->getHtmlForType($variable, $properties);
+		$output .= $this->getHtmlForClass($variable, $properties);
 		$output .= $this->codeWidget->getHtmlForOperator('{');
 
 		if (count($properties))
@@ -59,10 +60,13 @@ class ObjectVar extends VariableHierarchical
 	{
 		return
 			'<span class="type">' .
-				htmlspecialchars($this->type) .
-				'<span title="Properties count">(' . count($properties) . ')</span> ' .
-				'<span class="class">' . htmlspecialchars(get_class($variable)) . '</span> ' .
+				htmlspecialchars($this->type) . '<span title="Properties count">(' . count($properties) . ')</span> ' .
 			'</span>';
+	}
+
+	protected function getHtmlForClass($variable, $properties = array())
+	{
+		return '<span class="class">' . htmlspecialchars(get_class($variable)) . '</span> ';
 	}
 
 	protected function getProperties($variable)
