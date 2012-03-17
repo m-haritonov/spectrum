@@ -19,12 +19,15 @@ use \net\mkharitonov\spectrum\core\SpecItemInterface;
  */
 class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
+	/**
+	 * @var \net\mkharitonov\spectrum\reports\widgets\code\Code
+	 */
 	protected $codeWidget;
 
 	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin)
 	{
 		parent::__construct($ownerPlugin);
-		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getOwnerPlugin());
+		$this->codeWidget = $this->getOwnerPlugin()->createWidget('code');
 	}
 
 	public function getStyles()
@@ -153,9 +156,9 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	protected function getHtmlForResultDetails($details)
 	{
 		if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
-			$widget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall($this->getOwnerPlugin());
+			$widget = $this->getOwnerPlugin()->createWidget('matcherCallDetails');
 		else
-			$widget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown($this->getOwnerPlugin());
+			$widget = $this->getOwnerPlugin()->createWidget('unknownDetails');
 
 		return $widget->getHtml($details);
 	}

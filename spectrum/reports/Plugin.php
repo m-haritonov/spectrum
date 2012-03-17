@@ -19,6 +19,38 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 {
 	protected $indention = "\t";
 	protected $newline = "\r\n";
+	protected $widgets = array(
+		'clearfix'         => 'net\mkharitonov\spectrum\reports\widgets\Clearfix',
+		'messages'         => 'net\mkharitonov\spectrum\reports\widgets\Messages',
+		'runResultsBuffer' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer',
+		'matcherCallDetails' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall',
+		'unknownDetails'     => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown',
+		'specList'         => 'net\mkharitonov\spectrum\reports\widgets\SpecList',
+		'specTitle'        => 'net\mkharitonov\spectrum\reports\widgets\SpecTitle',
+		'code'             => 'net\mkharitonov\spectrum\reports\widgets\code\Code',
+		'arrayVar'         => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar',
+		'boolVar'          => 'net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar',
+		'floatVar'         => 'net\mkharitonov\spectrum\reports\widgets\code\variables\FloatVar',
+		'closureVar'       => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ClosureVar',
+		'intVar'           => 'net\mkharitonov\spectrum\reports\widgets\code\variables\IntVar',
+		'nullVar'          => 'net\mkharitonov\spectrum\reports\widgets\code\variables\NullVar',
+		'objectVar'        => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ObjectVar',
+		'resourceVar'      => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ResourceVar',
+		'stringVar'        => 'net\mkharitonov\spectrum\reports\widgets\code\variables\StringVar',
+		'unknownVar'       => 'net\mkharitonov\spectrum\reports\widgets\code\variables\UnknownVar',
+	);
+
+/**/
+
+	public function createWidget($name/*, ... */)
+	{
+		$reflection = new \ReflectionClass($this->widgets[$name]);
+		$args = func_get_args();
+		array_shift($args);
+		array_unshift($args, $this);
+
+		return $reflection->newInstanceArgs($args);
+	}
 
 /**/
 
@@ -71,15 +103,13 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 		if (!$this->getOwnerSpec()->getParent())
 			$this->getOwnerSpec()->output->put($this->getHeader());
 
-		$specListWidget = new \net\mkharitonov\spectrum\reports\widgets\SpecList($this);
-		$this->getOwnerSpec()->output->put($specListWidget->getHtmlBegin());
+		$this->getOwnerSpec()->output->put($this->createWidget('specList')->getHtmlBegin());
 		$this->flush();
 	}
 
 	public function onRunAfter($finalResult)
 	{
-		$specListWidget = new \net\mkharitonov\spectrum\reports\widgets\SpecList($this);
-		$this->getOwnerSpec()->output->put($specListWidget->getHtmlEnd($finalResult));
+		$this->getOwnerSpec()->output->put($this->createWidget('specList')->getHtmlEnd($finalResult));
 		$this->flush();
 
 		if (!$this->getOwnerSpec()->getParent())
@@ -124,7 +154,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 		$output = '';
 		$output .= $this->trimNewline($this->getCommonStyles()) . $this->getNewline(2);
 
-		foreach ($this->getAllWidgets() as $widget)
+		foreach ($this->createAllWidgets() as $widget)
 			$output .= $this->trimNewline($widget->getStyles()) . $this->getNewline(2);
 
 		return $output;
@@ -147,34 +177,10 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 		$output = '';
 		$output .= $this->trimNewline($this->getCommonScripts()) . $this->getNewline(2);
 
-		foreach ($this->getAllWidgets() as $widget)
+		foreach ($this->createAllWidgets() as $widget)
 			$output .= $this->trimNewline($widget->getScripts()) . $this->getNewline(2);
 
 		return $output;
-	}
-
-	protected function getAllWidgets()
-	{
-		return array(
-			new \net\mkharitonov\spectrum\reports\widgets\Clearfix($this),
-			new \net\mkharitonov\spectrum\reports\widgets\Messages($this),
-			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer($this),
-			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall($this),
-			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown($this),
-			new \net\mkharitonov\spectrum\reports\widgets\SpecList($this),
-			new \net\mkharitonov\spectrum\reports\widgets\SpecTitle($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\Code($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\FloatVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ClosureVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\IntVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\NullVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ObjectVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ResourceVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\StringVar($this),
-			new \net\mkharitonov\spectrum\reports\widgets\code\variables\UnknownVar($this),
-		);
 	}
 
 	protected function getCommonScripts()
@@ -183,6 +189,16 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	}
 
 /**/
+
+
+	protected function createAllWidgets()
+	{
+		$result = array();
+		foreach ($this->widgets as $name => $class)
+			$result[$name] = $this->createWidget($name);
+
+		return $result;
+	}
 
 	protected function flush()
 	{

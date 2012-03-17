@@ -22,13 +22,16 @@ abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	protected $trueResultParentSelector = '.g-runResultsBuffer>.results>.result.true';
 	protected $falseResultParentSelector = '.g-runResultsBuffer>.results>.result.false';
 
+	/**
+	 * @var \net\mkharitonov\spectrum\reports\widgets\code\Code
+	 */
 	protected $codeWidget;
 	protected $depth;
 
 	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin, $depth = 0)
 	{
 		parent::__construct($ownerPlugin);
-		$this->codeWidget = new \net\mkharitonov\spectrum\reports\widgets\code\Code($this->getOwnerPlugin());
+		$this->codeWidget = $this->getOwnerPlugin()->createWidget('code');
 		$this->depth = $depth;
 	}
 

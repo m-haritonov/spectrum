@@ -60,8 +60,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecNumber() . $this->getNewline();
-			$specTitleWidget = new SpecTitle($this->getOwnerPlugin());
-			$output .= $this->prependIndentionToEachTagOnNewline($specTitleWidget->getHtmlForSpecTitle(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+			$output .= $this->prependIndentionToEachTagOnNewline($this->getOwnerPlugin()->createWidget('specTitle')->getHtmlForSpecTitle(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			{
@@ -86,8 +85,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '</ol>' . $this->getNewline();
 			}
 
-			$specTitleWidget = new SpecTitle($this->getOwnerPlugin());
-			$output .= $specTitleWidget->getHtmlForFinalResult($finalResult) . $this->getNewline();
+			$output .= $this->getOwnerPlugin()->createWidget('specTitle')->getHtmlForFinalResult($finalResult) . $this->getNewline();
 			$output .= $this->getRunDetails($finalResult) . $this->getNewline();
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();
 		}
@@ -124,12 +122,10 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 		if ($finalResult === false)
 		{
-			$runResultsBufferWidget = new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer($this->getOwnerPlugin());
-			$output .= $runResultsBufferWidget->getHtml() . $this->getNewline();
+			$output .= $this->getOwnerPlugin()->createWidget('runResultsBuffer')->getHtml() . $this->getNewline();
 		}
 
-		$messagesWidget = new \net\mkharitonov\spectrum\reports\widgets\Messages($this->getOwnerPlugin());
-		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($messagesWidget->getHtml()), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getOwnerPlugin()->createWidget('messages')->getHtml()), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 		if (trim($output) != '')
 			$output = '<div class="runDetails">' . $output . '</div>';
