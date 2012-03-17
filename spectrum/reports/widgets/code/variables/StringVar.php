@@ -39,7 +39,7 @@ class StringVar extends Variable
 
 	protected function getHtmlForType($variable)
 	{
-		return '<span class="type">' . htmlspecialchars($this->type) . '<span title="String length">(' . mb_strlen($variable) . ')</span></span>';
+		return '<span class="type">' . htmlspecialchars($this->type) . '<span title="' . $this->translate('String length') . '">(' . mb_strlen($variable) . ')</span></span>';
 	}
 
 	protected function getHtmlForValue($variable)
@@ -51,11 +51,11 @@ class StringVar extends Variable
 
 	protected function makeSpacesVisible($string)
 	{
-		$string = str_replace(" ", '<span class="char space" title="Whitespace"> </span>', $string);
-		$string = str_replace("\t", '<span class="char tab" title="Tab">' . "\t" . '</span>', $string);
+		$string = str_replace(" ", '<span class="char space" title="' . $this->translate('Whitespace') . '"> </span>', $string);
+		$string = str_replace("\t", '<span class="char tab" title="' . $this->translate('Tab') . '">' . "\t" . '</span>', $string);
 
-		$cr = '<span class="char cr" title="Carriage return (CR)"></span>';
-		$lf = '<span class="char lf" title="Line feed (LF)"></span>';
+		$cr = '<span class="char cr" title="' . $this->translate('Carriage return (CR)') . '"></span>';
+		$lf = '<span class="char lf" title="' . $this->translate('Line feed (LF)') . '"></span>';
 
 		$string = strtr($string, array(
 			"\r\n" => $cr . $lf . "\r\n",

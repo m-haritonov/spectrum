@@ -42,6 +42,11 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 
 /**/
 
+	public function translate($string)
+	{
+		return $string;
+	}
+
 	public function createWidget($name/*, ... */)
 	{
 		$reflection = new \ReflectionClass($this->widgets[$name]);

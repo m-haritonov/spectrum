@@ -34,8 +34,8 @@ class MatcherCall extends Details
 		$output = '';
 		$output .= '<div class="g-runResultsBuffer-details g-runResultsBuffer-details-matcherCall">';
 		$output .= $this->getHtmlForCallExpression($details);
-		$output .= '<div class="returnValue"><span class="title" title="Matcher return value">Return:</span> ' . $this->codeWidget->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>';
-		$output .= '<div class="thrownException"><span class="title" title="Matcher thrown exception">Thrown:</span> ' . $this->codeWidget->getHtmlForVariable($details->getException()) . '</div>';
+		$output .= '<div class="returnValue"><span class="title" title="' . $this->translate('Matcher return value') . '">' . $this->translate('Return') . ':</span> ' . $this->codeWidget->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>';
+		$output .= '<div class="thrownException"><span class="title" title="' . $this->translate('Matcher thrown exception') . '">' . $this->translate('Thrown') . ':</span> ' . $this->codeWidget->getHtmlForVariable($details->getException()) . '</div>';
 		$output .= '</div>';
 		return $output;
 	}

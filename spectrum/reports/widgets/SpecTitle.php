@@ -58,7 +58,7 @@ class SpecTitle extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return
 			'<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
 			'<span class="separator"> — </span>' . $this->getNewline() .
-			'<span class="finalResult">wait...</span>' . $this->getNewline();
+			'<span class="finalResult">' . $this->translate('wait') . '...</span>' . $this->getNewline();
 	}
 
 	public function getHtmlForFinalResult($finalResult)

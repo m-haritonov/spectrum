@@ -132,16 +132,16 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$output = '';
 
 		$output .= '<div class="g-runResultsBuffer g-clearfix">' . $this->getNewline();
-		$output .= $this->getIndention() . '<h1>Run results buffer contains:</h1>' . $this->getNewline();
+		$output .= $this->getIndention() . '<h1>' . $this->translate('Run results buffer contains') . ':</h1>' . $this->getNewline();
 		$output .= $this->getIndention() . '<div class="results">' . $this->getNewline();
 		$num = 0;
 		foreach ($this->getOwnerPlugin()->getOwnerSpec()->getRunResultsBuffer()->getResults() as $result)
 		{
 			$num++;
 			$output .= $this->getIndention(2) . '<div class="result ' . ($result['result'] ? 'true' : 'false') . '">' . $this->getNewline();
-			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="Show full details (also available by double click on the card)">+</a>' . $this->getNewline();
-			$output .= $this->getIndention(3) . '<div class="num" title="Order in run results buffer">No. ' . $num . '</div>' . $this->getNewline();
-			$output .= $this->getIndention(3) . '<div class="value" title="Result">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
+			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="' . $this->translate('Show full details (also available by double click on the card)') . '">+</a>' . $this->getNewline();
+			$output .= $this->getIndention(3) . '<div class="num" title="' . $this->translate('Order in run results buffer') . '">' . $this->translate('No.') . ' ' . $num . '</div>' . $this->getNewline();
+			$output .= $this->getIndention(3) . '<div class="value" title="' . $this->translate('Result') . '">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
 			$output .= $this->getHtmlForResultDetails($result['details']) . $this->getNewline();
 			$output .= $this->getIndention(2) . '</div>' . $this->getNewline();
 		}

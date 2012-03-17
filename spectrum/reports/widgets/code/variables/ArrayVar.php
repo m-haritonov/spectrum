@@ -43,6 +43,6 @@ class ArrayVar extends VariableHierarchical
 
 	protected function getHtmlForType($variable)
 	{
-		return '<span class="type">' . htmlspecialchars($this->type) . '<span title="Elements count">(' . count($variable) . ')</span></span>';
+		return '<span class="type">' . htmlspecialchars($this->type) . '<span title="' . $this->translate('Elements count') . '">(' . count($variable) . ')</span></span>';
 	}
 }

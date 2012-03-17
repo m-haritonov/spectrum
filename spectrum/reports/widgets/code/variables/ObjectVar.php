@@ -60,7 +60,7 @@ class ObjectVar extends VariableHierarchical
 	{
 		return
 			'<span class="type">' .
-				htmlspecialchars($this->type) . '<span title="Properties count">(' . count($properties) . ')</span> ' .
+				htmlspecialchars($this->type) . '<span title="' . $this->translate('Properties count') . '">(' . count($properties) . ')</span> ' .
 			'</span>';
 	}
 

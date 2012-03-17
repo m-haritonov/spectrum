@@ -38,7 +38,7 @@ class Messages extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$output = '';
 
 		$output .= '<div class="g-messages g-clearfix">' . $this->getNewline();
-		$output .= $this->getIndention() . '<h1>Messages:</h1>' . $this->getNewline();
+		$output .= $this->getIndention() . '<h1>' . $this->translate('Messages') . ':</h1>' . $this->getNewline();
 		$output .= $this->getIndention() . '<ul>' . $this->getNewline();
 		foreach ($messages as $message)
 			$output .= $this->getIndention(2) . '<li>' . htmlspecialchars($message) . '</li>' . $this->getNewline();
