@@ -63,19 +63,19 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 		{
 			static::$depth = 0;
-			$output .= $this->getIndention(static::$depth + 1) . '<ol class="g-specList">' . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() + 1) . '<ol class="g-specList">' . $this->getNewline();
 		}
 
 		if (!$this->getOwnerPlugin()->getOwnerSpec()->isAnonymous())
 		{
 			@static::$numbers[static::$depth]++;
 
-			$output .= $this->getIndention(static::$depth * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
 			$output .= $this->getHtmlForSpecTitle();
 
 			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			{
-				$output .= $this->getIndention(static::$depth * 2 + 3) . '<ol class="g-specList">' . $this->getNewline();
+				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '<ol class="g-specList">' . $this->getNewline();
 				static::$depth++;
 			}
 		}
@@ -88,24 +88,9 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return
 			$this->getHtmlForCurrentSpecIndention() .
 			$this->getHtmlForSpecNumber() . $this->getNewline() .
-			$this->getIndention(static::$depth * 2 + 3) . '<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
-			$this->getIndention(static::$depth * 2 + 3) . '<span class="separator"> — </span>' . $this->getNewline() .
-			$this->getIndention(static::$depth * 2 + 3) . '<span class="finalResult">wait...</span>' . $this->getNewline();
-	}
-
-	protected function getHtmlForSpecNumber()
-	{
-		return '<span class="number">' . htmlspecialchars($this->getSpecNumber()) . '. </span>';
-	}
-
-	protected function getSpecNumber()
-	{
-		return @static::$numbers[static::$depth];
-	}
-
-	protected function getHtmlForCurrentSpecIndention()
-	{
-		return $this->getIndention(static::$depth * 2 + 3) . str_repeat('<span class="indention">' . $this->getIndention() . '</span>', static::$depth);
+			$this->getIndention($this->getSpecDepth() * 2 + 3) . '<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
+			$this->getIndention($this->getSpecDepth() * 2 + 3) . '<span class="separator"> — </span>' . $this->getNewline() .
+			$this->getIndention($this->getSpecDepth() * 2 + 3) . '<span class="finalResult">wait...</span>' . $this->getNewline();
 	}
 
 	public function getHtmlEnd($finalResult)
@@ -118,18 +103,38 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			{
 				static::$numbers[static::$depth] = 0;
 				static::$depth--;
-				$output .= $this->getIndention(static::$depth * 2 + 3) . '</ol>' . $this->getNewline();
+				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '</ol>' . $this->getNewline();
 			}
 
 			$output .= $this->getScriptForResultUpdate($this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec(), $this->getSpecResultCssClass($finalResult)) . $this->getNewline();
 			$output .= $this->getRunDetails($finalResult) . $this->getNewline();
-			$output .= $this->getIndention(static::$depth * 2 + 2) . '</li>' . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();
 		}
 
 		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParent())
-			$output .= $this->getIndention(static::$depth + 1) . '</ol>' . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() + 1) . '</ol>' . $this->getNewline();
 
 		return $output;
+	}
+
+	public function getSpecDepth()
+	{
+		return static::$depth;
+	}
+
+	public function getSpecNumber()
+	{
+		return @static::$numbers[static::$depth];
+	}
+
+	protected function getHtmlForSpecNumber()
+	{
+		return '<span class="number">' . htmlspecialchars($this->getSpecNumber()) . '. </span>';
+	}
+
+	protected function getHtmlForCurrentSpecIndention()
+	{
+		return $this->getIndention($this->getSpecDepth() * 2 + 3) . str_repeat('<span class="indention">' . $this->getIndention() . '</span>', $this->getSpecDepth());
 	}
 
 	protected function getRunDetails($finalResult)
@@ -143,7 +148,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		}
 
 		$messagesWidget = new \net\mkharitonov\spectrum\reports\widgets\Messages($this->getOwnerPlugin());
-		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($messagesWidget->getHtml()), static::$depth * 2 + 3) . $this->getNewline();
+		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($messagesWidget->getHtml()), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 		if (trim($output) != '')
 			$output = '<div class="runDetails">' . $output . '</div>';
