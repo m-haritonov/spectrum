@@ -44,18 +44,6 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			'</style>' . $this->getNewline();
 	}
 
-	public function getScripts()
-	{
-		return
-			'<script type="text/javascript">' . $this->getNewline() .
-				$this->getIndention() . 'function updateResult(uid, resultLabel, resultName){' . $this->getNewline() .
-					$this->getIndention(2) . 'var result = document.querySelector("#" + uid + ">.finalResult");' . $this->getNewline() .
-					$this->getIndention(2) . 'result.className += " " + resultLabel;' . $this->getNewline() .
-					$this->getIndention(2) . 'result.innerHTML = resultName;' . $this->getNewline() .
-				$this->getIndention() . '}' . $this->getNewline() .
-			'</script>' . $this->getNewline();
-	}
-
 	public function getHtmlBegin()
 	{
 		$output = '';
@@ -71,7 +59,9 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			@static::$numbers[static::$depth]++;
 
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
-			$output .= $this->getHtmlForSpecTitle();
+			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecNumber() . $this->getNewline();
+			$specTitleWidget = new SpecTitle($this->getOwnerPlugin());
+			$output .= $this->prependIndentionToEachTagOnNewline($specTitleWidget->getHtmlForSpecTitle(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			{
@@ -81,16 +71,6 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		}
 
 		return $output;
-	}
-
-	protected function getHtmlForSpecTitle()
-	{
-		return
-			$this->getHtmlForCurrentSpecIndention() .
-			$this->getHtmlForSpecNumber() . $this->getNewline() .
-			$this->getIndention($this->getSpecDepth() * 2 + 3) . '<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
-			$this->getIndention($this->getSpecDepth() * 2 + 3) . '<span class="separator"> — </span>' . $this->getNewline() .
-			$this->getIndention($this->getSpecDepth() * 2 + 3) . '<span class="finalResult">wait...</span>' . $this->getNewline();
 	}
 
 	public function getHtmlEnd($finalResult)
@@ -106,7 +86,8 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '</ol>' . $this->getNewline();
 			}
 
-			$output .= $this->getScriptForResultUpdate($this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec(), $this->getSpecResultCssClass($finalResult)) . $this->getNewline();
+			$specTitleWidget = new SpecTitle($this->getOwnerPlugin());
+			$output .= $specTitleWidget->getHtmlForFinalResult($finalResult) . $this->getNewline();
 			$output .= $this->getRunDetails($finalResult) . $this->getNewline();
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();
 		}
@@ -156,35 +137,6 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return $output;
 	}
 
-	protected function getScriptForResultUpdate($specUid, $resultLabel)
-	{
-		// TODO заменить на периодическую проверку по коду в <head>
-		return
-			'<script type="text/javascript">' .
-				'updateResult("' . $specUid . '", "' . $resultLabel . '", "' . $resultLabel . '");' .
-			'</script>';
-	}
-
-	protected function getSpecName()
-	{
-		$parent = $this->getOwnerPlugin()->getOwnerSpec()->getParent();
-		$name = $this->getOwnerPlugin()->getOwnerSpec()->getName();
-
-		if ($name == '' && $parent && $parent instanceof \net\mkharitonov\spectrum\core\SpecContainerArgumentsProviderInterface)
-			return $this->getAdditionalArgumentsDumpOut();
-		else
-			return $name;
-	}
-
-	protected function getAdditionalArgumentsDumpOut()
-	{
-		$output = '';
-		foreach ($this->getOwnerPlugin()->getOwnerSpec()->getAdditionalArguments() as $arg)
-			$output .= $arg . ', ';
-
-		return mb_substr($output, 0, -2);
-}
-
 	protected function getSpecCssClass()
 	{
 		if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerDescribeInterface)
@@ -199,17 +151,5 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			return 'item';
 		else
 			return 'spec';
-	}
-
-	protected function getSpecResultCssClass($result)
-	{
-		if ($result === false)
-			$name = 'fail';
-		else if ($result === true)
-			$name = 'success';
-		else
-			$name = 'empty';
-
-		return $name;
 	}
 }

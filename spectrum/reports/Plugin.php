@@ -162,6 +162,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall($this),
 			new \net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown($this),
 			new \net\mkharitonov\spectrum\reports\widgets\SpecList($this),
+			new \net\mkharitonov\spectrum\reports\widgets\SpecTitle($this),
 			new \net\mkharitonov\spectrum\reports\widgets\code\Code($this),
 			new \net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar($this),
 			new \net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar($this),
