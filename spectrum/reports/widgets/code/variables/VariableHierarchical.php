@@ -25,9 +25,13 @@ abstract class VariableHierarchical extends Variable
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . "$widgetSelector { display: inline-block; vertical-align: top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector>.g-code-operator.curlyBrace { display: none; }" . $this->getNewline() .
 				$this->getIndention() . "$widgetSelector $widgetSelector { display: inline; vertical-align: baseline; background: transparent; }" . $this->getNewline() .
-				$this->getIndention() . "$widgetSelector>.elements:before { content: '\\2026'; }" . $this->getNewline() .
-				$this->getIndention() . "$widgetSelector>.elements>.element { display: none; padding-left: 20px; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector>.elements:before { content: '\\007B\\2026\\007D'; color: rgba(0, 0, 0, 0.6); }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector>.elements>.element { display: none; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector>.elements>.element>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.g-code-operator.curlyBrace { display: inline; }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector $widgetSelector>.g-code-operator.curlyBrace { display: none; }" . $this->getNewline() .
 				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.elements:before { display: none; }" . $this->getNewline() .
 				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.elements>.element { display: block; }" . $this->getNewline() .
 			'</style>' . $this->getNewline();
@@ -35,10 +39,12 @@ abstract class VariableHierarchical extends Variable
 
 	protected function getHtmlForElement($key, $val)
 	{
-		$keyHtml = '<span class="key">' . $this->codeWidget->getHtmlForOperator('[') . htmlspecialchars("$key") . $this->codeWidget->getHtmlForOperator(']') . '</span>';
-		$operatorHtml = ' ' . $this->codeWidget->getHtmlForOperator('=>') . ' ';
-		$valHtml = $this->trimNewline($this->codeWidget->getHtmlForVariable($val));
-
-		return '<span class="element">' . $keyHtml . $operatorHtml . $valHtml . '</span>';
+		return
+			'<span class="element">' .
+				str_repeat('<span class="indention">' . $this->getIndention() . '</span>', $this->depth + 1) .
+				'<span class="key">' . $this->codeWidget->getHtmlForOperator('[') . htmlspecialchars("$key") . $this->codeWidget->getHtmlForOperator(']') . '</span>' .
+				' ' . $this->codeWidget->getHtmlForOperator('=>') . ' ' .
+				$this->trimNewline($this->codeWidget->getHtmlForVariable($val, $this->depth + 1)) .
+			'</span>';
 	}
 }

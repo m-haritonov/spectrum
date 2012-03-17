@@ -28,7 +28,16 @@ class Code extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	public function getHtmlForOperator($operator)
 	{
-		return '<span class="g-code-operator">' . htmlspecialchars($operator) . '</span>';
+
+		return '<span class="g-code-operator ' . $this->getOperatorName($operator) . '">' . htmlspecialchars($operator) . '</span>';
+	}
+
+	protected function getOperatorName($operator)
+	{
+		if ($operator == '{' || $operator == '}')
+			return 'curlyBrace';
+		else
+			return null;
 	}
 
 	public function getHtmlForPropertyAccess($propertyName)
@@ -56,12 +65,12 @@ class Code extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return mb_substr($output, 0, -2);
 	}
 
-	public function getHtmlForVariable($variable)
+	public function getHtmlForVariable($variable, $depth = 0)
 	{
 		$type = $this->getVariableType($variable);
 		$variableWidgetClassName = mb_strtoupper(mb_substr($type, 0, 1)) . mb_substr($type, 1) . 'Var';
 		$variableWidgetClass = '\net\mkharitonov\spectrum\reports\widgets\code\variables\\' . $variableWidgetClassName;
-		$variableWidget = new $variableWidgetClass($this->getOwnerPlugin());
+		$variableWidget = new $variableWidgetClass($this->getOwnerPlugin(), $depth);
 		return $variableWidget->getHtml($variable);
 	}
 
