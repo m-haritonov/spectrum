@@ -64,6 +64,10 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 					{
 						resultNodes[key].addEventListener("dblclick", function(e){
 							e.preventDefault();
+							// For select by double click (and further copy to clipboard) feature support
+							if (hasClass(e.currentTarget, "expand"))
+								return;
+
 							clearSelection();
 							toggleExpand(e.currentTarget.querySelector("a.expand"));
 						});
