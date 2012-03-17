@@ -65,14 +65,11 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 					for (var key in resultNodes)
 					{
-						resultNodes[key].addEventListener("dblclick", function(e){
+						// "dblclick" event not used for select text by double click (and further copy to clipboard) feature support
+						resultNodes[key].addEventListener("click", function(e){
 							e.preventDefault();
-							// For select by double click (and further copy to clipboard) feature support
-							if (hasClass(e.currentTarget, "expand"))
-								return;
-
-							clearSelection();
-							toggleExpand(e.currentTarget.querySelector("a.expand"));
+							if (e.button == 1)
+								toggleExpand(e.currentTarget.querySelector("a.expand"));
 						});
 
 						resultNodes[key].querySelector("a.expand").addEventListener("click", function(e){
@@ -95,17 +92,6 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 							addClass(resultNode, "expand");
 						}
 					}
-
-					function clearSelection(){
-						if (document.selection && document.selection.empty)
-							document.selection.empty();
-						else if(window.getSelection)
-						{
-							var sel = window.getSelection();
-							sel.removeAllRanges();
-						}
-					}
-
 
 					function hasClass(node, className){
 						return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
@@ -139,7 +125,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		{
 			$num++;
 			$output .= $this->getIndention(2) . '<div class="result ' . ($result['result'] ? 'true' : 'false') . '">' . $this->getNewline();
-			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="' . $this->translate('Show full details (also available by double click on the card)') . '">+</a>' . $this->getNewline();
+			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="' . $this->translate('Show full details (also available by mouse middle click on the card)') . '">+</a>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="num" title="' . $this->translate('Order in run results buffer') . '">' . $this->translate('No.') . ' ' . $num . '</div>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="value" title="' . $this->translate('Result') . '">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
 			$output .= $this->getHtmlForResultDetails($result['details']) . $this->getNewline();
