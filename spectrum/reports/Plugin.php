@@ -211,8 +211,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 
 	protected function flush()
 	{
-		// TODO убрать span
-		$this->getOwnerSpec()->output->put('<span style="display: none;">' . str_repeat(' ', 256) . '</span>' . $this->getNewline());
+		$this->getOwnerSpec()->output->put(str_repeat(' ', 256) . $this->getNewline());
 		flush();
 	}
 }
