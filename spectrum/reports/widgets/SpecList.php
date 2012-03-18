@@ -30,8 +30,15 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . '.g-specList { list-style: none; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList .g-specList { padding-left: 25px; list-style: none; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li { margin-top: 3px; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.indention { display: inline-block; width: 0; white-space: pre; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.number { padding: 1px 4px; border-radius: 20px; background: #ddd; font-size: 0.9em; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.number .dot { display: inline-block; width: 0; color: transparent; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.g-specList { margin-left: 25px; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.g-specList>li { position: relative; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.g-specList>li:before { content: "\\0020"; display: block; position: absolute; top: -3px; bottom: 0; left: -18px; width: 1px; background: #ccc;  }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.g-specList>li:after { content: "\\0020"; display: block; position: absolute; top: 8px; left: -17px; width: 17px; height: 1px; background: #ccc; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.g-specList>li:last-child:before { bottom: auto; height: 12px; }' . $this->getNewline() .
 
 				$this->getIndention() . '.g-specList>li.it { }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li.describe { }' . $this->getNewline() .
@@ -104,7 +111,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	protected function getHtmlForSpecNumber()
 	{
-		return '<span class="number">' . htmlspecialchars($this->getSpecNumber()) . '. </span>';
+		return '<span class="number">' . htmlspecialchars($this->getSpecNumber()) . '<span class="dot">.</span></span> ';
 	}
 
 	protected function getHtmlForCurrentSpecIndention()
@@ -122,7 +129,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('messages')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 		if (trim($output) != '')
-			$output = '<div class="runDetails">' . $output . '</div>';
+			$output = '<div class="runDetails g-clearfix">' . $output . '</div>';
 
 		return $output;
 	}
