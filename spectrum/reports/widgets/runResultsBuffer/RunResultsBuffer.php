@@ -59,8 +59,9 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	public function getScripts()
 	{
 		return
-			'<script type="text/javascript">' .
-				'document.addEventListener("DOMContentLoaded", function(){
+			'<script type="text/javascript">
+				document.addEventListener("DOMContentLoaded", function()
+				{
 					var resultNodes = document.body.querySelectorAll(".g-runResultsBuffer>.results>.result");
 
 					for (var key in resultNodes)
@@ -78,7 +79,8 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 						});
 					}
 
-					function toggleExpand(expandLinkNode){
+					function toggleExpand(expandLinkNode)
+					{
 						var resultNode = expandLinkNode.parentNode;
 
 						if (hasClass(resultNode, "expand"))
@@ -93,20 +95,23 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 						}
 					}
 
-					function hasClass(node, className){
+					function hasClass(node, className)
+					{
 						return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
 					}
 
-					function addClass(node, className){
+					function addClass(node, className)
+					{
 						if (!hasClass(node, className))
 							node.className += " " + className;
 					}
 
-					function removeClass(node, className){
+					function removeClass(node, className)
+					{
 						if (hasClass(node, className))
 							node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
 					}
-				});' .
+				});' . $this->getNewline() .
 			'</script>' . $this->getNewline();
 	}
 

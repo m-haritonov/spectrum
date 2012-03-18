@@ -25,40 +25,45 @@ class FinalResult extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	public function getScripts()
 	{
 		return
-			'<script type="text/javascript">' . $this->getNewline() .
-				$this->getIndention() . '(function(){' . $this->getNewline() .
-					$this->getIndention(2) . 'updateCurrentFinalResult = function(){' . $this->getNewline() .
-						$this->getIndention(3) . 'var scriptNode = getExecutedScriptNode();' . $this->getNewline() .
-						$this->getIndention(3) . 'var targetFinalResultNode = findNearestSpecNode(scriptNode).querySelector(".g-specTitle .finalResult");' . $this->getNewline() .
-						$this->getIndention(3) . 'var sourceFinalResultNode = findNearestFinalResultNode(scriptNode);' . $this->getNewline() .
-						$this->getIndention(3) . 'setFinalResultTo(targetFinalResultNode, sourceFinalResultNode);' . $this->getNewline() .
-					$this->getIndention(2) . '}' . $this->getNewline(2) .
+			'<script type="text/javascript">
+				(function(){
+					updateCurrentFinalResult = function()
+					{
+						var scriptNode = getExecutedScriptNode();
+						var targetFinalResultNode = findNearestSpecNode(scriptNode).querySelector(".g-specTitle .finalResult");
+						var sourceFinalResultNode = findNearestFinalResultNode(scriptNode);
+						setFinalResultTo(targetFinalResultNode, sourceFinalResultNode);
+					}
 
-					$this->getIndention(2) . 'function getExecutedScriptNode(){' . $this->getNewline() .
-						$this->getIndention(3) . 'var scripts = document.getElementsByTagName("script");' . $this->getNewline() .
-						$this->getIndention(3) . 'return scripts[scripts.length - 1];' . $this->getNewline() .
-					$this->getIndention(2) . '}' . $this->getNewline(2) .
+					function getExecutedScriptNode()
+					{
+						var scripts = document.getElementsByTagName("script");
+						return scripts[scripts.length - 1];
+					}
 
-					$this->getIndention(2) . 'function findNearestSpecNode(startNode){' . $this->getNewline() .
-						$this->getIndention(3) . 'var specNode = startNode;' . $this->getNewline() .
-						$this->getIndention(3) . 'while (specNode.tagName != "LI")' . $this->getNewline() .
-							$this->getIndention(4) . 'specNode = specNode.parentNode;' . $this->getNewline(2) .
-						$this->getIndention(3) . 'return specNode;' . $this->getNewline() .
-					$this->getIndention(2) . '}' . $this->getNewline(2) .
+					function findNearestSpecNode(startNode)
+					{
+						var specNode = startNode;
+						while (specNode.tagName != "LI")
+							specNode = specNode.parentNode;
+						return specNode;
+					}
 
-					$this->getIndention(2) . 'function findNearestFinalResultNode(startNode){' . $this->getNewline() .
-						$this->getIndention(3) . 'var finalResultNode = startNode;' . $this->getNewline() .
-						$this->getIndention(3) . 'while (finalResultNode.className != "g-finalResult")' . $this->getNewline() .
-							$this->getIndention(4) . 'finalResultNode = finalResultNode.parentNode;' . $this->getNewline(2) .
-						$this->getIndention(3) . 'return finalResultNode;' . $this->getNewline() .
-					$this->getIndention(2) . '}' . $this->getNewline(2) .
+					function findNearestFinalResultNode(startNode)
+					{
+						var finalResultNode = startNode;
+						while (finalResultNode.className != "g-finalResult")
+							finalResultNode = finalResultNode.parentNode;
+						return finalResultNode;
+					}
 
-					$this->getIndention(2) . 'function setFinalResultTo(targetFinalResultNode, sourceFinalResultNode){' . $this->getNewline() .
-						$this->getIndention(3) . 'targetFinalResultNode.className += " " + sourceFinalResultNode.getAttribute("data-resultAlias");' . $this->getNewline() .
-						$this->getIndention(3) . 'targetFinalResultNode.innerHTML = sourceFinalResultNode.getAttribute("data-resultTitle");' . $this->getNewline() .
-					$this->getIndention(2) . '}' . $this->getNewline() .
+					function setFinalResultTo(targetFinalResultNode, sourceFinalResultNode)
+					{
+						targetFinalResultNode.className += " " + sourceFinalResultNode.getAttribute("data-resultAlias");
+						targetFinalResultNode.innerHTML = sourceFinalResultNode.getAttribute("data-resultTitle");
+					}
 
-				$this->getIndention() . '})();' . $this->getNewline() .
+				})();' . $this->getNewline() .
 			'</script>' . $this->getNewline();
 	}
 
