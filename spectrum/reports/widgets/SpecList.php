@@ -55,7 +55,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecNumber() . $this->getNewline();
-			$output .= $this->prependIndentionToEachTagOnNewline($this->getOwnerPlugin()->createWidget('specTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('specTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			{
@@ -80,8 +80,9 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '</ol>' . $this->getNewline();
 			}
 
-			$output .= $this->getOwnerPlugin()->createWidget('finalResult')->getHtml($finalResult) . $this->getNewline();
-			$output .= $this->getRunDetails($finalResult) . $this->getNewline();
+			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('finalResult')->getHtml($finalResult), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . $this->trimNewline($this->getRunDetails($finalResult)) . $this->getNewline();
+
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();
 		}
 
@@ -118,7 +119,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		if ($finalResult === false)
 			$output .= $this->getOwnerPlugin()->createWidget('runResultsBuffer')->getHtml() . $this->getNewline();
 
-		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getOwnerPlugin()->createWidget('messages')->getHtml()), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+		$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('messages')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 		if (trim($output) != '')
 			$output = '<div class="runDetails">' . $output . '</div>';

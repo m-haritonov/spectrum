@@ -66,8 +66,8 @@ class FinalResult extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	{
 		$resultAlias = $this->getFinalResultAlias($finalResult);
 		return
-			'<span class="g-finalResult" data-resultAlias="' . htmlspecialchars($resultAlias) . '" data-resultTitle="' . $this->translate($resultAlias) . '">' .
-				'<script type="text/javascript">updateCurrentFinalResult();</script>' .
+			'<span class="g-finalResult" data-resultAlias="' . htmlspecialchars($resultAlias) . '" data-resultTitle="' . $this->translate($resultAlias) . '">' . $this->getNewline() .
+				$this->getIndention() . '<script type="text/javascript">updateCurrentFinalResult();</script>' . $this->getNewline() .
 			'</span>';
 	}
 

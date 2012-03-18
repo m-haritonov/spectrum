@@ -73,10 +73,13 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 		return str_repeat($this->indention, $repeat);
 	}
 
-	public function prependIndentionToEachTagOnNewline($text, $repeat = 1)
+	public function prependIndentionToEachLine($text, $repeat = 1, $trimNewline = true)
 	{
+		if ($trimNewline)
+			$text = $this->trimNewline($text);
+
 		if ($text != '')
-			return preg_replace('/' . preg_quote($this->getNewline(), '/') . '(<[^\/])/s', $this->getNewline() . $this->getIndention($repeat) . '$1', $text);
+			return $this->getIndention($repeat) . str_replace($this->getNewline(), $this->getNewline() . $this->getIndention($repeat), $text);
 		else
 			return $text;
 	}
@@ -98,7 +101,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 
 	public function trimNewline($text)
 	{
-		$escapedNewline = preg_quote($this->newline, '/');
+		$escapedNewline = preg_quote($this->getNewline(), '/');
 		return preg_replace('/^(' . $escapedNewline . ')+|(' . $escapedNewline . ')+$/s', '', $text);
 	}
 
@@ -132,8 +135,8 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 			'<head>' . $this->getNewline() .
 				$this->getIndention() . '<meta http-equiv="content-type" content="text/html; charset=utf-8" />' . $this->getNewline() .
 				$this->getIndention() . '<title></title>' . $this->getNewline() .
-				$this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getStyles())) . $this->getNewline(2) .
-				$this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getScripts())) . $this->getNewline() .
+				$this->prependIndentionToEachLine($this->getStyles()) . $this->getNewline(2) .
+				$this->prependIndentionToEachLine($this->getScripts()) . $this->getNewline() .
 			'</head>' . $this->getNewline() .
 			$this->getBodyTag();
 	}

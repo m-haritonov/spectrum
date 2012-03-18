@@ -53,9 +53,9 @@ class Widget implements WidgetInterface
 		return $this->getOwnerPlugin()->getIndention($repeat);
 	}
 
-	protected function prependIndentionToEachTagOnNewline($text, $repeat = 1)
+	protected function prependIndentionToEachLine($text, $repeat = 1, $trimNewline = true)
 	{
-		return $this->getOwnerPlugin()->prependIndentionToEachTagOnNewline($text, $repeat);
+		return $this->getOwnerPlugin()->prependIndentionToEachLine($text, $repeat, $trimNewline);
 	}
 
 	protected function getNewline($repeat = 1)

@@ -38,9 +38,9 @@ class SpecTitle extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return
 			'<span class="g-specTitle">' .
 				'<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
-				'<span class="separator"> — </span>' . $this->getNewline() .
+				$this->getIndention() . '<span class="separator"> — </span>' . $this->getNewline() .
 				// See "FinalResult" widget to understand "finalResult" update logic
-				'<span class="finalResult">' . $this->translate('wait') . '...</span>' . $this->getNewline() .
+				$this->getIndention() . '<span class="finalResult">' . $this->translate('wait') . '...</span>' . $this->getNewline() .
 			'</span>';
 	}
 
