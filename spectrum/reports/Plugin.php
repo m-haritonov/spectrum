@@ -21,6 +21,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	protected $newline = "\r\n";
 	protected $widgets = array(
 		'clearfix'         => 'net\mkharitonov\spectrum\reports\widgets\Clearfix',
+		'finalResult'      => 'net\mkharitonov\spectrum\reports\widgets\FinalResult',
 		'messages'         => 'net\mkharitonov\spectrum\reports\widgets\Messages',
 		'runResultsBuffer' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer',
 		'matcherCallDetails' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall',

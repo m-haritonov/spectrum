@@ -31,12 +31,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . '.g-specList { list-style: none; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList .g-specList { padding-left: 25px; list-style: none; }' . $this->getNewline() .
-				$this->getIndention() . ".g-specList>li>.indention { display: inline-block; width: 0; white-space: pre; }" . $this->getNewline() .
-
-				$this->getIndention() . '.g-specList>li>.finalResult { color: #ccc; font-weight: bold; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li>.finalResult.fail { color: #a31010; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li>.finalResult.success { color: #009900; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li>.finalResult.empty { color: #cc9900; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.indention { display: inline-block; width: 0; white-space: pre; }' . $this->getNewline() .
 
 				$this->getIndention() . '.g-specList>li.it { }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li.describe { }' . $this->getNewline() .
@@ -60,7 +55,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecNumber() . $this->getNewline();
-			$output .= $this->prependIndentionToEachTagOnNewline($this->getOwnerPlugin()->createWidget('specTitle')->getHtmlForSpecTitle(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+			$output .= $this->prependIndentionToEachTagOnNewline($this->getOwnerPlugin()->createWidget('specTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			{
@@ -85,7 +80,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '</ol>' . $this->getNewline();
 			}
 
-			$output .= $this->getOwnerPlugin()->createWidget('specTitle')->getHtmlForFinalResult($finalResult) . $this->getNewline();
+			$output .= $this->getOwnerPlugin()->createWidget('finalResult')->getHtml($finalResult) . $this->getNewline();
 			$output .= $this->getRunDetails($finalResult) . $this->getNewline();
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();
 		}
@@ -121,9 +116,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$output = '';
 
 		if ($finalResult === false)
-		{
 			$output .= $this->getOwnerPlugin()->createWidget('runResultsBuffer')->getHtml() . $this->getNewline();
-		}
 
 		$output .= $this->prependIndentionToEachTagOnNewline($this->trimNewline($this->getOwnerPlugin()->createWidget('messages')->getHtml()), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
