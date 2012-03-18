@@ -173,10 +173,10 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	{
 		return
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . 'body { padding: 10px; font-family: Verdana, sans-serif; font-size: 0.75em; }' . $this->getNewline() .
+				$this->getIndention() . 'body { padding: 10px; font-family: Verdana, sans-serif; font-size: 0.75em; background: #fff; }' . $this->getNewline() .
 				$this->getIndention() . '* { margin: 0; padding: 0; }' . $this->getNewline() .
 				$this->getIndention() . '*[title] { cursor: help; }' . $this->getNewline() .
-				$this->getIndention() . 'a[title] { cursor: auto; }' . $this->getNewline() .
+				$this->getIndention() . 'a[title] { cursor: pointer; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
