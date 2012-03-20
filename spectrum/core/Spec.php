@@ -217,6 +217,7 @@ abstract class Spec implements SpecInterface
 		}
 	}
 
+	// TODO: rename to more exact name
 	protected function isSibling(SpecInterface $spec)
 	{
 		return !($spec instanceof SpecContainerContextInterface);

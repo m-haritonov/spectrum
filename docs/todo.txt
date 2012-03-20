@@ -1,19 +1,66 @@
-RunResultsBuffer -> RunResultBuffer?
+
+
 throwException -> thrownException?
 
-$spec->selector->disableContextsExceptUid('spec');
+RunResultsBuffer: rename $result['result'] to $result['value']
+RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (буффер может использоваться не только для хранения результатов запуска)?
+
+MatcherCall::getIsNot, Assert::isNot rename to getNot ???
+Assert::$isNotEnabled rename to notStatus???
+
+Spec->callPlugin rename to getPlugin?
+
+ХРОМ багрепорт
+
 
 ---Плагин report
-	Заменить list-style: outside на inside, что бы цифры комировались в буфер
-	Тире с окружающими пробелами вставить в HTML, что бы копировалось в буфер
-	debug mode - просмотр порядка применения креаторов - возможно путем проверки идентичности callback
-	print rename to output
-	setOutputDebug rename to setOutputRunResultsBuffer
-	describe — статус has empty
-	сделать форматирование (вложенность) HTML ul
-	доработать формат вывода буффера результатов
+
+	report->highlightSpecNameWithSameFileName
+	статистика выполнения тестов, финальный результат
+
+	finalResult из title перенести в FinalResult
+	getFinalResultHtml()
+	<span class="g-finalResult spec_0_0_0">
+	getHtmlForUpdate
+
+	плюсик рядом с числом
+	отступ у runDetails
+
+	в конце написать результат запуска для RootDescribe или сделать общую верхушку для RootDescribe (добавить верхушку для "0")
+
+	вверху добавить панель: hide details | show details | expand all | collapse all | help
 	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
-	написать тесты
+	серый цвет для spaces сделать темнее, найти более подходящие символы
+	empty title — "empty or has empty"
+	flush
+
+	написать тесты только для правильности вывода результата - fail и т.п.
+	testShouldBeGenerateValidXhtml
+
+	thrown и return в одну строку сделать
+	writeToFile, saveReportsTo
+	исправить TODO
+
+---рефакторинг core
+	SpecContainerDescribe -> remove
+	SpecContainerContext -> SpecContainer
+	SpecContainerPattern -> SpecContainer
+	SpecContainerArgumentsProvider -> SpecContainer
+	SpecItemIt -> SpecItemManual
+
+	Spec->setDetails()
+		Details->createdConstructionCommand
+	// формироваться должно по правилам формирования идентификаторов
+	Spec->setAlias();
+	Spec->setSystemName();
+	Spec->setSystemAlias();
+	Spec->setCreatsConstructionCommand();
+
+
+
+убрать излишние DOC копирайты
+В копирайт в шапке добавить ссылку на лицензию на сайте
+email заменить
 
 
 runner.php?file=qwe.php&uid=1_1_1
