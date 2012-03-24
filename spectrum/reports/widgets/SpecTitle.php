@@ -22,25 +22,13 @@ use \net\mkharitonov\spectrum\core\SpecItemInterface;
  */
 class SpecTitle extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
-	public function getStyles()
-	{
-		return
-			'<style type="text/css">' . $this->getNewline() .
-			$this->getIndention() . '.g-specTitle .finalResult { color: #ccc; font-weight: bold; }' . $this->getNewline() .
-			$this->getIndention() . '.g-specTitle .finalResult.fail { color: #a31010; }' . $this->getNewline() .
-			$this->getIndention() . '.g-specTitle .finalResult.success { color: #009900; }' . $this->getNewline() .
-			$this->getIndention() . '.g-specTitle .finalResult.empty { color: #cc9900; }' . $this->getNewline() .
-			'</style>' . $this->getNewline();
-	}
-
 	public function getHtml()
 	{
 		return
 			'<span class="g-specTitle">' .
 				'<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
 				$this->getIndention() . '<span class="separator"> — </span>' . $this->getNewline() .
-				// See "FinalResult" widget to understand "finalResult" update logic
-				$this->getIndention() . '<span class="finalResult">' . $this->translate('wait') . '...</span>' . $this->getNewline() .
+				$this->prependIndentionToEachLine($this->trimNewline($this->getOwnerPlugin()->createWidget('finalResult\Result')->getHtml())) . $this->getNewline() .
 			'</span>';
 	}
 

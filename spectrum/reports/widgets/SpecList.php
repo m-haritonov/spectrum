@@ -87,7 +87,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '</ol>' . $this->getNewline();
 			}
 
-			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('finalResult')->getHtml($finalResult), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('finalResult\Update')->getHtml($finalResult), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . $this->trimNewline($this->getRunDetails($finalResult)) . $this->getNewline();
 
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();

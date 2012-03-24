@@ -18,13 +18,10 @@ Spec->callPlugin rename to getPlugin?
 	report->highlightSpecNameWithSameFileName
 	статистика выполнения тестов, финальный результат
 
-	finalResult из title перенести в FinalResult
-	getFinalResultHtml()
-	<span class="g-finalResult spec_0_0_0">
-	getHtmlForUpdate
-
 	плюсик рядом с числом
 	отступ у runDetails
+
+	rename initVar to code\variables\IntVar and etc.
 
 	в конце написать результат запуска для RootDescribe или сделать общую верхушку для RootDescribe (добавить верхушку для "0")
 
