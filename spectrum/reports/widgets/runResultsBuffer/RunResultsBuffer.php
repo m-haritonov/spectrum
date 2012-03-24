@@ -64,16 +64,16 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				{
 					var resultNodes = document.body.querySelectorAll(".g-runResultsBuffer>.results>.result");
 
-					for (var key in resultNodes)
+					for (var i = 0; i < resultNodes.length; i++)
 					{
 						// "dblclick" event not used for select text by double click (and further copy to clipboard) feature support
-						resultNodes[key].addEventListener("click", function(e){
+						resultNodes[i].addEventListener("click", function(e){
 							e.preventDefault();
 							if (e.button == 1)
 								toggleExpand(e.currentTarget.querySelector("a.expand"));
 						});
 
-						resultNodes[key].querySelector("a.expand").addEventListener("click", function(e){
+						resultNodes[i].querySelector("a.expand").addEventListener("click", function(e){
 							e.preventDefault();
 							toggleExpand(e.currentTarget);
 						});
