@@ -22,7 +22,7 @@ class ArrayVar extends VariableHierarchical
 	public function getHtml($variable)
 	{
 		$output = '';
-		$output .= '<span class="g-code-variables g-code-variables-' . htmlspecialchars($this->type) . '">';
+		$output .= '<span class="g-code-variables-' . htmlspecialchars($this->type) . ' g-code-variables">';
 		$output .= $this->getHtmlForType($variable) . $this->getNewline();
 		$output .= $this->codeWidget->getHtmlForOperator('{');
 

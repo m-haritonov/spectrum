@@ -36,7 +36,7 @@ class ObjectVar extends VariableHierarchical
 		$properties = $this->getProperties($variable);
 
 		$output = '';
-		$output .= '<span class="g-code-variables g-code-variables-' . htmlspecialchars($this->type) . '">';
+		$output .= '<span class="g-code-variables-' . htmlspecialchars($this->type) . ' g-code-variables">';
 		$output .= $this->getHtmlForType($variable, $properties);
 		$output .= $this->getHtmlForClass($variable, $properties);
 		$output .= $this->codeWidget->getHtmlForOperator('{');

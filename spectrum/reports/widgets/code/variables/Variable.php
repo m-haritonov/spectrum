@@ -50,7 +50,7 @@ abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	public function getHtml($variable)
 	{
-		return '<span class="g-code-variables g-code-variables-' . htmlspecialchars($this->type) . '">' . $this->getHtmlForType($variable) . $this->getHtmlForValue($variable) . '</span>';
+		return '<span class="g-code-variables-' . htmlspecialchars($this->type) . ' g-code-variables">' . $this->getHtmlForType($variable) . $this->getHtmlForValue($variable) . '</span>';
 	}
 
 	protected function getHtmlForType($variable)

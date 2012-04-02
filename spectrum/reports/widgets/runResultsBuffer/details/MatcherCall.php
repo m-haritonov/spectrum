@@ -32,7 +32,7 @@ class MatcherCall extends Details
 	public function getHtml(MatcherCallDetailsInterface $details)
 	{
 		$output = '';
-		$output .= '<div class="g-runResultsBuffer-details g-runResultsBuffer-details-matcherCall">';
+		$output .= '<div class="g-runResultsBuffer-details-matcherCall g-runResultsBuffer-details">';
 		$output .= $this->getHtmlForCallExpression($details);
 		$output .= '<div class="returnValue"><span class="title" title="' . $this->translate('Matcher return value') . '">' . $this->translate('Return') . ':</span> ' . $this->codeWidget->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>';
 		$output .= '<div class="thrownException"><span class="title" title="' . $this->translate('Matcher thrown exception') . '">' . $this->translate('Thrown') . ':</span> ' . $this->codeWidget->getHtmlForVariable($details->getException()) . '</div>';
