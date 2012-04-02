@@ -60,7 +60,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		{
 			@static::$numbers[static::$depth]++;
 
-			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec() . '">' . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->identify->getSpecId() . '">' . $this->getNewline();
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecNumber() . $this->getNewline();
 			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('specTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 

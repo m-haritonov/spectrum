@@ -70,7 +70,7 @@ class Update extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$resultAlias = $this->getFinalResultAlias($finalResult);
 		return
 			'<span class="g-finalResult-update"
-				data-specUid="' . htmlspecialchars($this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec()) . '"
+				data-specUid="' . htmlspecialchars($this->getOwnerPlugin()->getOwnerSpec()->identify->getSpecId()) . '"
 				data-resultAlias="' . htmlspecialchars($resultAlias) . '"
 				data-resultTitle="' . $this->translate($resultAlias) . '">' . $this->getNewline() .
 

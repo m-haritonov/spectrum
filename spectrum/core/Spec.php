@@ -18,6 +18,7 @@ namespace net\mkharitonov\spectrum\core;
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Builders builders
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Destroyers destroyers
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Selector selector
+ * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Identify identify
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Output output
  * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Messages messages

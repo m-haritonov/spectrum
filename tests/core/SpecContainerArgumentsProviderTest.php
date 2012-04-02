@@ -32,36 +32,6 @@ class SpecContainerArgumentsProviderTest extends SpecTest
 
 /**/
 
-/*	public function testGetUidInContext_RunningState_ShouldBeReturnUidWithRunningContextId()
-	{
-		$specs = $this->createSpecsTree('
-			Describe
-			->Context
-			->Context
-			->Describe
-			->Describe
-			->->Context
-			->->Context
-			->->' . $this->currentSpecClass . '(spec)
-			->->->It(it)
-		');
-
-		$specs['it']->setTestCallback(function() use(&$uids, $specs){
-			$uids[] = $specs['spec']->getUidInContext();
-		});
-
-		$specs['spec']->run();
-
-		$this->assertSame(array(
-			'spec_0_3_2_context_0_0',
-			'spec_0_3_2_context_0_1',
-			'spec_0_3_2_context_1_0',
-			'spec_0_3_2_context_1_1',
-		), $uids);
-	}*/
-
-/**/
-
 	public function testCreateSpecItemForEachArgumentsRow_ShouldBeAcceptOneItemArray()
 	{
 		$testCallback = function(){};

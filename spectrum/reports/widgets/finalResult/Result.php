@@ -32,7 +32,7 @@ class Result extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	{
 		// See "Update" widget to understand update logic
 		return
-			'<span class="g-finalResult-result" data-specUid="' . htmlspecialchars($this->getOwnerPlugin()->getOwnerSpec()->selector->getUidForSpec()) . '">' .
+			'<span class="g-finalResult-result" data-specUid="' . htmlspecialchars($this->getOwnerPlugin()->getOwnerSpec()->identify->getSpecId()) . '">' .
 				$this->translate('wait') . '...' .
 			'</span>';
 	}

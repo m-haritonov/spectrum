@@ -36,6 +36,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\core\Test
 			'builders' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Builders', 'activateMoment' => 'whenCallOnce'),
 			'destroyers' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Destroyers', 'activateMoment' => 'whenCallOnce'),
 			'selector' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Selector', 'activateMoment' => 'whenCallOnce'),
+			'identify' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Identify', 'activateMoment' => 'whenCallOnce'),
 			'errorHandling' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\ErrorHandling', 'activateMoment' => 'whenCallOnce'),
 			'output' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Output', 'activateMoment' => 'whenCallOnce'),
 			'messages' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Messages', 'activateMoment' => 'whenCallOnce'),

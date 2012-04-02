@@ -67,7 +67,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 /**/
 
-	public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesOrIndexes()
+	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesOrIndexes()
 	{
 		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
 		$specs = $this->createSpecsTree('
@@ -83,6 +83,27 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($specs['2'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
 		$this->assertTrue($specs['bar'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
 		$this->assertNotSame($specs['2'], $specs['bar']);
+	}
+
+	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesAndIndexesIfAddIndexNameAlwaysIsTrue()
+	{
+		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
+		$specs = $this->createSpecsTree('
+			Describe(foo)
+			->It(bar)
+		', array(), true);
+
+		$this->assertEquals(4, count($specs));
+
+		$this->assertTrue($specs['0'] instanceof \net\mkharitonov\spectrum\core\SpecContainerDescribe);
+		$this->assertTrue($specs['foo'] instanceof \net\mkharitonov\spectrum\core\SpecContainerDescribe);
+		$this->assertSame($specs['0'], $specs['foo']);
+
+		$this->assertTrue($specs['1'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
+		$this->assertTrue($specs['bar'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
+		$this->assertSame($specs['1'], $specs['bar']);
+
+		$this->assertNotSame($specs['0'], $specs['1']);
 	}
 
 	final public function testCreateSpecsTree_ShouldBeReturnPreparedInstanceIfExists()
@@ -216,7 +237,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return array
 	 */
-	protected function createSpecsTree($treePattern, array $preparedInstances = array())
+	protected function createSpecsTree($treePattern, array $preparedInstances = array(), $addIndexNameAlways = false)
 	{
 		$treePattern = trim($treePattern);
 
@@ -231,6 +252,15 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 			$spec = $this->createSpecOrGetExists($name, $preparedInstances, $shortClass);
 			$specs[$name] = $spec;
+
+			if ($addIndexNameAlways && $name != (string) $key)
+			{
+				if (array_key_exists($key, $specs))
+					throw new Exception('Name "' . $key . '" already exists');
+
+				$specs[$key] = $spec;
+			}
+
 			$specsOnLevels[$level] = $spec;
 
 			$parentSpec = $this->getParentSpec($specsOnLevels, $level, $prevLevel);
