@@ -20,6 +20,7 @@ class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	public function getHtml($variable, $depth = 0)
 	{
 		$className = $this->getVariableType($variable) . 'Var';
+		$className = mb_strtoupper(mb_substr($className, 0, 1)) . mb_substr($className, 1);
 		return $this->getOwnerPlugin()->createWidget('code\variables\\' . $className, $depth)->getHtml($variable);
 	}
 

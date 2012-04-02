@@ -20,30 +20,29 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	protected $indention = "\t";
 	protected $newline = "\r\n";
 	protected $widgets = array(
-		'clearfix' => 'net\mkharitonov\spectrum\reports\widgets\Clearfix',
+		'Clearfix' => 'net\mkharitonov\spectrum\reports\widgets\Clearfix',
 		'finalResult\Result' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Result',
 		'finalResult\Update' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Update',
-		'messages' => 'net\mkharitonov\spectrum\reports\widgets\Messages',
+		'Messages' => 'net\mkharitonov\spectrum\reports\widgets\Messages',
 		'runResultsBuffer\RunResultsBuffer' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer',
 		'runResultsBuffer\details\MatcherCall' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall',
 		'runResultsBuffer\details\Unknown' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown',
-		'specList' => 'net\mkharitonov\spectrum\reports\widgets\SpecList',
-		'specTitle' => 'net\mkharitonov\spectrum\reports\widgets\SpecTitle',
+		'SpecList' => 'net\mkharitonov\spectrum\reports\widgets\SpecList',
+		'SpecTitle' => 'net\mkharitonov\spectrum\reports\widgets\SpecTitle',
 		'code\Method' => 'net\mkharitonov\spectrum\reports\widgets\code\Method',
 		'code\Operator' => 'net\mkharitonov\spectrum\reports\widgets\code\Operator',
 		'code\Property' => 'net\mkharitonov\spectrum\reports\widgets\code\Property',
 		'code\Variable' => 'net\mkharitonov\spectrum\reports\widgets\code\Variable',
-		// TODO uppercase
-		'code\variables\arrayVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar',
-		'code\variables\boolVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar',
-		'code\variables\floatVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\FloatVar',
-		'code\variables\closureVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ClosureVar',
-		'code\variables\intVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\IntVar',
-		'code\variables\nullVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\NullVar',
-		'code\variables\objectVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ObjectVar',
-		'code\variables\resourceVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ResourceVar',
-		'code\variables\stringVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\StringVar',
-		'code\variables\unknownVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\UnknownVar',
+		'code\variables\ArrayVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar',
+		'code\variables\BoolVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar',
+		'code\variables\FloatVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\FloatVar',
+		'code\variables\ClosureVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ClosureVar',
+		'code\variables\IntVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\IntVar',
+		'code\variables\NullVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\NullVar',
+		'code\variables\ObjectVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ObjectVar',
+		'code\variables\ResourceVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ResourceVar',
+		'code\variables\StringVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\StringVar',
+		'code\variables\UnknownVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\UnknownVar',
 	);
 
 /**/
@@ -117,13 +116,13 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 		if (!$this->getOwnerSpec()->getParent())
 			$this->getOwnerSpec()->output->put($this->getHeader());
 
-		$this->getOwnerSpec()->output->put($this->createWidget('specList')->getHtmlBegin());
+		$this->getOwnerSpec()->output->put($this->createWidget('SpecList')->getHtmlBegin());
 		$this->flush();
 	}
 
 	public function onRunAfter($finalResult)
 	{
-		$this->getOwnerSpec()->output->put($this->createWidget('specList')->getHtmlEnd($finalResult));
+		$this->getOwnerSpec()->output->put($this->createWidget('SpecList')->getHtmlEnd($finalResult));
 		$this->flush();
 
 		if (!$this->getOwnerSpec()->getParent())

@@ -62,7 +62,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->identify->getSpecId() . '">' . $this->getNewline();
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecNumber() . $this->getNewline();
-			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('specTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('SpecTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			{
@@ -126,7 +126,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		if ($finalResult === false)
 			$output .= $this->getOwnerPlugin()->createWidget('runResultsBuffer\RunResultsBuffer')->getHtml() . $this->getNewline();
 
-		$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('messages')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
+		$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('Messages')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 		if (trim($output) != '')
 			$output = '<div class="runDetails g-clearfix">' . $output . '</div>';
