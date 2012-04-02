@@ -42,9 +42,9 @@ abstract class VariableHierarchical extends Variable
 		return
 			'<span class="element">' .
 				str_repeat('<span class="indention">' . $this->getIndention() . '</span>', $this->depth + 1) .
-				'<span class="key">' . $this->codeWidget->getHtmlForOperator('[') . htmlspecialchars("$key") . $this->codeWidget->getHtmlForOperator(']') . '</span>' .
-				' ' . $this->codeWidget->getHtmlForOperator('=>') . ' ' .
-				$this->trimNewline($this->codeWidget->getHtmlForVariable($val, $this->depth + 1)) .
+				'<span class="key">' . $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('[') . htmlspecialchars("$key") . $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml(']') . '</span>' .
+				' ' . $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('=>') . ' ' .
+				$this->trimNewline($this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($val, $this->depth + 1)) .
 			'</span>';
 	}
 }

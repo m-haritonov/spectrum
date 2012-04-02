@@ -30,7 +30,7 @@ class Unknown extends Details
 	{
 		return
 			'<div class="g-runResultsBuffer-details-unknown g-runResultsBuffer-details">' .
-				$this->codeWidget->getHtmlForVariable($details) .
+			$this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($details) .
 			'</div>';
 	}
 }

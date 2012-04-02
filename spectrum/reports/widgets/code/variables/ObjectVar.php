@@ -39,7 +39,7 @@ class ObjectVar extends VariableHierarchical
 		$output .= '<span class="g-code-variables-' . htmlspecialchars($this->type) . ' g-code-variables">';
 		$output .= $this->getHtmlForType($variable, $properties);
 		$output .= $this->getHtmlForClass($variable, $properties);
-		$output .= $this->codeWidget->getHtmlForOperator('{');
+		$output .= $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('{');
 
 		if (count($properties))
 		{
@@ -50,7 +50,7 @@ class ObjectVar extends VariableHierarchical
 			$output .= '</span>';
 		}
 
-		$output .= $this->codeWidget->getHtmlForOperator('}');
+		$output .= $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('}');
 		$output .= '</span>';
 
 		return $output;

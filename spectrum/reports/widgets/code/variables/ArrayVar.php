@@ -24,7 +24,7 @@ class ArrayVar extends VariableHierarchical
 		$output = '';
 		$output .= '<span class="g-code-variables-' . htmlspecialchars($this->type) . ' g-code-variables">';
 		$output .= $this->getHtmlForType($variable) . $this->getNewline();
-		$output .= $this->codeWidget->getHtmlForOperator('{');
+		$output .= $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('{');
 
 		if (count($variable))
 		{
@@ -35,7 +35,7 @@ class ArrayVar extends VariableHierarchical
 			$output .= '</span>';
 		}
 
-		$output .= $this->codeWidget->getHtmlForOperator('}');
+		$output .= $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('}');
 		$output .= '</span>';
 
 		return $output;

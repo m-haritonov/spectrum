@@ -29,7 +29,11 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 		'runResultsBuffer\details\Unknown' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown',
 		'specList' => 'net\mkharitonov\spectrum\reports\widgets\SpecList',
 		'specTitle' => 'net\mkharitonov\spectrum\reports\widgets\SpecTitle',
-		'code\Code' => 'net\mkharitonov\spectrum\reports\widgets\code\Code',
+		'code\Method' => 'net\mkharitonov\spectrum\reports\widgets\code\Method',
+		'code\Operator' => 'net\mkharitonov\spectrum\reports\widgets\code\Operator',
+		'code\Property' => 'net\mkharitonov\spectrum\reports\widgets\code\Property',
+		'code\Variable' => 'net\mkharitonov\spectrum\reports\widgets\code\Variable',
+		// TODO uppercase
 		'code\variables\arrayVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar',
 		'code\variables\boolVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar',
 		'code\variables\floatVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\FloatVar',

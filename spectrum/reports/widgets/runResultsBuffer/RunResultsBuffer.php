@@ -19,17 +19,6 @@ use \net\mkharitonov\spectrum\core\SpecItemInterface;
  */
 class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 {
-	/**
-	 * @var \net\mkharitonov\spectrum\reports\widgets\code\Code
-	 */
-	protected $codeWidget;
-
-	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin)
-	{
-		parent::__construct($ownerPlugin);
-		$this->codeWidget = $this->getOwnerPlugin()->createWidget('code\Code');
-	}
-
 	public function getStyles()
 	{
 		return

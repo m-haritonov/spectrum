@@ -34,8 +34,8 @@ class MatcherCall extends Details
 		$output = '';
 		$output .= '<div class="g-runResultsBuffer-details-matcherCall g-runResultsBuffer-details">';
 		$output .= $this->getHtmlForCallExpression($details);
-		$output .= '<div class="returnValue"><span class="title" title="' . $this->translate('Matcher return value') . '">' . $this->translate('Return') . ':</span> ' . $this->codeWidget->getHtmlForVariable($details->getMatcherReturnValue()) . '</div>';
-		$output .= '<div class="thrownException"><span class="title" title="' . $this->translate('Matcher thrown exception') . '">' . $this->translate('Thrown') . ':</span> ' . $this->codeWidget->getHtmlForVariable($details->getException()) . '</div>';
+		$output .= '<div class="returnValue"><span class="title" title="' . $this->translate('Matcher return value') . '">' . $this->translate('Return') . ':</span> ' . $this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($details->getMatcherReturnValue()) . '</div>';
+		$output .= '<div class="thrownException"><span class="title" title="' . $this->translate('Matcher thrown exception') . '">' . $this->translate('Thrown') . ':</span> ' . $this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($details->getException()) . '</div>';
 		$output .= '</div>';
 		return $output;
 	}
@@ -45,16 +45,16 @@ class MatcherCall extends Details
 		$output = '';
 
 		$output .= '<div class="callExpression">';
-		$output .= $this->codeWidget->getHtmlForMethod('be', array($details->getActualValue()));
+		$output .= $this->getOwnerPlugin()->createWidget('code\Method')->getHtml('be', array($details->getActualValue()));
 
 		if ($details->getIsNot())
 		{
-			$output .= $this->codeWidget->getHtmlForOperator('->');
-			$output .= $this->codeWidget->getHtmlForPropertyAccess('not');
+			$output .= $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('->');
+			$output .= $this->getOwnerPlugin()->createWidget('code\Property')->getHtml('not');
 		}
 
-		$output .= $this->codeWidget->getHtmlForOperator('->');
-		$output .= $this->codeWidget->getHtmlForMethod($details->getMatcherName(), $details->getMatcherArgs());
+		$output .= $this->getOwnerPlugin()->createWidget('code\Operator')->getHtml('->');
+		$output .= $this->getOwnerPlugin()->createWidget('code\Method')->getHtml($details->getMatcherName(), $details->getMatcherArgs());
 		$output .= '</div>';
 
 		return $output;
