@@ -31,7 +31,7 @@ abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin, $depth = 0)
 	{
 		parent::__construct($ownerPlugin);
-		$this->codeWidget = $this->getOwnerPlugin()->createWidget('code');
+		$this->codeWidget = $this->getOwnerPlugin()->createWidget('code\Code');
 		$this->depth = $depth;
 	}
 

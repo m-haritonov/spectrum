@@ -67,7 +67,7 @@ class Code extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	public function getHtmlForVariable($variable, $depth = 0)
 	{
-		$variableWidget = $this->getOwnerPlugin()->createWidget($this->getVariableType($variable) . 'Var', $depth);
+		$variableWidget = $this->getOwnerPlugin()->createWidget('code\variables\\' . $this->getVariableType($variable) . 'Var', $depth);
 		return $variableWidget->getHtml($variable);
 	}
 

@@ -27,7 +27,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin)
 	{
 		parent::__construct($ownerPlugin);
-		$this->codeWidget = $this->getOwnerPlugin()->createWidget('code');
+		$this->codeWidget = $this->getOwnerPlugin()->createWidget('code\Code');
 	}
 
 	public function getStyles()
@@ -147,9 +147,9 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	protected function getHtmlForResultDetails($details)
 	{
 		if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
-			$widget = $this->getOwnerPlugin()->createWidget('matcherCallDetails');
+			$widget = $this->getOwnerPlugin()->createWidget('runResultsBuffer\details\MatcherCall');
 		else
-			$widget = $this->getOwnerPlugin()->createWidget('unknownDetails');
+			$widget = $this->getOwnerPlugin()->createWidget('runResultsBuffer\details\Unknown');
 
 		return $widget->getHtml($details);
 	}

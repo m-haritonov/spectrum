@@ -124,7 +124,7 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$output = '';
 
 		if ($finalResult === false)
-			$output .= $this->getOwnerPlugin()->createWidget('runResultsBuffer')->getHtml() . $this->getNewline();
+			$output .= $this->getOwnerPlugin()->createWidget('runResultsBuffer\RunResultsBuffer')->getHtml() . $this->getNewline();
 
 		$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('messages')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 

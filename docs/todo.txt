@@ -10,32 +10,26 @@ Assert::$isNotEnabled rename to notStatus???
 
 Spec->callPlugin rename to getPlugin?
 
-ХРОМ багрепорт
-
-
 ---Плагин report
-
-	report->highlightSpecNameWithSameFileName
-	статистика выполнения тестов, финальный результат
+	matcher return спрятать в расширенные и переименовать заголовок в полный текст
+	thrown переименовать в Matcher exception
+	thrown и return в одну строку сделать
 
 	плюсик рядом с числом
 	отступ у runDetails
-
-	rename initVar to code\variables\IntVar and etc.
-
+	финальный результат
 	в конце написать результат запуска для RootDescribe или сделать общую верхушку для RootDescribe (добавить верхушку для "0")
-
 	вверху добавить панель: hide details | show details | expand all | collapse all | help
 	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
 	серый цвет для spaces сделать темнее, найти более подходящие символы
 	empty title — "empty or has empty"
 	flush
 
+
+
 	написать тесты только для правильности вывода результата - fail и т.п.
 	testShouldBeGenerateValidXhtml
 
-	thrown и return в одну строку сделать
-	writeToFile, saveReportsTo
 	исправить TODO
 
 ---рефакторинг core
@@ -56,8 +50,15 @@ Spec->callPlugin rename to getPlugin?
 
 
 убрать излишние DOC копирайты
+net\mkharitonov удалить
 В копирайт в шапке добавить ссылку на лицензию на сайте
 email заменить
+
+
+---Плагин report
+	report->highlightSpecNameWithSameFileName
+	время выполнения каждого теста и группы тестов
+	feature: report->setWriteToFile()
 
 
 runner.php?file=qwe.php&uid=1_1_1
