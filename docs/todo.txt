@@ -12,14 +12,14 @@ Spec->callPlugin rename to getPlugin?
 
 ---Плагин report
 	плюсик рядом с числом
-	отступ у runDetails
+
 	финальный результат
 	в конце написать результат запуска для RootDescribe или сделать общую верхушку для RootDescribe (добавить верхушку для "0")
 	вверху добавить панель: hide details | show details | expand all | collapse all | help
 
 	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
 	серый цвет для spaces сделать темнее, найти более подходящие символы
-	empty title — "empty or has empty"
+	empty title — "empty or has empty", "all or one of children was empty"
 	flush
 
 
