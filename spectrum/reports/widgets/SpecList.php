@@ -32,18 +32,74 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				$this->getIndention() . '.g-specList { list-style: none; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li { margin-top: 3px; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.indention { display: inline-block; width: 0; white-space: pre; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li>.number { padding: 1px 4px; border-radius: 20px; background: #ddd; font-size: 0.9em; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li>.number .dot { display: inline-block; width: 0; color: transparent; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li>.g-specList { margin-left: 25px; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point { position: relative; padding: 1px 16px 1px 6px; border-radius: 20px; background: #ddd; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point>.number { font-size: 0.9em; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point>.number .dot { display: inline-block; width: 0; color: transparent; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point>a.expand { display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-right: 2px; text-decoration: none; text-align: right; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point>a.expand span { display: inline-block; position: relative; width: 8px; height: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: middle; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point>a.expand span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point>a.expand span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.runDetails { display: none; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.g-specList { display: none; margin-left: 25px; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.g-specList>li { position: relative; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.g-specList>li:before { content: "\\0020"; display: block; position: absolute; top: -3px; bottom: 0; left: -18px; width: 1px; background: #ccc;  }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.g-specList>li:after { content: "\\0020"; display: block; position: absolute; top: 8px; left: -17px; width: 17px; height: 1px; background: #ccc; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.g-specList>li:last-child:before { bottom: auto; height: 12px; }' . $this->getNewline() .
 
-				$this->getIndention() . '.g-specList>li.it { }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li.describe { }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li.context { }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li.expand>.runDetails { display: block; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li.expand>.g-specList { display: block; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li.expand>.point>a.expand span:after { display: none; }' . $this->getNewline() .
+
+				$this->getIndention() . '.g-specList>li.noChildContent>.point>a.expand { display: none; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li.noChildContent>.point { padding-right: 6px; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
+	}
+
+	public function getScripts()
+	{
+		return
+			'<script type="text/javascript">
+				document.addEventListener("DOMContentLoaded", function()
+				{
+					var resultNodes = document.body.querySelectorAll(".g-specList>li>.point>a.expand");
+
+					for (var i = 0; i < resultNodes.length; i++)
+					{
+						var anchorNode = resultNodes[i];
+						var liNode = anchorNode.parentNode.parentNode;
+
+						if (liNode.querySelector(".runDetails, .g-specList") == null)
+							addClass(liNode, "noChildContent");
+
+						anchorNode.addEventListener("click", function(e){
+							e.preventDefault();
+							var liNode = e.currentTarget.parentNode.parentNode;
+
+							if (hasClass(liNode, "expand"))
+								removeClass(liNode, "expand");
+							else
+								addClass(liNode, "expand");
+						});
+					}
+
+					function hasClass(node, className)
+					{
+						return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
+					}
+
+					function addClass(node, className)
+					{
+						if (!hasClass(node, className))
+							node.className += " " + className;
+					}
+
+					function removeClass(node, className)
+					{
+						if (hasClass(node, className))
+							node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
+					}
+				});' . $this->getNewline() .
+			'</script>' . $this->getNewline();
 	}
 
 	public function getHtmlBegin()
@@ -60,8 +116,8 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		{
 			@static::$numbers[static::$depth]++;
 
-			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . '" id="' . $this->getOwnerPlugin()->getOwnerSpec()->identify->getSpecId() . '">' . $this->getNewline();
-			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecNumber() . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . ' expand" id="' . $this->getOwnerPlugin()->getOwnerSpec()->identify->getSpecId() . '">' . $this->getNewline();
+			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecPoint() . $this->getNewline();
 			$output .= $this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('SpecTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
 			if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface || !$this->getOwnerPlugin()->getOwnerSpec()->getParent())
@@ -109,9 +165,13 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return @static::$numbers[static::$depth];
 	}
 
-	protected function getHtmlForSpecNumber()
+	protected function getHtmlForSpecPoint()
 	{
-		return '<span class="number">' . htmlspecialchars($this->getSpecNumber()) . '<span class="dot">.</span></span> ';
+		return
+			'<span class="point">' .
+				'<span class="number">' . htmlspecialchars($this->getSpecNumber()) . '<span class="dot">.</span></span>' .
+				'<a href="#" class="expand" title="' . $this->translate('Expand/collapse child content') . '"><span></span></a>' .
+			'</span> ';
 	}
 
 	protected function getHtmlForCurrentSpecIndention()
