@@ -20,12 +20,16 @@ class MatcherCall extends Details
 {
 	public function getStyles()
 	{
+		$expandedParentSelector = '.g-runResultsBuffer>.results>.result.expand';
+
 		return
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer-details-matcherCall>.callExpression { margin-bottom: 4px; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer-details-matcherCall>.callExpression>.g-code-method>.methodName { font-weight: bold; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer-details-matcherCall>div>.title { font-weight: bold; }' . $this->getNewline() .
+				$this->getIndention() . '.g-runResultsBuffer-details-matcherCall>.returnValue { display: none; }' . $this->getNewline() .
+				$this->getIndention() . $expandedParentSelector . ' .g-runResultsBuffer-details-matcherCall>.returnValue { display: block; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
@@ -34,8 +38,8 @@ class MatcherCall extends Details
 		$output = '';
 		$output .= '<div class="g-runResultsBuffer-details-matcherCall g-runResultsBuffer-details">';
 		$output .= $this->getHtmlForCallExpression($details);
-		$output .= '<div class="returnValue"><span class="title" title="' . $this->translate('Matcher return value') . '">' . $this->translate('Return') . ':</span> ' . $this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($details->getMatcherReturnValue()) . '</div>';
-		$output .= '<div class="thrownException"><span class="title" title="' . $this->translate('Matcher thrown exception') . '">' . $this->translate('Thrown') . ':</span> ' . $this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($details->getException()) . '</div>';
+		$output .= $this->getHtmlForThrownException($details);
+		$output .= $this->getHtmlForReturnValue($details);
 		$output .= '</div>';
 		return $output;
 	}
@@ -58,5 +62,29 @@ class MatcherCall extends Details
 		$output .= '</div>';
 
 		return $output;
+	}
+
+	protected function getHtmlForThrownException(MatcherCallDetailsInterface $details)
+	{
+		return
+			'<div class="thrownException">
+				<span class="title" title="' . $this->translate('Exception thrown by "%matcherName%" matcher callback', array('%matcherName%' => $details->getMatcherName())) . '">' .
+					$this->translate('Matcher exception') . ':' .
+				'</span> ' .
+
+				$this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($details->getException()) .
+			'</div>';
+	}
+
+	protected function getHtmlForReturnValue(MatcherCallDetailsInterface $details)
+	{
+		return
+			'<div class="returnValue">
+				<span class="title" title="' . $this->translate('Original value returned by "%matcherName%" matcher callback', array('%matcherName%' => $details->getMatcherName())) . '">' .
+					$this->translate('Matcher return value') . ':' .
+				'</span> ' .
+
+				$this->getOwnerPlugin()->createWidget('code\Variable')->getHtml($details->getMatcherReturnValue()) .
+			'</div>';
 	}
 }

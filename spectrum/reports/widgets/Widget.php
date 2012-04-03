@@ -39,13 +39,10 @@ class Widget implements WidgetInterface
 		return null;
 	}
 
-	protected function translate($string, $escapeHtml = true)
+	protected function translate($string, array $replacement = array())
 	{
-		$string = $this->getOwnerPlugin()->translate($string);
-		if ($escapeHtml)
-			return htmlspecialchars($string);
-		else
-			return $string;
+		$string = $this->getOwnerPlugin()->translate($string, $replacement);
+		return htmlspecialchars($string);
 	}
 
 	protected function getIndention($repeat = 1)

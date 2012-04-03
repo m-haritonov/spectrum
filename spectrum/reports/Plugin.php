@@ -47,9 +47,14 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 
 /**/
 
-	public function translate($string)
+	/**
+	 * @param $string
+	 * @param array $replacement
+	 * @return string
+	 */
+	public function translate($string, array $replacement = array())
 	{
-		return $string;
+		return strtr($string, $replacement);
 	}
 
 	public function createWidget($name/*, ... */)
