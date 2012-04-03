@@ -228,15 +228,18 @@ abstract class Spec implements SpecInterface
 
 	protected function calculateFinalResult(array $results)
 	{
+		$hasEmpty = false;
 		foreach ($results as $result)
 		{
 			if ($result === false)
 				return false;
 			else if ($result === null)
-				return null;
+				$hasEmpty = true;
 		}
 
-		if (count($results))
+		if ($hasEmpty)
+			return null;
+		else if (count($results))
 			return true;
 		else
 			return null;

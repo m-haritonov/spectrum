@@ -413,6 +413,28 @@ abstract class SpecContainerTest extends SpecTest
 		$this->assertFalse($specs[0]->run());
 	}
 
+	public function testRun_HasChildContexts_ReturnValue_FirstChildSpecResultIsNull_ShouldBeReturnFalseIfAnyContextIsFail()
+	{
+		$specs = $this->createSpecsTree('
+			' . $this->currentSpecClass . '
+			->ContextMock
+			->ContextMock
+			->ContextMock
+			->ContextMock
+		');
+
+		$specs[1]->__disableRealRunCall();
+		$specs[2]->__disableRealRunCall();
+		$specs[3]->__disableRealRunCall();
+		$specs[4]->__disableRealRunCall();
+
+		$specs[1]->__setRunReturnValue(null);
+		$specs[2]->__setRunReturnValue(false);
+		$specs[4]->__setRunReturnValue(true);
+
+		$this->assertFalse($specs[0]->run());
+	}
+
 	public function testRun_HasChildContexts_ReturnValue_ShouldBeReturnTrueOnlyIfAllContextsIsSuccess()
 	{
 		$specs = $this->createSpecsTree('
@@ -470,6 +492,28 @@ abstract class SpecContainerTest extends SpecTest
 		$specs[1]->__setRunReturnValue(true);
 		$specs[2]->__setRunReturnValue(false);
 		$specs[3]->__setRunReturnValue(null);
+		$specs[4]->__setRunReturnValue(true);
+
+		$this->assertFalse($specs[0]->run());
+	}
+
+	public function testRun_HasNoChildContexts_ReturnValue_FirstChildSpecResultIsNull_ShouldBeReturnFalseIfAnyChildrenIsFail()
+	{
+		$specs = $this->createSpecsTree('
+			' . $this->currentSpecClass . '
+			->DescribeMock
+			->DescribeMock
+			->ItMock
+			->ItMock
+		');
+
+		$specs[1]->__disableRealRunCall();
+		$specs[2]->__disableRealRunCall();
+		$specs[3]->__disableRealRunCall();
+		$specs[4]->__disableRealRunCall();
+
+		$specs[1]->__setRunReturnValue(null);
+		$specs[2]->__setRunReturnValue(false);
 		$specs[4]->__setRunReturnValue(true);
 
 		$this->assertFalse($specs[0]->run());
