@@ -9,9 +9,9 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt;
-use net\mkharitonov\spectrum\core\SpecItemIt;
-use net\mkharitonov\spectrum\core\World;
+namespace spectrum\core\specItemIt;
+use spectrum\core\SpecItemIt;
+use spectrum\core\World;
 
 require_once dirname(__FILE__) . '/../../init.php';
 

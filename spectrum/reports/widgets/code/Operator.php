@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\code;
+namespace spectrum\reports\widgets\code;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Operator extends \net\mkharitonov\spectrum\reports\widgets\Widget
+class Operator extends \spectrum\reports\widgets\Widget
 {
 	public function getStyles()
 	{

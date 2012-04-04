@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands;
+namespace spectrum\constructionCommands;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,13 +17,13 @@ namespace net\mkharitonov\spectrum\constructionCommands;
  */
 class Config
 {
-	private static $managerClass = '\net\mkharitonov\spectrum\constructionCommands\Manager';
+	private static $managerClass = '\spectrum\constructionCommands\Manager';
 	private static $allowConstructionCommandsRegistration = true;
 	private static $allowConstructionCommandsOverride = true;
 
 	private static $locked = false;
 
-	public static function setManagerClass($className){ return static::setConfigClassValue(static::$managerClass, $className, '\net\mkharitonov\spectrum\constructionCommands\ManagerInterface'); }
+	public static function setManagerClass($className){ return static::setConfigClassValue(static::$managerClass, $className, '\spectrum\constructionCommands\ManagerInterface'); }
 	public static function getManagerClass(){ return static::$managerClass; }
 
 	public static function setAllowConstructionCommandsRegistration($isEnable){ return static::setConfigValue(static::$allowConstructionCommandsRegistration, $isEnable); }

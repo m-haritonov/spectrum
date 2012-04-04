@@ -9,10 +9,10 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\events\onRun;
-use net\mkharitonov\spectrum\core\SpecItemIt;
-use net\mkharitonov\spectrum\core\RunResultsBuffer;
-use net\mkharitonov\spectrum\core\World;
+namespace spectrum\core\plugins\events\onRun;
+use spectrum\core\SpecItemIt;
+use spectrum\core\RunResultsBuffer;
+use spectrum\core\World;
 
 require_once dirname(__FILE__) . '/../../../../init.php';
 
@@ -22,5 +22,5 @@ require_once dirname(__FILE__) . '/../../../../init.php';
  */
 class SpecContainerContextTest extends SpecContainerTest
 {
-	protected $currentSpecClass = '\net\mkharitonov\spectrum\core\SpecContainerContext';
+	protected $currentSpecClass = '\spectrum\core\SpecContainerContext';
 }

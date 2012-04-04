@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -18,8 +18,8 @@ require_once dirname(__FILE__) . '/../init.php';
  */
 class SpecContainerDescribeTest extends SpecContainerTest
 {
-	protected $currentSpecClass = '\net\mkharitonov\spectrum\core\SpecContainerDescribe';
-	protected $currentSpecMockClass = '\net\mkharitonov\spectrum\core\testEnv\SpecContainerDescribeMock';
+	protected $currentSpecClass = '\spectrum\core\SpecContainerDescribe';
+	protected $currentSpecMockClass = '\spectrum\core\testEnv\SpecContainerDescribeMock';
 
 /**/
 
@@ -84,7 +84,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 
 		$specs['testSpec']->run();
 
-		$this->assertEquals(0, (int) \net\mkharitonov\spectrum\Test::$tmp['callsCounter']);
+		$this->assertEquals(0, (int) \spectrum\Test::$tmp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldNotBeDisableContextSiblings()
@@ -98,7 +98,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 		$this->injectToRunStartCallsCounter($specs[1]);
 
 		$specs['testSpec']->run();
-		$this->assertEquals(1, (int) \net\mkharitonov\spectrum\Test::$tmp['callsCounter']);
+		$this->assertEquals(1, (int) \spectrum\Test::$tmp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldNotBeEnableDisabledContextSiblings()
@@ -113,7 +113,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 		$specs[1]->disable();
 		$specs['testSpec']->run();
 
-		$this->assertEquals(0, (int) \net\mkharitonov\spectrum\Test::$tmp['callsCounter']);
+		$this->assertEquals(0, (int) \spectrum\Test::$tmp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldBeEnableSelfDuringRun()
@@ -127,7 +127,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 		$specs['testSpec']->disable();
 
 		$specs['testSpec']->run();
-		$this->assertEquals(1, (int) \net\mkharitonov\spectrum\Test::$tmp['callsCounter']);
+		$this->assertEquals(1, (int) \spectrum\Test::$tmp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldBeRestoreSiblingsEnabledStatusAfterRun()

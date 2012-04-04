@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv\emptyStubs\asserts;
+namespace spectrum\core\testEnv\emptyStubs\asserts;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  * @property not
  */
-class Assert implements \net\mkharitonov\spectrum\core\asserts\AssertInterface
+class Assert implements \spectrum\core\asserts\AssertInterface
 {
 	public function __construct($actualValue){}
 	public function __call($name, array $expectedArgs = array()){}

@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\matchers\testEnv\emptyStubs;
+namespace spectrum\matchers\testEnv\emptyStubs;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Manager implements \net\mkharitonov\spectrum\matchers\ManagerInterface
+class Manager implements \spectrum\matchers\ManagerInterface
 {
-	static public function addAllMatchersToSpec(\net\mkharitonov\spectrum\core\SpecInterface $spec){}
-	static public function addBaseMatchersToSpec(\net\mkharitonov\spectrum\core\SpecInterface $spec){}
+	static public function addAllMatchersToSpec(\spectrum\core\SpecInterface $spec){}
+	static public function addBaseMatchersToSpec(\spectrum\core\SpecInterface $spec){}
 }

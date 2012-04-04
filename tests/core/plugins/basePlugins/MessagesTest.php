@@ -9,10 +9,10 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
+namespace spectrum\core\plugins\basePlugins;
 require_once dirname(__FILE__) . '/../../../init.php';
 
-use \net\mkharitonov\spectrum\core\SpecItemIt;
+use \spectrum\core\SpecItemIt;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

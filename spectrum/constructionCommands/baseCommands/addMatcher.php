@@ -9,20 +9,20 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @throws \net\mkharitonov\spectrum\constructionCommands\Exception If called not at declaring state
+ * @throws \spectrum\constructionCommands\Exception If called not at declaring state
  * @param  string $name
  * @param  callback $callback
  */
 function addMatcher($name, $callback)
 {
-	$managerClass = \net\mkharitonov\spectrum\constructionCommands\Config::getManagerClass();
+	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 	if (!$managerClass::isDeclaringState())
-		throw new \net\mkharitonov\spectrum\constructionCommands\Exception('Construction command "addMatcher" should be call only at declaring state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "addMatcher" should be call only at declaring state');
 
 	return $managerClass::getCurrentContainer()->matchers->add($name, $callback);
 }

@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv;
+namespace spectrum\core\testEnv;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class PluginStub extends \net\mkharitonov\spectrum\core\plugins\Plugin
+class PluginStub extends \spectrum\core\plugins\Plugin
 {
 	static private $activationsCount = 0;
 	static private $lastInstance;
@@ -36,7 +36,7 @@ class PluginStub extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		static::$lastInstance = null;
 	}
 
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName)
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec, $accessName)
 	{
 		parent::__construct($ownerSpec, $accessName);
 		static::$activationsCount++;

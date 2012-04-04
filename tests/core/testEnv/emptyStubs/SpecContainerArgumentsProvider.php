@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv\emptyStubs;
+namespace spectrum\core\testEnv\emptyStubs;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SpecContainerArgumentsProvider extends SpecContainer implements \net\mkharitonov\spectrum\core\SpecContainerArgumentsProviderInterface
+class SpecContainerArgumentsProvider extends SpecContainer implements \spectrum\core\SpecContainerArgumentsProviderInterface
 {
 	public function createSpecItemForEachArgumentsRow($testCallback, $argumentsProvider){}
 }

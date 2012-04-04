@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,7 +17,7 @@ namespace net\mkharitonov\spectrum\core;
  */
 interface RunResultsBufferInterface
 {
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec);
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec);
 	public function getOwnerSpec();
 	public function addResult($result, $details = null);
 	public function getResults();

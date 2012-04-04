@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\matchers\base;
+namespace spectrum\matchers\base;
 require_once dirname(__FILE__) . '/../../init.php';
 require_once 'base/throwException.php';
 
@@ -17,11 +17,11 @@ require_once 'base/throwException.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class ThrowExceptionTest extends \net\mkharitonov\spectrum\matchers\Test
+class ThrowExceptionTest extends \spectrum\matchers\Test
 {
 	public function testExpectedClass_ShouldBeAcceptRootClassException()
 	{
-		throwException(function(){}, '\net\mkharitonov\spectrum\core\Exception');
+		throwException(function(){}, '\spectrum\core\Exception');
 	}
 
 	public function testExpectedClass_ShouldBeAcceptSubclassOfRootClassException()
@@ -31,8 +31,8 @@ class ThrowExceptionTest extends \net\mkharitonov\spectrum\matchers\Test
 
 	public function testExpectedClass_ShouldBeThrowExceptionIfClassIsNotSubclassOfException()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\matchers\Exception', 'should be subclass', function(){
-			throwException(function(){}, '\net\mkharitonov\spectrum\core\asserts\Assert');
+		$this->assertThrowException('\spectrum\matchers\Exception', 'should be subclass', function(){
+			throwException(function(){}, '\spectrum\core\asserts\Assert');
 		});
 	}
 
@@ -43,7 +43,7 @@ class ThrowExceptionTest extends \net\mkharitonov\spectrum\matchers\Test
 
 	public function testExpectedClass_ShouldBeReturnTrueIfCallbackThrownExceptionOfSubclassOfSameClass()
 	{
-		$this->assertTrue(throwException(function(){ throw new \net\mkharitonov\spectrum\core\Exception(); }, '\Exception'));
+		$this->assertTrue(throwException(function(){ throw new \spectrum\core\Exception(); }, '\Exception'));
 	}
 
 	public function testExpectedClass_ShouldBeReturnFalseIfCallbackNotThrownException()
@@ -53,17 +53,17 @@ class ThrowExceptionTest extends \net\mkharitonov\spectrum\matchers\Test
 
 	public function testExpectedClass_ShouldBeReturnFalseIfCallbackThrownExceptionOfSuperClassOfExpectedClass()
 	{
-		$this->assertFalse(throwException(function(){ throw new \Exception(); }, '\net\mkharitonov\spectrum\matchers\testEnv\ExceptionFoo'));
+		$this->assertFalse(throwException(function(){ throw new \Exception(); }, '\spectrum\matchers\testEnv\ExceptionFoo'));
 	}
 
 	public function testExpectedClass_ShouldBeReturnFalseIfCallbackThrownExceptionOfAncestorSuperClassOfExpectedClass()
 	{
-		$this->assertFalse(throwException(function(){ throw new \Exception(); }, '\net\mkharitonov\spectrum\matchers\testEnv\ExceptionFooFoo'));
+		$this->assertFalse(throwException(function(){ throw new \Exception(); }, '\spectrum\matchers\testEnv\ExceptionFooFoo'));
 	}
 
 	public function testExpectedClass_ShouldBeReturnFalseIfCallbackThrownExceptionOfSiblingClass()
 	{
-		$this->assertFalse(throwException(function(){ throw new \net\mkharitonov\spectrum\matchers\testEnv\ExceptionBar(); }, '\net\mkharitonov\spectrum\matchers\testEnv\ExceptionFoo'));
+		$this->assertFalse(throwException(function(){ throw new \spectrum\matchers\testEnv\ExceptionBar(); }, '\spectrum\matchers\testEnv\ExceptionFoo'));
 	}
 
 	public function testExpectedClass_ShouldBeUseRootExceptionIfExpectedClassIsNull()

@@ -9,24 +9,24 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports;
+namespace spectrum\reports;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\Test
+abstract class Test extends \spectrum\Test
 {
 	protected function setUp()
 	{
 		parent::setUp();
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('reports', '\net\mkharitonov\spectrum\reports\Plugin', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('reports', '\spectrum\reports\Plugin', 'whenCallOnce');
 	}
 
 	protected function tearDown()
 	{
 		parent::tearDown();
-		\net\mkharitonov\spectrum\core\plugins\Manager::unregisterPlugin('reports');
+		\spectrum\core\plugins\Manager::unregisterPlugin('reports');
 	}
 }

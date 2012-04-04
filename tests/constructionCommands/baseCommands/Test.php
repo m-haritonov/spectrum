@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,16 +18,16 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\Test
+abstract class Test extends \spectrum\Test
 {
 	protected function setUp()
 	{
 		parent::setUp();
-		\net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->removeAllSpecs();
-		\net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->matchers->removeAll();
-		\net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->builders->removeAll();
-		\net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->destroyers->removeAll();
-		\net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->patterns->removeAll();
+		\spectrum\RootDescribe::getOnceInstance()->removeAllSpecs();
+		\spectrum\RootDescribe::getOnceInstance()->matchers->removeAll();
+		\spectrum\RootDescribe::getOnceInstance()->builders->removeAll();
+		\spectrum\RootDescribe::getOnceInstance()->destroyers->removeAll();
+		\spectrum\RootDescribe::getOnceInstance()->patterns->removeAll();
 		Manager::setDeclaringContainer(null);
 	}
 }

@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,17 +17,17 @@ namespace net\mkharitonov\spectrum\core;
  */
 class Config
 {
-	private static $assertClass = '\net\mkharitonov\spectrum\core\asserts\Assert';
-	private static $matcherCallDetailsClass = '\net\mkharitonov\spectrum\core\asserts\MatcherCallDetails';
-	private static $pluginsManagerClass = '\net\mkharitonov\spectrum\core\plugins\Manager';
-	private static $registryClass = '\net\mkharitonov\spectrum\core\Registry';
-	private static $runResultsBufferClass = '\net\mkharitonov\spectrum\core\RunResultsBuffer';
-	private static $specContainerContextClass = '\net\mkharitonov\spectrum\core\SpecContainerContext';
-	private static $specContainerArgumentsProviderClass = '\net\mkharitonov\spectrum\core\SpecContainerArgumentsProvider';
-	private static $specContainerDescribeClass = '\net\mkharitonov\spectrum\core\SpecContainerDescribe';
-	private static $specContainerPatternClass = '\net\mkharitonov\spectrum\core\SpecContainerPattern';
-	private static $specItemItClass = '\net\mkharitonov\spectrum\core\SpecItemIt';
-	private static $worldClass = '\net\mkharitonov\spectrum\core\World';
+	private static $assertClass = '\spectrum\core\asserts\Assert';
+	private static $matcherCallDetailsClass = '\spectrum\core\asserts\MatcherCallDetails';
+	private static $pluginsManagerClass = '\spectrum\core\plugins\Manager';
+	private static $registryClass = '\spectrum\core\Registry';
+	private static $runResultsBufferClass = '\spectrum\core\RunResultsBuffer';
+	private static $specContainerContextClass = '\spectrum\core\SpecContainerContext';
+	private static $specContainerArgumentsProviderClass = '\spectrum\core\SpecContainerArgumentsProvider';
+	private static $specContainerDescribeClass = '\spectrum\core\SpecContainerDescribe';
+	private static $specContainerPatternClass = '\spectrum\core\SpecContainerPattern';
+	private static $specItemItClass = '\spectrum\core\SpecItemIt';
+	private static $worldClass = '\spectrum\core\World';
 	private static $allowPluginsRegistration = true;
 	private static $allowPluginsOverride = true;
 	private static $allowMatchersAdd = true;
@@ -39,37 +39,37 @@ class Config
 
 	private static $locked = false;
 
-	public static function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\net\mkharitonov\spectrum\core\asserts\AssertInterface'); }
+	public static function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\asserts\AssertInterface'); }
 	public static function getAssertClass(){ return static::$assertClass; }
 
-	public static function setMatcherCallDetailsClass($className){ return static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\net\mkharitonov\spectrum\core\asserts\MatcherCallDetailsInterface'); }
+	public static function setMatcherCallDetailsClass($className){ return static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\asserts\MatcherCallDetailsInterface'); }
 	public static function getMatcherCallDetailsClass(){ return static::$matcherCallDetailsClass; }
 
-	public static function setPluginsManagerClass($className){ return static::setConfigClassValue(static::$pluginsManagerClass, $className, '\net\mkharitonov\spectrum\core\plugins\ManagerInterface'); }
+	public static function setPluginsManagerClass($className){ return static::setConfigClassValue(static::$pluginsManagerClass, $className, '\spectrum\core\plugins\ManagerInterface'); }
 	public static function getPluginsManagerClass(){ return static::$pluginsManagerClass; }
 
-	public static function setRegistryClass($className){ return static::setConfigClassValue(static::$registryClass, $className, '\net\mkharitonov\spectrum\core\RegistryInterface'); }
+	public static function setRegistryClass($className){ return static::setConfigClassValue(static::$registryClass, $className, '\spectrum\core\RegistryInterface'); }
 	public static function getRegistryClass(){ return static::$registryClass; }
 
-	public static function setRunResultsBufferClass($className){ return static::setConfigClassValue(static::$runResultsBufferClass, $className, '\net\mkharitonov\spectrum\core\RunResultsBufferInterface'); }
+	public static function setRunResultsBufferClass($className){ return static::setConfigClassValue(static::$runResultsBufferClass, $className, '\spectrum\core\RunResultsBufferInterface'); }
 	public static function getRunResultsBufferClass(){ return static::$runResultsBufferClass; }
 
-	public static function setSpecContainerContextClass($className){ return static::setConfigClassValue(static::$specContainerContextClass, $className, '\net\mkharitonov\spectrum\core\SpecContainerContextInterface'); }
+	public static function setSpecContainerContextClass($className){ return static::setConfigClassValue(static::$specContainerContextClass, $className, '\spectrum\core\SpecContainerContextInterface'); }
 	public static function getSpecContainerContextClass(){ return static::$specContainerContextClass; }
 
-	public static function setSpecContainerArgumentsProviderClass($className){ return static::setConfigClassValue(static::$specContainerArgumentsProviderClass, $className, '\net\mkharitonov\spectrum\core\SpecContainerArgumentsProviderInterface'); }
+	public static function setSpecContainerArgumentsProviderClass($className){ return static::setConfigClassValue(static::$specContainerArgumentsProviderClass, $className, '\spectrum\core\SpecContainerArgumentsProviderInterface'); }
 	public static function getSpecContainerArgumentsProviderClass(){ return static::$specContainerArgumentsProviderClass; }
 
-	public static function setSpecContainerDescribeClass($className){ return static::setConfigClassValue(static::$specContainerDescribeClass, $className, '\net\mkharitonov\spectrum\core\SpecContainerDescribeInterface'); }
+	public static function setSpecContainerDescribeClass($className){ return static::setConfigClassValue(static::$specContainerDescribeClass, $className, '\spectrum\core\SpecContainerDescribeInterface'); }
 	public static function getSpecContainerDescribeClass(){ return static::$specContainerDescribeClass; }
 
-	public static function setSpecContainerPatternClass($className){ return static::setConfigClassValue(static::$specContainerPatternClass, $className, '\net\mkharitonov\spectrum\core\SpecContainerPatternInterface'); }
+	public static function setSpecContainerPatternClass($className){ return static::setConfigClassValue(static::$specContainerPatternClass, $className, '\spectrum\core\SpecContainerPatternInterface'); }
 	public static function getSpecContainerPatternClass(){ return static::$specContainerPatternClass; }
 
-	public static function setSpecItemItClass($className){ return static::setConfigClassValue(static::$specItemItClass, $className, '\net\mkharitonov\spectrum\core\SpecItemItInterface'); }
+	public static function setSpecItemItClass($className){ return static::setConfigClassValue(static::$specItemItClass, $className, '\spectrum\core\SpecItemItInterface'); }
 	public static function getSpecItemItClass(){ return static::$specItemItClass; }
 
-	public static function setWorldClass($className){ return static::setConfigClassValue(static::$worldClass, $className, '\net\mkharitonov\spectrum\core\WorldInterface'); }
+	public static function setWorldClass($className){ return static::setConfigClassValue(static::$worldClass, $className, '\spectrum\core\WorldInterface'); }
 	public static function getWorldClass(){ return static::$worldClass; }
 
 	public static function setAllowPluginsRegistration($isEnable){ return static::setConfigValue(static::$allowPluginsRegistration, $isEnable); }

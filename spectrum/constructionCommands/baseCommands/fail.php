@@ -9,21 +9,21 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Add to RunResultsBuffer of running SpecItem false result wits exception as details.
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @throws \net\mkharitonov\spectrum\constructionCommands\Exception If called not at running state
+ * @throws \spectrum\constructionCommands\Exception If called not at running state
  * @param string|null $message
  * @param int $code
  */
 function fail($message = null, $code = 0)
 {
-	$managerClass = \net\mkharitonov\spectrum\constructionCommands\Config::getManagerClass();
+	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 	if (!$managerClass::isRunningState())
-		throw new \net\mkharitonov\spectrum\constructionCommands\Exception('Construction command "fail" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "fail" should be call only at running state');
 	
-	$managerClass::getCurrentItem()->getRunResultsBuffer()->addResult(false, new \net\mkharitonov\spectrum\constructionCommands\ExceptionFail($message, $code));
+	$managerClass::getCurrentItem()->getRunResultsBuffer()->addResult(false, new \spectrum\constructionCommands\ExceptionFail($message, $code));
 }

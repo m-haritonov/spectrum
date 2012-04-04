@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled;
+namespace spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled;
 require_once dirname(__FILE__) . '/../../../../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchPhpErrors\Test
+abstract class Test extends \spectrum\core\specItemIt\errorHandling\catchPhpErrors\Test
 {
 	protected function setUp()
 	{

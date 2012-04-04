@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
-use \net\mkharitonov\spectrum\core\plugins\Exception;
+namespace spectrum\core\plugins\basePlugins;
+use \spectrum\core\plugins\Exception;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
+class Selector extends \spectrum\core\plugins\Plugin
 {
 	public function getRoot()
 	{
@@ -34,7 +34,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		$parent = $this->getOwnerSpec();
 		while ($parent = $parent->getParent())
 		{
-			if ($parent instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface && !($parent instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface))
+			if ($parent instanceof \spectrum\core\SpecContainerInterface && !($parent instanceof \spectrum\core\SpecContainerContextInterface))
 				return $parent;
 		}
 
@@ -54,7 +54,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 			$specs = array_merge($parent->selector->getNotContextChildren(), $specs);
 
 			// Not context come
-			if (!($parent instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface))
+			if (!($parent instanceof \spectrum\core\SpecContainerContextInterface))
 				return $specs;
 
 			$parent = $parent->getParent();
@@ -80,7 +80,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	{
 		foreach ($this->getSpecs() as $spec)
 		{
-			if ($spec instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface)
+			if ($spec instanceof \spectrum\core\SpecContainerContextInterface)
 				return true;
 		}
 
@@ -92,7 +92,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		$specs = array();
 		foreach ($this->getSpecs() as $spec)
 		{
-			if (!($spec instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface))
+			if (!($spec instanceof \spectrum\core\SpecContainerContextInterface))
 				$specs[] = $spec;
 		}
 
@@ -107,7 +107,7 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 		$result = array();
 		foreach ($this->getSpecs() as $spec)
 		{
-			if ($spec instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface)
+			if ($spec instanceof \spectrum\core\SpecContainerContextInterface)
 				$result[] = $spec;
 		}
 
@@ -116,12 +116,12 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function getChildRunningContext()
 	{
-		if (!($this->getOwnerSpec() instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface))
+		if (!($this->getOwnerSpec() instanceof \spectrum\core\SpecContainerInterface))
 			return null;
 
 		foreach ($this->getSpecs() as $spec)
 		{
-			if ($spec instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface && $spec->isRunning())
+			if ($spec instanceof \spectrum\core\SpecContainerContextInterface && $spec->isRunning())
 			{
 				return $spec;
 			}
@@ -234,11 +234,11 @@ class Selector extends \net\mkharitonov\spectrum\core\plugins\Plugin
 	}
 
 	/**
-	 * @return \net\mkharitonov\spectrum\core\SpecInterface[]
+	 * @return \spectrum\core\SpecInterface[]
 	 */
 	private function getSpecs()
 	{
-		if ($this->getOwnerSpec() instanceof \net\mkharitonov\spectrum\core\SpecContainerInterface)
+		if ($this->getOwnerSpec() instanceof \spectrum\core\SpecContainerInterface)
 			return $this->getOwnerSpec()->getSpecs();
 		else
 			return array();

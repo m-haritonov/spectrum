@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -27,71 +27,71 @@ abstract class SpecTest extends Test
 /**/
 	public function testCallPlugin_WhenConstructOnce_ShouldBeCreatePluginInSpecConstructorAndReturnCreatedInstanceLater()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginStub', 'whenConstructOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenConstructOnce');
 
 		$spec = $this->createCurrentSpec();
-		$this->assertEquals(1, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$this->assertSame(\net\mkharitonov\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
-		$this->assertEquals(1, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
+		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$this->assertSame(\net\mkharitonov\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
-		$this->assertEquals(1, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
+		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
 	public function testCallPlugin_WhenCallOnce_ShouldBeCreatePluginOnlyWhenFirstCallAndReturnCreatedInstanceLater()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginStub', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenCallOnce');
 
 		$spec = $this->createCurrentSpec();
-		$this->assertEquals(0, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertEquals(0, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
 		$activatedPlugin = $spec->callPlugin('foo');
 
-		$this->assertSame(\net\mkharitonov\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
-		$this->assertEquals(1, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
+		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$this->assertSame(\net\mkharitonov\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
-		$this->assertEquals(1, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
+		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
 	public function testCallPlugin_WhenCallAlways_ShouldBeCreatePluginWhenCallAlwaysAndReturnNewInstanceLater()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginStub', 'whenCallAlways');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenCallAlways');
 
 		$spec = $this->createCurrentSpec();
-		$this->assertEquals(0, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertEquals(0, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
 		$prevActivatedPlugin = $spec->callPlugin('foo');
 
-		$this->assertSame(\net\mkharitonov\spectrum\core\testEnv\PluginStub::getLastInstance(), $prevActivatedPlugin);
-		$this->assertEquals(1, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $prevActivatedPlugin);
+		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
 		$activatedPlugin = $spec->callPlugin('foo');
-		$this->assertSame(\net\mkharitonov\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
 		$this->assertNotSame($prevActivatedPlugin, $activatedPlugin);
-		$this->assertEquals(2, \net\mkharitonov\spectrum\core\testEnv\PluginStub::getActivationsCount());
+		$this->assertEquals(2, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
 	public function testCallPlugin_ShouldBeSupportAccessThroughMagicGetProperty()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginStub', 'whenCallAlways');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenCallAlways');
 
 		$spec = $this->createCurrentSpec();
 		$activatedPlugin = $spec->foo;
-		$this->assertSame(\net\mkharitonov\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
 	}
 
 	public function testCallPlugin_ShouldBeThrowExceptionIfPluginWithAccessNameNotExists()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('foo');
+		\spectrum\core\plugins\Manager::registerPlugin('foo');
 
 		$spec = $this->createCurrentSpec();
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', function() use($spec) {
+		$this->assertThrowException('\spectrum\core\plugins\Exception', function() use($spec) {
 			$spec->callPlugin('bar');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', function() use($spec) {
+		$this->assertThrowException('\spectrum\core\plugins\Exception', function() use($spec) {
 			$spec->bar;
 		});
 	}
@@ -213,10 +213,10 @@ abstract class SpecTest extends Test
 		$spec = new $specMockClass();
 		$spec->__injectFunctionToRun(function() use ($spec)
 		{
-			if (!in_array($spec, (array) \net\mkharitonov\spectrum\Test::$tmp['uniqueCallsCount'], true))
-				\net\mkharitonov\spectrum\Test::$tmp['uniqueCallsCount'][] = $spec;
+			if (!in_array($spec, (array) \spectrum\Test::$tmp['uniqueCallsCount'], true))
+				\spectrum\Test::$tmp['uniqueCallsCount'][] = $spec;
 
-			\net\mkharitonov\spectrum\Test::$tmp['asserts'][] = array(true, true);
+			\spectrum\Test::$tmp['asserts'][] = array(true, true);
 		});
 
 		return $spec;
@@ -229,7 +229,7 @@ abstract class SpecTest extends Test
 	{
 		$spec = new $specMockClass();
 		$spec->__injectFunctionToRun(function(){
-			\net\mkharitonov\spectrum\Test::$tmp['asserts'][] = array(false, true);
+			\spectrum\Test::$tmp['asserts'][] = array(false, true);
 		});
 
 		return $spec;
@@ -242,7 +242,7 @@ abstract class SpecTest extends Test
 	{
 		$spec = new $specMockClass();
 		$spec->__injectFunctionToRun(function(){
-			\net\mkharitonov\spectrum\Test::$tmp['asserts'][] = array(false, true);
+			\spectrum\Test::$tmp['asserts'][] = array(false, true);
 		});
 		$spec->disable();
 

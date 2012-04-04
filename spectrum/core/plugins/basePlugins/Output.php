@@ -9,9 +9,9 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
-use net\mkharitonov\spectrum\core\Config;
-use net\mkharitonov\spectrum\core\plugins\Exception;
+namespace spectrum\core\plugins\basePlugins;
+use spectrum\core\Config;
+use spectrum\core\plugins\Exception;
 
 /**
  * Use this plugin to output current owner spec data (or get spec data in correct output encoding). Do not use plugin
@@ -20,7 +20,7 @@ use net\mkharitonov\spectrum\core\plugins\Exception;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Output extends \net\mkharitonov\spectrum\core\plugins\Plugin
+class Output extends \spectrum\core\plugins\Plugin
 {
 	protected $inputEncoding;
 	protected $outputEncoding;

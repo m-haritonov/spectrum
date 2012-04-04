@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum;
+namespace spectrum;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -18,7 +18,7 @@ namespace net\mkharitonov\spectrum;
 class RootDescribe
 {
 	/**
-	 * @var \net\mkharitonov\spectrum\core\SpecContainerDescribe
+	 * @var \spectrum\core\SpecContainerDescribe
 	 */
 	protected static $onceInstance;
 
@@ -36,11 +36,11 @@ class RootDescribe
 
 	static protected function createSpecContainer()
 	{
-		$describeClass = \net\mkharitonov\spectrum\core\Config::getSpecContainerDescribeClass();
+		$describeClass = \spectrum\core\Config::getSpecContainerDescribeClass();
 		return new $describeClass();
 	}
 
-	static protected function configureSpec(\net\mkharitonov\spectrum\core\SpecContainerInterface $spec)
+	static protected function configureSpec(\spectrum\core\SpecContainerInterface $spec)
 	{
 		$spec->errorHandling->setCatchExceptions(true);
 		$spec->errorHandling->setCatchPhpErrors(true);
@@ -48,9 +48,9 @@ class RootDescribe
 		$spec->errorHandling->setBreakOnFirstMatcherFail(false);
 	}
 
-	static protected function addMatchersToSpec(\net\mkharitonov\spectrum\core\SpecContainerInterface $spec)
+	static protected function addMatchersToSpec(\spectrum\core\SpecContainerInterface $spec)
 	{
-		$managerClass = \net\mkharitonov\spectrum\matchers\Config::getManagerClass();
+		$managerClass = \spectrum\matchers\Config::getManagerClass();
 		$managerClass::addAllMatchersToSpec($spec);
 	}
 

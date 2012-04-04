@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts\assert\callMatcher\matcherReturnTrue;
-use net\mkharitonov\spectrum\core\asserts\Assert;
+namespace spectrum\core\asserts\assert\callMatcher\matcherReturnTrue;
+use spectrum\core\asserts\Assert;
 
 require_once dirname(__FILE__) . '/../../../../../init.php';
 

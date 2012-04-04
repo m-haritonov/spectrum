@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchExceptions;
+namespace spectrum\core\specItemIt\errorHandling\catchExceptions;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
 /**
@@ -40,10 +40,10 @@ class DisabledTest extends Test
 	{
 		$it = $this->it;
 		$it->setTestCallback(function(){
-			throw new \net\mkharitonov\spectrum\core\ExceptionPhpError('foo');
+			throw new \spectrum\core\ExceptionPhpError('foo');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\ExceptionPhpError', 'foo', function() use($it){
+		$this->assertThrowException('\spectrum\core\ExceptionPhpError', 'foo', function() use($it){
 			$it->run();
 		});
 	}
@@ -76,7 +76,7 @@ class DisabledTest extends Test
 
 	public function testShouldBeRestoreRunningSpecItemInRegistry()
 	{
-		$runningSpecItemBackup = \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem();
+		$runningSpecItemBackup = \spectrum\core\Registry::getRunningSpecItem();
 
 		$it = new SpecItemIt();
 		$it->errorHandling->setCatchExceptions(false);
@@ -85,7 +85,7 @@ class DisabledTest extends Test
 		});
 
 		$this->assertThrowException('\Exception', 'foo', function() use($it){ $it->run(); });
-		$this->assertSame($runningSpecItemBackup, \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem());
+		$this->assertSame($runningSpecItemBackup, \spectrum\core\Registry::getRunningSpecItem());
 	}
 
 	public function testShouldBeStopRun()
@@ -102,7 +102,7 @@ class DisabledTest extends Test
 
 	public function testShouldBeDispatchEventOnRunAfter()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$it = new SpecItemIt();
 		$it->errorHandling->setCatchExceptions(false);

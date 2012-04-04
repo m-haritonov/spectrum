@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -79,7 +79,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->setName('foo');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -99,7 +99,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->setParent(new SpecContainerDescribe());
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -119,7 +119,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->removeFromParent();
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -139,7 +139,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->enable();
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -159,7 +159,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->disable();
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -179,7 +179,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->addSpec(new SpecContainerDescribe());
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -199,7 +199,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->removeSpec(new SpecContainerDescribe());
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -219,7 +219,7 @@ abstract class SpecContainerTest extends SpecTest
 			$specs[0]->removeAllSpecs();
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}

@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -34,7 +34,7 @@ class SpecContainerArgumentsProvider extends SpecContainer implements SpecContai
 	{
 		foreach ($this->correctArgumentsProvider($argumentsProvider) as $args)
 		{
-			$itClass = \net\mkharitonov\spectrum\core\Config::getSpecItemItClass();
+			$itClass = \spectrum\core\Config::getSpecItemItClass();
 			$it = new $itClass();
 			$it->setTestCallback($testCallback);
 			$it->setAdditionalArguments($args);

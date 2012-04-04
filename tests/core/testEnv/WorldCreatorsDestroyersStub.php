@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv;
+namespace spectrum\core\testEnv;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class WorldCreatorsDestroyersStub extends \net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Destroyers
+class WorldCreatorsDestroyersStub extends \spectrum\core\plugins\basePlugins\worldCreators\Destroyers
 {
 	public function getFromSelfOrAncestor($key)
 	{

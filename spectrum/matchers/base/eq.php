@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\matchers\base;
+namespace spectrum\matchers\base;
 
 /**
  * Matcher for equal operator ($actual == $expected).

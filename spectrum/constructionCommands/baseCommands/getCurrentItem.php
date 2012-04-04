@@ -9,20 +9,20 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @throws \net\mkharitonov\spectrum\constructionCommands\Exception If called not at running state
- * @return \net\mkharitonov\spectrum\core\SpecItemInterface|null
+ * @throws \spectrum\constructionCommands\Exception If called not at running state
+ * @return \spectrum\core\SpecItemInterface|null
  */
 function getCurrentItem()
 {
-	$managerClass = \net\mkharitonov\spectrum\constructionCommands\Config::getManagerClass();
+	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 	if (!$managerClass::isRunningState())
-		throw new \net\mkharitonov\spectrum\constructionCommands\Exception('Construction command "getCurrentItem" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "getCurrentItem" should be call only at running state');
 
-	$registryClass = \net\mkharitonov\spectrum\core\Config::getRegistryClass();
+	$registryClass = \spectrum\core\Config::getRegistryClass();
 	return $registryClass::getRunningSpecItem();
 }

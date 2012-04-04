@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators;
+namespace spectrum\core\plugins\basePlugins\worldCreators;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class WorldCreatorsTest extends \net\mkharitonov\spectrum\core\plugins\basePlugins\Test
+abstract class WorldCreatorsTest extends \spectrum\core\plugins\basePlugins\Test
 {
 }

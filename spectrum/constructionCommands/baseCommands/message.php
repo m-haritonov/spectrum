@@ -9,19 +9,19 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Add message to Messages plugin.
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @throws \net\mkharitonov\spectrum\constructionCommands\Exception If called not at running state
+ * @throws \spectrum\constructionCommands\Exception If called not at running state
  */
 function message($message)
 {
-	$managerClass = \net\mkharitonov\spectrum\constructionCommands\Config::getManagerClass();
+	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 	if (!$managerClass::isRunningState())
-		throw new \net\mkharitonov\spectrum\constructionCommands\Exception('Construction command "message" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "message" should be call only at running state');
 	
 	$managerClass::getCurrentItem()->messages->add($message);
 }

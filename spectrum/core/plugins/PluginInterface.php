@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins;
+namespace spectrum\core\plugins;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -22,7 +22,7 @@ interface PluginInterface
 	 * @param $ownerSpec
 	 * @param string $accessName
 	 */
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName);
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec, $accessName);
 	public function getOwnerSpec();
 	public function getAccessName();
 }

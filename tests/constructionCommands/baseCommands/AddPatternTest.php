@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class AddPatternTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class AddPatternTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	protected function setUp()
 	{
@@ -37,9 +37,9 @@ class AddPatternTest extends \net\mkharitonov\spectrum\constructionCommands\base
 
 	public function testShouldBeThrowExceptionIfCalledAtRunningState()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"addPattern" should be call only at declaring state', function()
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"addPattern" should be call only at declaring state', function()
 		{
-			$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
 				Manager::addPattern('foo', function(){});
@@ -72,7 +72,7 @@ class AddPatternTest extends \net\mkharitonov\spectrum\constructionCommands\base
 		$function = function(){};
 		Manager::addPattern('foo', $function);
 
-		$this->assertSame($function, \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->patterns->get('foo'));
+		$this->assertSame($function, \spectrum\RootDescribe::getOnceInstance()->patterns->get('foo'));
 	}
 
 	public function testInsideDescribeCommand_ShouldBeAddPatternToParentDescribe()

@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,11 +18,11 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class ItLikePatternTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testShouldBeThrowExceptionIfPatternNotExists()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', '"foo" not exists in plugin with access name "patterns"', function()
+		$this->assertThrowException('\spectrum\core\plugins\Exception', '"foo" not exists in plugin with access name "patterns"', function()
 		{
 			Manager::itLikePattern('foo');
 		});
@@ -34,14 +34,14 @@ class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\b
 			Manager::addPattern('Car', function(){});
 			$return = Manager::itLikePattern('Car');
 		});
-		$this->assertTrue($return instanceof \net\mkharitonov\spectrum\core\SpecContainerPattern);
+		$this->assertTrue($return instanceof \spectrum\core\SpecContainerPattern);
 	}
 
 	public function testShouldBeThrowExceptionIfCalledAtRunningState()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"itLikePattern" should be call only at declaring state', function()
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"itLikePattern" should be call only at declaring state', function()
 		{
-			$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
 				Manager::itLikePattern('');
@@ -58,8 +58,8 @@ class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\b
 			$return2 = Manager::itLikePattern('Car');
 		});
 
-		$this->assertTrue($return1 instanceof \net\mkharitonov\spectrum\core\SpecContainerPattern);
-		$this->assertTrue($return2 instanceof \net\mkharitonov\spectrum\core\SpecContainerPattern);
+		$this->assertTrue($return1 instanceof \spectrum\core\SpecContainerPattern);
+		$this->assertTrue($return2 instanceof \spectrum\core\SpecContainerPattern);
 		$this->assertNotSame($return1, $return2);
 	}
 
@@ -122,10 +122,10 @@ class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\b
 		$children = $spec->getSpecs();
 		$this->assertEquals(2, count($children));
 
-		$this->assertTrue($children[0] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
+		$this->assertTrue($children[0] instanceof \spectrum\core\SpecItemIt);
 		$this->assertEquals('foo', $children[0]->getName());
 
-		$this->assertTrue($children[1] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
+		$this->assertTrue($children[1] instanceof \spectrum\core\SpecItemIt);
 		$this->assertEquals('bar', $children[1]->getName());
 	}
 
@@ -136,7 +136,7 @@ class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\b
 			$spec = Manager::itLikePattern('Car');
 		});
 
-		$this->assertTrue($spec instanceof \net\mkharitonov\spectrum\core\SpecContainerPattern);
+		$this->assertTrue($spec instanceof \spectrum\core\SpecContainerPattern);
 		$this->assertEquals('Car', $spec->getName());
 	}
 
@@ -152,7 +152,7 @@ class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\b
 		Manager::itLikePattern('bar');
 		Manager::itLikePattern('baz');
 
-		$rootSpecs = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->getSpecs();
+		$rootSpecs = \spectrum\RootDescribe::getOnceInstance()->getSpecs();
 
 		$this->assertEquals(3, count($rootSpecs));
 		$this->assertEquals('foo', $rootSpecs[0]->getName());
@@ -200,7 +200,7 @@ class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\b
 			Manager::itLikePattern('bar');
 		});
 
-		$rootSpecs = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->getSpecs();
+		$rootSpecs = \spectrum\RootDescribe::getOnceInstance()->getSpecs();
 
 		$this->assertEquals(1, count($rootSpecs));
 		$this->assertEquals('foo', $rootSpecs[0]->getName());
@@ -254,7 +254,7 @@ class ItLikePatternTest extends \net\mkharitonov\spectrum\constructionCommands\b
 			});
 		});
 
-		$rootSpecs = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->getSpecs();
+		$rootSpecs = \spectrum\RootDescribe::getOnceInstance()->getSpecs();
 
 		$this->assertEquals(1, count($rootSpecs));
 		$this->assertEquals('foo', $rootSpecs[0]->getName());

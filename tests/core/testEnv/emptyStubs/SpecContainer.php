@@ -9,16 +9,16 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv\emptyStubs;
+namespace spectrum\core\testEnv\emptyStubs;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SpecContainer extends Spec implements \net\mkharitonov\spectrum\core\SpecContainerInterface
+class SpecContainer extends Spec implements \spectrum\core\SpecContainerInterface
 {
-	public function addSpec(\net\mkharitonov\spectrum\core\SpecInterface $spec){}
+	public function addSpec(\spectrum\core\SpecInterface $spec){}
 	public function getSpecs(){}
 	public function getSpecsToRun(){}
-	public function removeSpec(\net\mkharitonov\spectrum\core\SpecInterface $spec){}
+	public function removeSpec(\spectrum\core\SpecInterface $spec){}
 }

@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts\assert\callMatcher\matcherReturnFalse;
-use net\mkharitonov\spectrum\core\asserts\Assert;
+namespace spectrum\core\asserts\assert\callMatcher\matcherReturnFalse;
+use spectrum\core\asserts\Assert;
 
 require_once dirname(__FILE__) . '/../../../../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../../../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class BreakOnFirstMatcherFailEnabledTest extends \net\mkharitonov\spectrum\core\asserts\assert\callMatcher\Test
+class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\callMatcher\Test
 {
 	public function testShouldBeBreakExecution()
 	{
@@ -52,7 +52,7 @@ class BreakOnFirstMatcherFailEnabledTest extends \net\mkharitonov\spectrum\core\
 
 		$this->assertEquals(1, count($results));
 		$this->assertFalse($results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \net\mkharitonov\spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
 	}
 
 	public function testShouldBeProvidePropertiesToDetailsOnce()
@@ -70,7 +70,7 @@ class BreakOnFirstMatcherFailEnabledTest extends \net\mkharitonov\spectrum\core\
 		$results = $runResultsBuffer->getResults();
 
 		$details = $results[0]['details'];
-		$this->assertTrue($details instanceof \net\mkharitonov\spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($details instanceof \spectrum\core\asserts\MatcherCallDetails);
 		$this->assertSame('foo', $details->getActualValue());
 		$this->assertSame(false, $details->getIsNot());
 		$this->assertSame('eq', $details->getMatcherName());
@@ -113,7 +113,7 @@ class BreakOnFirstMatcherFailEnabledTest extends \net\mkharitonov\spectrum\core\
 
 		$this->assertEquals(1, count($results));
 		$this->assertFalse($results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \net\mkharitonov\spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
 	}
 
 	public function testWithNot_ShouldBeProvidePropertiesToDetailsOnce()
@@ -131,7 +131,7 @@ class BreakOnFirstMatcherFailEnabledTest extends \net\mkharitonov\spectrum\core\
 		$results = $runResultsBuffer->getResults();
 
 		$details = $results[0]['details'];
-		$this->assertTrue($details instanceof \net\mkharitonov\spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($details instanceof \spectrum\core\asserts\MatcherCallDetails);
 		$this->assertSame('foo', $details->getActualValue());
 		$this->assertSame(true, $details->getIsNot());
 		$this->assertSame('eq', $details->getMatcherName());

@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details;
+namespace spectrum\reports\widgets\runResultsBuffer\details;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

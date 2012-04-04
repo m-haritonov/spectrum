@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class GetCurrentItemTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class GetCurrentItemTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testShouldBeAllowToCallAtRunningState()
 	{
@@ -32,7 +32,7 @@ class GetCurrentItemTest extends \net\mkharitonov\spectrum\constructionCommands\
 
 	public function testShouldBeThrowExceptionIfCalledAtDeclaringState()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"getCurrentItem"', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"getCurrentItem"', function(){
 			Manager::describe('', function(){
 				Manager::getCurrentItem('');
 			});

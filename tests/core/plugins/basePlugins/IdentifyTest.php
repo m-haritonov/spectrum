@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
-use net\mkharitonov\spectrum\core\SpecItemIt;
+namespace spectrum\core\plugins\basePlugins;
+use spectrum\core\SpecItemIt;
 
 require_once dirname(__FILE__) . '/../../../init.php';
 
@@ -82,7 +82,7 @@ class IdentifyTest extends Test
 
 	public function testGetSpecById_ShouldBeThrowExceptionIfSpecIdNotStartedWithSpecString()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "foo0" (id should be started with "spec" string)', function(){
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "foo0" (id should be started with "spec" string)', function(){
 			$spec = new SpecItemIt();
 			$spec->identify->getSpecById('foo0');
 		});
@@ -90,7 +90,7 @@ class IdentifyTest extends Test
 
 	public function testGetSpecById_ShouldBeThrowExceptionIfSpecIdContainsDenySymbols()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0b0" (id should be contains only "spec" string, chars "x", "c", "_" and digits)', function(){
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0b0" (id should be contains only "spec" string, chars "x", "c", "_" and digits)', function(){
 			$spec = new SpecItemIt();
 			$spec->identify->getSpecById('spec0b0');
 		});
@@ -98,7 +98,7 @@ class IdentifyTest extends Test
 
 	public function testGetSpecById_ShouldBeThrowExceptionIfSpecIdHasIncorrectFormat()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x" (id should be in format like "spec0x1" or "spec0x1_c0c0")', function(){
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x" (id should be in format like "spec0x1" or "spec0x1_c0c0")', function(){
 			$spec = new SpecItemIt();
 			$spec->identify->getSpecById('spec0x');
 		});
@@ -106,7 +106,7 @@ class IdentifyTest extends Test
 
 	public function testGetSpecById_ShouldBeThrowExceptionIfFirstIndexNotZero()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec1x0" (first index in id should be "0")', function(){
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec1x0" (first index in id should be "0")', function(){
 			$spec = new SpecItemIt();
 			$spec->identify->getSpecById('spec1x0');
 		});
@@ -119,7 +119,7 @@ class IdentifyTest extends Test
 			->It(spec)
 		');
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x999x0" (spec with index "999" on "2" position in id not exists)', function() use($specs){
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x999x0" (spec with index "999" on "2" position in id not exists)', function() use($specs){
 			$specs['spec']->identify->getSpecById('spec0x999x0');
 		});
 	}
@@ -167,7 +167,7 @@ class IdentifyTest extends Test
 //
 //	public function testGetContextsById_ShouldBeThrowExceptionIfSpecIdNotStartedWithSpecString()
 //	{
-//		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "foo0" (id should be started with "spec" string)', function(){
+//		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "foo0" (id should be started with "spec" string)', function(){
 //			$spec = new SpecItemIt();
 //			$spec->identify->getContextsById('foo0_c0x1');
 //		});
@@ -175,7 +175,7 @@ class IdentifyTest extends Test
 //
 //	public function testGetContextsById_ShouldBeThrowExceptionIfSpecIdContainsDenySymbols()
 //	{
-//		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0b0" (id should be contains only "spec" string, chars "x", "c", "_" and digits)', function(){
+//		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0b0" (id should be contains only "spec" string, chars "x", "c", "_" and digits)', function(){
 //			$spec = new SpecItemIt();
 //			$spec->identify->getContextsById('spec0b0_c0x1');
 //		});
@@ -183,7 +183,7 @@ class IdentifyTest extends Test
 //
 //	public function testGetContextsById_ShouldBeThrowExceptionIfSpecIdHasIncorrectFormat()
 //	{
-//		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x" (id should be in format like "spec0x1" or "spec0x1_c0c0")', function(){
+//		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x" (id should be in format like "spec0x1" or "spec0x1_c0c0")', function(){
 //			$spec = new SpecItemIt();
 //			$spec->identify->getContextsById('spec0x_c0x1');
 //		});
@@ -191,7 +191,7 @@ class IdentifyTest extends Test
 //
 //	public function testGetContextsById_ShouldBeThrowExceptionIfFirstIndexNotZero()
 //	{
-//		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec1x0" (first index in id should be "0")', function(){
+//		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec1x0" (first index in id should be "0")', function(){
 //			$spec = new SpecItemIt();
 //			$spec->identify->getContextsById('spec1x0_c0x1');
 //		});
@@ -204,7 +204,7 @@ class IdentifyTest extends Test
 //			->It(spec)
 //		');
 //
-//		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x999x0" (spec with index "999" on "2" position in id not exists)', function() use($specs){
+//		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x999x0" (spec with index "999" on "2" position in id not exists)', function() use($specs){
 //			$specs['spec']->identify->getContextsById('spec0x999x0_c0x1');
 //		});
 //	}

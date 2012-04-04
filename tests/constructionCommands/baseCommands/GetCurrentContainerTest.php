@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,11 +18,11 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class GetCurrentContainerTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class GetCurrentContainerTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testDeclaringState_ShouldBeReturnCurrentContainerIfItSet()
 	{
-		$container = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$container = new \spectrum\core\SpecContainerDescribe();
 		Manager::setDeclaringContainer($container);
 
 		$this->assertSame($container, Manager::getCurrentContainer());
@@ -30,7 +30,7 @@ class GetCurrentContainerTest extends \net\mkharitonov\spectrum\constructionComm
 
 	public function testDeclaringState_ShouldBeReturnRootDescribeIfCurrentContainerNotSet()
 	{
-		$this->assertSame(\net\mkharitonov\spectrum\RootDescribe::getOnceInstance(), Manager::getCurrentContainer());
+		$this->assertSame(\spectrum\RootDescribe::getOnceInstance(), Manager::getCurrentContainer());
 	}
 
 	public function testDeclaringState_ShouldBeReturnOnceRootDescribeInstance()
@@ -76,7 +76,7 @@ class GetCurrentContainerTest extends \net\mkharitonov\spectrum\constructionComm
 
 	public function testRunningState_ShouldBeReturnNullIfHasNoAncestorContainer()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->setTestCallback(function() use(&$isCalled, &$currentContainer) {
 			$isCalled = true;
 			$currentContainer = Manager::getCurrentContainer();

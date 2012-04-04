@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -105,14 +105,14 @@ abstract class SpecContainer extends Spec implements SpecContainerInterface
 	{
 		parent::startRun();
 
-		$registryClass = \net\mkharitonov\spectrum\core\Config::getRegistryClass();
+		$registryClass = \spectrum\core\Config::getRegistryClass();
 		$this->runningSpecContainerBackup = $registryClass::getRunningSpecContainer();
 		$registryClass::setRunningSpecContainer($this);
 	}
 
 	protected function stopRun()
 	{
-		$registryClass = \net\mkharitonov\spectrum\core\Config::getRegistryClass();
+		$registryClass = \spectrum\core\Config::getRegistryClass();
 		$registryClass::setRunningSpecContainer($this->runningSpecContainerBackup);
 
 		parent::stopRun();

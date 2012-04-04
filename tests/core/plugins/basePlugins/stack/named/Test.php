@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\stack\named;
-use net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Named;
+namespace spectrum\core\plugins\basePlugins\stack\named;
+use spectrum\core\plugins\basePlugins\stack\Named;
 
 require_once dirname(__FILE__) . '/../../../../../init.php';
 
@@ -19,17 +19,17 @@ require_once dirname(__FILE__) . '/../../../../../init.php';
  * @link   http://www.mkharitonov.net/spectrum/
  * @see IndexedTest
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Test
+abstract class Test extends \spectrum\core\plugins\basePlugins\stack\Test
 {
 	protected function setUp()
 	{
 		parent::setUp();
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Named');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Named');
 	}
 
 	protected function tearDown()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::unregisterPlugin('testPlugin');
+		\spectrum\core\plugins\Manager::unregisterPlugin('testPlugin');
 		parent::tearDown();
 	}
 }

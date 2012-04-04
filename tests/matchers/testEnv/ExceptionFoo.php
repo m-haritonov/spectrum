@@ -1,3 +1,3 @@
 <?php
-namespace net\mkharitonov\spectrum\matchers\testEnv;
+namespace spectrum\matchers\testEnv;
 class ExceptionFoo extends \Exception {}

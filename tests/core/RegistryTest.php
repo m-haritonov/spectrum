@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -38,7 +38,7 @@ class RegistryTest extends Test
 
 	public function testSetRunningSpecItem_ShouldBeThrowExceptionIfSpecItemNotRunning()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'only running specs', function(){
+		$this->assertThrowException('\spectrum\core\Exception', 'only running specs', function(){
 			Registry::setRunningSpecItem(new SpecItemIt());
 		});
 	}

@@ -9,18 +9,18 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets;
-use \net\mkharitonov\spectrum\core\SpecContainerDescribeInterface;
-use \net\mkharitonov\spectrum\core\SpecContainerContextInterface;
-use \net\mkharitonov\spectrum\core\SpecItemItInterface;
-use \net\mkharitonov\spectrum\core\SpecContainerInterface;
-use \net\mkharitonov\spectrum\core\SpecItemInterface;
+namespace spectrum\reports\widgets;
+use \spectrum\core\SpecContainerDescribeInterface;
+use \spectrum\core\SpecContainerContextInterface;
+use \spectrum\core\SpecItemItInterface;
+use \spectrum\core\SpecContainerInterface;
+use \spectrum\core\SpecItemInterface;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
+class SpecList extends \spectrum\reports\widgets\Widget
 {
 	static protected $depth;
 	static protected $numbers = array();

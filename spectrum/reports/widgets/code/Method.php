@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\code;
+namespace spectrum\reports\widgets\code;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Method extends \net\mkharitonov\spectrum\reports\widgets\Widget
+class Method extends \spectrum\reports\widgets\Widget
 {
 	public function getHtml($methodName, array $arguments)
 	{

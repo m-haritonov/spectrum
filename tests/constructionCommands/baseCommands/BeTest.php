@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class BeTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class BeTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testShouldBeAllowToCallAtRunningState()
 	{
@@ -27,12 +27,12 @@ class BeTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands
 		});
 
 		$it->run();
-		$this->assertTrue($assert instanceof \net\mkharitonov\spectrum\core\asserts\Assert);
+		$this->assertTrue($assert instanceof \spectrum\core\asserts\Assert);
 	}
 
 	public function testShouldBeThrowExceptionIfCalledAtDeclaringState()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"be" should be call only at running state', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"be" should be call only at running state', function(){
 			Manager::describe('', function(){
 				Manager::be('');
 			});
@@ -46,7 +46,7 @@ class BeTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands
 		});
 
 		$it->run();
-		$this->assertTrue($assert instanceof \net\mkharitonov\spectrum\core\asserts\Assert);
+		$this->assertTrue($assert instanceof \spectrum\core\asserts\Assert);
 	}
 
 	public function testShouldBeSetActualValueToAssertInstance()

@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchExceptions;
+namespace spectrum\core\specItemIt\errorHandling\catchExceptions;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
 /**
@@ -103,7 +103,7 @@ class EnabledTest extends Test
 		$it->setTestCallback(function() use(&$runResultsBuffer, $it)
 		{
 			$runResultsBuffer = $it->getRunResultsBuffer();
-			throw new \net\mkharitonov\spectrum\core\Exception('foo');
+			throw new \spectrum\core\Exception('foo');
 		});
 
 		$it->run();
@@ -118,7 +118,7 @@ class EnabledTest extends Test
 		$it->setTestCallback(function() use(&$runResultsBuffer, $it)
 		{
 			$runResultsBuffer = $it->getRunResultsBuffer();
-			throw new \net\mkharitonov\spectrum\core\ExceptionPhpError('foo');
+			throw new \spectrum\core\ExceptionPhpError('foo');
 		});
 
 		$it->run();

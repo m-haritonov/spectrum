@@ -9,43 +9,43 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands;
+namespace spectrum\constructionCommands;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class ManagerTest extends \net\mkharitonov\spectrum\Test
+class ManagerTest extends \spectrum\Test
 {
 	public function testShouldBeHaveRegisteredBaseCommandsByDefault()
 	{
 		$this->assertSame(array(
-			'addPattern' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\addPattern',
-			'addMatcher' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\addMatcher',
-			'beforeEach' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\beforeEach',
-			'afterEach' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\afterEach',
+			'addPattern' => '\spectrum\constructionCommands\baseCommands\addPattern',
+			'addMatcher' => '\spectrum\constructionCommands\baseCommands\addMatcher',
+			'beforeEach' => '\spectrum\constructionCommands\baseCommands\beforeEach',
+			'afterEach' => '\spectrum\constructionCommands\baseCommands\afterEach',
 
-			'container' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\container',
-			'describe' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\describe',
-			'context' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\context',
-			'it' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\it',
-			'itLikePattern' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\itLikePattern',
+			'container' => '\spectrum\constructionCommands\baseCommands\container',
+			'describe' => '\spectrum\constructionCommands\baseCommands\describe',
+			'context' => '\spectrum\constructionCommands\baseCommands\context',
+			'it' => '\spectrum\constructionCommands\baseCommands\it',
+			'itLikePattern' => '\spectrum\constructionCommands\baseCommands\itLikePattern',
 
-			'be' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\be',
+			'be' => '\spectrum\constructionCommands\baseCommands\be',
 
-			'fail' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\fail',
-			'message' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\message',
+			'fail' => '\spectrum\constructionCommands\baseCommands\fail',
+			'message' => '\spectrum\constructionCommands\baseCommands\message',
 
-			'getCurrentContainer' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\getCurrentContainer',
-			'setDeclaringContainer' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\setDeclaringContainer',
-			'getDeclaringContainer' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\getDeclaringContainer',
-			'getCurrentItem' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\getCurrentItem',
+			'getCurrentContainer' => '\spectrum\constructionCommands\baseCommands\getCurrentContainer',
+			'setDeclaringContainer' => '\spectrum\constructionCommands\baseCommands\setDeclaringContainer',
+			'getDeclaringContainer' => '\spectrum\constructionCommands\baseCommands\getDeclaringContainer',
+			'getCurrentItem' => '\spectrum\constructionCommands\baseCommands\getCurrentItem',
 
-			'setSettings' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\setSettings',
+			'setSettings' => '\spectrum\constructionCommands\baseCommands\setSettings',
 
-			'isDeclaringState' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\isDeclaringState',
-			'isRunningState' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\isRunningState',
+			'isDeclaringState' => '\spectrum\constructionCommands\baseCommands\isDeclaringState',
+			'isRunningState' => '\spectrum\constructionCommands\baseCommands\isRunningState',
 		), Manager::getRegisteredCommands());
 	}
 
@@ -169,7 +169,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\Test
 	public function testRegisterCommand_ShouldBeThrowExceptionIfCommandNameIsNotValidFunctionName()
 	{
 		Manager::unregisterAllCommands();
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'Bad name', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Bad name', function(){
 			Manager::registerCommand('-foo', function(){});
 		});
 	}
@@ -178,7 +178,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\Test
 	{
 		Manager::unregisterAllCommands();
 		Config::setAllowConstructionCommandsRegistration(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'Construction commands registration deny', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands registration deny', function(){
 			Manager::registerCommand('foo', function(){});
 		});
 	}
@@ -188,7 +188,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\Test
 		Manager::unregisterAllCommands();
 		Config::setAllowConstructionCommandsOverride(false);
 		Manager::registerCommand('foo', function(){});
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
 			Manager::registerCommand('foo', function(){});
 		});
 	}
@@ -231,7 +231,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\Test
 	{
 		Manager::unregisterAllCommands();
 		Config::setAllowConstructionCommandsOverride(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
 			Manager::unregisterCommand('foo');
 		});
 	}
@@ -249,7 +249,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\Test
 	{
 		Manager::unregisterAllCommands();
 		Config::setAllowConstructionCommandsOverride(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
 			Manager::unregisterAllCommands('foo');
 		});
 	}
@@ -282,7 +282,7 @@ class ManagerTest extends \net\mkharitonov\spectrum\Test
 	{
 		Manager::unregisterAllCommands();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', function(){
 			Manager::getRegisteredCommandCallback('foo');
 		});
 	}

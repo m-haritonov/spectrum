@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\matchers\base;
+namespace spectrum\matchers\base;
 
 /**
  * Return true, if code in $callbackWithActualCode throw exception instance of $expectedClass with
@@ -24,7 +24,7 @@ function throwException($callbackWithActualCode, $expectedClass = '\Exception', 
 		$expectedClass = '\Exception';
 
 	if (!is_subclass_of($expectedClass, '\Exception') && $expectedClass != '\Exception')
-		throw new \net\mkharitonov\spectrum\matchers\Exception('Excepted class should be subclass of \Exception');
+		throw new \spectrum\matchers\Exception('Excepted class should be subclass of \Exception');
 
 	try {
 		call_user_func($callbackWithActualCode);

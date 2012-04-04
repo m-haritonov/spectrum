@@ -16,7 +16,7 @@ Documentation (for a while only on Russian): http://mkharitonov.net/spectrum/
 		});
 	});
 
-	\net\mkharitonov\spectrum\RootDescribe::run();
+	\spectrum\RootDescribe::run();
 
 Result:
 
@@ -46,7 +46,7 @@ Result:
 		});
 	});
 
-	\net\mkharitonov\spectrum\RootDescribe::run();
+	\spectrum\RootDescribe::run();
 
 Result:
 
@@ -92,7 +92,7 @@ Result:
 		});
 	});
 
-	\net\mkharitonov\spectrum\RootDescribe::run();
+	\spectrum\RootDescribe::run();
 
 Result:
 
@@ -153,7 +153,7 @@ Result:
 		});
 	});
 
-	\net\mkharitonov\spectrum\RootDescribe::run();
+	\spectrum\RootDescribe::run();
 
 Result:
 
@@ -191,7 +191,7 @@ Result:
 		});
 	});
 
-	\net\mkharitonov\spectrum\RootDescribe::run();
+	\spectrum\RootDescribe::run();
 
 Result:
 

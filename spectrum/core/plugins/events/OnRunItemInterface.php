@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\events;
+namespace spectrum\core\plugins\events;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

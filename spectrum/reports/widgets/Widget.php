@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets;
+namespace spectrum\reports\widgets;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -19,7 +19,7 @@ class Widget implements WidgetInterface
 {
 	protected $ownerPlugin;
 
-	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin)
+	public function __construct(\spectrum\reports\Plugin $ownerPlugin)
 	{
 		$this->ownerPlugin = $ownerPlugin;
 	}

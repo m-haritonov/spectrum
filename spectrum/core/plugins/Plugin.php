@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins;
+namespace spectrum\core\plugins;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,11 +17,11 @@ namespace net\mkharitonov\spectrum\core\plugins;
  */
 class Plugin implements PluginInterface
 {
-	/** @var \net\mkharitonov\spectrum\core\Spec */
+	/** @var \spectrum\core\Spec */
 	protected $ownerSpec;
 	protected $accessName;
 
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName)
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec, $accessName)
 	{
 		$this->ownerSpec = $ownerSpec;
 		$this->accessName = $accessName;

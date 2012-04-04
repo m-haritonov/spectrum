@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,11 +18,11 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SetDeclaringContainerTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class SetDeclaringContainerTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testShouldBeSetDeclaringContainer()
 	{
-		$describe = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$describe = new \spectrum\core\SpecContainerDescribe();
 		Manager::setDeclaringContainer($describe);
 
 		$this->assertSame($describe, Manager::getCurrentContainer());
@@ -30,15 +30,15 @@ class SetDeclaringContainerTest extends \net\mkharitonov\spectrum\constructionCo
 
 	public function testShouldBeAcceptNull()
 	{
-		Manager::setDeclaringContainer(new \net\mkharitonov\spectrum\core\SpecContainerDescribe());
+		Manager::setDeclaringContainer(new \spectrum\core\SpecContainerDescribe());
 		Manager::setDeclaringContainer(null);
-		$this->assertSame(\net\mkharitonov\spectrum\RootDescribe::getOnceInstance(), Manager::getCurrentContainer());
+		$this->assertSame(\spectrum\RootDescribe::getOnceInstance(), Manager::getCurrentContainer());
 	}
 
 	public function testShouldBeAcceptOnlySpecContainerInstances()
 	{
 		$this->assertThrowException('\Exception', function(){
-			Manager::setDeclaringContainer(new \net\mkharitonov\spectrum\core\SpecItemIt());
+			Manager::setDeclaringContainer(new \spectrum\core\SpecItemIt());
 		});
 	}
 }

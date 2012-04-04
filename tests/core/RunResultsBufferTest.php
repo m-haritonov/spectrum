@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -19,7 +19,7 @@ require_once dirname(__FILE__) . '/../init.php';
 class RunResultsBufferTest extends Test
 {
 	/**
-	 * @var \RunResultsBuffer\mkharitonov\spectrum\core\RunResultsBuffer
+	 * @var \spectrum\core\RunResultsBuffer
 	 */
 	private $runResultsBuffer;
 

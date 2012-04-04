@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\breakOnFirstPhpError;
+namespace spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\breakOnFirstPhpError;
 require_once dirname(__FILE__) . '/../../../../../../init.php';
 
 /**
@@ -56,13 +56,13 @@ class DisabledTest extends Test
 		$this->assertEquals(3, count($results));
 
 		$this->assertFalse($results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \net\mkharitonov\spectrum\core\ExceptionPhpError);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\ExceptionPhpError);
 
 		$this->assertFalse($results[1]['result']);
-		$this->assertTrue($results[1]['details'] instanceof \net\mkharitonov\spectrum\core\ExceptionPhpError);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\ExceptionPhpError);
 
 		$this->assertFalse($results[2]['result']);
-		$this->assertTrue($results[2]['details'] instanceof \net\mkharitonov\spectrum\core\ExceptionPhpError);
+		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\ExceptionPhpError);
 
 		$this->assertNotSame($results[0]['details'], $results[1]['details']);
 		$this->assertNotSame($results[0]['details'], $results[2]['details']);
@@ -105,10 +105,10 @@ class DisabledTest extends Test
 	{
 		$it = $this->it;
 		$it->setTestCallback(function(){
-			throw new \net\mkharitonov\spectrum\core\ExceptionPhpError('foo');
+			throw new \spectrum\core\ExceptionPhpError('foo');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\ExceptionPhpError', 'foo', function() use($it){
+		$this->assertThrowException('\spectrum\core\ExceptionPhpError', 'foo', function() use($it){
 			$it->run();
 		});
 	}

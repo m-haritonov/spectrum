@@ -15,7 +15,7 @@
  */
 spl_autoload_register(function($class)
 {
-	$rootNamespace = 'net\mkharitonov\spectrum\\';
+	$rootNamespace = 'spectrum\\';
 	if (mb_strpos($class, $rootNamespace) === 0)
 	{
 		$file = $class;

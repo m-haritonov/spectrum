@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Function with base functional for construction commands describe() and context().
@@ -35,7 +35,7 @@ namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-function setSettings(\net\mkharitonov\spectrum\core\SpecInterface $spec, $settings)
+function setSettings(\spectrum\core\SpecInterface $spec, $settings)
 {
 	if (is_string($settings)) // it('foo', function(){}, 'windows-1251')
 		$spec->output->setInputEncoding($settings);
@@ -56,9 +56,9 @@ function setSettings(\net\mkharitonov\spectrum\core\SpecInterface $spec, $settin
 			else if ($settingName == 'inputEncoding')
 				$spec->output->setInputEncoding($settingValue);
 			else
-				throw new \net\mkharitonov\spectrum\constructionCommands\Exception('Invalid setting "' . $settingName . '" in spec with name "' . $spec->output->convertToOutputEncoding($spec->getName()) . '"');
+				throw new \spectrum\constructionCommands\Exception('Invalid setting "' . $settingName . '" in spec with name "' . $spec->output->convertToOutputEncoding($spec->getName()) . '"');
 		}
 	}
 	else
-		throw new \net\mkharitonov\spectrum\constructionCommands\Exception('Invalid $settings type ("' . gettype($settings) . '") in spec with name "' . $spec->output->convertToOutputEncoding($spec->getName()) . '"');
+		throw new \spectrum\constructionCommands\Exception('Invalid $settings type ("' . gettype($settings) . '") in spec with name "' . $spec->output->convertToOutputEncoding($spec->getName()) . '"');
 }

@@ -9,34 +9,34 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands;
+namespace spectrum\constructionCommands;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class ConfigTest extends \net\mkharitonov\spectrum\Test
+class ConfigTest extends \spectrum\Test
 {
 	public function testGetManagerClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\net\mkharitonov\spectrum\constructionCommands\Manager', Config::getManagerClass());
+		$this->assertEquals('\spectrum\constructionCommands\Manager', Config::getManagerClass());
 	}
 
 /**/
 
 	public function testSetManagerClass_ShouldBeSetNewClass()
 	{
-		Config::setManagerClass('\net\mkharitonov\spectrum\constructionCommands\testEnv\emptyStubs\Manager');
-		$this->assertEquals('\net\mkharitonov\spectrum\constructionCommands\testEnv\emptyStubs\Manager', Config::getManagerClass());
+		Config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\Manager');
+		$this->assertEquals('\spectrum\constructionCommands\testEnv\emptyStubs\Manager', Config::getManagerClass());
 	}
 
 	public function testSetManagerClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
 		$oldClass = Config::getManagerClass();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'not exists', function(){
-			Config::setManagerClass('\net\mkharitonov\spectrum\constructionCommands\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'not exists', function(){
+			Config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\NotExistsClassFooBarBaz');
 		});
 
 		$this->assertEquals($oldClass, Config::getManagerClass());
@@ -46,7 +46,7 @@ class ConfigTest extends \net\mkharitonov\spectrum\Test
 	{
 		$oldClass = Config::getManagerClass();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'should be implement interface', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'should be implement interface', function(){
 			Config::setManagerClass('\stdClass');
 		});
 
@@ -58,8 +58,8 @@ class ConfigTest extends \net\mkharitonov\spectrum\Test
 		$oldClass = Config::getManagerClass();
 		Config::lock();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
-			Config::setManagerClass('\net\mkharitonov\spectrum\constructionCommands\testEnv\emptyStubs\Manager');
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
+			Config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\Manager');
 		});
 
 		$this->assertEquals($oldClass, Config::getManagerClass());
@@ -84,7 +84,7 @@ class ConfigTest extends \net\mkharitonov\spectrum\Test
 	{
 		Config::lock();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
 			Config::setAllowConstructionCommandsRegistration(false);
 		});
 
@@ -110,7 +110,7 @@ class ConfigTest extends \net\mkharitonov\spectrum\Test
 	{
 		Config::lock();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
 			Config::setAllowConstructionCommandsOverride(false);
 		});
 

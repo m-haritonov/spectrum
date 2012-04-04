@@ -9,17 +9,17 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt;
+namespace spectrum\core\specItemIt;
 require_once dirname(__FILE__) . '/../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\SpecTest
+abstract class Test extends \spectrum\core\SpecTest
 {
-	protected $currentSpecClass = '\net\mkharitonov\spectrum\core\SpecItemIt';
-	protected $currentSpecMockClass = '\net\mkharitonov\spectrum\core\testEnv\SpecItemItMock';
+	protected $currentSpecClass = '\spectrum\core\SpecItemIt';
+	protected $currentSpecMockClass = '\spectrum\core\testEnv\SpecItemItMock';
 
 /*** Test ware ***/
 

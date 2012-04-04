@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -18,12 +18,12 @@ namespace net\mkharitonov\spectrum\core;
 class Registry
 {
 	/**
-	 * @var \net\mkharitonov\spectrum\core\SpecItemInterface
+	 * @var \spectrum\core\SpecItemInterface
 	 */
 	static protected $runningSpecItem;
 
 	/**
-	 * @var \net\mkharitonov\spectrum\core\SpecContainerInterface
+	 * @var \spectrum\core\SpecContainerInterface
 	 */
 	static protected $runningSpecContainer;
 

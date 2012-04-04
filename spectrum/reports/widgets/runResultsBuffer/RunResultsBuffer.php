@@ -9,15 +9,15 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\runResultsBuffer;
-use \net\mkharitonov\spectrum\core\asserts\MatcherCallDetailsInterface;
-use \net\mkharitonov\spectrum\core\SpecItemInterface;
+namespace spectrum\reports\widgets\runResultsBuffer;
+use \spectrum\core\asserts\MatcherCallDetailsInterface;
+use \spectrum\core\SpecItemInterface;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
+class RunResultsBuffer extends \spectrum\reports\widgets\Widget
 {
 	public function getStyles()
 	{

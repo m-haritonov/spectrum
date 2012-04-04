@@ -16,33 +16,33 @@ require_once dirname(__FILE__) . '/init.php';
  * @link   http://www.mkharitonov.net/spectrum/
  */
 /*
-class \net\mkharitonov\spectrum\RootDescribeTest extends spectrum_BaseAbstract
+class \spectrum\RootDescribeTest extends spectrum_BaseAbstract
 {
 	public function testGetOnceInstance_ShouldBeReturnLastInstance()
 	{
-		$instance = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance();
-		$this->assertSame($instance, \net\mkharitonov\spectrum\RootDescribe::getOnceInstance());
-		$this->assertSame($instance, \net\mkharitonov\spectrum\RootDescribe::getOnceInstance());
+		$instance = \spectrum\RootDescribe::getOnceInstance();
+		$this->assertSame($instance, \spectrum\RootDescribe::getOnceInstance());
+		$this->assertSame($instance, \spectrum\RootDescribe::getOnceInstance());
 	}
 
 	public function testCreateOnce_ShouldNotBeCreateNewInstanceIsInstanceAlreadyExists()
 	{
-		$instance = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance();
-		\net\mkharitonov\spectrum\RootDescribe::getOnceInstance();
-		$this->assertSame($instance, \net\mkharitonov\spectrum\RootDescribe::getOnceInstance());
+		$instance = \spectrum\RootDescribe::getOnceInstance();
+		\spectrum\RootDescribe::getOnceInstance();
+		$this->assertSame($instance, \spectrum\RootDescribe::getOnceInstance());
 	}
 
 	public function testClear_ShouldBeRemoveCurrentInstance()
 	{
-		$instance = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance();
-		\net\mkharitonov\spectrum\RootDescribe::clear();
-		$this->assertNotSame($instance, \net\mkharitonov\spectrum\RootDescribe::getOnceInstance());
+		$instance = \spectrum\RootDescribe::getOnceInstance();
+		\spectrum\RootDescribe::clear();
+		$this->assertNotSame($instance, \spectrum\RootDescribe::getOnceInstance());
 	}
 
 	public function testShouldBeHaveAllDefaultMatchers()
 	{
 		$defaultMatchers = $this->getDefaultMatchers();
-		$describeMatchers = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->getMatchers();
+		$describeMatchers = \spectrum\RootDescribe::getOnceInstance()->getMatchers();
 		asort($defaultMatchers);
 		asort($describeMatchers);
 

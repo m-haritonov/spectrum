@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv;
+namespace spectrum\core\testEnv;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class PluginPublicMock extends \net\mkharitonov\spectrum\core\plugins\Plugin
+class PluginPublicMock extends \spectrum\core\plugins\Plugin
 {
 	private $foo;
 
@@ -37,7 +37,7 @@ class PluginPublicMock extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function getFoo()
 	{
-		\net\mkharitonov\spectrum\Test::$tmp['getFoo']['arguments'] = func_get_args();
+		\spectrum\Test::$tmp['getFoo']['arguments'] = func_get_args();
 		return $this->foo;
 	}
 }

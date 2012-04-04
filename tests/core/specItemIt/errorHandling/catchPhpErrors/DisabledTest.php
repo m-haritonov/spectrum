@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchPhpErrors;
+namespace spectrum\core\specItemIt\errorHandling\catchPhpErrors;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
 /**
@@ -63,10 +63,10 @@ class DisabledTest extends Test
 	{
 		$it = $this->it;
 		$it->setTestCallback(function(){
-			throw new \net\mkharitonov\spectrum\core\ExceptionPhpError('foo');
+			throw new \spectrum\core\ExceptionPhpError('foo');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\ExceptionPhpError', 'foo', function() use($it){
+		$this->assertThrowException('\spectrum\core\ExceptionPhpError', 'foo', function() use($it){
 			$it->run();
 		});
 	}

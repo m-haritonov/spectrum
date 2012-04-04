@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\stack\named\getCascadeThroughRunningContexts;
-use net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Named;
+namespace spectrum\core\plugins\basePlugins\stack\named\getCascadeThroughRunningContexts;
+use spectrum\core\plugins\basePlugins\stack\Named;
 
 require_once dirname(__FILE__) . '/../../../../../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../../../../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\plugins\basePlugins\stack\named\Test
+abstract class Test extends \spectrum\core\plugins\basePlugins\stack\named\Test
 {
 	public function testNoParents_ItemNotExists_ShouldBeThrowException()
 	{
@@ -340,14 +340,14 @@ abstract class Test extends \net\mkharitonov\spectrum\core\plugins\basePlugins\s
 
 /*** Test ware ***/
 
-	abstract protected function executeContext($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec);
+	abstract protected function executeContext($callback, \spectrum\core\SpecInterface $spec);
 
-	protected function assertStackItemGettingThrowException($itemKey, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	protected function assertStackItemGettingThrowException($itemKey, \spectrum\core\SpecInterface $spec)
 	{
 		$self = $this;
 		$this->executeContext(function() use($spec, $itemKey, $self)
 		{
-			$self->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', '"' . $itemKey . '" not exists', function() use($spec, $itemKey){
+			$self->assertThrowException('\spectrum\core\plugins\Exception', '"' . $itemKey . '" not exists', function() use($spec, $itemKey){
 				$spec->testPlugin->getCascadeThroughRunningContexts($itemKey);
 			});
 		}, $spec);
@@ -358,7 +358,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\plugins\basePlugins\s
 		$spec = $specAndItemKey[0];
 		$key = $specAndItemKey[1];
 
-		if (!($spec instanceof \net\mkharitonov\spectrum\core\SpecInterface))
+		if (!($spec instanceof \spectrum\core\SpecInterface))
 			throw new \Exception('Wrong spec passed');
 
 		$this->executeContext(function() use($spec, $key, &$result){

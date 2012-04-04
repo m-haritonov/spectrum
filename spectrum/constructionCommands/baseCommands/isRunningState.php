@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Available at declaring and running state.
@@ -24,7 +24,7 @@ function isRunningState()
 		if (!is_object(@$trace['object']))
 			continue;
 
-		if ($trace['object'] instanceof \net\mkharitonov\spectrum\core\SpecInterface)
+		if ($trace['object'] instanceof \spectrum\core\SpecInterface)
 			return true;
 	}
 

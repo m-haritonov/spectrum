@@ -9,10 +9,10 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt;
-use net\mkharitonov\spectrum\core\RunResultsBuffer;
-use net\mkharitonov\spectrum\core\SpecItem;
-use net\mkharitonov\spectrum\core\SpecItemIt;
+namespace spectrum\core\specItemIt;
+use spectrum\core\RunResultsBuffer;
+use spectrum\core\SpecItem;
+use spectrum\core\SpecItemIt;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -43,7 +43,7 @@ class RunTest extends Test
 		$it->run();
 
 		$this->assertEquals(1, count($passedArguments));
-		$this->assertTrue($passedArguments[0] instanceof \net\mkharitonov\spectrum\core\World);
+		$this->assertTrue($passedArguments[0] instanceof \spectrum\core\World);
 	}
 
 	public function testShouldBePassAdditionalArgumentsToTestCallback()
@@ -58,7 +58,7 @@ class RunTest extends Test
 
 		$this->assertEquals(3, count($passedArguments));
 
-		$this->assertTrue($passedArguments[0] instanceof \net\mkharitonov\spectrum\core\World);
+		$this->assertTrue($passedArguments[0] instanceof \spectrum\core\World);
 		$this->assertEquals('foo', $passedArguments[1]);
 		$this->assertEquals('bar', $passedArguments[2]);
 	}
@@ -69,7 +69,7 @@ class RunTest extends Test
 		$it->setTestCallback('iAmNotCallableFunctionOhOhOh');
 		$it->errorHandling->setCatchExceptions(false);
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'callback is not callable', function() use($it) {
+		$this->assertThrowException('\spectrum\core\Exception', 'callback is not callable', function() use($it) {
 			$it->run();
 		});
 	}
@@ -139,7 +139,7 @@ class RunTest extends Test
 		$it = new SpecItemIt();
 		$runningSpecItem = null;
 		$it->setTestCallback(function() use(&$runningSpecItem){
-			$runningSpecItem = \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem();
+			$runningSpecItem = \spectrum\core\Registry::getRunningSpecItem();
 		});
 
 		$it->run();
@@ -149,13 +149,13 @@ class RunTest extends Test
 
 	public function testShouldBeRestoreRunningSpecItemInRegistryAfterRun()
 	{
-		$runningSpecItemBackup = \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem();
+		$runningSpecItemBackup = \spectrum\core\Registry::getRunningSpecItem();
 		$it = new SpecItemIt();
 		$it->setTestCallback(function(){});
 
 		$it->run();
 
-		$this->assertSame($runningSpecItemBackup, \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem());
+		$this->assertSame($runningSpecItemBackup, \spectrum\core\Registry::getRunningSpecItem());
 	}
 
 	public function testShouldBeRestoreRunningSpecItemInRegistryAfterNestedRun()
@@ -167,7 +167,7 @@ class RunTest extends Test
 			$it2->setTestCallback(function() use($it2) {});
 			$it2->run();
 
-			$runningSpecItemAfterNestedRun = \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem();
+			$runningSpecItemAfterNestedRun = \spectrum\core\Registry::getRunningSpecItem();
 		});
 
 		$it->run();

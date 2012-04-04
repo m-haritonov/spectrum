@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
-use \net\mkharitonov\spectrum\core\plugins\Exception;
+namespace spectrum\core\plugins\basePlugins;
+use \spectrum\core\plugins\Exception;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Identify extends \net\mkharitonov\spectrum\core\plugins\Plugin
+class Identify extends \spectrum\core\plugins\Plugin
 {
 	/*
 	 * format: spec<ancstor spec indexes in parent>, example "0x1x24">

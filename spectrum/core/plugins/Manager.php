@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins;
-use net\mkharitonov\spectrum\core\Config;
+namespace spectrum\core\plugins;
+use spectrum\core\Config;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -19,18 +19,18 @@ use net\mkharitonov\spectrum\core\Config;
 class Manager implements ManagerInterface
 {
 	static protected $registeredPlugins = array(
-		'matchers' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'whenCallOnce'),
-		'builders' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Builders', 'activateMoment' => 'whenCallOnce'),
-		'destroyers' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Destroyers', 'activateMoment' => 'whenCallOnce'),
-		'selector' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Selector', 'activateMoment' => 'whenCallOnce'),
-		'identify' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Identify', 'activateMoment' => 'whenCallOnce'),
-		'errorHandling' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\ErrorHandling', 'activateMoment' => 'whenCallOnce'),
-		'output' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Output', 'activateMoment' => 'whenCallOnce'),
-		'messages' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Messages', 'activateMoment' => 'whenCallOnce'),
-		'patterns' => array('class' => '\net\mkharitonov\spectrum\core\plugins\basePlugins\Patterns', 'activateMoment' => 'whenCallOnce'),
+		'matchers' => array('class' => '\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'whenCallOnce'),
+		'builders' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Builders', 'activateMoment' => 'whenCallOnce'),
+		'destroyers' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Destroyers', 'activateMoment' => 'whenCallOnce'),
+		'selector' => array('class' => '\spectrum\core\plugins\basePlugins\Selector', 'activateMoment' => 'whenCallOnce'),
+		'identify' => array('class' => '\spectrum\core\plugins\basePlugins\Identify', 'activateMoment' => 'whenCallOnce'),
+		'errorHandling' => array('class' => '\spectrum\core\plugins\basePlugins\ErrorHandling', 'activateMoment' => 'whenCallOnce'),
+		'output' => array('class' => '\spectrum\core\plugins\basePlugins\Output', 'activateMoment' => 'whenCallOnce'),
+		'messages' => array('class' => '\spectrum\core\plugins\basePlugins\Messages', 'activateMoment' => 'whenCallOnce'),
+		'patterns' => array('class' => '\spectrum\core\plugins\basePlugins\Patterns', 'activateMoment' => 'whenCallOnce'),
 	);
 
-	static public function registerPlugin($accessName, $class = '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenCallOnce')
+	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenCallOnce')
 	{
 		if (!Config::getAllowPluginsRegistration())
 			throw new Exception('Plugins registration deny in Config');
@@ -39,7 +39,7 @@ class Manager implements ManagerInterface
 			throw new Exception('Plugins override deny in Config');
 
 		$reflection = new \ReflectionClass($class);
-		if (!$reflection->implementsInterface('\net\mkharitonov\spectrum\core\plugins\PluginInterface'))
+		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface'))
 			throw new Exception('Class "' . $class . '" should be implements PluginInterface');
 
 		if (!in_array($activateMoment, array('whenConstructOnce', 'whenCallOnce', 'whenCallAlways')))
@@ -102,7 +102,7 @@ class Manager implements ManagerInterface
 		$interface = $eventName;
 		$interface = preg_replace('/(Before|After)$/s', '', $interface);
 		$interface = preg_replace('/^on/s', 'On', $interface);
-		$interface = '\net\mkharitonov\spectrum\core\plugins\events\\' . $interface . 'Interface';
+		$interface = '\spectrum\core\plugins\events\\' . $interface . 'Interface';
 
 		if (!interface_exists($interface))
 			throw new Exception('Interface "' . $interface . '" for event "' . $eventName . '" not exists');
@@ -123,7 +123,7 @@ class Manager implements ManagerInterface
 		return array_key_exists($accessName, static::$registeredPlugins);
 	}
 
-	static public function createPluginInstance(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName)
+	static public function createPluginInstance(\spectrum\core\SpecInterface $ownerSpec, $accessName)
 	{
 		$pluginInfo = static::getRegisteredPlugin($accessName);
 		return new $pluginInfo['class']($ownerSpec, $accessName);

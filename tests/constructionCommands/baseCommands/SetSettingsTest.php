@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,13 +18,13 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SetSettingsTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class SetSettingsTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	private $spec;
 	protected function setUp()
 	{
 		parent::setUp();
-		$this->spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$this->spec = new \spectrum\core\SpecContainerDescribe();
 	}
 	
 	public function testShouldBeAcceptStringAsSetInputEncoding()
@@ -74,7 +74,7 @@ class SetSettingsTest extends \net\mkharitonov\spectrum\constructionCommands\bas
 	public function testShouldBeThrowExceptionIfSettingsArrayContainsUnknownKey()
 	{
 		$spec = $this->spec;
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception',
+		$this->assertThrowException('\spectrum\constructionCommands\Exception',
 			'Invalid setting "fooBarBaz"', function() use($spec){
 			Manager::setSettings($spec, array('fooBarBaz' => true));
 		});
@@ -83,7 +83,7 @@ class SetSettingsTest extends \net\mkharitonov\spectrum\constructionCommands\bas
 	public function testShouldBeThrowExceptionIfSettingsHasUnsupportedType()
 	{
 		$spec = $this->spec;
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception',
+		$this->assertThrowException('\spectrum\constructionCommands\Exception',
 			'Invalid $settings type ("object")', function() use($spec){
 			Manager::setSettings($spec, new \stdClass());
 		});

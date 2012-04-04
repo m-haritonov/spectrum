@@ -9,15 +9,15 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv\emptyStubs;
+namespace spectrum\core\testEnv\emptyStubs;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class RunResultsBuffer implements \net\mkharitonov\spectrum\core\RunResultsBufferInterface
+class RunResultsBuffer implements \spectrum\core\RunResultsBufferInterface
 {
-	public function __construct(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec){}
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 	public function getOwnerSpec(){}
 	public function addResult($result, $details = null){}
 	public function getResults(){}

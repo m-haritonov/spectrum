@@ -9,11 +9,11 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\events\onRun;
-use net\mkharitonov\spectrum\core\plugins\Manager;
-use net\mkharitonov\spectrum\core\SpecItemIt;
-use net\mkharitonov\spectrum\core\RunResultsBuffer;
-use net\mkharitonov\spectrum\core\World;
+namespace spectrum\core\plugins\events\onRun;
+use spectrum\core\plugins\Manager;
+use spectrum\core\SpecItemIt;
+use spectrum\core\RunResultsBuffer;
+use spectrum\core\World;
 
 require_once dirname(__FILE__) . '/../../../../init.php';
 
@@ -23,15 +23,15 @@ require_once dirname(__FILE__) . '/../../../../init.php';
  */
 class SpecItemItTest extends Test
 {
-	protected $currentSpecClass = '\net\mkharitonov\spectrum\core\SpecItemIt';
+	protected $currentSpecClass = '\spectrum\core\SpecItemIt';
 	
 	public function testBefore_ShouldBeTriggeredBeforeTestCallbackExecution()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\Test::$tmp['triggeredEvents']['onRun'];
 		});
 
 		$spec->run();
@@ -45,11 +45,11 @@ class SpecItemItTest extends Test
 
 	public function testAfter_ShouldBeTriggeredAfterTestCallbackExecution()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\Test::$tmp['triggeredEvents']['onRun'];
 		});
 
 		$spec->run();
@@ -57,14 +57,14 @@ class SpecItemItTest extends Test
 		$this->assertEquals(1, count($triggeredEventsBeforeExecution));
 		$this->assertNotEquals('onRunAfter', $triggeredEventsBeforeExecution[0]['name']);
 
-		$this->assertEquals('onRunAfter', \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['name']);
+		$this->assertEquals('onRunAfter', \spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['name']);
 
 		Manager::unregisterPlugin('foo');
 	}
 
 	public function testAfter_SuccessResult_ShouldBePassResultToArguments()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use($spec){
@@ -73,14 +73,14 @@ class SpecItemItTest extends Test
 
 		$spec->run();
 
-		$this->assertSame(array(true), \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
+		$this->assertSame(array(true), \spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
 
 		Manager::unregisterPlugin('foo');
 	}
 
 	public function testAfter_FailResult_ShouldBePassResultToArguments()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use($spec){
@@ -89,21 +89,21 @@ class SpecItemItTest extends Test
 
 		$spec->run();
 
-		$this->assertSame(array(false), \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
+		$this->assertSame(array(false), \spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
 
 		Manager::unregisterPlugin('foo');
 	}
 
 	public function testAfter_EmptyResult_ShouldBePassResultToArguments()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function(){});
 
 		$spec->run();
 
-		$this->assertSame(array(null), \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
+		$this->assertSame(array(null), \spectrum\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
 
 		Manager::unregisterPlugin('foo');
 	}

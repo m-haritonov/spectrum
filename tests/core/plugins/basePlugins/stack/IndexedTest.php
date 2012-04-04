@@ -9,17 +9,17 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\stack;
+namespace spectrum\core\plugins\basePlugins\stack;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
 /**
- * @see \net\mkharitonov\spectrum\core\plugins\basePlugins\stack\named\getCascadeThroughRunningContexts\Test
+ * @see \spectrum\core\plugins\basePlugins\stack\named\getCascadeThroughRunningContexts\Test
  */
 class IndexedTest extends Test
 {
 	public function testAdd_ShouldBeAddValuesWithNumbersInConsecutiveOrder()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 
 		$plugin->add('foo');
 		$this->assertSame(array(0 => 'foo'), $plugin->getAll());
@@ -40,7 +40,7 @@ class IndexedTest extends Test
 
 	public function testAdd_ShouldBeAddValuesToEnd()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 
 		$plugin->add('foo');
 		$this->assertSame(array('foo'), $plugin->getAll());
@@ -54,7 +54,7 @@ class IndexedTest extends Test
 
 	public function testAdd_ShouldBeReturnAddedValue()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 		$this->assertEquals('foo', $plugin->add('foo'));
 	}
 	
@@ -62,7 +62,7 @@ class IndexedTest extends Test
 
 	public function testRemove_ShouldBeRemoveValueWithSameKey()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 
 		$plugin->add('foo');
 		$plugin->add('bar');
@@ -80,7 +80,7 @@ class IndexedTest extends Test
 
 	public function testRemove_ShouldBeReturnRemovedValue()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 
 		$plugin->add('foo');
 		$plugin->add('bar');
@@ -92,7 +92,7 @@ class IndexedTest extends Test
 
 	public function testGet_ShouldBeGetValueWithSameKeyFromSelfIfValueExists()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 
 		$plugin->add('foo');
 		$plugin->add('bar');
@@ -105,7 +105,7 @@ class IndexedTest extends Test
 
 	public function testGet_ShouldNotBeGetValueFromParent()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 		
 		$specs = $this->createSpecsTree('
 			Describe
@@ -114,16 +114,16 @@ class IndexedTest extends Test
 
 		$specs[0]->testPlugin->add('foo');
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'not exists', function() use($specs) {
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'not exists', function() use($specs) {
 			$specs[1]->testPlugin->get(0);
 		});
 	}
 
 	public function testGet_ShouldBeThrowExceptionIfValueNotExists()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 		$plugin->add('foo');
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'not exists', function() use($plugin) {
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'not exists', function() use($plugin) {
 			$plugin->get(99);
 		});
 	}
@@ -132,7 +132,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeSearchValueInSelfFirst()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -147,7 +147,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeSearchValueInParentIfInSelfValueNotExists()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -168,7 +168,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeSearchValueInAncestorIfInParentValueNotExists()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -188,7 +188,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ParentDescribeWithChildContexts_ShouldBeGetValueFromCurrentDeepChildRunningContext()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -217,7 +217,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ParentContextWithChildContexts_ShouldBeGetValueFromCurrentDeepChildRunningContext()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Context
@@ -246,7 +246,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ParentContext_ShouldNotBeGetValueFromParentSiblingContexts()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -271,7 +271,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeThrowExceptionIfValueNotExistsInAllAncestors()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -283,7 +283,7 @@ class IndexedTest extends Test
 		$specs[1]->testPlugin->add('bar0');
 		$specs[2]->testPlugin->add('baz0');
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'not exists', function() use($specs) {
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'not exists', function() use($specs) {
 			$specs[2]->testPlugin->get(1);
 		});
 	}
@@ -292,7 +292,7 @@ class IndexedTest extends Test
 
 	public function testGetAll_ShouldBeGetAllValuesFromSelf()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 
 		$plugin->add('foo');
 		$plugin->add('bar');
@@ -303,7 +303,7 @@ class IndexedTest extends Test
 
 	public function testGetAll_ShouldNotBeGetValuesFromParent()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -318,13 +318,13 @@ class IndexedTest extends Test
 
 	public function testGetAll_ShouldBeReturnEmptyArrayIfNoValuesByDefault()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 		$this->assertSame(array(), $plugin->getAll());
 	}
 
 	public function testGetAll_ShouldBeReturnEmptyArrayIfNoValuesAfterRemove()
 	{
-		$plugin = new Indexed(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'testPlugin');
+		$plugin = new Indexed(new \spectrum\core\SpecContainerDescribe(), 'testPlugin');
 
 		$plugin->add('foo');
 		$plugin->remove(0);
@@ -335,7 +335,7 @@ class IndexedTest extends Test
 
 	public function testGetAllPrependAncestorsWithRunningContexts_ShouldBeGetValuesFromSelfAndPrependAncestorsValuesAndValuesFromAncestorsChildRunningContexts()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -401,8 +401,8 @@ class IndexedTest extends Test
 
 	public function testGetAllPrependAncestorsWithRunningContexts_ShouldBeReturnEmptyArrayIfNoValues()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
-		$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		$spec = new \spectrum\core\SpecContainerDescribe();
 		$this->assertSame(array(), $spec->testPlugin->getAllPrependAncestorsWithRunningContexts());
 	}
 
@@ -410,7 +410,7 @@ class IndexedTest extends Test
 
 	public function testGetAllAppendAncestorsWithRunningContexts_ShouldBeGetValuesFromSelfAndAppendAncestorsValuesAndValuesFromAncestorsChildRunningContexts()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -476,8 +476,8 @@ class IndexedTest extends Test
 
 	public function testGetAllAppendAncestorsWithRunningContexts_ShouldBeReturnEmptyArrayIfNoValues()
 	{
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
-		$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenCallOnce');
+		$spec = new \spectrum\core\SpecContainerDescribe();
 		$this->assertSame(array(), $spec->testPlugin->getAllAppendAncestorsWithRunningContexts());
 	}
 }

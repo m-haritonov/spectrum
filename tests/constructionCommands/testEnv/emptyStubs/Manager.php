@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\testEnv\emptyStubs;
+namespace spectrum\constructionCommands\testEnv\emptyStubs;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Manager implements \net\mkharitonov\spectrum\constructionCommands\ManagerInterface
+class Manager implements \spectrum\constructionCommands\ManagerInterface
 {
 	static public function __callStatic($name, $args = array()){}
 	static public function callCommand($name, $args = array()){}

@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\stack\named;
-use net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Named;
+namespace spectrum\core\plugins\basePlugins\stack\named;
+use spectrum\core\plugins\basePlugins\stack\Named;
 
 require_once dirname(__FILE__) . '/../../../../../init.php';
 
@@ -22,7 +22,7 @@ class AddTest extends Test
 {
 	public function testShouldBeAddValuesWithName()
 	{
-		$plugin = new Named(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'foo');
+		$plugin = new Named(new \spectrum\core\SpecContainerDescribe(), 'foo');
 
 		$plugin->add('fooName', 'fooValue');
 		$this->assertSame(array('fooName' => 'fooValue'), $plugin->getAll());
@@ -36,7 +36,7 @@ class AddTest extends Test
 
 	public function testShouldBeReplaceExistsValue()
 	{
-		$plugin = new Named(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'foo');
+		$plugin = new Named(new \spectrum\core\SpecContainerDescribe(), 'foo');
 
 		$plugin->add('fooName', 'fooValue');
 		$plugin->add('fooName', 'barValue');
@@ -46,7 +46,7 @@ class AddTest extends Test
 
 	public function testShouldBeAddValuesToEnd()
 	{
-		$plugin = new Named(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'foo');
+		$plugin = new Named(new \spectrum\core\SpecContainerDescribe(), 'foo');
 
 		$plugin->add(0, 'foo');
 		$this->assertSame(array('foo'), $plugin->getAll());
@@ -60,7 +60,7 @@ class AddTest extends Test
 
 	public function testShouldBeReturnAddedValue()
 	{
-		$plugin = new Named(new \net\mkharitonov\spectrum\core\SpecContainerDescribe(), 'foo');
+		$plugin = new Named(new \spectrum\core\SpecContainerDescribe(), 'foo');
 		$this->assertEquals('bar', $plugin->add('name', 'bar'));
 	}
 }

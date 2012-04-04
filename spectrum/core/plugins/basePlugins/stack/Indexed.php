@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\stack;
+namespace spectrum\core\plugins\basePlugins\stack;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

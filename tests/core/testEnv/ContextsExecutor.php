@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv;
+namespace spectrum\core\testEnv;
 
 /**
  * Contains methods for not abstract classes.
@@ -18,57 +18,57 @@ namespace net\mkharitonov\spectrum\core\testEnv;
  */
 class ContextsExecutor
 {
-	static public function notRunningSpecContainerHasChildrenContext($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function notRunningSpecContainerHasChildrenContext($callback, \spectrum\core\SpecInterface $spec)
 	{
 		$callback();
 	}
 
-	static public function notRunningSpecContainerHasChildrenDescribe($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function notRunningSpecContainerHasChildrenDescribe($callback, \spectrum\core\SpecInterface $spec)
 	{
 		$callback();
 	}
 
-	static public function notRunningSpecContainerNoChildrenContext($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function notRunningSpecContainerNoChildrenContext($callback, \spectrum\core\SpecInterface $spec)
 	{
 		$callback();
 	}
 
-	static public function notRunningSpecContainerNoChildrenDescribe($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function notRunningSpecContainerNoChildrenDescribe($callback, \spectrum\core\SpecInterface $spec)
 	{
 		$callback();
 	}
 
 
-	static public function notRunningSpecItemIt($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function notRunningSpecItemIt($callback, \spectrum\core\SpecInterface $spec)
 	{
 		$callback();
 	}
 
 /**/
 
-	static public function runningSpecContainerHasChildrenContext($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function runningSpecContainerHasChildrenContext($callback, \spectrum\core\SpecInterface $spec)
 	{
 		return static::runningSpecContainerHasChildren($callback, $spec);
 	}
 
-	static public function runningSpecContainerHasChildrenDescribe($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function runningSpecContainerHasChildrenDescribe($callback, \spectrum\core\SpecInterface $spec)
 	{
 		return static::runningSpecContainerHasChildren($callback, $spec);
 	}
 
 
-	static public function runningSpecContainerNoChildrenContext($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function runningSpecContainerNoChildrenContext($callback, \spectrum\core\SpecInterface $spec)
 	{
 		return static::runningSpecContainerNoChildren($callback, $spec);
 	}
 
-	static public function runningSpecContainerNoChildrenDescribe($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function runningSpecContainerNoChildrenDescribe($callback, \spectrum\core\SpecInterface $spec)
 	{
 		return static::runningSpecContainerNoChildren($callback, $spec);
 	}
 
 
-	static public function runningSpecItemIt($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static public function runningSpecItemIt($callback, \spectrum\core\SpecInterface $spec)
 	{
 		$spec->setTestCallback($callback);
 		$spec->run();
@@ -76,22 +76,22 @@ class ContextsExecutor
 
 /**/
 
-	static private function runningSpecContainerHasChildren($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static private function runningSpecContainerHasChildren($callback, \spectrum\core\SpecInterface $spec)
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->setTestCallback($callback);
 
 		$spec->addSpec($it);
 		$spec->run();
 	}
 
-	static private function runningSpecContainerNoChildren($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	static private function runningSpecContainerNoChildren($callback, \spectrum\core\SpecInterface $spec)
 	{
 		$pluginName = str_replace('\\', '_', __CLASS__);
 
-		\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin($pluginName, '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		\spectrum\core\plugins\Manager::registerPlugin($pluginName, '\spectrum\core\testEnv\PluginEventOnRunStub');
 
-		\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub::setOnBeforeCallback(function($plugin) use($callback, $spec)
+		\spectrum\core\testEnv\PluginEventOnRunStub::setOnBeforeCallback(function($plugin) use($callback, $spec)
 		{
 			if ($plugin->getOwnerSpec() === $spec)
 				$callback();
@@ -99,8 +99,8 @@ class ContextsExecutor
 
 		$spec->run();
 
-		\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub::setOnBeforeCallback(null);
+		\spectrum\core\testEnv\PluginEventOnRunStub::setOnBeforeCallback(null);
 
-		\net\mkharitonov\spectrum\core\plugins\Manager::unregisterPlugin($pluginName);
+		\spectrum\core\plugins\Manager::unregisterPlugin($pluginName);
 	}
 }

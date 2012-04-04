@@ -9,20 +9,20 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\notRunning\specContainer\hasChildren;
+namespace spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\notRunning\specContainer\hasChildren;
 require_once dirname(__FILE__) . '/../../../../../../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class ContextTest extends \net\mkharitonov\spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\notRunning\Test
+class ContextTest extends \spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\notRunning\Test
 {
-	protected $currentSpecClass = '\net\mkharitonov\spectrum\core\SpecContainerContext';
-	protected $currentSpecMockClass = '\net\mkharitonov\spectrum\core\testEnv\SpecContainerContextMock';
+	protected $currentSpecClass = '\spectrum\core\SpecContainerContext';
+	protected $currentSpecMockClass = '\spectrum\core\testEnv\SpecContainerContextMock';
 
-	protected function executeContext($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec)
+	protected function executeContext($callback, \spectrum\core\SpecInterface $spec)
 	{
-		return \net\mkharitonov\spectrum\core\testEnv\ContextsExecutor::notRunningSpecContainerHasChildrenContext($callback, $spec);
+		return \spectrum\core\testEnv\ContextsExecutor::notRunningSpecContainerHasChildrenContext($callback, $spec);
 	}
 }

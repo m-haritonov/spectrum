@@ -166,7 +166,7 @@ function generateCacheFilename()
 			});
 		});
 
-		\net\mkharitonov\spectrum\RootDescribe::run();
+		\spectrum\RootDescribe::run();
 CODE
 , array('noRun', 'height' => 100));
 	?>
@@ -1170,7 +1170,7 @@ CODE
 
 <?php
 printExample('', <<<'CODE'
-	use \net\mkharitonov\spectrum\RootDescribe;
+	use \spectrum\RootDescribe;
 
 	describe('Космический корабль', function(){
 		it('Должен изучать живые организмы', function(){
@@ -1187,10 +1187,10 @@ CODE
 
 <?php
 printExample('', <<<'CODE'
-	use \net\mkharitonov\spectrum\RootDescribe;
-	use \net\mkharitonov\spectrum\core\SpecItemIt;
-	use \net\mkharitonov\spectrum\core\asserts\Assert;
-	use \net\mkharitonov\spectrum\core\SpecContainerDescribe;
+	use \spectrum\RootDescribe;
+	use \spectrum\core\SpecItemIt;
+	use \spectrum\core\asserts\Assert;
+	use \spectrum\core\SpecContainerDescribe;
 
 	$it = new SpecItemIt('Должен изучать живые организмы');
 	$it->setTestCallback(function(){
@@ -1224,7 +1224,7 @@ Callback ф-я it вызывается на этапе выполнения (т.
 
 <?php
 printExample('', <<<'CODE'
-	use \net\mkharitonov\spectrum\constructionCommands\Manager;
+	use \spectrum\constructionCommands\Manager;
 
 	Manager::registerCommand('crash', function(){
 		Manager::getCurrentItem()->getRunResultsBuffer()->addResult(false, 'Космический корабль разбился');
@@ -1288,7 +1288,7 @@ CODE
 SpecItemIt) существует свой экземпляр плагина foo.</p>
 <?php
 printExample('', <<<'CODE'
-	\net\mkharitonov\spectrum\core\plugins\Manager::registerPlugin('foo');
+	\spectrum\core\plugins\Manager::registerPlugin('foo');
 	$describe = describe('Космический корабль', function() use(&$it1, &$it2){
 		$it1 = it('Должен летать', function(){});
 		$it2 = it('Не должен плавать', function(){});
@@ -1325,10 +1325,10 @@ CODE
 <?php
 printExample('', <<<'CODE'
 
-	use \net\mkharitonov\spectrum\core\plugins\Manager as PluginsManager;
-	use \net\mkharitonov\spectrum\constructionCommands\Manager as ConstructionCommandsManager;
+	use \spectrum\core\plugins\Manager as PluginsManager;
+	use \spectrum\constructionCommands\Manager as ConstructionCommandsManager;
 
-	class MyPlugin extends \net\mkharitonov\spectrum\core\plugins\Plugin
+	class MyPlugin extends \spectrum\core\plugins\Plugin
 	{
 		private $foo = null; // Значение по умолчанию должно задаваться не здесь, а при вызове callCascadeThroughRunningContexts()
 

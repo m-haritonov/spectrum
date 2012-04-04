@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts;
+namespace spectrum\core\asserts;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Exception extends \net\mkharitonov\spectrum\core\Exception
+class Exception extends \spectrum\core\Exception
 {
 	
 }

@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts\assert\callMatcher;
-use net\mkharitonov\spectrum\core\asserts\Assert;
+namespace spectrum\core\asserts\assert\callMatcher;
+use spectrum\core\asserts\Assert;
 
 require_once dirname(__FILE__) . '/../../../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Test extends \net\mkharitonov\spectrum\core\asserts\assert\Test
+class Test extends \spectrum\core\asserts\assert\Test
 {
 
 /*** Test ware ***/

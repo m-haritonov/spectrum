@@ -9,9 +9,9 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
+namespace spectrum\core\plugins\basePlugins;
 require_once dirname(__FILE__) . '/../../../init.php';
-use net\mkharitonov\spectrum\core\Config;
+use spectrum\core\Config;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -22,8 +22,8 @@ class OutputTest extends Test
 	public function testSetInputEncoding_ShouldBeThrowExceptionIfNotAllowInputEncodingModify()
 	{
 		Config::setAllowInputEncodingModify(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Input encoding modify deny', function(){
-			$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Input encoding modify deny', function(){
+			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->output->setInputEncoding('koi-8');
 		});
 	}
@@ -33,8 +33,8 @@ class OutputTest extends Test
 	public function testSetOutputEncoding_ShouldBeThrowExceptionIfNotAllowOutputEncodingModify()
 	{
 		Config::setAllowOutputEncodingModify(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Output encoding modify deny', function(){
-			$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Output encoding modify deny', function(){
+			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->output->setOutputEncoding('koi-8');
 		});
 	}
@@ -56,7 +56,7 @@ class OutputTest extends Test
 	 */
 	public function testConvertToOutputEncoding_ShouldBeConvertStringFromInputToOutputEncoding($inputEncoding, $outputEncoding, $actualString, $expectedString)
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->output->setInputEncoding($inputEncoding);
 		$it->output->setOutputEncoding($outputEncoding);
 		$it->setName($actualString);
@@ -65,7 +65,7 @@ class OutputTest extends Test
 
 	public function testConvertToOutputEncoding_ShouldBeUseUtf8AsInputAndOutputEncodingByDefault()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->setName($this->toUtf8('привет мир'));
 		$this->assertEquals($this->toUtf8('привет мир'), $it->output->convertToOutputEncoding($it->getName()));
 	}
@@ -102,7 +102,7 @@ class OutputTest extends Test
 
 	public function testPut_ShouldBePrintStringInCorrectEncoding()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->output->setInputEncoding('utf-8');
 		$it->output->setOutputEncoding('utf-8');
 		$it->setName($this->toUtf8('привет мир'));

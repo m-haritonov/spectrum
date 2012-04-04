@@ -9,42 +9,42 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports;
+namespace spectrum\reports;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \net\mkharitonov\spectrum\core\plugins\events\OnRunInterface
+class Plugin extends \spectrum\core\plugins\Plugin implements \spectrum\core\plugins\events\OnRunInterface
 {
 	protected $indention = "\t";
 	protected $newline = "\r\n";
 	protected $widgets = array(
-		'Tools' => 'net\mkharitonov\spectrum\reports\widgets\Tools',
-		'Clearfix' => 'net\mkharitonov\spectrum\reports\widgets\Clearfix',
-		'TotalInfo' => 'net\mkharitonov\spectrum\reports\widgets\TotalInfo',
-		'finalResult\Result' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Result',
-		'finalResult\Update' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Update',
-		'Messages' => 'net\mkharitonov\spectrum\reports\widgets\Messages',
-		'runResultsBuffer\RunResultsBuffer' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer',
-		'runResultsBuffer\details\MatcherCall' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\MatcherCall',
-		'runResultsBuffer\details\Unknown' => 'net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details\Unknown',
-		'SpecList' => 'net\mkharitonov\spectrum\reports\widgets\SpecList',
-		'SpecTitle' => 'net\mkharitonov\spectrum\reports\widgets\SpecTitle',
-		'code\Method' => 'net\mkharitonov\spectrum\reports\widgets\code\Method',
-		'code\Operator' => 'net\mkharitonov\spectrum\reports\widgets\code\Operator',
-		'code\Property' => 'net\mkharitonov\spectrum\reports\widgets\code\Property',
-		'code\Variable' => 'net\mkharitonov\spectrum\reports\widgets\code\Variable',
-		'code\variables\ArrayVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ArrayVar',
-		'code\variables\BoolVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\BoolVar',
-		'code\variables\FloatVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\FloatVar',
-		'code\variables\ClosureVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ClosureVar',
-		'code\variables\IntVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\IntVar',
-		'code\variables\NullVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\NullVar',
-		'code\variables\ObjectVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ObjectVar',
-		'code\variables\ResourceVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\ResourceVar',
-		'code\variables\StringVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\StringVar',
-		'code\variables\UnknownVar' => 'net\mkharitonov\spectrum\reports\widgets\code\variables\UnknownVar',
+		'Tools' => 'spectrum\reports\widgets\Tools',
+		'Clearfix' => 'spectrum\reports\widgets\Clearfix',
+		'TotalInfo' => 'spectrum\reports\widgets\TotalInfo',
+		'finalResult\Result' => 'spectrum\reports\widgets\finalResult\Result',
+		'finalResult\Update' => 'spectrum\reports\widgets\finalResult\Update',
+		'Messages' => 'spectrum\reports\widgets\Messages',
+		'runResultsBuffer\RunResultsBuffer' => 'spectrum\reports\widgets\runResultsBuffer\RunResultsBuffer',
+		'runResultsBuffer\details\MatcherCall' => 'spectrum\reports\widgets\runResultsBuffer\details\MatcherCall',
+		'runResultsBuffer\details\Unknown' => 'spectrum\reports\widgets\runResultsBuffer\details\Unknown',
+		'SpecList' => 'spectrum\reports\widgets\SpecList',
+		'SpecTitle' => 'spectrum\reports\widgets\SpecTitle',
+		'code\Method' => 'spectrum\reports\widgets\code\Method',
+		'code\Operator' => 'spectrum\reports\widgets\code\Operator',
+		'code\Property' => 'spectrum\reports\widgets\code\Property',
+		'code\Variable' => 'spectrum\reports\widgets\code\Variable',
+		'code\variables\ArrayVar' => 'spectrum\reports\widgets\code\variables\ArrayVar',
+		'code\variables\BoolVar' => 'spectrum\reports\widgets\code\variables\BoolVar',
+		'code\variables\FloatVar' => 'spectrum\reports\widgets\code\variables\FloatVar',
+		'code\variables\ClosureVar' => 'spectrum\reports\widgets\code\variables\ClosureVar',
+		'code\variables\IntVar' => 'spectrum\reports\widgets\code\variables\IntVar',
+		'code\variables\NullVar' => 'spectrum\reports\widgets\code\variables\NullVar',
+		'code\variables\ObjectVar' => 'spectrum\reports\widgets\code\variables\ObjectVar',
+		'code\variables\ResourceVar' => 'spectrum\reports\widgets\code\variables\ResourceVar',
+		'code\variables\StringVar' => 'spectrum\reports\widgets\code\variables\StringVar',
+		'code\variables\UnknownVar' => 'spectrum\reports\widgets\code\variables\UnknownVar',
 	);
 
 /**/

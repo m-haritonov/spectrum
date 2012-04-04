@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\stack;
-use net\mkharitonov\spectrum\core\plugins\Exception;
+namespace spectrum\core\plugins\basePlugins\stack;
+use spectrum\core\plugins\Exception;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Stack extends \net\mkharitonov\spectrum\core\plugins\Plugin
+abstract class Stack extends \spectrum\core\plugins\Plugin
 {
 	protected $items = array();
 

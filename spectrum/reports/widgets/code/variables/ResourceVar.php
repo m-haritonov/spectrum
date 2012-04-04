@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\code\variables;
+namespace spectrum\reports\widgets\code\variables;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

@@ -9,21 +9,21 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Matchers matchers
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Builders builders
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators\Destroyers destroyers
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Selector selector
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Identify identify
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Output output
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Messages messages
- * @property \net\mkharitonov\spectrum\core\plugins\basePlugins\Patterns patterns
- * @property \net\mkharitonov\spectrum\reports\Plugin reports
+ * @property \spectrum\core\plugins\basePlugins\Matchers matchers
+ * @property \spectrum\core\plugins\basePlugins\worldCreators\Builders builders
+ * @property \spectrum\core\plugins\basePlugins\worldCreators\Destroyers destroyers
+ * @property \spectrum\core\plugins\basePlugins\Selector selector
+ * @property \spectrum\core\plugins\basePlugins\Identify identify
+ * @property \spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
+ * @property \spectrum\core\plugins\basePlugins\Output output
+ * @property \spectrum\core\plugins\basePlugins\Messages messages
+ * @property \spectrum\core\plugins\basePlugins\Patterns patterns
+ * @property \spectrum\reports\Plugin reports
  */
 abstract class Spec implements SpecInterface
 {

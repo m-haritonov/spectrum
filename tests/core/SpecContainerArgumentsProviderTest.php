@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../init.php';
  */
 class SpecContainerArgumentsProviderTest extends SpecTest
 {
-	protected $currentSpecClass = '\net\mkharitonov\spectrum\core\SpecContainerArgumentsProvider';
+	protected $currentSpecClass = '\spectrum\core\SpecContainerArgumentsProvider';
 
 	/**
 	 * @var SpecContainerArgumentsProvider

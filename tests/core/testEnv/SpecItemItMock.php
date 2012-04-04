@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv;
+namespace spectrum\core\testEnv;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SpecItemItMock extends \net\mkharitonov\spectrum\core\SpecItemIt
+class SpecItemItMock extends \spectrum\core\SpecItemIt
 {
 	private $__injectionsToRun = array();
 	private $__injectionsToRunStart = array();

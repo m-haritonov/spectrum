@@ -9,10 +9,10 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
-use \net\mkharitonov\spectrum\core\SpecContainerArgumentsProvider;
-use \net\mkharitonov\spectrum\core\SpecItemIt;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
+use \spectrum\core\SpecContainerArgumentsProvider;
+use \spectrum\core\SpecItemIt;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -20,7 +20,7 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class ItTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class ItTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testParamsVariants_ShouldBeAcceptName()
 	{
@@ -167,9 +167,9 @@ class ItTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands
 
 	public function testShouldBeThrowExceptionIfCalledAtRunningState()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"it" should be call only at declaring state', function()
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"it" should be call only at declaring state', function()
 		{
-			$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
 				Manager::it('', function(){});
@@ -180,7 +180,7 @@ class ItTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands
 
 	public function testShouldBeThrowExceptionIfArgumentsProviderNotArray()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"it" should be accept array as $argumentsProvider', function()
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"it" should be accept array as $argumentsProvider', function()
 		{
 			Manager::it('foo', 'bar', function(){});
 		});
@@ -199,7 +199,7 @@ class ItTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands
 	public function testNoParentCommand_ShouldBeAddInstanceToRootDescribe()
 	{
 		$it = Manager::it('foo');
-		$this->assertSame(array($it), \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->getSpecs());
+		$this->assertSame(array($it), \spectrum\RootDescribe::getOnceInstance()->getSpecs());
 	}
 
 	public function testInsideDescribeCommand_ShouldBeAddInstanceToParentDescribe()

@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
-use net\mkharitonov\spectrum\core\SpecItemIt;
+namespace spectrum\core\plugins\basePlugins;
+use spectrum\core\SpecItemIt;
 
 require_once dirname(__FILE__) . '/../../../init.php';
 
@@ -43,7 +43,7 @@ class SelectorTest extends Test
 
 	public function testGetRoot_ShouldBeReturnSelfIfNoParent()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$this->assertSame($it, $it->selector->getRoot());
 	}
 
@@ -51,9 +51,9 @@ class SelectorTest extends Test
 
 	public function testGetNearestNotContextAncestor_ShouldBeFindOnlyNotContext()
 	{
-		$spec = new \net\mkharitonov\spectrum\core\SpecContainerContext();
-		$parent1 = new \net\mkharitonov\spectrum\core\SpecContainerContext();
-		$parent2 = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$spec = new \spectrum\core\SpecContainerContext();
+		$parent1 = new \spectrum\core\SpecContainerContext();
+		$parent2 = new \spectrum\core\SpecContainerDescribe();
 
 		$parent1->addSpec($spec);
 		$parent2->addSpec($parent1);
@@ -63,9 +63,9 @@ class SelectorTest extends Test
 
 	public function testGetNearestNotContextAncestor_ShouldBeCheckFirstParent()
 	{
-		$spec = new \net\mkharitonov\spectrum\core\SpecContainerContext();
-		$parent1 = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
-		$parent2 = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$spec = new \spectrum\core\SpecContainerContext();
+		$parent1 = new \spectrum\core\SpecContainerDescribe();
+		$parent2 = new \spectrum\core\SpecContainerDescribe();
 
 		$parent1->addSpec($spec);
 		$parent2->addSpec($parent1);
@@ -75,8 +75,8 @@ class SelectorTest extends Test
 
 	public function testGetNearestNotContextAncestor_ShouldBeReturnNullIfNoParentNotContext()
 	{
-		$spec = new \net\mkharitonov\spectrum\core\SpecContainerContext();
-		$parent = new \net\mkharitonov\spectrum\core\SpecContainerContext();
+		$spec = new \spectrum\core\SpecContainerContext();
+		$parent = new \spectrum\core\SpecContainerContext();
 		$parent->addSpec($spec);
 		$this->assertNull($spec->selector->getNearestNotContextAncestor());
 	}
@@ -98,8 +98,8 @@ class SelectorTest extends Test
 //		$it = new SpecItemIt();
 //		$it->setTestCallback(function() use($describe, $context1, $context2, $contextNested)
 //		{
-//			\net\mkharitonov\spectrum\Test::$tmp['asserts'][] = array($contextNested, $describe->selector->getRunningContextNested());
-//			\net\mkharitonov\spectrum\Test::$tmp['asserts'][] = array($contextNested, $context1->selector->getRunningContextNested());
+//			\spectrum\Test::$tmp['asserts'][] = array($contextNested, $describe->selector->getRunningContextNested());
+//			\spectrum\Test::$tmp['asserts'][] = array($contextNested, $context1->selector->getRunningContextNested());
 //		});
 //
 //		$describe->addSpec($context1);
@@ -119,7 +119,7 @@ class SelectorTest extends Test
 //		$it = new SpecItemIt();
 //		$it->setTestCallback(function() use($rootDescribe)
 //		{
-//			\net\mkharitonov\spectrum\Test::$tmp['asserts'][] = array(null, $rootDescribe->selector->getRunningContextNested());
+//			\spectrum\Test::$tmp['asserts'][] = array(null, $rootDescribe->selector->getRunningContextNested());
 //		});
 //
 //		$rootDescribe->addSpec($describe);

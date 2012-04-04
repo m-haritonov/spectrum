@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
+namespace spectrum\core\plugins\basePlugins;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Messages extends \net\mkharitonov\spectrum\core\plugins\Plugin
+class Messages extends \spectrum\core\plugins\Plugin
 {
 	protected $messages = array();
 

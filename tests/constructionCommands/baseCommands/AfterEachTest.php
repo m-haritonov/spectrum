@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class AfterEachTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	protected function setUp()
 	{
@@ -37,9 +37,9 @@ class AfterEachTest extends \net\mkharitonov\spectrum\constructionCommands\baseC
 
 	public function testShouldBeThrowExceptionIfCalledAtRunningState()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"afterEach"', function()
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"afterEach"', function()
 		{
-			$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
 				Manager::afterEach(function(){});
@@ -72,7 +72,7 @@ class AfterEachTest extends \net\mkharitonov\spectrum\constructionCommands\baseC
 		$function = function(){};
 		Manager::afterEach($function);
 
-		$destroyer = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->destroyers->get(0);
+		$destroyer = \spectrum\RootDescribe::getOnceInstance()->destroyers->get(0);
 		$this->assertSame($function, $destroyer['callback']);
 		$this->assertSame('each', $destroyer['type']);
 	}

@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class BeforeEachTest extends \net\mkharitonov\spectrum\constructionCommands\baseCommands\Test
+class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	protected function setUp()
 	{
@@ -37,9 +37,9 @@ class BeforeEachTest extends \net\mkharitonov\spectrum\constructionCommands\base
 
 	public function testShouldBeThrowExceptionIfCalledAtRunningState()
 	{
-		$this->assertThrowException('\net\mkharitonov\spectrum\constructionCommands\Exception', '"beforeEach"', function()
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"beforeEach"', function()
 		{
-			$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
 				Manager::beforeEach(function(){});
@@ -72,7 +72,7 @@ class BeforeEachTest extends \net\mkharitonov\spectrum\constructionCommands\base
 		$function = function(){};
 		Manager::beforeEach($function);
 
-		$builder = \net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->builders->get(0);
+		$builder = \spectrum\RootDescribe::getOnceInstance()->builders->get(0);
 		$this->assertSame($function, $builder['callback']);
 		$this->assertSame('each', $builder['type']);
 	}

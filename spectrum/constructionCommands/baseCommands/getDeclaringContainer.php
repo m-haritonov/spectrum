@@ -9,17 +9,17 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
-use net\mkharitonov\spectrum\constructionCommands\Manager;
+namespace spectrum\constructionCommands\baseCommands;
+use spectrum\constructionCommands\Manager;
 /**
  * Available at declaring and running state.
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @return \net\mkharitonov\spectrum\core\SpecContainerInterface|null
+ * @return \spectrum\core\SpecContainerInterface|null
  */
 function getDeclaringContainer()
 {
-	$reflection = new \ReflectionFunction('\net\mkharitonov\spectrum\constructionCommands\baseCommands\setDeclaringContainer');
+	$reflection = new \ReflectionFunction('\spectrum\constructionCommands\baseCommands\setDeclaringContainer');
 	$vars = $reflection->getStaticVariables();
 	return $vars['container'];
 }

@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\matchers;
+namespace spectrum\matchers;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,10 +17,10 @@ namespace net\mkharitonov\spectrum\matchers;
  */
 class Config
 {
-	private static $managerClass = '\net\mkharitonov\spectrum\matchers\Manager';
+	private static $managerClass = '\spectrum\matchers\Manager';
 	private static $locked = false;
 
-	public static function setManagerClass($className){ return static::setConfigClassValue(static::$managerClass, $className, '\net\mkharitonov\spectrum\matchers\ManagerInterface'); }
+	public static function setManagerClass($className){ return static::setConfigClassValue(static::$managerClass, $className, '\spectrum\matchers\ManagerInterface'); }
 	public static function getManagerClass(){ return static::$managerClass; }
 
 	public static function lock(){ static::$locked = true; }

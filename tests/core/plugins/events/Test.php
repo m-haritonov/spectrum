@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\events;
-use net\mkharitonov\spectrum\core\plugins\Manager;
+namespace spectrum\core\plugins\events;
+use spectrum\core\plugins\Manager;
 
 require_once dirname(__FILE__) . '/../../../init.php';
 
@@ -18,13 +18,13 @@ require_once dirname(__FILE__) . '/../../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\Test
+abstract class Test extends \spectrum\core\Test
 {
 	protected function createItWithPluginEventAndRun($pluginEventClass)
 	{
 		Manager::registerPlugin('foo', $pluginEventClass);
 
-		$spec = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$spec = new \spectrum\core\SpecItemIt();
 		$spec->setTestCallback(function(){});
 		$spec->run();
 
@@ -45,7 +45,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\Test
 	{
 		$eventClassName = $this->getEventClassNameByEventName($eventName);
 
-		$event = \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents'][$eventClassName][$index];
+		$event = \spectrum\Test::$tmp['triggeredEvents'][$eventClassName][$index];
 		if ($event['name'] == $eventName)
 			return $event;
 		else
@@ -59,9 +59,9 @@ abstract class Test extends \net\mkharitonov\spectrum\core\Test
 		 // 2 - onRunAfter from SpecContainer
 		 // 3 - onRunAfter from SpecItemIt
 		if ($eventName == 'onRunBefore')
-			return \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][0];
+			return \spectrum\Test::$tmp['triggeredEvents']['onRun'][0];
 		else if ($eventName == 'onRunAfter')
-			return \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][2];
+			return \spectrum\Test::$tmp['triggeredEvents']['onRun'][2];
 		else
 			return array();
 	}

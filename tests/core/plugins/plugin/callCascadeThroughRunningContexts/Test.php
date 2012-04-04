@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\plugin\callCascadeThroughRunningContexts;
+namespace spectrum\core\plugins\plugin\callCascadeThroughRunningContexts;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\plugins\plugin\Test
+abstract class Test extends \spectrum\core\plugins\plugin\Test
 {
 	public function testNoParents_ShouldBeCallProperMethodFromSelfPlugin()
 	{
@@ -26,7 +26,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo');
 		}, $specs['spec']);
 
-		$this->assertSame(array(), \net\mkharitonov\spectrum\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array(), \spectrum\Test::$tmp['getFoo']['arguments']);
 	}
 
 	public function testNoParents_ShouldBePassArgumentsToSelfPluginMethod()
@@ -37,7 +37,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo', array('bar', 'baz'));
 		}, $specs['spec']);
 
-		$this->assertSame(array('bar', 'baz'), \net\mkharitonov\spectrum\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array('bar', 'baz'), \spectrum\Test::$tmp['getFoo']['arguments']);
 	}
 
 	public function testNoParents_SelfReturnIsEmpty_ShouldBeReturnDefaultValue()
@@ -101,7 +101,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo');
 		}, $specs['spec']);
 
-		$this->assertSame(array(), \net\mkharitonov\spectrum\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array(), \spectrum\Test::$tmp['getFoo']['arguments']);
 	}
 
 	public function testHasParents_Describe_ShouldBePassArgumentsToParentPluginMethod()
@@ -115,7 +115,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo', array('bar', 'baz'));
 		}, $specs['spec']);
 
-		$this->assertSame(array('bar', 'baz'), \net\mkharitonov\spectrum\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array('bar', 'baz'), \spectrum\Test::$tmp['getFoo']['arguments']);
 	}
 
 	public function testHasParents_Describe_ParentReturnIsEmpty_ShouldBeReturnDefaultValue()
@@ -454,9 +454,9 @@ abstract class Test extends \net\mkharitonov\spectrum\core\plugins\plugin\Test
 
 /*** Test ware ***/
 
-	abstract protected function executeContext($callback, \net\mkharitonov\spectrum\core\SpecInterface $spec);
+	abstract protected function executeContext($callback, \spectrum\core\SpecInterface $spec);
 
-	protected function assertCallCascadeReturnSame($expectedResult, \net\mkharitonov\spectrum\core\SpecInterface $spec, $methodName = 'getFoo')
+	protected function assertCallCascadeReturnSame($expectedResult, \spectrum\core\SpecInterface $spec, $methodName = 'getFoo')
 	{
 		$this->executeContext(function() use($spec, $methodName, &$result){
 			$result = $spec->testPlugin->callCascadeThroughRunningContexts($methodName);

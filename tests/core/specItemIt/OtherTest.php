@@ -9,10 +9,10 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt;
-use net\mkharitonov\spectrum\core\SpecItemIt;
-use net\mkharitonov\spectrum\core\Config;
-use \net\mkharitonov\spectrum\core\SpecContainerDescribe;
+namespace spectrum\core\specItemIt;
+use spectrum\core\SpecItemIt;
+use spectrum\core\Config;
+use \spectrum\core\SpecContainerDescribe;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
@@ -43,7 +43,7 @@ class OtherTest extends Test
 			$spec->setName('foo');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
 			$spec->run();
 		});
 	}
@@ -63,7 +63,7 @@ class OtherTest extends Test
 			$specs[2]->setName('foo');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}
@@ -80,7 +80,7 @@ class OtherTest extends Test
 			$spec->setParent(new SpecContainerDescribe());
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
 			$spec->run();
 		});
 	}
@@ -97,7 +97,7 @@ class OtherTest extends Test
 			$spec->removeFromParent();
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
 			$spec->run();
 		});
 	}
@@ -114,7 +114,7 @@ class OtherTest extends Test
 			$spec->enable();
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
 			$spec->run();
 		});
 	}
@@ -131,7 +131,7 @@ class OtherTest extends Test
 			$spec->disable();
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
 			$spec->run();
 		});
 	}
@@ -161,8 +161,8 @@ class OtherTest extends Test
 	{
 		$it = new SpecItemIt();
 
-		\net\mkharitonov\spectrum\Test::$tmp['testSpec'] = $it;
-		$it->setTestCallback(create_function('', '\net\mkharitonov\spectrum\Test::$tmp[\'testSpec\']->getRunResultsBuffer()->addResult(true);'));
+		\spectrum\Test::$tmp['testSpec'] = $it;
+		$it->setTestCallback(create_function('', '\spectrum\Test::$tmp[\'testSpec\']->getRunResultsBuffer()->addResult(true);'));
 
 		$this->assertTrue($it->run());
 	}
@@ -171,7 +171,7 @@ class OtherTest extends Test
 	{
 		$it = new SpecItemIt();
 
-		\net\mkharitonov\spectrum\Test::$tmp['testSpec'] = $it;
+		\spectrum\Test::$tmp['testSpec'] = $it;
 		$it->setTestCallback(__CLASS__ . '::myTestCallback');
 
 		$this->assertTrue($it->run());
@@ -187,7 +187,7 @@ class OtherTest extends Test
 			$spec->setTestCallback(function(){});
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
 			$spec->run();
 		});
 	}
@@ -229,7 +229,7 @@ class OtherTest extends Test
 			$spec->setAdditionalArguments(array());
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
 			$spec->run();
 		});
 	}
@@ -253,6 +253,6 @@ class OtherTest extends Test
 
 	static public function myTestCallback()
 	{
-		\net\mkharitonov\spectrum\Test::$tmp['testSpec']->getRunResultsBuffer()->addResult(true);
+		\spectrum\Test::$tmp['testSpec']->getRunResultsBuffer()->addResult(true);
 	}
 }

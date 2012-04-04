@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details;
-use \net\mkharitonov\spectrum\core\asserts\MatcherCallDetailsInterface;
+namespace spectrum\reports\widgets\runResultsBuffer\details;
+use \spectrum\core\asserts\MatcherCallDetailsInterface;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

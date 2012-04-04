@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\code\variables;
+namespace spectrum\reports\widgets\code\variables;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
+abstract class Variable extends \spectrum\reports\widgets\Widget
 {
 	protected $type;
 	protected $expandedParentSelector = '.g-runResultsBuffer>.results>.result.expand';
@@ -24,7 +24,7 @@ abstract class Variable extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	protected $depth;
 
-	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin, $depth = 0)
+	public function __construct(\spectrum\reports\Plugin $ownerPlugin, $depth = 0)
 	{
 		parent::__construct($ownerPlugin);
 		$this->depth = $depth;

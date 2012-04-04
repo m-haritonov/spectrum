@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins;
+namespace spectrum\core\plugins;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,7 +17,7 @@ namespace net\mkharitonov\spectrum\core\plugins;
  */
 interface ManagerInterface
 {
-	static public function registerPlugin($accessName, $class = '\net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenCallOnce');
+	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenCallOnce');
 	static public function registerPlugins($plugins);
 	static public function unregisterPlugin($accessName);
 	static public function unregisterAllPlugins();
@@ -25,5 +25,5 @@ interface ManagerInterface
 	static public function getAccessNamesForEventPlugins($eventName);
 	static public function getRegisteredPlugin($accessName);
 	static public function hasRegisteredPlugin($accessName);
-	static public function createPluginInstance(\net\mkharitonov\spectrum\core\SpecInterface $ownerSpec, $accessName);
+	static public function createPluginInstance(\spectrum\core\SpecInterface $ownerSpec, $accessName);
 }

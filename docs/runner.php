@@ -90,7 +90,7 @@ $init = dirname(__FILE__) . '/../spectrum/init.php';
 require_once $init;
 
 if (!isset($_REQUEST['enableDebug']))
-	\net\mkharitonov\spectrum\RootDescribe::getOnceInstance()->report->setOutputDebug(false);
+	\spectrum\RootDescribe::getOnceInstance()->report->setOutputDebug(false);
 
 $code = $_REQUEST['code'];
 $code = preg_replace('/^\s*\<\?php/is', '', $code);
@@ -98,4 +98,4 @@ $code = str_replace('spectrum/spectrum/init.php', $init, $code);
 eval($code);
 
 if (!isset($_REQUEST['noRun']))
-	\net\mkharitonov\spectrum\RootDescribe::run();
+	\spectrum\RootDescribe::run();

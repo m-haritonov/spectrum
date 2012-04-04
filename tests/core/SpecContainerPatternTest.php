@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -18,7 +18,7 @@ require_once dirname(__FILE__) . '/../init.php';
  */
 class SpecContainerPatternTest extends SpecContainerTest
 {
-	protected $currentSpecClass = '\net\mkharitonov\spectrum\core\SpecContainerPattern';
+	protected $currentSpecClass = '\spectrum\core\SpecContainerPattern';
 
 	/**
 	 * @var SpecContainerArgumentsProvider
@@ -45,7 +45,7 @@ class SpecContainerPatternTest extends SpecContainerTest
 			$specs[0]->setArguments('foo');
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
+		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($specs){
 			$specs[0]->run();
 		});
 	}

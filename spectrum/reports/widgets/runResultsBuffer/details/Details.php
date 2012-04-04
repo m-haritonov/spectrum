@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\runResultsBuffer\details;
-use \net\mkharitonov\spectrum\core\asserts\MatcherCallDetailsInterface;
+namespace spectrum\reports\widgets\runResultsBuffer\details;
+use \spectrum\core\asserts\MatcherCallDetailsInterface;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Details extends \net\mkharitonov\spectrum\reports\widgets\Widget
+abstract class Details extends \spectrum\reports\widgets\Widget
 {
 	public function getStyles()
 	{

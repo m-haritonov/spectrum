@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets\finalResult;
+namespace spectrum\reports\widgets\finalResult;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Result extends \net\mkharitonov\spectrum\reports\widgets\Widget
+class Result extends \spectrum\reports\widgets\Widget
 {
 	public function getStyles()
 	{

@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -19,7 +19,7 @@ class SpecItemIt extends SpecItem implements SpecItemItInterface
 {
 	protected $runningSpecItemBackup;
 	/**
-	 * @var \net\mkharitonov\spectrum\core\RunResultsBuffer|null
+	 * @var \spectrum\core\RunResultsBuffer|null
 	 */
 	protected $runResultsBuffer;
 	protected $testCallback;
@@ -88,14 +88,14 @@ class SpecItemIt extends SpecItem implements SpecItemItInterface
 		$runResultsBufferClass = Config::getRunResultsBufferClass();
 		$this->runResultsBuffer = new $runResultsBufferClass($this);
 
-		$registryClass = \net\mkharitonov\spectrum\core\Config::getRegistryClass();
+		$registryClass = \spectrum\core\Config::getRegistryClass();
 		$this->runningSpecItemBackup = $registryClass::getRunningSpecItem();
 		$registryClass::setRunningSpecItem($this);
 	}
 
 	protected function stopRun()
 	{
-		$registryClass = \net\mkharitonov\spectrum\core\Config::getRegistryClass();
+		$registryClass = \spectrum\core\Config::getRegistryClass();
 		$registryClass::setRunningSpecItem($this->runningSpecItemBackup);
 
 		$this->runResultsBuffer = null;

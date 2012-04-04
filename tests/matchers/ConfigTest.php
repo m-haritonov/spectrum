@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\matchers;
+namespace spectrum\matchers;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -20,23 +20,23 @@ class ConfigTest extends Test
 {
 	public function testGetManagerClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\net\mkharitonov\spectrum\matchers\Manager', Config::getManagerClass());
+		$this->assertEquals('\spectrum\matchers\Manager', Config::getManagerClass());
 	}
 
 /**/
 
 	public function testSetManagerClass_ShouldBeSetNewClass()
 	{
-		Config::setManagerClass('\net\mkharitonov\spectrum\matchers\testEnv\emptyStubs\Manager');
-		$this->assertEquals('\net\mkharitonov\spectrum\matchers\testEnv\emptyStubs\Manager', Config::getManagerClass());
+		Config::setManagerClass('\spectrum\matchers\testEnv\emptyStubs\Manager');
+		$this->assertEquals('\spectrum\matchers\testEnv\emptyStubs\Manager', Config::getManagerClass());
 	}
 
 	public function testSetManagerClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
 		$oldClass = Config::getManagerClass();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\matchers\Exception', 'not exists', function(){
-			Config::setManagerClass('\net\mkharitonov\spectrum\matchers\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		$this->assertThrowException('\spectrum\matchers\Exception', 'not exists', function(){
+			Config::setManagerClass('\spectrum\matchers\testEnv\emptyStubs\NotExistsClassFooBarBaz');
 		});
 
 		$this->assertEquals($oldClass, Config::getManagerClass());
@@ -46,7 +46,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = Config::getManagerClass();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\matchers\Exception', 'should be implement interface', function(){
+		$this->assertThrowException('\spectrum\matchers\Exception', 'should be implement interface', function(){
 			Config::setManagerClass('\stdClass');
 		});
 
@@ -58,8 +58,8 @@ class ConfigTest extends Test
 		$oldClass = Config::getManagerClass();
 		Config::lock();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\matchers\Exception', 'matchers\Config is locked', function(){
-			Config::setManagerClass('\net\mkharitonov\spectrum\matchers\testEnv\emptyStubs\Manager');
+		$this->assertThrowException('\spectrum\matchers\Exception', 'matchers\Config is locked', function(){
+			Config::setManagerClass('\spectrum\matchers\testEnv\emptyStubs\Manager');
 		});
 
 		$this->assertEquals($oldClass, Config::getManagerClass());

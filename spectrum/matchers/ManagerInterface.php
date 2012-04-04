@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\matchers;
+namespace spectrum\matchers;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,6 +17,6 @@ namespace net\mkharitonov\spectrum\matchers;
  */
 interface ManagerInterface
 {
-	static public function addAllMatchersToSpec(\net\mkharitonov\spectrum\core\SpecInterface $spec);
-	static public function addBaseMatchersToSpec(\net\mkharitonov\spectrum\core\SpecInterface $spec);
+	static public function addAllMatchersToSpec(\spectrum\core\SpecInterface $spec);
+	static public function addBaseMatchersToSpec(\spectrum\core\SpecInterface $spec);
 }

@@ -9,10 +9,10 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
+namespace spectrum\core\plugins\basePlugins;
 require_once dirname(__FILE__) . '/../../../init.php';
 
-use net\mkharitonov\spectrum\core\Config;
+use spectrum\core\Config;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -23,8 +23,8 @@ class ErrorHandlingTest extends Test
 	public function testSetCatchExceptions_ShouldBeThrowExceptionIfNotAllowErrorHandlingModify()
 	{
 		Config::setAllowErrorHandlingModify(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
-			$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
+			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->errorHandling->setCatchExceptions(false);
 		});
 	}
@@ -32,8 +32,8 @@ class ErrorHandlingTest extends Test
 	public function testSetCatchPhpErrors_ShouldBeThrowExceptionIfNotAllowErrorHandlingModify()
 	{
 		Config::setAllowErrorHandlingModify(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
-			$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
+			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->errorHandling->setCatchPhpErrors(false);
 		});
 	}
@@ -41,8 +41,8 @@ class ErrorHandlingTest extends Test
 	public function testSetBreakOnFirstPhpError_ShouldBeThrowExceptionIfNotAllowErrorHandlingModify()
 	{
 		Config::setAllowErrorHandlingModify(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
-			$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
+			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->errorHandling->setBreakOnFirstPhpError(false);
 		});
 	}
@@ -50,8 +50,8 @@ class ErrorHandlingTest extends Test
 	public function testSetBreakOnFirstMatcherFail_ShouldBeThrowExceptionIfNotAllowErrorHandlingModify()
 	{
 		Config::setAllowErrorHandlingModify(false);
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
-			$spec = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Error handling modify deny', function(){
+			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->errorHandling->setBreakOnFirstMatcherFail(false);
 		});
 	}

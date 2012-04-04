@@ -9,11 +9,11 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\events\onTestCallbackCall;
-use net\mkharitonov\spectrum\core\plugins\Manager;
-use net\mkharitonov\spectrum\core\SpecItemIt;
-use net\mkharitonov\spectrum\core\RunResultsBuffer;
-use net\mkharitonov\spectrum\core\World;
+namespace spectrum\core\plugins\events\onTestCallbackCall;
+use spectrum\core\plugins\Manager;
+use spectrum\core\SpecItemIt;
+use spectrum\core\RunResultsBuffer;
+use spectrum\core\World;
 
 require_once dirname(__FILE__) . '/../../../../init.php';
 
@@ -27,21 +27,21 @@ class BeforeTest extends Test
 
 	public function testShouldBeTriggeredAfterRunStart()
 	{
-		$this->createItWithPluginEventAndRun('\net\mkharitonov\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
+		$this->createItWithPluginEventAndRun('\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 		$event = $this->getFirstEvent($this->eventName);
 		$this->assertTrue($event['isRunning']);
 	}
 
 	public function testShouldBeTriggeredAfterRunResultsBufferCreation()
 	{
-		$this->createItWithPluginEventAndRun('\net\mkharitonov\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
+		$this->createItWithPluginEventAndRun('\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 		$event = $this->getFirstEvent($this->eventName);
 		$this->assertTrue($event['runResultsBuffer'] instanceof RunResultsBuffer);
 	}
 
 	public function testShouldBeTriggeredAfterWorldBuildersApply()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 
 		$spec = new SpecItemIt();
 		$spec->builders->add(function($world){ $world->foo = 'bar'; });
@@ -56,11 +56,11 @@ class BeforeTest extends Test
 
 	public function testShouldBeTriggeredBeforeTestCallbackExecution()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onTestCallbackCall'];
+			$triggeredEventsBeforeExecution = \spectrum\Test::$tmp['triggeredEvents']['onTestCallbackCall'];
 		});
 
 		$spec->run();
@@ -72,13 +72,13 @@ class BeforeTest extends Test
 
 	public function testShouldBeTriggeredOnce()
 	{
-		$this->createItWithPluginEventAndRun('\net\mkharitonov\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
+		$this->createItWithPluginEventAndRun('\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 		$this->assertEventTriggeredCount(1, $this->eventName);
 	}
 
 	public function testAdditionalArgumentsNotSet_ShouldBePassWorldToArguments()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use($spec){});

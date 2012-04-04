@@ -9,11 +9,11 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\events\onRun;
-use net\mkharitonov\spectrum\core\plugins\Manager;
-use net\mkharitonov\spectrum\core\SpecItemIt;
-use net\mkharitonov\spectrum\core\RunResultsBuffer;
-use net\mkharitonov\spectrum\core\World;
+namespace spectrum\core\plugins\events\onRun;
+use spectrum\core\plugins\Manager;
+use spectrum\core\SpecItemIt;
+use spectrum\core\RunResultsBuffer;
+use spectrum\core\World;
 
 require_once dirname(__FILE__) . '/../../../../init.php';
 
@@ -25,7 +25,7 @@ abstract class SpecContainerTest extends Test
 {
 	public function testBefore_ShouldBeTriggeredBeforeRunChildren()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$specs = $this->createSpecsTree('
 			' . $this->currentSpecClass . '
@@ -33,7 +33,7 @@ abstract class SpecContainerTest extends Test
 		');
 
 		$specs[1]->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\Test::$tmp['triggeredEvents']['onRun'];
 		});
 
 		$specs[0]->run();
@@ -47,7 +47,7 @@ abstract class SpecContainerTest extends Test
 
 	public function testAfter_ShouldBeTriggeredAfterRunChildren()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$specs = $this->createSpecsTree('
 			' . $this->currentSpecClass . '
@@ -55,7 +55,7 @@ abstract class SpecContainerTest extends Test
 		');
 
 		$specs[1]->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\Test::$tmp['triggeredEvents']['onRun'];
 		});
 
 		$specs[0]->run();
@@ -74,7 +74,7 @@ abstract class SpecContainerTest extends Test
 
 	public function testAfter_SuccessResult_ShouldBePassResultToArguments()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$specs = $this->createSpecsTree('
 			' . $this->currentSpecClass . '
@@ -95,7 +95,7 @@ abstract class SpecContainerTest extends Test
 
 	public function testAfter_FailResult_ShouldBePassResultToArguments()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$specs = $this->createSpecsTree('
 			' . $this->currentSpecClass . '
@@ -116,7 +116,7 @@ abstract class SpecContainerTest extends Test
 
 	public function testAfter_EmptyResult_ShouldBePassResultToArguments()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$specs = $this->createSpecsTree('
 			' . $this->currentSpecClass . '

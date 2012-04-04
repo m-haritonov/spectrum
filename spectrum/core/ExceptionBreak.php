@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 
 /**
  * Be carefully, this exception not adds to RunResultsBuffer and should be throw only for softly break execution.

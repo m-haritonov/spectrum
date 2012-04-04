@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum;
+namespace spectrum;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

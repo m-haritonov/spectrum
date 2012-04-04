@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets;
+namespace spectrum\reports\widgets;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,7 +17,7 @@ namespace net\mkharitonov\spectrum\reports\widgets;
  */
 interface WidgetInterface
 {
-	public function __construct(\net\mkharitonov\spectrum\reports\Plugin $ownerPlugin);
+	public function __construct(\spectrum\reports\Plugin $ownerPlugin);
 	public function getOwnerPlugin();
 	public function getStyles();
 	public function getScripts();

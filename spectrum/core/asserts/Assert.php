@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts;
-use net\mkharitonov\spectrum\core\Exception;
+namespace spectrum\core\asserts;
+use spectrum\core\Exception;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -63,24 +63,24 @@ class Assert implements AssertInterface
 		$this->resetNot();
 
 		if (!$result && $specItem->errorHandling->getBreakOnFirstMatcherFailCascade())
-			throw new \net\mkharitonov\spectrum\core\ExceptionBreak();
+			throw new \spectrum\core\ExceptionBreak();
 	}
 
 	/**
-	 * @return \net\mkharitonov\spectrum\core\SpecItemIt
+	 * @return \spectrum\core\SpecItemIt
 	 */
 	protected function getRunningSpecItem()
 	{
-		$registryClass = \net\mkharitonov\spectrum\core\Config::getRegistryClass();
+		$registryClass = \spectrum\core\Config::getRegistryClass();
 		return $registryClass::getRunningSpecItem();
 	}
 
 	/**
-	 * @return \MatcherCallDetails\mkharitonov\spectrum\core\asserts\MatcherCallDetails
+	 * @return \spectrum\core\asserts\MatcherCallDetails
 	 */
 	protected function createMatcherCallDetails()
 	{
-		$class = \net\mkharitonov\spectrum\core\Config::getMatcherCallDetailsClass();
+		$class = \spectrum\core\Config::getMatcherCallDetailsClass();
 		$matcherCallDetails = new $class();
 		$matcherCallDetails->setActualValue($this->getActualValue());
 		$matcherCallDetails->setIsNot($this->isNot());
@@ -95,7 +95,7 @@ class Assert implements AssertInterface
 		{
 			$specItem = $this->getRunningSpecItem();
 
-			$e = new \net\mkharitonov\spectrum\core\asserts\Exception('Undefined property "Assert->' . $name . '"');
+			$e = new \spectrum\core\asserts\Exception('Undefined property "Assert->' . $name . '"');
 
 			if ($specItem->errorHandling->getCatchExceptionsCascade())
 				$specItem->getRunResultsBuffer()->addResult(false, $e);
@@ -103,7 +103,7 @@ class Assert implements AssertInterface
 				throw $e;
 
 			if ($specItem->errorHandling->getBreakOnFirstMatcherFailCascade())
-				throw new \net\mkharitonov\spectrum\core\ExceptionBreak();
+				throw new \spectrum\core\ExceptionBreak();
 		}
 
 		return $this;

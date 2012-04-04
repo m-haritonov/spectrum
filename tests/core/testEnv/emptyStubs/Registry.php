@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv\emptyStubs;
+namespace spectrum\core\testEnv\emptyStubs;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Registry implements \net\mkharitonov\spectrum\core\RegistryInterface
+class Registry implements \spectrum\core\RegistryInterface
 {
 	static public function getRunningSpecItem(){}
-	static public function setRunningSpecItem(\net\mkharitonov\spectrum\core\SpecItemInterface $instance = null){}
+	static public function setRunningSpecItem(\spectrum\core\SpecItemInterface $instance = null){}
 }

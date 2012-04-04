@@ -9,9 +9,9 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins;
-use net\mkharitonov\spectrum\core\Config;
-use net\mkharitonov\spectrum\core\plugins\Exception;
+namespace spectrum\core\plugins\basePlugins;
+use spectrum\core\Config;
+use spectrum\core\plugins\Exception;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -51,7 +51,7 @@ class Patterns extends Stack\Named
 //		$callback = $this->getCascadeThroughRunningContexts($name);
 //
 //		if (!is_callable($callback))
-//			throw new \net\mkharitonov\spectrum\core\Exception('Callback for pattern "' . $name . '" is not callable');
+//			throw new \spectrum\core\Exception('Callback for pattern "' . $name . '" is not callable');
 //
 //		return call_user_func_array($callback, $args);
 //	}

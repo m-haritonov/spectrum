@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core;
+namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\Test
+abstract class Test extends \spectrum\Test
 {
 	protected $currentSpecClass;
 	protected $currentSpecMockClass;
@@ -36,9 +36,9 @@ abstract class Test extends \net\mkharitonov\spectrum\Test
 	}
 
 	/**
-	 * @return \net\mkharitonov\spectrum\core\testEnv\SpecContainerContextMock|
-	 *         \net\mkharitonov\spectrum\core\testEnv\SpecContainerDescribeMock|
-	 *         \net\mkharitonov\spectrum\core\testEnv\SpecItemItMock
+	 * @return \spectrum\core\testEnv\SpecContainerContextMock|
+	 *         \spectrum\core\testEnv\SpecContainerDescribeMock|
+	 *         \spectrum\core\testEnv\SpecItemItMock
 	 */
 	protected function createCurrentSpecMock()
 	{
@@ -52,7 +52,7 @@ abstract class Test extends \net\mkharitonov\spectrum\Test
 		$eventClassName = $this->getEventClassNameByEventName($eventName);
 
 		$count = 0;
-		foreach (\net\mkharitonov\spectrum\Test::$tmp['triggeredEvents'][$eventClassName] as $event)
+		foreach (\spectrum\Test::$tmp['triggeredEvents'][$eventClassName] as $event)
 		{
 			if ($event['name'] == $eventName)
 				$count++;

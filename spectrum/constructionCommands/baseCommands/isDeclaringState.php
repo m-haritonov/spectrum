@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Available at declaring and running state.
@@ -19,6 +19,6 @@ namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
  */
 function isDeclaringState()
 {
-	$managerClass = \net\mkharitonov\spectrum\constructionCommands\Config::getManagerClass();
+	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 	return !$managerClass::isRunningState();
 }

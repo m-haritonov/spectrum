@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum;
+namespace spectrum;
 
 require_once dirname(__FILE__) . '/init.php';
 
@@ -26,25 +26,25 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	{
 		parent::setUp();
 
-		$this->backupStaticProperties('\net\mkharitonov\spectrum\core\Config');
-		$this->backupStaticProperties('\net\mkharitonov\spectrum\core\Registry');
-		$this->backupStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
-		$this->backupStaticProperties('\net\mkharitonov\spectrum\constructionCommands\Config');
-		$this->backupStaticProperties('\net\mkharitonov\spectrum\constructionCommands\Manager');
-		$this->backupStaticProperties('\net\mkharitonov\spectrum\reports\Config');
+		$this->backupStaticProperties('\spectrum\core\Config');
+		$this->backupStaticProperties('\spectrum\core\Registry');
+		$this->backupStaticProperties('\spectrum\core\plugins\Manager');
+		$this->backupStaticProperties('\spectrum\constructionCommands\Config');
+		$this->backupStaticProperties('\spectrum\constructionCommands\Manager');
+		$this->backupStaticProperties('\spectrum\reports\Config');
 
-		\net\mkharitonov\spectrum\Test::$tmp = null;
-		\net\mkharitonov\spectrum\core\testEnv\PluginStub::reset();
+		\spectrum\Test::$tmp = null;
+		\spectrum\core\testEnv\PluginStub::reset();
 	}
 
 	protected function tearDown()
 	{
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\reports\Config');
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\constructionCommands\Manager');
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\constructionCommands\Config');
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\Registry');
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\Config');
+		$this->restoreStaticProperties('\spectrum\reports\Config');
+		$this->restoreStaticProperties('\spectrum\constructionCommands\Manager');
+		$this->restoreStaticProperties('\spectrum\constructionCommands\Config');
+		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\Registry');
+		$this->restoreStaticProperties('\spectrum\core\Config');
 
 		parent::tearDown();
 	}
@@ -69,7 +69,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesOrIndexes()
 	{
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
 		$specs = $this->createSpecsTree('
 			Describe
 			->Context(foo)
@@ -78,16 +78,16 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		');
 
 		$this->assertEquals(4, count($specs));
-		$this->assertTrue($specs['0'] instanceof \net\mkharitonov\spectrum\core\SpecContainerDescribeInterface);
-		$this->assertTrue($specs['foo'] instanceof \net\mkharitonov\spectrum\core\SpecContainerContextInterface);
-		$this->assertTrue($specs['2'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
-		$this->assertTrue($specs['bar'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
+		$this->assertTrue($specs['0'] instanceof \spectrum\core\SpecContainerDescribeInterface);
+		$this->assertTrue($specs['foo'] instanceof \spectrum\core\SpecContainerContextInterface);
+		$this->assertTrue($specs['2'] instanceof \spectrum\core\SpecItemIt);
+		$this->assertTrue($specs['bar'] instanceof \spectrum\core\SpecItemIt);
 		$this->assertNotSame($specs['2'], $specs['bar']);
 	}
 
 	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesAndIndexesIfAddIndexNameAlwaysIsTrue()
 	{
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
 		$specs = $this->createSpecsTree('
 			Describe(foo)
 			->It(bar)
@@ -95,12 +95,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(4, count($specs));
 
-		$this->assertTrue($specs['0'] instanceof \net\mkharitonov\spectrum\core\SpecContainerDescribe);
-		$this->assertTrue($specs['foo'] instanceof \net\mkharitonov\spectrum\core\SpecContainerDescribe);
+		$this->assertTrue($specs['0'] instanceof \spectrum\core\SpecContainerDescribe);
+		$this->assertTrue($specs['foo'] instanceof \spectrum\core\SpecContainerDescribe);
 		$this->assertSame($specs['0'], $specs['foo']);
 
-		$this->assertTrue($specs['1'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
-		$this->assertTrue($specs['bar'] instanceof \net\mkharitonov\spectrum\core\SpecItemIt);
+		$this->assertTrue($specs['1'] instanceof \spectrum\core\SpecItemIt);
+		$this->assertTrue($specs['bar'] instanceof \spectrum\core\SpecItemIt);
 		$this->assertSame($specs['1'], $specs['bar']);
 
 		$this->assertNotSame($specs['0'], $specs['1']);
@@ -108,9 +108,9 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	final public function testCreateSpecsTree_ShouldBeReturnPreparedInstanceIfExists()
 	{
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
-		$describe = new \net\mkharitonov\spectrum\core\SpecContainerDescribe();
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
+		$describe = new \spectrum\core\SpecContainerDescribe();
+		$it = new \spectrum\core\SpecItemIt();
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -142,9 +142,9 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				Describe
 				It
 			', array(
-				0 => new \net\mkharitonov\spectrum\core\SpecContainerDescribe(),
-				1 => new \net\mkharitonov\spectrum\core\SpecContainerDescribe(),
-				2 => new \net\mkharitonov\spectrum\core\SpecContainerDescribe(),
+				0 => new \spectrum\core\SpecContainerDescribe(),
+				1 => new \spectrum\core\SpecContainerDescribe(),
+				2 => new \spectrum\core\SpecContainerDescribe(),
 			));
 		}
 		catch (Exception $e)
@@ -162,7 +162,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			$this->createSpecsTree('
 				Describe
 			', array(
-				0 => new \net\mkharitonov\spectrum\core\SpecItemIt(),
+				0 => new \spectrum\core\SpecItemIt(),
 			));
 		}
 		catch (Exception $e)
@@ -192,7 +192,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	final public function testCreateSpecsTree_ShouldBeAddChildSpecsToParent()
 	{
-		$this->restoreStaticProperties('\net\mkharitonov\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
 		$specs = $this->createSpecsTree('
 			Describe
 			->Context
@@ -320,23 +320,23 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	private function getFullClassName($shortClassName)
 	{
-		$shortClassName = preg_replace('/^\\\\net\\\\mkharitonov\\\\spectrum\\\\core\\\\testEnv\\\\/s', '', $shortClassName);
-		$shortClassName = preg_replace('/^\\\\net\\\\mkharitonov\\\\spectrum\\\\core\\\\/s', '', $shortClassName);
+		$shortClassName = preg_replace('/^\\\\spectrum\\\\core\\\\testEnv\\\\/s', '', $shortClassName);
+		$shortClassName = preg_replace('/^\\\\spectrum\\\\core\\\\/s', '', $shortClassName);
 		$shortClassName = preg_replace('/^SpecContainer/s', '', $shortClassName);
 		$shortClassName = preg_replace('/^SpecItem/s', '', $shortClassName);
 		
 		$shortToFull = array(
-			'ArgumentsProvider' => '\net\mkharitonov\spectrum\core\SpecContainerArgumentsProvider',
-			'Pattern' => '\net\mkharitonov\spectrum\core\SpecContainerPattern',
-			'Describe' => '\net\mkharitonov\spectrum\core\SpecContainerDescribe',
-			'Context' => '\net\mkharitonov\spectrum\core\SpecContainerContext',
-			'It' => '\net\mkharitonov\spectrum\core\SpecItemIt',
+			'ArgumentsProvider' => '\spectrum\core\SpecContainerArgumentsProvider',
+			'Pattern' => '\spectrum\core\SpecContainerPattern',
+			'Describe' => '\spectrum\core\SpecContainerDescribe',
+			'Context' => '\spectrum\core\SpecContainerContext',
+			'It' => '\spectrum\core\SpecItemIt',
 
-			'ArgumentsProviderMock' => '\net\mkharitonov\spectrum\core\testEnv\SpecContainerArgumentsProviderMock',
-			'PatternMock' => '\net\mkharitonov\spectrum\core\testEnv\SpecContainerPatternMock',
-			'DescribeMock' => '\net\mkharitonov\spectrum\core\testEnv\SpecContainerDescribeMock',
-			'ContextMock' => '\net\mkharitonov\spectrum\core\testEnv\SpecContainerContextMock',
-			'ItMock' => '\net\mkharitonov\spectrum\core\testEnv\SpecItemItMock',
+			'ArgumentsProviderMock' => '\spectrum\core\testEnv\SpecContainerArgumentsProviderMock',
+			'PatternMock' => '\spectrum\core\testEnv\SpecContainerPatternMock',
+			'DescribeMock' => '\spectrum\core\testEnv\SpecContainerDescribeMock',
+			'ContextMock' => '\spectrum\core\testEnv\SpecContainerContextMock',
+			'ItMock' => '\spectrum\core\testEnv\SpecItemItMock',
 		);
 
 		if ($shortToFull[$shortClassName])
@@ -356,50 +356,50 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			return null;
 	}
 
-	public function injectToRunStartCallsCounter(\net\mkharitonov\spectrum\core\SpecInterface $spec, $counterName = 'callsCounter')
+	public function injectToRunStartCallsCounter(\spectrum\core\SpecInterface $spec, $counterName = 'callsCounter')
 	{
 		$spec->__injectFunctionToRunStart(function() use($counterName) {
-			\net\mkharitonov\spectrum\Test::$tmp[$counterName] = (int) \net\mkharitonov\spectrum\Test::$tmp[$counterName] + 1;
+			\spectrum\Test::$tmp[$counterName] = (int) \spectrum\Test::$tmp[$counterName] + 1;
 		});
 	}
 
-	public function injectToRunStartSaveInstanceToCollection(\net\mkharitonov\spectrum\core\SpecInterface $spec)
+	public function injectToRunStartSaveInstanceToCollection(\spectrum\core\SpecInterface $spec)
 	{
 		$spec->__injectFunctionToRunStart(function() use($spec) {
-			\net\mkharitonov\spectrum\Test::$tmp['instancesCollection'][] = $spec;
+			\spectrum\Test::$tmp['instancesCollection'][] = $spec;
 		});
 	}
 
-	public function injectToRunStartCallsOrderChecker(\net\mkharitonov\spectrum\core\SpecInterface $spec, $expectedZeroBasedIndex)
+	public function injectToRunStartCallsOrderChecker(\spectrum\core\SpecInterface $spec, $expectedZeroBasedIndex)
 	{
 		$spec->__injectFunctionToRunStart(function() use($spec, $expectedZeroBasedIndex) {
-			\net\mkharitonov\spectrum\Test::$tmp['callsOrderChecker'][] = $expectedZeroBasedIndex;
+			\spectrum\Test::$tmp['callsOrderChecker'][] = $expectedZeroBasedIndex;
 		});
 	}
 
 	public function assertCallsCounterEquals($expectedCount, $counterName = 'callsCounter')
 	{
-		$this->assertEquals($expectedCount, (int) @\net\mkharitonov\spectrum\Test::$tmp[$counterName]);
+		$this->assertEquals($expectedCount, (int) @\spectrum\Test::$tmp[$counterName]);
 	}
 
 	public function assertCallsInOrder($expectedCount)
 	{
-		$this->assertEquals($expectedCount, count((array) @\net\mkharitonov\spectrum\Test::$tmp['callsOrderChecker']));
+		$this->assertEquals($expectedCount, count((array) @\spectrum\Test::$tmp['callsOrderChecker']));
 
-		foreach ((array) \net\mkharitonov\spectrum\Test::$tmp['callsOrderChecker'] as $actualIndex => $expectedIndex)
+		foreach ((array) \spectrum\Test::$tmp['callsOrderChecker'] as $actualIndex => $expectedIndex)
 		{
 			$this->assertEquals($expectedIndex, $actualIndex);
 		}
 	}
 
-	public function assertInstanceInCollection(\net\mkharitonov\spectrum\core\SpecInterface $spec)
+	public function assertInstanceInCollection(\spectrum\core\SpecInterface $spec)
 	{
-		$this->assertTrue(in_array($spec, (array) \net\mkharitonov\spectrum\Test::$tmp['instancesCollection'], true));
+		$this->assertTrue(in_array($spec, (array) \spectrum\Test::$tmp['instancesCollection'], true));
 	}
 
-	public function assertInstanceNotInCollection(\net\mkharitonov\spectrum\core\SpecInterface $spec)
+	public function assertInstanceNotInCollection(\spectrum\core\SpecInterface $spec)
 	{
-		$this->assertFalse(in_array($spec, (array) \net\mkharitonov\spectrum\Test::$tmp['instancesCollection'], true));
+		$this->assertFalse(in_array($spec, (array) \spectrum\Test::$tmp['instancesCollection'], true));
 	}
 
 	public function assertThrowException($expectedClass, $stringInMessageOrCallback, $callback = null)

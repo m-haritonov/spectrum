@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands;
+namespace spectrum\constructionCommands;
 
 require_once dirname(__FILE__) . '/baseCommands/addPattern.php';
 require_once dirname(__FILE__) . '/baseCommands/addMatcher.php';
@@ -40,20 +40,20 @@ require_once dirname(__FILE__) . '/baseCommands/isRunningState.php';
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @method \net\mkharitonov\spectrum\core\asserts\Assert be()
+ * @method \spectrum\core\asserts\Assert be()
  * @method addMatcher()
  * @method afterEach()
  * @method beforeEach()
- * @method \net\mkharitonov\spectrum\core\SpecContainerInterface container()
- * @method \net\mkharitonov\spectrum\core\SpecContainerContext context()
- * @method \net\mkharitonov\spectrum\core\SpecContainerDescribe describe()
+ * @method \spectrum\core\SpecContainerInterface container()
+ * @method \spectrum\core\SpecContainerContext context()
+ * @method \spectrum\core\SpecContainerDescribe describe()
  * @method fail()
  * @method message()
- * @method \net\mkharitonov\spectrum\core\SpecContainerInterface getCurrentContainer()
- * @method \net\mkharitonov\spectrum\core\SpecItemInterface getCurrentItem()
+ * @method \spectrum\core\SpecContainerInterface getCurrentContainer()
+ * @method \spectrum\core\SpecItemInterface getCurrentItem()
  * @method isDeclaringState()
  * @method isRunningState()
- * @method \net\mkharitonov\spectrum\core\SpecItemIt it()
+ * @method \spectrum\core\SpecItemIt it()
  * @method setDeclaringContainer()
  * @method getDeclaringContainer()
  * @method setSettings()
@@ -61,31 +61,31 @@ require_once dirname(__FILE__) . '/baseCommands/isRunningState.php';
 class Manager implements ManagerInterface
 {
 	static protected $registeredCommands = array(
-		'addPattern' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\addPattern',
-		'addMatcher' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\addMatcher',
-		'beforeEach' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\beforeEach',
-		'afterEach' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\afterEach',
+		'addPattern' => '\spectrum\constructionCommands\baseCommands\addPattern',
+		'addMatcher' => '\spectrum\constructionCommands\baseCommands\addMatcher',
+		'beforeEach' => '\spectrum\constructionCommands\baseCommands\beforeEach',
+		'afterEach' => '\spectrum\constructionCommands\baseCommands\afterEach',
 
-		'container' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\container',
-		'describe' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\describe',
-		'context' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\context',
-		'it' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\it',
-		'itLikePattern' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\itLikePattern',
+		'container' => '\spectrum\constructionCommands\baseCommands\container',
+		'describe' => '\spectrum\constructionCommands\baseCommands\describe',
+		'context' => '\spectrum\constructionCommands\baseCommands\context',
+		'it' => '\spectrum\constructionCommands\baseCommands\it',
+		'itLikePattern' => '\spectrum\constructionCommands\baseCommands\itLikePattern',
 
-		'be' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\be',
+		'be' => '\spectrum\constructionCommands\baseCommands\be',
 
-		'fail' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\fail',
-		'message' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\message',
+		'fail' => '\spectrum\constructionCommands\baseCommands\fail',
+		'message' => '\spectrum\constructionCommands\baseCommands\message',
 
-		'getCurrentContainer' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\getCurrentContainer',
-		'setDeclaringContainer' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\setDeclaringContainer',
-		'getDeclaringContainer' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\getDeclaringContainer',
-		'getCurrentItem' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\getCurrentItem',
+		'getCurrentContainer' => '\spectrum\constructionCommands\baseCommands\getCurrentContainer',
+		'setDeclaringContainer' => '\spectrum\constructionCommands\baseCommands\setDeclaringContainer',
+		'getDeclaringContainer' => '\spectrum\constructionCommands\baseCommands\getDeclaringContainer',
+		'getCurrentItem' => '\spectrum\constructionCommands\baseCommands\getCurrentItem',
 
-		'setSettings' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\setSettings',
+		'setSettings' => '\spectrum\constructionCommands\baseCommands\setSettings',
 
-		'isDeclaringState' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\isDeclaringState',
-		'isRunningState' => '\net\mkharitonov\spectrum\constructionCommands\baseCommands\isRunningState',
+		'isDeclaringState' => '\spectrum\constructionCommands\baseCommands\isDeclaringState',
+		'isRunningState' => '\spectrum\constructionCommands\baseCommands\isRunningState',
 	);
 	
 	static public function __callStatic($name, $args = array())

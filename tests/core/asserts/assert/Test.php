@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts\assert;
+namespace spectrum\core\asserts\assert;
 require_once dirname(__FILE__) . '/../../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\Test
+abstract class Test extends \spectrum\core\Test
 {
 
 /*** Test ware ***/
@@ -39,7 +39,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\Test
 
 	protected function createItWithMatchers()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setCatchExceptions(false);
 		$it->errorHandling->setCatchPhpErrors(false);
 		$it->errorHandling->setBreakOnFirstPhpError(false);

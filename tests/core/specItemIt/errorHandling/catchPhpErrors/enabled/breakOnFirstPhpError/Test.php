@@ -9,9 +9,9 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\breakOnFirstPhpError;
-use net\mkharitonov\spectrum\core\plugins\Manager;
-use net\mkharitonov\spectrum\core\SpecItem;
+namespace spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\breakOnFirstPhpError;
+use spectrum\core\plugins\Manager;
+use spectrum\core\SpecItem;
 
 require_once dirname(__FILE__) . '/../../../../../../init.php';
 
@@ -19,7 +19,7 @@ require_once dirname(__FILE__) . '/../../../../../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\Test
+abstract class Test extends \spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\Test
 {
 	public function testShouldBeReturnFalse()
 	{
@@ -132,13 +132,13 @@ abstract class Test extends \net\mkharitonov\spectrum\core\specItemIt\errorHandl
 
 	public function testShouldBeRestoreRunningSpecItemInRegistry()
 	{
-		$runningSpecItemBackup = \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem();
+		$runningSpecItemBackup = \spectrum\core\Registry::getRunningSpecItem();
 
 		$it = $this->it;
 		$it->setTestCallback(function(){ trigger_error(''); });
 		$it->run();
 
-		$this->assertSame($runningSpecItemBackup, \net\mkharitonov\spectrum\core\Registry::getRunningSpecItem());
+		$this->assertSame($runningSpecItemBackup, \spectrum\core\Registry::getRunningSpecItem());
 	}
 
 	public function testShouldBeStopRun()
@@ -152,7 +152,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\specItemIt\errorHandl
 
 	public function testShouldBeDispatchEventOnRunAfter()
 	{
-		Manager::registerPlugin('foo', '\net\mkharitonov\spectrum\core\testEnv\PluginEventOnRunStub');
+		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$it = $this->it;
 		$it->setTestCallback(function(){ trigger_error(''); });

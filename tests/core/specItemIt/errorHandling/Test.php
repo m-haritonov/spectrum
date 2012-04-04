@@ -9,17 +9,17 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\specItemIt\errorHandling;
+namespace spectrum\core\specItemIt\errorHandling;
 require_once dirname(__FILE__) . '/../../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\specItemIt\Test
+abstract class Test extends \spectrum\core\specItemIt\Test
 {
 	/**
-	 * @var \net\mkharitonov\spectrum\core\SpecItemIt
+	 * @var \spectrum\core\SpecItemIt
 	 */
 	protected $it;
 
@@ -27,7 +27,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\specItemIt\Test
 	{
 		parent::setUp();
 
-		$this->it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$this->it = new \spectrum\core\SpecItemIt();
 		$this->it->errorHandling->setCatchExceptions(false);
 		$this->it->errorHandling->setCatchPhpErrors(false);
 		$this->it->errorHandling->setBreakOnFirstPhpError(false);
@@ -40,7 +40,7 @@ abstract class Test extends \net\mkharitonov\spectrum\core\specItemIt\Test
 		$it->setTestCallback(function() use(&$runResultsBuffer, $it)
 		{
 			$runResultsBuffer = $it->getRunResultsBuffer();
-			throw new \net\mkharitonov\spectrum\core\ExceptionBreak();
+			throw new \spectrum\core\ExceptionBreak();
 		});
 
 		$it->run();

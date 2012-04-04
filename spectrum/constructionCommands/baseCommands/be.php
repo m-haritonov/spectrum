@@ -9,20 +9,20 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
- * @throws \net\mkharitonov\spectrum\constructionCommands\Exception If called not at running state
+ * @throws \spectrum\constructionCommands\Exception If called not at running state
  * @param  mixed $actualValue
- * @return \net\mkharitonov\spectrum\core\asserts\Assert
+ * @return \spectrum\core\asserts\Assert
  */
 function be($actualValue)
 {
-	$managerClass = \net\mkharitonov\spectrum\constructionCommands\Config::getManagerClass();
+	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 	if (!$managerClass::isRunningState())
-		throw new \net\mkharitonov\spectrum\constructionCommands\Exception('Construction command "be" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "be" should be call only at running state');
 
-	$class = \net\mkharitonov\spectrum\core\Config::getAssertClass();
+	$class = \spectrum\core\Config::getAssertClass();
 	return new $class($actualValue);
 }

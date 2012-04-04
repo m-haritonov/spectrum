@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
+namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Function with base functional for construction commands describe() and context()
@@ -29,11 +29,11 @@ namespace net\mkharitonov\spectrum\constructionCommands\baseCommands;
  * @param  string $specClass
  * @param  string|callback $nameOrCallback
  * @param  callback|null $callback
- * @return \net\mkharitonov\spectrum\core\SpecContainer
+ * @return \spectrum\core\SpecContainer
  */
 function container($specClass, $name = null, $callback = null, $settings = array())
 {
-	$managerClass = \net\mkharitonov\spectrum\constructionCommands\Config::getManagerClass();
+	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 
 	$arg1 = $name;
 	$arg2 = $callback;

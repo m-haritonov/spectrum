@@ -9,18 +9,18 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets;
-use \net\mkharitonov\spectrum\core\SpecContainerDescribeInterface;
-use \net\mkharitonov\spectrum\core\SpecContainerContextInterface;
-use \net\mkharitonov\spectrum\core\SpecItemItInterface;
-use \net\mkharitonov\spectrum\core\SpecContainerInterface;
-use \net\mkharitonov\spectrum\core\SpecItemInterface;
+namespace spectrum\reports\widgets;
+use \spectrum\core\SpecContainerDescribeInterface;
+use \spectrum\core\SpecContainerContextInterface;
+use \spectrum\core\SpecItemItInterface;
+use \spectrum\core\SpecContainerInterface;
+use \spectrum\core\SpecItemInterface;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class SpecTitle extends \net\mkharitonov\spectrum\reports\widgets\Widget
+class SpecTitle extends \spectrum\reports\widgets\Widget
 {
 	public function getHtml()
 	{
@@ -37,7 +37,7 @@ class SpecTitle extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		$parent = $this->getOwnerPlugin()->getOwnerSpec()->getParent();
 		$name = $this->getOwnerPlugin()->getOwnerSpec()->getName();
 
-		if ($name == '' && $parent && $parent instanceof \net\mkharitonov\spectrum\core\SpecContainerArgumentsProviderInterface)
+		if ($name == '' && $parent && $parent instanceof \spectrum\core\SpecContainerArgumentsProviderInterface)
 			return $this->getAdditionalArgumentsDumpOut();
 		else
 			return $name;

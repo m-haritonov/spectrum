@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\basePlugins\worldCreators;
-use net\mkharitonov\spectrum\core\plugins\Exception;
+namespace spectrum\core\plugins\basePlugins\worldCreators;
+use spectrum\core\plugins\Exception;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class WorldCreators extends \net\mkharitonov\spectrum\core\plugins\basePlugins\stack\Indexed
+abstract class WorldCreators extends \spectrum\core\plugins\basePlugins\stack\Indexed
 {
 	public function add($callback, $type = 'each')
 	{

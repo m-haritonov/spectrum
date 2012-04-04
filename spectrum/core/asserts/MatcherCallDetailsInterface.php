@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts;
+namespace spectrum\core\asserts;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>

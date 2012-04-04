@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports\widgets;
+namespace spectrum\reports\widgets;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Tools extends \net\mkharitonov\spectrum\reports\widgets\Widget
+class Tools extends \spectrum\reports\widgets\Widget
 {
 	public function getScripts()
 	{

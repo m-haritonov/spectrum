@@ -9,8 +9,8 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\asserts\assert\accessToUndefinedProperty;
-use net\mkharitonov\spectrum\core\asserts\Assert;
+namespace spectrum\core\asserts\assert\accessToUndefinedProperty;
+use spectrum\core\asserts\Assert;
 
 require_once dirname(__FILE__) . '/../../../../init.php';
 
@@ -18,11 +18,11 @@ require_once dirname(__FILE__) . '/../../../../init.php';
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Test extends \net\mkharitonov\spectrum\core\Test
+class Test extends \spectrum\core\Test
 {
 	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsDisabled_ShouldBeThrowException()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(false);
 		$it->errorHandling->setCatchExceptions(false);
 
@@ -31,14 +31,14 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 			$assert->foo;
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\asserts\Exception', 'Undefined property "Assert->foo"', function() use($it){
+		$this->assertThrowException('\spectrum\core\asserts\Exception', 'Undefined property "Assert->foo"', function() use($it){
 			$it->run();
 		});
 	}
 
 	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsDisabled_ShouldNotBeAddResultToRunResultsBuffer()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(false);
 		$it->errorHandling->setCatchExceptions(false);
 
@@ -61,7 +61,7 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 
 	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsEnabled_ShouldNotBeThrowException()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(false);
 		$it->errorHandling->setCatchExceptions(true);
 
@@ -75,7 +75,7 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 
 	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsEnabled_ShouldBeAddFalseResultWithExceptionToRunResultsBuffer()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(false);
 		$it->errorHandling->setCatchExceptions(true);
 
@@ -90,13 +90,13 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 		$results = $runResultsBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \net\mkharitonov\spectrum\core\asserts\Exception);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\Exception);
 		$this->assertEquals('Undefined property "Assert->foo"', $results[0]['details']->getMessage());
 	}
 
 	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsEnabled_ShouldBeReturnAssertInstance()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(false);
 		$it->errorHandling->setCatchExceptions(true);
 
@@ -107,7 +107,7 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 
 		$it->run();
 
-		$this->assertTrue($return instanceof \net\mkharitonov\spectrum\core\asserts\Assert);
+		$this->assertTrue($return instanceof \spectrum\core\asserts\Assert);
 		$this->assertSame($assert, $return);
 	}
 
@@ -115,7 +115,7 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 
 	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsDisabled_ShouldBeThrowException()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(true);
 		$it->errorHandling->setCatchExceptions(false);
 
@@ -124,14 +124,14 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 			$assert->foo;
 		});
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\core\asserts\Exception', 'Undefined property "Assert->foo"', function() use($it){
+		$this->assertThrowException('\spectrum\core\asserts\Exception', 'Undefined property "Assert->foo"', function() use($it){
 			$it->run();
 		});
 	}
 
 	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsDisabled_ShouldNotBeAddResultToRunResultsBuffer()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(true);
 		$it->errorHandling->setCatchExceptions(false);
 
@@ -154,7 +154,7 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 
 	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsEnabled_ShouldBeAddFalseResultWithExceptionToRunResultsBuffer()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(true);
 		$it->errorHandling->setCatchExceptions(true);
 
@@ -169,13 +169,13 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 		$results = $runResultsBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \net\mkharitonov\spectrum\core\asserts\Exception);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\Exception);
 		$this->assertEquals('Undefined property "Assert->foo"', $results[0]['details']->getMessage());
 	}
 
 	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsEnabled_ShouldBeThrowBreakException()
 	{
-		$it = new \net\mkharitonov\spectrum\core\SpecItemIt();
+		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(true);
 		$it->errorHandling->setCatchExceptions(true);
 
@@ -192,6 +192,6 @@ class Test extends \net\mkharitonov\spectrum\core\Test
 
 		$it->run();
 
-		$this->assertTrue($thrownException instanceof \net\mkharitonov\spectrum\core\ExceptionBreak);
+		$this->assertTrue($thrownException instanceof \spectrum\core\ExceptionBreak);
 	}
 }

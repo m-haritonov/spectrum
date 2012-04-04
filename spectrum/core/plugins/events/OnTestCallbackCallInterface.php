@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\events;
+namespace spectrum\core\plugins\events;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
@@ -17,6 +17,6 @@ namespace net\mkharitonov\spectrum\core\plugins\events;
  */
 interface OnTestCallbackCallInterface extends EventInterface
 {
-	public function onTestCallbackCallBefore(\net\mkharitonov\spectrum\core\WorldInterface $world);
-	public function onTestCallbackCallAfter(\net\mkharitonov\spectrum\core\WorldInterface $world);
+	public function onTestCallbackCallBefore(\spectrum\core\WorldInterface $world);
+	public function onTestCallbackCallAfter(\spectrum\core\WorldInterface $world);
 }

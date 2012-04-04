@@ -9,7 +9,7 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\reports;
+namespace spectrum\reports;
 require_once dirname(__FILE__) . '/../init.php';
 
 /**
@@ -35,7 +35,7 @@ class ConfigTest extends Test
 	{
 		Config::lock();
 
-		$this->assertThrowException('\net\mkharitonov\spectrum\reports\Exception', 'core\Config is locked', function(){
+		$this->assertThrowException('\spectrum\reports\Exception', 'core\Config is locked', function(){
 			Config::setAllowPluginSettingsModify(false);
 		});
 

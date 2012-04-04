@@ -19,7 +19,6 @@ Spec->callPlugin rename to getPlugin?
 
 ---
 убрать излишние DOC копирайты
-net\mkharitonov удалить
 
 В копирайт в шапке добавить ссылку на лицензию на сайте
 email заменить на mail@mkharitonov.net

@@ -9,14 +9,14 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\notRunning;
+namespace spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\notRunning;
 require_once dirname(__FILE__) . '/../../../../../init.php';
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-abstract class Test extends \net\mkharitonov\spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\Test
+abstract class Test extends \spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\Test
 {
 	public function testHasParents_DescribeDescribeDescribe_Level1HasSiblingWithNotEmptyReturn_ShouldNotBeReturnSiblingReturn()
 	{

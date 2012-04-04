@@ -9,20 +9,20 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv\emptyStubs;
+namespace spectrum\core\testEnv\emptyStubs;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class Spec implements \net\mkharitonov\spectrum\core\SpecInterface
+class Spec implements \spectrum\core\SpecInterface
 {
 	public function __construct($name = null){}
 	public function __get($pluginAccessName){}
 	public function setName($name){}
 	public function getName(){}
 	public function isAnonymous(){}
-	public function setParent(\net\mkharitonov\spectrum\core\SpecContainerInterface $spec = null){}
+	public function setParent(\spectrum\core\SpecContainerInterface $spec = null){}
 	public function getParent(){}
 	public function callPlugin($pluginAccessName){}
 	public function enable(){}

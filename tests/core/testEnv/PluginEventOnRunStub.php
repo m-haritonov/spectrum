@@ -9,13 +9,13 @@
  * with this package in the file LICENSE.txt.
  */
 
-namespace net\mkharitonov\spectrum\core\testEnv;
+namespace spectrum\core\testEnv;
 
 /**
  * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
  * @link   http://www.mkharitonov.net/spectrum/
  */
-class PluginEventOnRunStub extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \net\mkharitonov\spectrum\core\plugins\events\OnRunInterface
+class PluginEventOnRunStub extends \spectrum\core\plugins\Plugin implements \spectrum\core\plugins\events\OnRunInterface
 {
 	static private $onBeforeCallback;
 
@@ -26,7 +26,7 @@ class PluginEventOnRunStub extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function onRunBefore()
 	{
-		\net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][] = array(
+		\spectrum\Test::$tmp['triggeredEvents']['onRun'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
 			'isRunning' => $this->getOwnerSpec()->isRunning(),
@@ -39,7 +39,7 @@ class PluginEventOnRunStub extends \net\mkharitonov\spectrum\core\plugins\Plugin
 
 	public function onRunAfter($result)
 	{
-		\net\mkharitonov\spectrum\Test::$tmp['triggeredEvents']['onRun'][] = array(
+		\spectrum\Test::$tmp['triggeredEvents']['onRun'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
 			'isRunning' => $this->getOwnerSpec()->isRunning(),
