@@ -51,6 +51,7 @@ email заменить
 	report->highlightSpecNameWithSameFileName
 	время выполнения каждого теста и группы тестов
 	кол-во выполненных тестов
+	упростить и улучшить expand/collapse в TotalInfo (возможно, сделав его в виде ползунка с тремя пунктами)
 	feature: report->setWriteToFile()
 
 

@@ -28,7 +28,9 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 				$this->getIndention() . '.g-runResultsBuffer>.results { clear: both; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer>.results>.result { float: left; position: relative; margin: 0 2px 2px 0; border: 1px solid; border-left: 0; border-top: 0; border-radius: 4px; white-space: nowrap; }' . $this->getNewline() .
-				$this->getIndention() . '.g-runResultsBuffer>.results>.result>a.expand { float: left; min-width: 19px; margin-right: 2px; padding: 2px 0; border-radius: 4px 0 4px 0; font-size: 0.9em; font-weight: bold; text-decoration: none; text-align: center; }' . $this->getNewline() .
+				$this->getIndention() . '.g-runResultsBuffer>.results>.result>a.expand { float: left; position: relative; width: 19px; height: 1.6em; margin-right: 2px; border-radius: 4px 0 4px 0; font-size: 0.9em; font-weight: bold; text-decoration: none; text-align: center; }' . $this->getNewline() .
+				$this->getIndention() . '.g-runResultsBuffer>.results>.result>a.expand:before { content: "\\0020"; display: block; position: absolute; top: 8px; left: 6px; width: 8px; height: 2px; background: #fff; }' . $this->getNewline() .
+				$this->getIndention() . '.g-runResultsBuffer>.results>.result>a.expand:after { content: "\\0020"; display: block; position: absolute; top: 5px; left: 9px; width: 2px; height: 8px; background: #fff; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer>.results>.result>.num { float: left; margin-right: 2px; padding: 2px 5px; border-radius: 0 0 4px 4px; font-size: 0.9em; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer>.results>.result>.value { float: left; padding: 2px 5px; border-radius: 0 0 4px 4px; font-size: 0.9em; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer>.results>.result>.g-runResultsBuffer-details { clear: both; }' . $this->getNewline() .
@@ -42,6 +44,8 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 				$this->getIndention() . '.g-runResultsBuffer>.results>.result.false>.num { background: #e2b5b5; color: #3d3232; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer>.results>.result.false>.value { background: #e2b5b5; color: #3d3232; }' . $this->getNewline() .
 				$this->getIndention() . '.g-runResultsBuffer>.results>.result.false>a.expand { background: #db9a9a; color: #ffe3db; }' . $this->getNewline() .
+
+				$this->getIndention() . '.g-runResultsBuffer>.results>.result.expand>a.expand:after { display: none; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
@@ -73,15 +77,9 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 						var resultNode = expandLinkNode.parentNode;
 
 						if (tools.hasClass(resultNode, "expand"))
-						{
-							expandLinkNode.innerHTML = "+";
 							tools.removeClass(resultNode, "expand");
-						}
 						else
-						{
-							expandLinkNode.innerHTML = "-";
 							tools.addClass(resultNode, "expand");
-						}
 					}
 				});' . $this->getNewline() .
 			'</script>' . $this->getNewline();
@@ -102,7 +100,7 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		{
 			$num++;
 			$output .= $this->getIndention(2) . '<div class="result ' . ($result['result'] ? 'true' : 'false') . '">' . $this->getNewline();
-			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="' . $this->translate('Show full details (also available by mouse middle click on the card)') . '">+</a>' . $this->getNewline();
+			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="' . $this->translate('Show full details (also available by mouse middle click on the card)') . '"></a>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="num" title="' . $this->translate('Order in run results buffer') . '">' . $this->translate('No.') . ' ' . $num . '</div>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="value" title="' . $this->translate('Result') . '">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
 			$output .= $this->getHtmlForResultDetails($result['details']) . $this->getNewline();
