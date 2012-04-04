@@ -69,34 +69,17 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 						var liNode = anchorNode.parentNode.parentNode;
 
 						if (liNode.querySelector(".runDetails, .g-specList") == null)
-							addClass(liNode, "noChildContent");
+							tools.addClass(liNode, "noChildContent");
 
 						anchorNode.addEventListener("click", function(e){
 							e.preventDefault();
 							var liNode = e.currentTarget.parentNode.parentNode;
 
-							if (hasClass(liNode, "expand"))
-								removeClass(liNode, "expand");
+							if (tools.hasClass(liNode, "expand"))
+								tools.removeClass(liNode, "expand");
 							else
-								addClass(liNode, "expand");
+								tools.addClass(liNode, "expand");
 						});
-					}
-
-					function hasClass(node, className)
-					{
-						return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
-					}
-
-					function addClass(node, className)
-					{
-						if (!hasClass(node, className))
-							node.className += " " + className;
-					}
-
-					function removeClass(node, className)
-					{
-						if (hasClass(node, className))
-							node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
 					}
 				});' . $this->getNewline() .
 			'</script>' . $this->getNewline();

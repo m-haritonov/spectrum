@@ -72,33 +72,16 @@ class RunResultsBuffer extends \net\mkharitonov\spectrum\reports\widgets\Widget
 					{
 						var resultNode = expandLinkNode.parentNode;
 
-						if (hasClass(resultNode, "expand"))
+						if (tools.hasClass(resultNode, "expand"))
 						{
 							expandLinkNode.innerHTML = "+";
-							removeClass(resultNode, "expand");
+							tools.removeClass(resultNode, "expand");
 						}
 						else
 						{
 							expandLinkNode.innerHTML = "-";
-							addClass(resultNode, "expand");
+							tools.addClass(resultNode, "expand");
 						}
-					}
-
-					function hasClass(node, className)
-					{
-						return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
-					}
-
-					function addClass(node, className)
-					{
-						if (!hasClass(node, className))
-							node.className += " " + className;
-					}
-
-					function removeClass(node, className)
-					{
-						if (hasClass(node, className))
-							node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
 					}
 				});' . $this->getNewline() .
 			'</script>' . $this->getNewline();

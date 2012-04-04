@@ -20,6 +20,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	protected $indention = "\t";
 	protected $newline = "\r\n";
 	protected $widgets = array(
+		'Tools' => 'net\mkharitonov\spectrum\reports\widgets\Tools',
 		'Clearfix' => 'net\mkharitonov\spectrum\reports\widgets\Clearfix',
 		'finalResult\Result' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Result',
 		'finalResult\Update' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Update',
