@@ -21,7 +21,7 @@ class Result extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	{
 		return
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . '.g-finalResult-result { color: #ccc; font-weight: bold; }' . $this->getNewline() .
+				$this->getIndention() . '.g-finalResult-result { color: #aaa; font-weight: bold; }' . $this->getNewline() .
 				$this->getIndention() . '.g-finalResult-result.fail { color: #a31010; }' . $this->getNewline() .
 				$this->getIndention() . '.g-finalResult-result.success { color: #009900; }' . $this->getNewline() .
 				$this->getIndention() . '.g-finalResult-result.empty { color: #cc9900; }' . $this->getNewline() .
