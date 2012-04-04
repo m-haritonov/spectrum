@@ -137,8 +137,9 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 
 		if (!$this->getOwnerSpec()->getParent())
 		{
-			$this->getOwnerSpec()->output->put($this->createWidget('TotalInfo')->getHtml());
-			$this->getOwnerSpec()->output->put($this->createWidget('finalResult\Update')->getHtml($finalResult));
+			$totalInfoWidget = $this->createWidget('TotalInfo');
+			$this->getOwnerSpec()->output->put($totalInfoWidget->getHtml());
+			$this->getOwnerSpec()->output->put($totalInfoWidget->getHtmlForUpdate($finalResult));
 			$this->getOwnerSpec()->output->put($this->getFooter());
 		}
 	}
@@ -148,7 +149,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	protected function getHeader()
 	{
 		return
-			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . $this->getNewline() .
+			'<!DOCTYPE html>' . $this->getNewline() .
 			'<html xmlns="http://www.w3.org/1999/xhtml">' . $this->getNewline() .
 			'<head>' . $this->getNewline() .
 				$this->getIndention() . '<meta http-equiv="content-type" content="text/html; charset=utf-8" />' . $this->getNewline() .

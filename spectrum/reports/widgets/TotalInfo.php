@@ -22,6 +22,7 @@ class TotalInfo extends \net\mkharitonov\spectrum\reports\widgets\Widget
 		return
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . '.g-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #ddd; }' . $this->getNewline() .
+				$this->getIndention() . '.g-totalInfo>div { display: inline; }' . $this->getNewline() .
 				$this->getIndention() . '.g-totalInfo h1 { display: inline; color: #333; font-size: 1em; }' . $this->getNewline() .
 				$this->getIndention() . '.g-totalInfo a { border-bottom-width: 1px; border-bottom-style: dotted; text-decoration: none; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
@@ -73,38 +74,44 @@ class TotalInfo extends \net\mkharitonov\spectrum\reports\widgets\Widget
 
 	public function getHtml()
 	{
-		$spec = $this->getOwnerPlugin()->getOwnerSpec();
-
-		if ($spec->getParent())
+		if ($this->getOwnerPlugin()->getOwnerSpec()->getParent())
 			return;
 
 
 		return
 			'<div class="g-totalInfo">' . $this->getNewline() .
-				'<span class="result">' . $this->getNewline() .
+				'<div class="result">' . $this->getNewline() .
 					'<h1>' . $this->translate('Total result') . ':</h1>' . $this->getNewline() .
 					$this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('finalResult\Result')->getHtml()) . $this->getNewline() .
-				'</span> | ' . $this->getNewline() .
+				'</div> | ' . $this->getNewline() .
 
-				'<span class="specChildren">' .
+				'<div class="specChildren">' .
 					'Spec children: ' .
 					'<a href="#" class="expandAll">' . $this->translate('expand all') . '</a>, ' .
 					'<a href="#" class="collapseAll">' . $this->translate('collapse all') . '</a>' .
-				'</span> | ' . $this->getNewline() .
+				'</div> | ' . $this->getNewline() .
 
-				'<span class="specDetails">' .
+				'<div class="specDetails">' .
 					'Spec details: ' .
 					'<a href="#" class="expandAll">' . $this->translate('expand all') . '</a>, ' .
 					'<a href="#" class="collapseAll">' . $this->translate('collapse all') . '</a>' .
-				'</span> | ' . $this->getNewline() .
+				'</div> | ' . $this->getNewline() .
 
-				'<span class="resultDetails">' .
+				'<div class="resultDetails">' .
 					'Result details: ' .
 					'<a href="#" class="expandAll">' . $this->translate('expand all') . '</a>, ' .
 					'<a href="#" class="collapseAll">' . $this->translate('collapse all') . '</a>' .
-				'</span>' . $this->getNewline() .
+				'</div>' . $this->getNewline() .
 
 //				$this->prependIndentionToEachLine($this->getOwnerPlugin()->createWidget('Messages')->getHtml()) . $this->getNewline() .
 			'</div>' . $this->getNewline();
+	}
+
+	public function getHtmlForUpdate($finalResult)
+	{
+		if ($this->getOwnerPlugin()->getOwnerSpec()->getParent())
+			return;
+
+		return '<div>' . $this->getOwnerPlugin()->createWidget('finalResult\Update')->getHtml($finalResult) . '</div>';
 	}
 }
