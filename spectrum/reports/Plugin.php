@@ -22,6 +22,7 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	protected $widgets = array(
 		'Tools' => 'net\mkharitonov\spectrum\reports\widgets\Tools',
 		'Clearfix' => 'net\mkharitonov\spectrum\reports\widgets\Clearfix',
+		'TotalInfo' => 'net\mkharitonov\spectrum\reports\widgets\TotalInfo',
 		'finalResult\Result' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Result',
 		'finalResult\Update' => 'net\mkharitonov\spectrum\reports\widgets\finalResult\Update',
 		'Messages' => 'net\mkharitonov\spectrum\reports\widgets\Messages',
@@ -120,7 +121,10 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 	public function onRunBefore()
 	{
 		if (!$this->getOwnerSpec()->getParent())
+		{
 			$this->getOwnerSpec()->output->put($this->getHeader());
+			$this->getOwnerSpec()->output->put($this->createWidget('TotalInfo')->getHtml());
+		}
 
 		$this->getOwnerSpec()->output->put($this->createWidget('SpecList')->getHtmlBegin());
 		$this->flush();
@@ -132,7 +136,11 @@ class Plugin extends \net\mkharitonov\spectrum\core\plugins\Plugin implements \n
 		$this->flush();
 
 		if (!$this->getOwnerSpec()->getParent())
+		{
+			$this->getOwnerSpec()->output->put($this->createWidget('TotalInfo')->getHtml());
+			$this->getOwnerSpec()->output->put($this->createWidget('finalResult\Update')->getHtml($finalResult));
 			$this->getOwnerSpec()->output->put($this->getFooter());
+		}
 	}
 
 /**/

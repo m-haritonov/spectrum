@@ -180,11 +180,11 @@ class SpecList extends \net\mkharitonov\spectrum\reports\widgets\Widget
 	protected function getSpecCssClass()
 	{
 		if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerDescribeInterface)
-			return 'describe';
+			return 'container describe';
 		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerContextInterface)
-			return 'context';
+			return 'container context';
 		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecItemItInterface)
-			return 'it';
+			return 'item it';
 		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecContainerInterface)
 			return 'container';
 		else if ($this->getOwnerPlugin()->getOwnerSpec() instanceof SpecItemInterface)

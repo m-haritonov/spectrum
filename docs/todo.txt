@@ -11,16 +11,13 @@ Assert::$isNotEnabled rename to notStatus???
 Spec->callPlugin rename to getPlugin?
 
 ---Плагин report
-	финальный результат
-	в конце написать результат запуска для RootDescribe или сделать общую верхушку для RootDescribe (добавить верхушку для "0")
-	вверху добавить панель: expand all specs | collapse all specs | exnapd all details | collapse all details
+	selector->isRoot()
 
 	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
 	серый цвет для spaces сделать темнее, найти более подходящие символы
+	цвет для wait сделать #aaa
 	empty title — "empty or has empty", "all or one of children was empty"
 	flush
-
-
 
 	написать тесты только для правильности вывода результата - fail и т.п.
 	testShouldBeGenerateValidXhtml
@@ -53,6 +50,7 @@ email заменить
 ---Плагин report
 	report->highlightSpecNameWithSameFileName
 	время выполнения каждого теста и группы тестов
+	кол-во выполненных тестов
 	feature: report->setWriteToFile()
 
 
