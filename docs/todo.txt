@@ -11,20 +11,26 @@ Assert::$isNotEnabled rename to notStatus???
 Spec->callPlugin rename to getPlugin?
 
 ---Плагин report
-	selector->isRoot()
-
-	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
-	серый цвет для spaces сделать темнее, найти более подходящие символы
-	цвет для wait сделать #aaa
 	empty title — "empty or has empty", "all or one of children was empty"
-	flush
 
 	написать тесты только для правильности вывода результата - fail и т.п.
 	testShouldBeGenerateValidXhtml
 
-	исправить TODO
+	flush
+
+	сделать run.php
+	run.php?path=qwe.php&id=spec1_1_1
+	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
+
+---
+убрать излишние DOC копирайты
+net\mkharitonov удалить
+В копирайт в шапке добавить ссылку на лицензию на сайте
+email заменить на mail@mkharitonov.net
 
 ---рефакторинг core
+	исправить TODO
+
 	SpecContainerDescribe -> remove
 	SpecContainerContext -> SpecContainer
 	SpecContainerPattern -> SpecContainer
@@ -40,13 +46,6 @@ Spec->callPlugin rename to getPlugin?
 	Spec->setCreatsConstructionCommand();
 
 
-
-убрать излишние DOC копирайты
-net\mkharitonov удалить
-В копирайт в шапке добавить ссылку на лицензию на сайте
-email заменить
-
-
 ---Плагин report
 	report->highlightSpecNameWithSameFileName
 	время выполнения каждого теста и группы тестов
@@ -54,8 +53,6 @@ email заменить
 	упростить и улучшить expand/collapse в TotalInfo (возможно, сделав его в виде ползунка с тремя пунктами)
 	feature: report->setWriteToFile()
 
-
-runner.php?file=qwe.php&uid=1_1_1
 
 Doc: Расширение и конфигурация
 Дописать и перезалить документацию по setSettings
