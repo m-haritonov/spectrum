@@ -12,8 +12,6 @@
 namespace spectrum\constructionCommands\baseCommands;
 
 /**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @throws \spectrum\constructionCommands\Exception If called not at running state
  * @return \spectrum\core\SpecItemInterface|null
  */

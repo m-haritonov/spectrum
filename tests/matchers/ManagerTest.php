@@ -12,10 +12,6 @@
 namespace spectrum\matchers;
 require_once dirname(__FILE__) . '/../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class ManagerTest extends Test
 {
 	public function testAddBaseMatchersToSpec_ShouldBeAddAllBaseMatchersToSpec()

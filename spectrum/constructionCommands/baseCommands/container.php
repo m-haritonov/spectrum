@@ -24,8 +24,6 @@ namespace spectrum\constructionCommands\baseCommands;
  * container($specClass, $name, $callback)
  * container($specClass, $name, $callback, $settings)
  *
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @param  string $specClass
  * @param  string|callback $nameOrCallback
  * @param  callback|null $callback

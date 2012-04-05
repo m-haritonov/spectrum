@@ -11,10 +11,6 @@
 
 namespace spectrum\core\plugins\events;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 interface OnRunInterface extends EventInterface
 {
 	public function onRunBefore();

@@ -14,10 +14,6 @@ use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	protected function setUp()

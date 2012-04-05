@@ -13,10 +13,6 @@ namespace spectrum;
 
 require_once dirname(__FILE__) . '/init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
 	public static $tmp;

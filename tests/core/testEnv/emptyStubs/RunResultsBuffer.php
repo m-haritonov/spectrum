@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv\emptyStubs;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class RunResultsBuffer implements \spectrum\core\RunResultsBufferInterface
 {
 	public function __construct(\spectrum\core\SpecInterface $ownerSpec){}

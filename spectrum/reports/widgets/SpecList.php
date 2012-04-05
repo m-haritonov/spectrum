@@ -16,10 +16,6 @@ use \spectrum\core\SpecItemItInterface;
 use \spectrum\core\SpecContainerInterface;
 use \spectrum\core\SpecItemInterface;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecList extends \spectrum\reports\widgets\Widget
 {
 	static protected $depth;

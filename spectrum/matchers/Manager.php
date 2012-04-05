@@ -11,10 +11,6 @@
 
 namespace spectrum\matchers;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Manager implements ManagerInterface
 {
 	static public function addAllMatchersToSpec(\spectrum\core\SpecInterface $spec)

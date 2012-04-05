@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv\emptyStubs;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecItemIt extends SpecItem implements \spectrum\core\SpecItemItInterface
 {
 	public function getRunResultsBuffer(){}

@@ -13,8 +13,6 @@ namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Available at declaring and running state.
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @return bool
  */
 function isDeclaringState()

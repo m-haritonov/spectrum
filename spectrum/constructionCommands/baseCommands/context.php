@@ -22,8 +22,6 @@ namespace spectrum\constructionCommands\baseCommands;
  * context($name, $callback)
  * context($name, $callback, $settings)
  *
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @throws \spectrum\constructionCommands\Exception If called not at declaring state
  * @param  string|callback $nameOrCallback
  * @param  callback|null $callback

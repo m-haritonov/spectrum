@@ -38,8 +38,6 @@ require_once dirname(__FILE__) . '/baseCommands/isDeclaringState.php';
 require_once dirname(__FILE__) . '/baseCommands/isRunningState.php';
 
 /**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @method \spectrum\core\asserts\Assert be()
  * @method addMatcher()
  * @method afterEach()

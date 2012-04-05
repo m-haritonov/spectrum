@@ -14,10 +14,6 @@ use spectrum\core\plugins\basePlugins\stack\Named;
 
 require_once dirname(__FILE__) . '/../../../../../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class Test extends \spectrum\core\plugins\basePlugins\stack\named\getCascadeThroughRunningContexts\notRunning\Test
 {
 

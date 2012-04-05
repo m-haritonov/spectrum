@@ -12,8 +12,6 @@
 namespace spectrum\core\asserts;
 
 /**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @property not
  */
 interface AssertInterface

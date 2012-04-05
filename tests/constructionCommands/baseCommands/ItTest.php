@@ -16,10 +16,6 @@ use \spectrum\core\SpecItemIt;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class ItTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testParamsVariants_ShouldBeAcceptName()

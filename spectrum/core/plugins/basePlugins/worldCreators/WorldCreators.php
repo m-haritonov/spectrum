@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins\basePlugins\worldCreators;
 use spectrum\core\plugins\Exception;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class WorldCreators extends \spectrum\core\plugins\basePlugins\stack\Indexed
 {
 	public function add($callback, $type = 'each')

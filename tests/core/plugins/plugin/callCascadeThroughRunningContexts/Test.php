@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins\plugin\callCascadeThroughRunningContexts;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class Test extends \spectrum\core\plugins\plugin\Test
 {
 	public function testNoParents_ShouldBeCallProperMethodFromSelfPlugin()

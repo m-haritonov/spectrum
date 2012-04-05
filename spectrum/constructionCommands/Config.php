@@ -11,10 +11,6 @@
 
 namespace spectrum\constructionCommands;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Config
 {
 	private static $managerClass = '\spectrum\constructionCommands\Manager';

@@ -9,10 +9,6 @@
  * with this package in the file LICENSE.txt.
  */
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 require_once dirname(__FILE__) . '/autoload.php';
 require_once dirname(__FILE__) . '/../spectrum/autoload.php';
 

@@ -11,10 +11,6 @@
 
 namespace spectrum\reports\widgets\finalResult;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Update extends \spectrum\reports\widgets\Widget
 {
 	public function getStyles()

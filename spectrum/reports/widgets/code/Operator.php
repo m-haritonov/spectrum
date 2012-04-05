@@ -11,10 +11,6 @@
 
 namespace spectrum\reports\widgets\code;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Operator extends \spectrum\reports\widgets\Widget
 {
 	public function getStyles()

@@ -11,10 +11,6 @@
 
 namespace spectrum\core;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 interface SpecContainerInterface extends SpecInterface
 {
 	public function addSpec(SpecInterface $spec);

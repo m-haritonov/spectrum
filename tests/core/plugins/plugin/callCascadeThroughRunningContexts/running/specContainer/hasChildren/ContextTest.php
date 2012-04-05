@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\running\specContainer\hasChildren;
 require_once dirname(__FILE__) . '/../../../../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class ContextTest extends \spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\running\Test
 {
 	protected $currentSpecClass = '\spectrum\core\SpecContainerContext';

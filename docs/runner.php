@@ -9,10 +9,6 @@
  * with this package in the file LICENSE.txt.
  */
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 
 if ($_SERVER['SERVER_NAME'] != 'spectrum.local' || $_SERVER['SERVER_ADDR'] != '127.0.0.1')
 	exit;

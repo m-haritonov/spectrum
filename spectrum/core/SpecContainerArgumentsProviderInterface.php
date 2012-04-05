@@ -11,10 +11,6 @@
 
 namespace spectrum\core;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 interface SpecContainerArgumentsProviderInterface extends SpecContainerInterface
 {
 	public function createSpecItemForEachArgumentsRow($testCallback, $argumentsProvider);

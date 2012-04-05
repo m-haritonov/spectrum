@@ -12,10 +12,6 @@
 namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class SpecContainerTest extends SpecTest
 {
 	public function testClone_ShouldBeCloneChildren()

@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class PluginStub extends \spectrum\core\plugins\Plugin
 {
 	static private $activationsCount = 0;

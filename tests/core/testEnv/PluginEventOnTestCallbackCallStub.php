@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class PluginEventOnTestCallbackCallStub extends \spectrum\core\plugins\Plugin implements \spectrum\core\plugins\events\OnTestCallbackCallInterface
 {
 	public function onTestCallbackCallBefore(\spectrum\core\WorldInterface $world)

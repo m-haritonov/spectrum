@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv\emptyStubs;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecContainer extends Spec implements \spectrum\core\SpecContainerInterface
 {
 	public function addSpec(\spectrum\core\SpecInterface $spec){}

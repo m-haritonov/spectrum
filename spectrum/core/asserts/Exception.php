@@ -11,10 +11,6 @@
 
 namespace spectrum\core\asserts;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Exception extends \spectrum\core\Exception
 {
 	

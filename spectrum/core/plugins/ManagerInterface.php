@@ -11,10 +11,6 @@
 
 namespace spectrum\core\plugins;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 interface ManagerInterface
 {
 	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenCallOnce');

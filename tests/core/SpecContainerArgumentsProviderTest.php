@@ -12,10 +12,6 @@
 namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecContainerArgumentsProviderTest extends SpecTest
 {
 	protected $currentSpecClass = '\spectrum\core\SpecContainerArgumentsProvider';

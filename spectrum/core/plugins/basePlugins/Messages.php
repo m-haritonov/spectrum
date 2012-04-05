@@ -11,10 +11,6 @@
 
 namespace spectrum\core\plugins\basePlugins;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Messages extends \spectrum\core\plugins\Plugin
 {
 	protected $messages = array();

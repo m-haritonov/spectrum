@@ -11,10 +11,6 @@
 
 namespace spectrum\matchers\testEnv\emptyStubs;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Manager implements \spectrum\matchers\ManagerInterface
 {
 	static public function addAllMatchersToSpec(\spectrum\core\SpecInterface $spec){}

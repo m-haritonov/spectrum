@@ -13,8 +13,6 @@ namespace spectrum\constructionCommands\baseCommands;
 use spectrum\constructionCommands\Manager;
 /**
  * Available at declaring and running state.
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @return \spectrum\core\SpecContainerInterface|null
  */
 function getDeclaringContainer()

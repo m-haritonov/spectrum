@@ -11,10 +11,6 @@
 
 namespace spectrum\core;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecContainerArgumentsProvider extends SpecContainer implements SpecContainerArgumentsProviderInterface
 {
 	public function addSpec(SpecInterface $spec)

@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class MatchersStub extends \spectrum\core\plugins\basePlugins\Matchers
 {
 	public function getFromSelfOrAncestor($key)

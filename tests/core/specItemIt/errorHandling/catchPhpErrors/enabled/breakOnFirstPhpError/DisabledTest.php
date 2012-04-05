@@ -12,10 +12,6 @@
 namespace spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\breakOnFirstPhpError;
 require_once dirname(__FILE__) . '/../../../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class DisabledTest extends Test
 {
 	protected function setUp()

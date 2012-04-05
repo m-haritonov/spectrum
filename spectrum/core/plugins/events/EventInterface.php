@@ -13,8 +13,6 @@ namespace spectrum\core\plugins\events;
 
 /**
  * Base interface for events interfaces.
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  */
 interface EventInterface extends \spectrum\core\plugins\PluginInterface
 {

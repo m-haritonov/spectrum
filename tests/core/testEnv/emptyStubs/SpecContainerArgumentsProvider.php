@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv\emptyStubs;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecContainerArgumentsProvider extends SpecContainer implements \spectrum\core\SpecContainerArgumentsProviderInterface
 {
 	public function createSpecItemForEachArgumentsRow($testCallback, $argumentsProvider){}

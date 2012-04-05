@@ -13,8 +13,6 @@ namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Add message to Messages plugin.
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @throws \spectrum\constructionCommands\Exception If called not at running state
  */
 function message($message)

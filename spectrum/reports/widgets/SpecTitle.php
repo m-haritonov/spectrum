@@ -16,10 +16,6 @@ use \spectrum\core\SpecItemItInterface;
 use \spectrum\core\SpecContainerInterface;
 use \spectrum\core\SpecItemInterface;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecTitle extends \spectrum\reports\widgets\Widget
 {
 	public function getHtml()

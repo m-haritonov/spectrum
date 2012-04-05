@@ -11,10 +11,6 @@
 
 namespace spectrum\reports;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Exception extends \spectrum\Exception
 {
 	

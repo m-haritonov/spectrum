@@ -11,10 +11,6 @@
 
 namespace spectrum\core\plugins\events;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 interface OnTestCallbackCallInterface extends EventInterface
 {
 	public function onTestCallbackCallBefore(\spectrum\core\WorldInterface $world);

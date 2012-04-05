@@ -12,8 +12,6 @@
 namespace spectrum\core;
 
 /**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @property \spectrum\core\plugins\basePlugins\Matchers matchers
  * @property \spectrum\core\plugins\basePlugins\worldCreators\Builders builders
  * @property \spectrum\core\plugins\basePlugins\worldCreators\Destroyers destroyers

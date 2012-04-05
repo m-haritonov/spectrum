@@ -11,10 +11,6 @@
 
 namespace spectrum\core\plugins;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Plugin implements PluginInterface
 {
 	/** @var \spectrum\core\Spec */

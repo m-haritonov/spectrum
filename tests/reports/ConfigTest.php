@@ -12,10 +12,6 @@
 namespace spectrum\reports;
 require_once dirname(__FILE__) . '/../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class ConfigTest extends Test
 {
 	public function testGetAllowReportSettingsModify_ShouldBeReturnTrueByDefault()

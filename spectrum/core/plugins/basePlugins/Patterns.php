@@ -13,10 +13,6 @@ namespace spectrum\core\plugins\basePlugins;
 use spectrum\core\Config;
 use spectrum\core\plugins\Exception;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Patterns extends Stack\Named
 {
 	public function add($name, $callback)

@@ -9,10 +9,6 @@
  * with this package in the file LICENSE.txt.
  */
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 spl_autoload_register(function($class)
 {
 	$rootNamespace = 'spectrum\\';

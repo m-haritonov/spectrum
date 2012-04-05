@@ -11,10 +11,6 @@
 
 require_once dirname(__FILE__) . '/init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 /*
 class \spectrum\RootDescribeTest extends spectrum_BaseAbstract
 {

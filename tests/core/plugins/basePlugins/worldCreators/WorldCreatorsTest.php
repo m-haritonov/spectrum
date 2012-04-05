@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins\basePlugins\worldCreators;
 require_once dirname(__FILE__) . '/../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class WorldCreatorsTest extends \spectrum\core\plugins\basePlugins\Test
 {
 }

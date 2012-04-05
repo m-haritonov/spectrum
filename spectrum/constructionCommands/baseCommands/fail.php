@@ -13,8 +13,6 @@ namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * Add to RunResultsBuffer of running SpecItem false result wits exception as details.
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @throws \spectrum\constructionCommands\Exception If called not at running state
  * @param string|null $message
  * @param int $code

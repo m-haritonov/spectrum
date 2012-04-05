@@ -11,10 +11,6 @@
 
 namespace spectrum\core\testEnv\emptyStubs;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class SpecContainerPattern extends SpecContainer implements \spectrum\core\SpecContainerPatternInterface
 {
 	public function setArguments($arguments){}

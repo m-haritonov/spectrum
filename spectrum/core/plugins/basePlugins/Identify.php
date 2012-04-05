@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins\basePlugins;
 use \spectrum\core\plugins\Exception;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Identify extends \spectrum\core\plugins\Plugin
 {
 	/*

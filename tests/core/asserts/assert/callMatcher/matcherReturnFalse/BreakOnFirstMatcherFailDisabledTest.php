@@ -14,10 +14,6 @@ use spectrum\core\asserts\Assert;
 
 require_once dirname(__FILE__) . '/../../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\callMatcher\Test
 {
 	public function testShouldNotBeBreakExecution()

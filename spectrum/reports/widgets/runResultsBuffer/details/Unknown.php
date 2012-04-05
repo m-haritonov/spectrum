@@ -11,10 +11,6 @@
 
 namespace spectrum\reports\widgets\runResultsBuffer\details;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Unknown extends Details
 {
 	public function getStyles()

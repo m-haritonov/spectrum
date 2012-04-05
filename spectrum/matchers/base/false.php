@@ -13,8 +13,6 @@ namespace spectrum\matchers\base;
 
 /**
  * Matcher for identical false comparison ($actual === false).
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @return bool
  */
 function false($actual)

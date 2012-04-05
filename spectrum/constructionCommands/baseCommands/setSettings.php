@@ -31,9 +31,6 @@ namespace spectrum\constructionCommands\baseCommands;
  * Manager::setSettings($spec, true);  // see core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors()
  *
  * @param mixed $settings
- *
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  */
 function setSettings(\spectrum\core\SpecInterface $spec, $settings)
 {

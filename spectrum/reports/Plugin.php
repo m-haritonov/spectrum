@@ -11,10 +11,6 @@
 
 namespace spectrum\reports;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Plugin extends \spectrum\core\plugins\Plugin implements \spectrum\core\plugins\events\OnRunInterface
 {
 	protected $indention = "\t";

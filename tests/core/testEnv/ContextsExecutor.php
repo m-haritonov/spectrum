@@ -13,8 +13,6 @@ namespace spectrum\core\testEnv;
 
 /**
  * Contains methods for not abstract classes.
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  */
 class ContextsExecutor
 {

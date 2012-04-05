@@ -16,9 +16,6 @@ use spectrum\core\plugins\Exception;
 /**
  * Use this plugin to output current owner spec data (or get spec data in correct output encoding). Do not use plugin
  * from one spec instance to output another spec instance data.
- *
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  */
 class Output extends \spectrum\core\plugins\Plugin
 {

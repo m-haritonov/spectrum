@@ -12,10 +12,6 @@
 namespace spectrum\core;
 require_once dirname(__FILE__) . '/../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class SpecTest extends Test
 {
 	public function testConstructor_ShouldBeCanAcceptNoArguments()

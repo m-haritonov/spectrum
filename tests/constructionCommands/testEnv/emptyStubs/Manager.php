@@ -11,10 +11,6 @@
 
 namespace spectrum\constructionCommands\testEnv\emptyStubs;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Manager implements \spectrum\constructionCommands\ManagerInterface
 {
 	static public function __callStatic($name, $args = array()){}

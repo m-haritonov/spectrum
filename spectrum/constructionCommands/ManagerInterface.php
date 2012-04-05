@@ -11,10 +11,6 @@
 
 namespace spectrum\constructionCommands;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 interface ManagerInterface
 {
 	static public function __callStatic($name, $args = array());

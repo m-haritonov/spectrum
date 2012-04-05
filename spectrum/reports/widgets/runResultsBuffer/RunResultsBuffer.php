@@ -13,10 +13,6 @@ namespace spectrum\reports\widgets\runResultsBuffer;
 use \spectrum\core\asserts\MatcherCallDetailsInterface;
 use \spectrum\core\SpecItemInterface;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class RunResultsBuffer extends \spectrum\reports\widgets\Widget
 {
 	public function getStyles()

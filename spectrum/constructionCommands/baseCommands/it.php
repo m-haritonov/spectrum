@@ -12,8 +12,6 @@
 namespace spectrum\constructionCommands\baseCommands;
 
 /**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  *
  * Support params variants:
  * it($name)

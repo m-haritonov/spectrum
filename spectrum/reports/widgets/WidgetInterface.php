@@ -11,10 +11,6 @@
 
 namespace spectrum\reports\widgets;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 interface WidgetInterface
 {
 	public function __construct(\spectrum\reports\Plugin $ownerPlugin);

@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins;
 use spectrum\core\Config;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Manager implements ManagerInterface
 {
 	static protected $registeredPlugins = array(

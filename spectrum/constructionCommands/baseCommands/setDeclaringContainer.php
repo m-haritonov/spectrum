@@ -13,8 +13,6 @@ namespace spectrum\constructionCommands\baseCommands;
 
 /**
  * @see getCurrentContainer()
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  */
 function setDeclaringContainer(\spectrum\core\SpecContainerInterface $spec = null)
 {

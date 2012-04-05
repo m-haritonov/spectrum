@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\running;
 require_once dirname(__FILE__) . '/../../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class Test extends \spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\Test
 {
 	public function testHasParents_DescribeDescribeDescribe_AncestorsHasContexts_Level1ReturnIsNotEmpty_ShouldBeGetReturnFromCurrentRunningContext()

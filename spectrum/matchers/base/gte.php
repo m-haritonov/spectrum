@@ -13,8 +13,6 @@ namespace spectrum\matchers\base;
 
 /**
  * Matcher for greater than or equal operator ($actual >= $expected).
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @return bool
  */
 function gte($actual, $expected)

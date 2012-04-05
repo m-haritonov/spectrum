@@ -11,10 +11,6 @@
 
 namespace spectrum\reports\widgets\code\variables;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class FloatVar extends Variable
 {
 	protected $type = 'float';

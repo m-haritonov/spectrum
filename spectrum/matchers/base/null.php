@@ -13,8 +13,6 @@ namespace spectrum\matchers\base;
 
 /**
  * Matcher for identical null comparison ($actual === null).
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @return bool
  */
 function null($actual)

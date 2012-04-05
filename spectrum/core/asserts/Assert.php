@@ -13,8 +13,6 @@ namespace spectrum\core\asserts;
 use spectrum\core\Exception;
 
 /**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @property not
  */
 class Assert implements AssertInterface

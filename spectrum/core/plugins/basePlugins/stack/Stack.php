@@ -12,10 +12,6 @@
 namespace spectrum\core\plugins\basePlugins\stack;
 use spectrum\core\plugins\Exception;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class Stack extends \spectrum\core\plugins\Plugin
 {
 	protected $items = array();

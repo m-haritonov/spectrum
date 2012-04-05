@@ -12,10 +12,6 @@
 namespace spectrum\reports\widgets\runResultsBuffer\details;
 use \spectrum\core\asserts\MatcherCallDetailsInterface;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class MatcherCall extends Details
 {
 	public function getStyles()

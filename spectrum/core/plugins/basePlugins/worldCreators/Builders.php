@@ -11,10 +11,6 @@
 
 namespace spectrum\core\plugins\basePlugins\worldCreators;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Builders extends WorldCreators
 {
 	public function applyToWorld($world)

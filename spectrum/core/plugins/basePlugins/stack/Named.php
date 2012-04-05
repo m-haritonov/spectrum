@@ -11,10 +11,6 @@
 
 namespace spectrum\core\plugins\basePlugins\stack;
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class Named extends Stack
 {
 	public function add($name, $value)

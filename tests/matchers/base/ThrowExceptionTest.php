@@ -13,10 +13,6 @@ namespace spectrum\matchers\base;
 require_once dirname(__FILE__) . '/../../init.php';
 require_once 'base/throwException.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 class ThrowExceptionTest extends \spectrum\matchers\Test
 {
 	public function testExpectedClass_ShouldBeAcceptRootClassException()

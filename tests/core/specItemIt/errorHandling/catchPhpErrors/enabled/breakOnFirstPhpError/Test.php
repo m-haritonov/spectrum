@@ -15,10 +15,6 @@ use spectrum\core\SpecItem;
 
 require_once dirname(__FILE__) . '/../../../../../../init.php';
 
-/**
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
- */
 abstract class Test extends \spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\Test
 {
 	public function testShouldBeReturnFalse()

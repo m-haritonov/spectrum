@@ -14,8 +14,6 @@ namespace spectrum\matchers\base;
 /**
  * Return true, if code in $callbackWithActualCode throw exception instance of $expectedClass with
  * $expectedStringInMessage (if not null) and $expectedCode (if not null)
- * @author Mikhail Kharitonov <mvkharitonov@gmail.com>
- * @link   http://www.mkharitonov.net/spectrum/
  * @return bool
  */
 function throwException($callbackWithActualCode, $expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
