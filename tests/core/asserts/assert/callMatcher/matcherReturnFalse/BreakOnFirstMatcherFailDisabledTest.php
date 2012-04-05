@@ -230,10 +230,10 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 			$assert = new Assert(true);
 
 			$assert->not->true();
-			$test->assertFalse($assert->isNot());
+			$test->assertFalse($assert->getNot());
 
 			$assert->false();
-			$test->assertFalse($assert->isNot());
+			$test->assertFalse($assert->getNot());
 
 			$isCalled = true;
 		});

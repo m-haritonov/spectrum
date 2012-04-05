@@ -15,7 +15,7 @@ use spectrum\core\Exception;
 class Assert implements AssertInterface
 {
 	protected $actualValue;
-	protected $isNotEnabled = false;
+	protected $notEnabled = false;
 
 	public function __construct($actualValue)
 	{
@@ -40,7 +40,7 @@ class Assert implements AssertInterface
 			$result = $specItem->matchers->callMatcher($matcherName, array_merge(array($this->getActualValue()), $expectedArgs));
 			$matcherCallDetails->setMatcherReturnValue($result);
 
-			if ($this->isNot())
+			if ($this->getNot())
 				$result = !$result;
 		}
 		catch (\Exception $e)
@@ -78,7 +78,7 @@ class Assert implements AssertInterface
 		$class = \spectrum\core\Config::getMatcherCallDetailsClass();
 		$matcherCallDetails = new $class();
 		$matcherCallDetails->setActualValue($this->getActualValue());
-		$matcherCallDetails->setIsNot($this->isNot());
+		$matcherCallDetails->setIsNot($this->getNot());
 		return $matcherCallDetails;
 	}
 
@@ -109,18 +109,18 @@ class Assert implements AssertInterface
 		return $this->actualValue;
 	}
 
-	public function isNot()
+	public function getNot()
 	{
-		return $this->isNotEnabled;
+		return $this->notEnabled;
 	}
 
 	public function invertNot()
 	{
-		$this->isNotEnabled = !$this->isNotEnabled;
+		$this->notEnabled = !$this->notEnabled;
 	}
 
 	public function resetNot()
 	{
-		$this->isNotEnabled = false;
+		$this->notEnabled = false;
 	}
 }

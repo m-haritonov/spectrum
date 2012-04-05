@@ -18,7 +18,7 @@ interface AssertInterface
 	public function __get($name);
 
 	public function getActualValue();
-	public function isNot();
+	public function getNot();
 	public function invertNot();
 	public function resetNot();
 }

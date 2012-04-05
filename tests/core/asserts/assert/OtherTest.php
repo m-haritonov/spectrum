@@ -32,17 +32,17 @@ class OtherTest extends Test
 	public function testNot_ShouldNotBeEnabledByDefault()
 	{
 		$assert = new Assert('');
-		$this->assertFalse($assert->isNot());
+		$this->assertFalse($assert->getNot());
 	}
 
 	public function testNot_ShouldBeInvertCurrentNot()
 	{
 		$assert = new Assert('');
 		$assert->not;
-		$this->assertTrue($assert->isNot());
+		$this->assertTrue($assert->getNot());
 		$assert->not;
-		$this->assertFalse($assert->isNot());
+		$this->assertFalse($assert->getNot());
 		$assert->not;
-		$this->assertTrue($assert->isNot());
+		$this->assertTrue($assert->getNot());
 	}
 }

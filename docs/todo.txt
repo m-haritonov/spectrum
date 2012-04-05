@@ -5,9 +5,6 @@ throwException -> thrownException?
 RunResultsBuffer: rename $result['result'] to $result['value']
 RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (буффер может использоваться не только для хранения результатов запуска)?
 
-MatcherCall::getIsNot, Assert::isNot rename to getNot ???
-Assert::$isNotEnabled rename to notStatus???
-
 ---Плагин report
 	упростить и улучшить expand/collapse в TotalInfo (возможно, сделав его в виде ползунка с тремя пунктами)
 		Detalisation: - 0-0-0-0 +

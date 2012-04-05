@@ -255,10 +255,10 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 			$assert = new Assert(true);
 
 			$assert->not->false();
-			$test->assertFalse($assert->isNot());
+			$test->assertFalse($assert->getNot());
 
 			$assert->true();
-			$test->assertFalse($assert->isNot());
+			$test->assertFalse($assert->getNot());
 
 			$isCalled = true;
 		});
