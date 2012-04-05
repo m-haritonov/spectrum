@@ -2,17 +2,12 @@
 
 throwException -> thrownException?
 
-RunResultsBuffer: rename $result['result'] to $result['value']
+RunResultsBuffer: rename $result['result'] to $result['value/flag']
 RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (буффер может использоваться не только для хранения результатов запуска)?
 
 Matchers plugin:
 ---Плагин report
-	упростить и улучшить expand/collapse в TotalInfo (возможно, сделав его в виде ползунка с тремя пунктами)
-		Detalisation: - 0-0-0-0 +
-
 	flush
-
-	matcher with "not"
 
 	сделать run.php
 	run.php?path=qwe.php&id=spec1_1_1

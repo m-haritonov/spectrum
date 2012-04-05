@@ -16,6 +16,7 @@ class Plugin extends \spectrum\core\plugins\Plugin implements \spectrum\core\plu
 		'Tools' => 'spectrum\reports\widgets\Tools',
 		'Clearfix' => 'spectrum\reports\widgets\Clearfix',
 		'TotalInfo' => 'spectrum\reports\widgets\TotalInfo',
+		'DetailsControl' => 'spectrum\reports\widgets\DetailsControl',
 		'finalResult\Result' => 'spectrum\reports\widgets\finalResult\Result',
 		'finalResult\Update' => 'spectrum\reports\widgets\finalResult\Update',
 		'Messages' => 'spectrum\reports\widgets\Messages',

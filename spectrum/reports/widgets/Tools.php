@@ -56,6 +56,25 @@ class Tools extends \spectrum\reports\widgets\Widget
 						}
 						else if (tools.hasClass(node, className))
 							node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
+					},
+
+					/**
+					 * @param {HTMLElement} node
+					 */
+					dispatchEvent: function(eventName, node)
+					{
+						var e;
+						if (document.createEvent)
+						{
+							e = document.createEvent("HTMLEvents");
+							e.initEvent(eventName, true, true);
+							node.dispatchEvent(e);
+						}
+						else
+						{
+							e = document.createEventObject();
+							node.fireEvent("on" + eventName, e);
+						}
 					}
 				};' . $this->getNewline() .
 			'</script>' . $this->getNewline();
