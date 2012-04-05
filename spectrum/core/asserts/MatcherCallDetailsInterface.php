@@ -12,8 +12,8 @@ interface MatcherCallDetailsInterface
 {
 	public function setActualValue($actualValue);
 	public function getActualValue();
-	public function setIsNot($isNot);
-	public function getIsNot();
+	public function setNot($not);
+	public function getNot();
 	public function setMatcherName($matcherName);
 	public function getMatcherName();
 	public function setMatcherArgs(array $matcherArgs);

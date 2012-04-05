@@ -15,8 +15,8 @@ class MatcherCallDetails implements \spectrum\core\asserts\MatcherCallDetailsInt
 {
 	public function setActualValue($actualValue){}
 	public function getActualValue(){}
-	public function setIsNot($isNot){}
-	public function getIsNot(){}
+	public function setNot($not){}
+	public function getNot(){}
 	public function setMatcherName($matcherName){}
 	public function getMatcherName(){}
 	public function setMatcherArgs(array $matcherArgs){}

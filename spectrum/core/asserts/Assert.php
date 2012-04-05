@@ -78,7 +78,7 @@ class Assert implements AssertInterface
 		$class = \spectrum\core\Config::getMatcherCallDetailsClass();
 		$matcherCallDetails = new $class();
 		$matcherCallDetails->setActualValue($this->getActualValue());
-		$matcherCallDetails->setIsNot($this->getNot());
+		$matcherCallDetails->setNot($this->getNot());
 		return $matcherCallDetails;
 	}
 

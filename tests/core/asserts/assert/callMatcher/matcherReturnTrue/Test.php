@@ -72,7 +72,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(false, $details->getIsNot());
+		$this->assertSame(false, $details->getNot());
 		$this->assertSame('true', $details->getMatcherName());
 		$this->assertSame(array(), $details->getMatcherArgs());
 		$this->assertSame(true, $details->getMatcherReturnValue());
@@ -80,7 +80,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 
 		$details = $results[1]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(false, $details->getIsNot());
+		$this->assertSame(false, $details->getNot());
 		$this->assertSame('returnSecondArg', $details->getMatcherName());
 		$this->assertSame(array(1, 'bar'), $details->getMatcherArgs());
 		$this->assertSame('bar', $details->getMatcherReturnValue());
@@ -88,7 +88,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 
 		$details = $results[2]['details'];
 		$this->assertSame('foo', $details->getActualValue());
-		$this->assertSame(false, $details->getIsNot());
+		$this->assertSame(false, $details->getNot());
 		$this->assertSame('eq', $details->getMatcherName());
 		$this->assertSame(array('foo'), $details->getMatcherArgs());
 		$this->assertSame(true, $details->getMatcherReturnValue());
@@ -211,7 +211,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(true, $details->getIsNot());
+		$this->assertSame(true, $details->getNot());
 		$this->assertSame('false', $details->getMatcherName());
 		$this->assertSame(array(), $details->getMatcherArgs());
 		$this->assertSame(false, $details->getMatcherReturnValue());
@@ -219,7 +219,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 
 		$details = $results[1]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(true, $details->getIsNot());
+		$this->assertSame(true, $details->getNot());
 		$this->assertSame('returnSecondArg', $details->getMatcherName());
 		$this->assertSame(array('bar', 0), $details->getMatcherArgs());
 		$this->assertSame(0, $details->getMatcherReturnValue());
@@ -227,7 +227,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 
 		$details = $results[2]['details'];
 		$this->assertSame('foo', $details->getActualValue());
-		$this->assertSame(true, $details->getIsNot());
+		$this->assertSame(true, $details->getNot());
 		$this->assertSame('eq', $details->getMatcherName());
 		$this->assertSame(array('bar'), $details->getMatcherArgs());
 		$this->assertSame(false, $details->getMatcherReturnValue());

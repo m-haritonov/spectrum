@@ -89,7 +89,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(false, $details->getIsNot());
+		$this->assertSame(false, $details->getNot());
 		$this->assertSame('bad', $details->getMatcherName());
 		$this->assertSame(array(), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());
@@ -98,7 +98,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$details = $results[1]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(false, $details->getIsNot());
+		$this->assertSame(false, $details->getNot());
 		$this->assertSame('badToo', $details->getMatcherName());
 		$this->assertSame(array(0, 'bar'), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());
@@ -107,7 +107,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$details = $results[2]['details'];
 		$this->assertSame('foo', $details->getActualValue());
-		$this->assertSame(false, $details->getIsNot());
+		$this->assertSame(false, $details->getNot());
 		$this->assertSame('badToo', $details->getMatcherName());
 		$this->assertSame(array('bar'), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());
@@ -223,7 +223,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(true, $details->getIsNot());
+		$this->assertSame(true, $details->getNot());
 		$this->assertSame('bad', $details->getMatcherName());
 		$this->assertSame(array(), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());
@@ -232,7 +232,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$details = $results[1]['details'];
 		$this->assertSame(true, $details->getActualValue());
-		$this->assertSame(true, $details->getIsNot());
+		$this->assertSame(true, $details->getNot());
 		$this->assertSame('badToo', $details->getMatcherName());
 		$this->assertSame(array(0, 'bar'), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());
@@ -241,7 +241,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$details = $results[2]['details'];
 		$this->assertSame('foo', $details->getActualValue());
-		$this->assertSame(true, $details->getIsNot());
+		$this->assertSame(true, $details->getNot());
 		$this->assertSame('badToo', $details->getMatcherName());
 		$this->assertSame(array('bar'), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());

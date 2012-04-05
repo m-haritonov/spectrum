@@ -11,7 +11,7 @@ namespace spectrum\core\asserts;
 class MatcherCallDetails implements MatcherCallDetailsInterface
 {
 	protected $actualValue;
-	protected $isNot;
+	protected $not;
 	protected $matcherName;
 	protected $matcherArgs = array();
 	protected $matcherReturnValue;
@@ -33,14 +33,14 @@ class MatcherCallDetails implements MatcherCallDetailsInterface
 
 /**/
 
-	public function setIsNot($isNot)
+	public function setNot($not)
 	{
-		$this->isNot = $isNot;
+		$this->not = $not;
 	}
 
-	public function getIsNot()
+	public function getNot()
 	{
-		return $this->isNot;
+		return $this->not;
 	}
 
 /**/

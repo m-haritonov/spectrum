@@ -11,6 +11,8 @@ RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (б
 
 	flush
 
+	matcher with "not"
+
 	сделать run.php
 	run.php?path=qwe.php&id=spec1_1_1
 	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах

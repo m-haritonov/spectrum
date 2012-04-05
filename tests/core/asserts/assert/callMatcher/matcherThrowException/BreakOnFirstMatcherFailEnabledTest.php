@@ -82,7 +82,7 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 		$details = $results[0]['details'];
 		$this->assertTrue($details instanceof \spectrum\core\asserts\MatcherCallDetails);
 		$this->assertSame('foo', $details->getActualValue());
-		$this->assertSame(false, $details->getIsNot());
+		$this->assertSame(false, $details->getNot());
 		$this->assertSame('bad', $details->getMatcherName());
 		$this->assertSame(array(0, 'bar'), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());
@@ -161,7 +161,7 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 		$details = $results[0]['details'];
 		$this->assertTrue($details instanceof \spectrum\core\asserts\MatcherCallDetails);
 		$this->assertSame('foo', $details->getActualValue());
-		$this->assertSame(true, $details->getIsNot());
+		$this->assertSame(true, $details->getNot());
 		$this->assertSame('bad', $details->getMatcherName());
 		$this->assertSame(array(0, 'bar'), $details->getMatcherArgs());
 		$this->assertSame(null, $details->getMatcherReturnValue());
