@@ -1,6 +1,6 @@
 <?php
 /*
- * (c) Mikhail Kharitonov <mvkharitonov@gmail.com>
+ * (c) Mikhail Kharitonov <mail@mkharitonov.net>
  *
  * For the full copyright and license information, see the
  * LICENSE.txt file that was distributed with this source code.
@@ -1421,7 +1421,7 @@ onRunAfter
 </code></p>
 
 <h1 id="contacts">Обратная связь</h1>
-Связаться с автором можно по <a href="mailto:mvkharitonov@gmail.com">e-mail адресу</a>.
+Связаться с автором можно по <a href="mailto:mail@mkharitonov.net">e-mail адресу</a>.
 
 
 <div class="counters">

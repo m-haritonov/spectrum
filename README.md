@@ -211,6 +211,6 @@ Result:
 			2. Should find person by last name — success
 
 ###Copyright
-Copyright (c) 2011 Mikhail Kharitonov <mvkharitonov@gmail.com>.
+Copyright (c) 2011 Mikhail Kharitonov <mail@mkharitonov.net>.
 
 See LICENSE.txt for details.

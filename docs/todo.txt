@@ -17,9 +17,6 @@ Spec->callPlugin rename to getPlugin?
 	run.php?path=qwe.php&id=spec1_1_1
 	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
 
----
-email заменить на mail@mkharitonov.net
-
 ---рефакторинг core
 	исправить TODO
 
