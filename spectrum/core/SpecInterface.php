@@ -19,7 +19,7 @@ interface SpecInterface
 	public function setParent(SpecContainerInterface $spec = null);
 	public function getParent();
 
-	public function callPlugin($pluginAccessName);
+	public function getPlugin($pluginAccessName);
 
 	public function enable();
 	public function disable();

@@ -18,55 +18,55 @@ abstract class SpecTest extends Test
 	}
 
 /**/
-	public function testCallPlugin_WhenConstructOnce_ShouldBeCreatePluginInSpecConstructorAndReturnCreatedInstanceLater()
+	public function testGetPlugin_WhenConstructOnce_ShouldBeCreatePluginInSpecConstructorAndReturnCreatedInstanceLater()
 	{
 		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenConstructOnce');
 
 		$spec = $this->createCurrentSpec();
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->getPlugin('foo'));
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->getPlugin('foo'));
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
-	public function testCallPlugin_WhenCallOnce_ShouldBeCreatePluginOnlyWhenFirstCallAndReturnCreatedInstanceLater()
+	public function testGetPlugin_WhenCallOnce_ShouldBeCreatePluginOnlyWhenFirstCallAndReturnCreatedInstanceLater()
 	{
 		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenCallOnce');
 
 		$spec = $this->createCurrentSpec();
 		$this->assertEquals(0, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$activatedPlugin = $spec->callPlugin('foo');
+		$activatedPlugin = $spec->getPlugin('foo');
 
 		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->callPlugin('foo'));
+		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $spec->getPlugin('foo'));
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
-	public function testCallPlugin_WhenCallAlways_ShouldBeCreatePluginWhenCallAlwaysAndReturnNewInstanceLater()
+	public function testGetPlugin_WhenCallAlways_ShouldBeCreatePluginWhenCallAlwaysAndReturnNewInstanceLater()
 	{
 		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenCallAlways');
 
 		$spec = $this->createCurrentSpec();
 		$this->assertEquals(0, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$prevActivatedPlugin = $spec->callPlugin('foo');
+		$prevActivatedPlugin = $spec->getPlugin('foo');
 
 		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $prevActivatedPlugin);
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 
-		$activatedPlugin = $spec->callPlugin('foo');
+		$activatedPlugin = $spec->getPlugin('foo');
 		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
 		$this->assertNotSame($prevActivatedPlugin, $activatedPlugin);
 		$this->assertEquals(2, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
-	public function testCallPlugin_ShouldBeSupportAccessThroughMagicGetProperty()
+	public function testGetPlugin_ShouldBeSupportAccessThroughMagicGetProperty()
 	{
 		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenCallAlways');
 
@@ -75,13 +75,13 @@ abstract class SpecTest extends Test
 		$this->assertSame(\spectrum\core\testEnv\PluginStub::getLastInstance(), $activatedPlugin);
 	}
 
-	public function testCallPlugin_ShouldBeThrowExceptionIfPluginWithAccessNameNotExists()
+	public function testGetPlugin_ShouldBeThrowExceptionIfPluginWithAccessNameNotExists()
 	{
 		\spectrum\core\plugins\Manager::registerPlugin('foo');
 
 		$spec = $this->createCurrentSpec();
 		$this->assertThrowException('\spectrum\core\plugins\Exception', function() use($spec) {
-			$spec->callPlugin('bar');
+			$spec->getPlugin('bar');
 		});
 
 		$this->assertThrowException('\spectrum\core\plugins\Exception', function() use($spec) {

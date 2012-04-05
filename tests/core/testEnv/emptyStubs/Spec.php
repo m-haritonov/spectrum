@@ -17,7 +17,7 @@ class Spec implements \spectrum\core\SpecInterface
 	public function isAnonymous(){}
 	public function setParent(\spectrum\core\SpecContainerInterface $spec = null){}
 	public function getParent(){}
-	public function callPlugin($pluginAccessName){}
+	public function getPlugin($pluginAccessName){}
 	public function enable(){}
 	public function disable(){}
 	public function isEnabled(){}

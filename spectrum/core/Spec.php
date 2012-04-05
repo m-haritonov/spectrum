@@ -44,30 +44,24 @@ abstract class Spec implements SpecInterface
 
 	public function __get($pluginAccessName)
 	{
-		return $this->callPlugin($pluginAccessName);
+		return $this->getPlugin($pluginAccessName);
 	}
 	
-	public function callPlugin($pluginAccessName)
+	public function getPlugin($pluginAccessName)
 	{
 		$manager = Config::getPluginsManagerClass();
 		$plugin = $manager::getRegisteredPlugin($pluginAccessName);
 
-		if ($plugin['activateMoment'] == 'whenCallAlways' || !$this->isPluginActivated($pluginAccessName))
-			return $this->activatePlugin($pluginAccessName);
-		else
-			return $this->activatedPlugins[$pluginAccessName];
+		if ($plugin['activateMoment'] == 'whenCallAlways' || !array_key_exists($pluginAccessName, $this->activatedPlugins))
+			$this->activatePlugin($pluginAccessName);
+
+		return $this->activatedPlugins[$pluginAccessName];
 	}
 
-	protected function isPluginActivated($pluginAccessName)
-	{
-		return array_key_exists($pluginAccessName, $this->activatedPlugins);
-	}
-	
 	protected function activatePlugin($pluginAccessName)
 	{
 		$manager = Config::getPluginsManagerClass();
 		$this->activatedPlugins[$pluginAccessName] = $manager::createPluginInstance($this, $pluginAccessName);
-		return $this->activatedPlugins[$pluginAccessName];
 	}
 
 	protected function dispatchEvent($eventName)
@@ -79,7 +73,7 @@ abstract class Spec implements SpecInterface
 		$manager = Config::getPluginsManagerClass();
 		foreach ($manager::getAccessNamesForEventPlugins($eventName) as $pluginAccessName)
 		{
-			$pluginInstance = $this->callPlugin($pluginAccessName);
+			$pluginInstance = $this->getPlugin($pluginAccessName);
 			call_user_func_array(array($pluginInstance, $eventName), $args);
 		}
 	}

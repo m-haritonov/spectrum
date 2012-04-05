@@ -8,9 +8,17 @@ RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (б
 MatcherCall::getIsNot, Assert::isNot rename to getNot ???
 Assert::$isNotEnabled rename to notStatus???
 
-Spec->callPlugin rename to getPlugin?
+whenCallAlways => whenAccessAlways
+	whenConstructOnce',
+	'whenAccessOnce',
+	'whenAccessAlways
+	'whenFirstAccess',
+	'whenAlwaysAccess
 
 ---Плагин report
+	упростить и улучшить expand/collapse в TotalInfo (возможно, сделав его в виде ползунка с тремя пунктами)
+		Detalisation: - 0-0-0-0 +
+
 	flush
 
 	сделать run.php
@@ -39,7 +47,6 @@ Spec->callPlugin rename to getPlugin?
 	report->highlightSpecNameWithSameFileName
 	время выполнения каждого теста и группы тестов
 	кол-во выполненных тестов
-	упростить и улучшить expand/collapse в TotalInfo (возможно, сделав его в виде ползунка с тремя пунктами)
 	feature: report->setWriteToFile()
 
 	дотавить title к резальтату или выводить "success", если есть "success" и "empty" дети
