@@ -20,7 +20,11 @@ class Matchers extends Stack\Named
 		if (!Config::getAllowMatchersOverride() && $this->isExists($name))
 			throw new Exception('Matchers override deny in Config');
 
-		if (in_array($name, array('not', 'isNot', 'getActualValue', 'be')))
+		$reflection = new \ReflectionClass(Config::getAssertClass());
+		if ($reflection->hasMethod($name) && $reflection->getMethod($name)->isPublic())
+			throw new Exception('Can\'t add matcher with name "' . $name . '": public method with same name already exists in class "' . Config::getAssertClass() . '"');
+
+		if (in_array($name, array('not', 'be')))
 			throw new Exception('Name "' . $name . '" was reserved, you can\'t add matcher with same name');
 
 		return parent::add($name, $callback);

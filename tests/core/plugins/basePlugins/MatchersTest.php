@@ -21,28 +21,26 @@ class MatchersTest extends Test
 		});
 	}
 
-	public function testAdd_ShouldBeThrowExceptionIfNameIsReservedNameIsNot()
-	{
-		$this->assertThrowException('\spectrum\core\plugins\Exception', '"isNot" was reserved', function(){
-			$spec = new \spectrum\core\SpecContainerDescribe();
-			$spec->matchers->add('isNot', function(){});
-		});
-	}
-
-	public function testAdd_ShouldBeThrowExceptionIfNameIsReservedNameGetActualValue()
-	{
-		$this->assertThrowException('\spectrum\core\plugins\Exception', '"getActualValue" was reserved', function(){
-			$spec = new \spectrum\core\SpecContainerDescribe();
-			$spec->matchers->add('getActualValue', function(){});
-		});
-	}
-
 	public function testAdd_ShouldBeThrowExceptionIfNameIsReservedNameBe()
 	{
 		$this->assertThrowException('\spectrum\core\plugins\Exception', '"be" was reserved', function(){
 			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->matchers->add('be', function(){});
 		});
+	}
+
+	public function testAdd_ShouldBeThrowExceptionIfPublicMethodWithSameNameAlreadyExistsInAssertClass()
+	{
+		$this->assertThrowException('\spectrum\core\plugins\Exception', 'Can\'t add matcher with name "getNot": public method with same name already exists', function(){
+			$spec = new \spectrum\core\SpecContainerDescribe();
+			$spec->matchers->add('getNot', function(){});
+		});
+	}
+
+	public function testAdd_ShouldNotBeThrowExceptionIfProtectedMethodWithSameNameAlreadyExistsInAssertClass()
+	{
+		$spec = new \spectrum\core\SpecContainerDescribe();
+		$spec->matchers->add('createMatcherCallDetails', function(){});
 	}
 
 	public function testAdd_ShouldBeThrowExceptionIfNotAllowMatchersAdd()
