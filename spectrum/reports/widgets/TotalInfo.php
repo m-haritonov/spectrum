@@ -27,40 +27,45 @@ class TotalInfo extends \spectrum\reports\widgets\Widget
 			'<script type="text/javascript">
 				document.addEventListener("DOMContentLoaded", function()
 				{
-					var totalInfo = document.querySelector(".g-totalInfo");
-					totalInfo.querySelector(".specChildren .expandAll").addEventListener("click", function(e){
-						e.preventDefault();
-						tools.addClass(".g-specList>li.container", "expand");
-					});
+					var totalInfoNodes = document.querySelectorAll(".g-totalInfo");
+					for (var i = 0; i < totalInfoNodes.length; i++)
+					{
+						var totalInfoNode = totalInfoNodes[i];
 
-					totalInfo.querySelector(".specChildren .collapseAll").addEventListener("click", function(e){
-						e.preventDefault();
-						tools.removeClass(".g-specList>li.container", "expand");
-					});
+						totalInfoNode.querySelector(".specChildren .expandAll").addEventListener("click", function(e){
+							e.preventDefault();
+							tools.addClass(".g-specList>li.container", "expand");
+						});
 
-					/**/
+						totalInfoNode.querySelector(".specChildren .collapseAll").addEventListener("click", function(e){
+							e.preventDefault();
+							tools.removeClass(".g-specList>li.container", "expand");
+						});
 
-					totalInfo.querySelector(".specDetails .expandAll").addEventListener("click", function(e){
-						e.preventDefault();
-						tools.addClass(".g-specList>li.item", "expand");
-					});
+						/**/
 
-					totalInfo.querySelector(".specDetails .collapseAll").addEventListener("click", function(e){
-						e.preventDefault();
-						tools.removeClass(".g-specList>li.item", "expand");
-					});
+						totalInfoNode.querySelector(".specDetails .expandAll").addEventListener("click", function(e){
+							e.preventDefault();
+							tools.addClass(".g-specList>li.item", "expand");
+						});
 
-					/**/
+						totalInfoNode.querySelector(".specDetails .collapseAll").addEventListener("click", function(e){
+							e.preventDefault();
+							tools.removeClass(".g-specList>li.item", "expand");
+						});
 
-					totalInfo.querySelector(".resultDetails .expandAll").addEventListener("click", function(e){
-						e.preventDefault();
-						tools.addClass(".g-runResultsBuffer>.results>.result", "expand");
-					});
+						/**/
 
-					totalInfo.querySelector(".resultDetails .collapseAll").addEventListener("click", function(e){
-						e.preventDefault();
-						tools.removeClass(".g-runResultsBuffer>.results>.result", "expand");
-					});
+						totalInfoNode.querySelector(".resultDetails .expandAll").addEventListener("click", function(e){
+							e.preventDefault();
+							tools.addClass(".g-runResultsBuffer>.results>.result", "expand");
+						});
+
+						totalInfoNode.querySelector(".resultDetails .collapseAll").addEventListener("click", function(e){
+							e.preventDefault();
+							tools.removeClass(".g-runResultsBuffer>.results>.result", "expand");
+						});
+					}
 				});' . $this->getNewline() .
 			'</script>' . $this->getNewline();
 	}
