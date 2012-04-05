@@ -7,5 +7,5 @@
  */
 
 require_once dirname(__FILE__) . '/autoload.php';
-\spectrum\core\plugins\Manager::registerPlugin('reports', '\spectrum\reports\Plugin', 'whenCallOnce');
+\spectrum\core\plugins\Manager::registerPlugin('reports', '\spectrum\reports\Plugin', 'whenFirstAccess');
 require_once dirname(__FILE__) . '/constructionCommands/globalAliases.php';

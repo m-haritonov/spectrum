@@ -10,7 +10,7 @@ namespace spectrum\core\testEnv\emptyStubs\plugins;
 
 class Manager implements \spectrum\core\plugins\ManagerInterface
 {
-	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenCallOnce'){}
+	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenFirstAccess'){}
 	static public function registerPlugins($plugins){}
 	static public function unregisterPlugin($accessName){}
 	static public function unregisterAllPlugins(){}

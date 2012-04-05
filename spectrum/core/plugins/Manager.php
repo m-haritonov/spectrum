@@ -12,18 +12,18 @@ use spectrum\core\Config;
 class Manager implements ManagerInterface
 {
 	static protected $registeredPlugins = array(
-		'matchers' => array('class' => '\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'whenCallOnce'),
-		'builders' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Builders', 'activateMoment' => 'whenCallOnce'),
-		'destroyers' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Destroyers', 'activateMoment' => 'whenCallOnce'),
-		'selector' => array('class' => '\spectrum\core\plugins\basePlugins\Selector', 'activateMoment' => 'whenCallOnce'),
-		'identify' => array('class' => '\spectrum\core\plugins\basePlugins\Identify', 'activateMoment' => 'whenCallOnce'),
-		'errorHandling' => array('class' => '\spectrum\core\plugins\basePlugins\ErrorHandling', 'activateMoment' => 'whenCallOnce'),
-		'output' => array('class' => '\spectrum\core\plugins\basePlugins\Output', 'activateMoment' => 'whenCallOnce'),
-		'messages' => array('class' => '\spectrum\core\plugins\basePlugins\Messages', 'activateMoment' => 'whenCallOnce'),
-		'patterns' => array('class' => '\spectrum\core\plugins\basePlugins\Patterns', 'activateMoment' => 'whenCallOnce'),
+		'matchers' => array('class' => '\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'whenFirstAccess'),
+		'builders' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Builders', 'activateMoment' => 'whenFirstAccess'),
+		'destroyers' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Destroyers', 'activateMoment' => 'whenFirstAccess'),
+		'selector' => array('class' => '\spectrum\core\plugins\basePlugins\Selector', 'activateMoment' => 'whenFirstAccess'),
+		'identify' => array('class' => '\spectrum\core\plugins\basePlugins\Identify', 'activateMoment' => 'whenFirstAccess'),
+		'errorHandling' => array('class' => '\spectrum\core\plugins\basePlugins\ErrorHandling', 'activateMoment' => 'whenFirstAccess'),
+		'output' => array('class' => '\spectrum\core\plugins\basePlugins\Output', 'activateMoment' => 'whenFirstAccess'),
+		'messages' => array('class' => '\spectrum\core\plugins\basePlugins\Messages', 'activateMoment' => 'whenFirstAccess'),
+		'patterns' => array('class' => '\spectrum\core\plugins\basePlugins\Patterns', 'activateMoment' => 'whenFirstAccess'),
 	);
 
-	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenCallOnce')
+	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenFirstAccess')
 	{
 		if (!Config::getAllowPluginsRegistration())
 			throw new Exception('Plugins registration deny in Config');
@@ -35,7 +35,7 @@ class Manager implements ManagerInterface
 		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface'))
 			throw new Exception('Class "' . $class . '" should be implements PluginInterface');
 
-		if (!in_array($activateMoment, array('whenConstructOnce', 'whenCallOnce', 'whenCallAlways')))
+		if (!in_array($activateMoment, array('whenSpecConstruct', 'whenFirstAccess', 'whenEveryAccess')))
 			throw new Exception('Wrong activateMoment "' . $activateMoment . '" for plugin with access name "' . $accessName . '"');
 
 		static::$registeredPlugins[$accessName] = array('class' => $class, 'activateMoment' => $activateMoment);
