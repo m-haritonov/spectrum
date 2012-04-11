@@ -19,7 +19,7 @@ require_once dirname(__FILE__) . '/baseCommands/context.php';
 require_once dirname(__FILE__) . '/baseCommands/it.php';
 require_once dirname(__FILE__) . '/baseCommands/itLikePattern.php';
 
-require_once dirname(__FILE__) . '/baseCommands/be.php';
+require_once dirname(__FILE__) . '/baseCommands/the.php';
 
 require_once dirname(__FILE__) . '/baseCommands/fail.php';
 require_once dirname(__FILE__) . '/baseCommands/message.php';
@@ -35,7 +35,7 @@ require_once dirname(__FILE__) . '/baseCommands/isDeclaringState.php';
 require_once dirname(__FILE__) . '/baseCommands/isRunningState.php';
 
 /**
- * @method \spectrum\core\asserts\Assert be()
+ * @method \spectrum\core\asserts\Assert the()
  * @method addMatcher()
  * @method afterEach()
  * @method beforeEach()
@@ -67,7 +67,7 @@ class Manager implements ManagerInterface
 		'it' => '\spectrum\constructionCommands\baseCommands\it',
 		'itLikePattern' => '\spectrum\constructionCommands\baseCommands\itLikePattern',
 
-		'be' => '\spectrum\constructionCommands\baseCommands\be',
+		'the' => '\spectrum\constructionCommands\baseCommands\the',
 
 		'fail' => '\spectrum\constructionCommands\baseCommands\fail',
 		'message' => '\spectrum\constructionCommands\baseCommands\message',

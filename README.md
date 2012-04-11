@@ -12,7 +12,7 @@ Documentation (for a while only on Russian): http://mkharitonov.net/spectrum/
 	describe('AddressBook', function(){
 		it('Should find person by first name', function(){
 			$addressBook = new AddressBook();
-			be($addressBook->findPerson('Bob')->firstName)->eq('Bob');
+			the($addressBook->findPerson('Bob')->firstName)->eq('Bob');
 		});
 	});
 
@@ -34,7 +34,7 @@ Result:
 		});
 
 		it('Should find person by first name', function($w){
-			be($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+			the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 		});
 
 		it('Should find person by phone number', array(
@@ -42,7 +42,7 @@ Result:
 			'(495) 123-456-7',
 			'123-456-7',
 		), function($w, $phoneNumber){
-			be($w->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
+			the($w->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
 		});
 	});
 
@@ -80,7 +80,7 @@ Result:
 		});
 
 		it('Should find person by first name', function($w){
-			be($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+			the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 		});
 
 		it('Should find person by phone number', array(
@@ -88,7 +88,7 @@ Result:
 			'(495) 123-456-7',
 			'123-456-7',
 		), function($w, $phoneNumber){
-			be($w->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
+			the($w->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
 		});
 	});
 
@@ -144,11 +144,11 @@ Result:
 
 		describe('findPerson()', function(){
 			it('Should find person by first name', function($w){
-				be($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+				the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 			});
 
 			it('Should find person by last name', function($w){
-				be($w->addressBook->findPerson('Smith')->lastName)->eq('Smith');
+				the($w->addressBook->findPerson('Smith')->lastName)->eq('Smith');
 			});
 		});
 	});
@@ -169,6 +169,7 @@ Result:
 				2. Should find person by last name — success
 	2. Data storage "files" — success
 		1. findPerson() — success
+
 			1. Should find person by first name — success
 			2. Should find person by last name — success
 
@@ -182,11 +183,11 @@ Result:
 
 		describe('findPerson()', function(){
 			it('Should find person by first name', function($w){
-				be($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+				the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 			});
 
 			it('Should find person by last name', function($w){
-				be($w->addressBook->findPerson('Smith')->lastName)->eq('Smith');
+				the($w->addressBook->findPerson('Smith')->lastName)->eq('Smith');
 			});
 		});
 	});

@@ -42,7 +42,7 @@ class MatcherCall extends Details
 		$output = '';
 
 		$output .= '<div class="callExpression">';
-		$output .= $this->getOwnerPlugin()->createWidget('code\Method')->getHtml('be', array($details->getActualValue()));
+		$output .= $this->getOwnerPlugin()->createWidget('code\Method')->getHtml('the', array($details->getActualValue()));
 
 		if ($details->getNot())
 		{

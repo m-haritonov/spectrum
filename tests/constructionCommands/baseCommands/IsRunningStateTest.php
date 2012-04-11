@@ -45,7 +45,7 @@ class IsRunningStateTest extends \spectrum\constructionCommands\baseCommands\Tes
 		});
 
 		$it = Manager::it('', function(){
-			be('')->foo();
+			the('')->foo();
 		});
 
 		$it->run();

@@ -12,11 +12,11 @@ namespace spectrum\constructionCommands\baseCommands;
  * @param  mixed $actualValue
  * @return \spectrum\core\asserts\Assert
  */
-function be($actualValue)
+function the($actualValue)
 {
 	$managerClass = \spectrum\constructionCommands\Config::getManagerClass();
 	if (!$managerClass::isRunningState())
-		throw new \spectrum\constructionCommands\Exception('Construction command "be" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "the" should be call only at running state');
 
 	$class = \spectrum\core\Config::getAssertClass();
 	return new $class($actualValue);

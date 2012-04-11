@@ -1,13 +1,19 @@
 
-
+Assert($actualValue) rename to $value?
 throwException -> thrownException?
 
 RunResultsBuffer: rename $result['result'] to $result['value/flag']
 RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (буффер может использоваться не только для хранения результатов запуска)?
+Config::setClassFor();
+
+Matchers - add reserved word "should", "shouldbe", "should_be"
 
 Matchers plugin:
 ---Плагин report
 	flush
+
+	DetailsControl — изменять state глобально - для всех экземпляров на странице
+		По умолчанию — state3
 
 	сделать run.php
 	run.php?path=qwe.php&id=spec1_1_1

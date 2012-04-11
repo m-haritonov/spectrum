@@ -11,12 +11,12 @@ use spectrum\constructionCommands\Manager;
 
 require_once dirname(__FILE__) . '/../../init.php';
 
-class BeTest extends \spectrum\constructionCommands\baseCommands\Test
+class TheTest extends \spectrum\constructionCommands\baseCommands\Test
 {
 	public function testShouldBeAllowToCallAtRunningState()
 	{
 		$it = Manager::it('', function() use(&$assert) {
-			$assert = Manager::be('');
+			$assert = Manager::the('');
 		});
 
 		$it->run();
@@ -25,9 +25,9 @@ class BeTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldBeThrowExceptionIfCalledAtDeclaringState()
 	{
-		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"be" should be call only at running state', function(){
+		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"the" should be call only at running state', function(){
 			Manager::describe('', function(){
-				Manager::be('');
+				Manager::the('');
 			});
 		});
 	}
@@ -35,7 +35,7 @@ class BeTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testShouldBeReturnAssertInstance()
 	{
 		$it = Manager::it('', function() use(&$assert) {
-			$assert = Manager::be('');
+			$assert = Manager::the('');
 		});
 
 		$it->run();
@@ -45,7 +45,7 @@ class BeTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testShouldBeSetActualValueToAssertInstance()
 	{
 		$it = Manager::it('', function() use(&$assert) {
-			$assert = Manager::be('foo');
+			$assert = Manager::the('foo');
 		});
 
 		$it->run();
