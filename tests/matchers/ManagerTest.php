@@ -21,13 +21,14 @@ class ManagerTest extends Test
 		$this->assertEquals('\spectrum\matchers\base\false', $spec->matchers->get('false'));
 		$this->assertEquals('\spectrum\matchers\base\eq', $spec->matchers->get('eq'));
 		$this->assertEquals('\spectrum\matchers\base\ident', $spec->matchers->get('ident'));
+		$this->assertEquals('\spectrum\matchers\base\instanceofMatcher', $spec->matchers->get('instanceof'));
 		$this->assertEquals('\spectrum\matchers\base\lt', $spec->matchers->get('lt'));
 		$this->assertEquals('\spectrum\matchers\base\lte', $spec->matchers->get('lte'));
 		$this->assertEquals('\spectrum\matchers\base\gt', $spec->matchers->get('gt'));
 		$this->assertEquals('\spectrum\matchers\base\gte', $spec->matchers->get('gte'));
 		$this->assertEquals('\spectrum\matchers\base\throwException', $spec->matchers->get('throwException'));
 
-		$this->assertEquals(10, count($spec->matchers->getAll()));
+		$this->assertEquals(11, count($spec->matchers->getAll()));
 	}
 
 	public function testAddBaseMatchersToSpec_ShouldBeIncludeMatcherFile()
