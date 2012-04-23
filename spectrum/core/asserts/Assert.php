@@ -10,7 +10,18 @@ namespace spectrum\core\asserts;
 use spectrum\core\Exception;
 
 /**
- * @property not
+ * @property Assert $not
+ * @method eq($expected)
+ * @method false()
+ * @method gt($expected)
+ * @method gte($expected)
+ * @method ident($expected)
+ * @method instanceof($expected)
+ * @method lt($expected)
+ * @method lte($expected)
+ * @method null()
+ * @method throwException($expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
+ * @method true()
  */
 class Assert implements AssertInterface
 {
