@@ -22,11 +22,11 @@ Matchers plugin:
 ---рефакторинг core
 	исправить TODO
 
-	SpecContainerDescribe -> remove
-	SpecContainerContext -> SpecContainer
-	SpecContainerPattern -> SpecContainer
+	SpecContainerDescribe -> SpecContainerGroup
+	SpecContainerContext -> SpecContainerContext
+	SpecContainerPattern -> SpecContainerPattern
 	SpecContainerArgumentsProvider -> SpecContainer
-	SpecItemIt -> SpecItemManual
+	SpecItemIt -> SpecItem
 
 	Spec->setDetails()
 		Details->createdConstructionCommand

@@ -17,23 +17,25 @@ class Manager implements ManagerInterface
 	
 	static public function addBaseMatchersToSpec(\spectrum\core\SpecInterface $spec)
 	{
-		static::addMatcherToSpec('\spectrum\matchers\base\null', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\true', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\false', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\eq', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\ident', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\lt', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\lte', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\gt', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\gte', $spec);
-		static::addMatcherToSpec('\spectrum\matchers\base\throwException', $spec);
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\null');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\true');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\false');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\eq');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\ident');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\instanceofMatcher', 'instanceof');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\lt');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\lte');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\gt');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\gte');
+		static::addMatcherToSpec($spec, '\spectrum\matchers\base\throwException');
 	}
 	
-	static protected function addMatcherToSpec($matcherCallbackName, \spectrum\core\SpecInterface $spec)
+	static protected function addMatcherToSpec(\spectrum\core\SpecInterface $spec, $matcherCallbackName, $matcherName = null)
 	{
-		$matcherName = str_replace('\spectrum\matchers\base\\', '', $matcherCallbackName);
+		if (!$matcherName)
+			$matcherName = str_replace('\spectrum\matchers\base\\', '', $matcherCallbackName);
 
-		require_once __DIR__ . '/base/' . $matcherName . '.php';
+		require_once __DIR__ . '/base/' . str_replace('\spectrum\matchers\base\\', '', $matcherCallbackName) . '.php';
 		$spec->matchers->add($matcherName, $matcherCallbackName);
 	}
 }
