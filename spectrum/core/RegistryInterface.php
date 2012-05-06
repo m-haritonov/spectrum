@@ -12,4 +12,7 @@ interface RegistryInterface
 {
 	static public function getRunningSpecItem();
 	static public function setRunningSpecItem(SpecItemInterface $instance = null);
+
+	static public function getRunningSpecContainer();
+	static public function setRunningSpecContainer(SpecContainerInterface $instance = null);
 }
