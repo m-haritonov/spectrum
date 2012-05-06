@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins;
 
-class Exception extends \spectrum\Exception
+class Exception extends \spectrum\core\Exception
 {
 	
 }

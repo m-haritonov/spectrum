@@ -8,7 +8,7 @@
 
 namespace spectrum\constructionCommands;
 
-class Exception extends \spectrum\Exception
+class Exception extends \Exception
 {
 	
 }

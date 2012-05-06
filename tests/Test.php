@@ -140,7 +140,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				2 => new \spectrum\core\SpecContainerDescribe(),
 			));
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return;
 		}
@@ -158,7 +158,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				0 => new \spectrum\core\SpecItemIt(),
 			));
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return;
 		}
@@ -175,7 +175,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				->It(foo)
 			');
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return;
 		}
@@ -212,7 +212,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				->->It
 			');
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return;
 		}
@@ -241,7 +241,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			list($level, $shortClass, $name) = $this->parseSpecTreeRow($row, $key);
 
 			if (array_key_exists($name, $specs))
-				throw new Exception('Name "' . $name . '" already exists');
+				throw new \Exception('Name "' . $name . '" already exists');
 
 			$spec = $this->createSpecOrGetExists($name, $preparedInstances, $shortClass);
 			$specs[$name] = $spec;
@@ -249,7 +249,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			if ($addIndexNameAlways && $name != (string) $key)
 			{
 				if (array_key_exists($key, $specs))
-					throw new Exception('Name "' . $key . '" already exists');
+					throw new \Exception('Name "' . $key . '" already exists');
 
 				$specs[$key] = $spec;
 			}
@@ -265,7 +265,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 		$diff = array_diff_key($preparedInstances, $specs);
 		if ($diff)
-			throw new Exception('PreparedInstances has not useful instances: ' . print_r(array_keys($diff)));
+			throw new \Exception('PreparedInstances has not useful instances: ' . print_r(array_keys($diff)));
 
 		return $specs;
 	}
@@ -300,7 +300,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		if (array_key_exists($name, $preparedInstances))
 		{
 			if (!is_a($preparedInstances[$name], $newSpecClass))
-				throw new Exception('PreparedInstances should be instance of declared class');
+				throw new \Exception('PreparedInstances should be instance of declared class');
 
 			$instance = $preparedInstances[$name];
 		}
@@ -341,7 +341,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	private function getParentSpec($specsOnLevels, $level, $prevLevel)
 	{
 		if ($level - $prevLevel > 1)
-			throw new Exception('Next level can\'t jump more that one');
+			throw new \Exception('Next level can\'t jump more that one');
 
 		if ($level > 0)
 			return $specsOnLevels[$level - 1];
