@@ -31,15 +31,15 @@ class SpecTitle extends \spectrum\reports\widgets\Widget
 		$name = $this->getOwnerPlugin()->getOwnerSpec()->getName();
 
 		if ($name == '' && $parent && $parent instanceof \spectrum\core\SpecContainerArgumentsProviderInterface)
-			return $this->getAdditionalArgumentsDumpOut();
+			return $this->getTestCallbackArgumentsDumpOut();
 		else
 			return $name;
 	}
 
-	protected function getAdditionalArgumentsDumpOut()
+	protected function getTestCallbackArgumentsDumpOut()
 	{
 		$output = '';
-		foreach ($this->getOwnerPlugin()->getOwnerSpec()->getAdditionalArguments() as $arg)
+		foreach ($this->getOwnerPlugin()->getOwnerSpec()->getTestCallbackArguments() as $arg)
 			$output .= $arg . ', ';
 
 		return mb_substr($output, 0, -2);

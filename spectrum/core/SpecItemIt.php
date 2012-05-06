@@ -15,11 +15,15 @@ class SpecItemIt extends SpecItem implements SpecItemItInterface
 	 * @var \spectrum\core\RunResultsBuffer|null
 	 */
 	protected $runResultsBuffer;
+
+	/**
+	 * @var \Closure
+	 */
 	protected $testCallback;
-	protected $additionalArguments = array();
+	protected $testCallbackArguments = array();
 	protected $isErrorHandlerSets = false;
 
-	public function setTestCallback($callback)
+	public function setTestCallback(\Closure $callback = null)
 	{
 		$this->handleSpecModifyDeny();
 		$this->testCallback = $callback;
@@ -32,15 +36,15 @@ class SpecItemIt extends SpecItem implements SpecItemItInterface
 
 /**/
 
-	public function setAdditionalArguments(array $args)
+	public function setTestCallbackArguments(array $args)
 	{
 		$this->handleSpecModifyDeny();
-		$this->additionalArguments = $args;
+		$this->testCallbackArguments = $args;
 	}
 
-	public function getAdditionalArguments()
+	public function getTestCallbackArguments()
 	{
-		return $this->additionalArguments;
+		return $this->testCallbackArguments;
 	}
 
 /**/
@@ -163,12 +167,7 @@ class SpecItemIt extends SpecItem implements SpecItemItInterface
 	protected function callTestCallback($world)
 	{
 		$this->dispatchEvent('onTestCallbackCallBefore', $world);
-
-		if (!is_callable($this->testCallback))
-			throw new Exception('Test callback is not callable');
-
-		call_user_func_array($this->testCallback, array_merge(array($world), $this->getAdditionalArguments()));
-
+		Tools::callClosureInWorld($this->getTestCallback(), $this->getTestCallbackArguments(), $world);
 		$this->dispatchEvent('onTestCallbackCallAfter', $world);
 	}
 }

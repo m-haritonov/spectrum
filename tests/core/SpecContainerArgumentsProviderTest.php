@@ -37,7 +37,7 @@ class SpecContainerArgumentsProviderTest extends SpecTest
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('foo'), $child->getAdditionalArguments());
+		$this->assertSame(array('foo'), $child->getTestCallbackArguments());
 	}
 
 	public function testCreateSpecItemForEachArgumentsRow_ShouldBeAcceptShouldBeAcceptOneArgumentRows()
@@ -56,19 +56,19 @@ class SpecContainerArgumentsProviderTest extends SpecTest
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('foo'), $child->getAdditionalArguments());
+		$this->assertSame(array('foo'), $child->getTestCallbackArguments());
 
 		$child = $children[1];
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('bar'), $child->getAdditionalArguments());
+		$this->assertSame(array('bar'), $child->getTestCallbackArguments());
 
 		$child = $children[2];
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('baz'), $child->getAdditionalArguments());
+		$this->assertSame(array('baz'), $child->getTestCallbackArguments());
 	}
 
 	public function testCreateSpecItemForEachArgumentsRow_ShouldBeAcceptManyArgumentsRows()
@@ -87,19 +87,19 @@ class SpecContainerArgumentsProviderTest extends SpecTest
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('foo1', 'foo2'), $child->getAdditionalArguments());
+		$this->assertSame(array('foo1', 'foo2'), $child->getTestCallbackArguments());
 
 		$child = $children[1];
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('bar1', 'bar2'), $child->getAdditionalArguments());
+		$this->assertSame(array('bar1', 'bar2'), $child->getTestCallbackArguments());
 
 		$child = $children[2];
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('baz1', 'baz2', 'baz3'), $child->getAdditionalArguments());
+		$this->assertSame(array('baz1', 'baz2', 'baz3'), $child->getTestCallbackArguments());
 	}
 
 	public function testCreateSpecItemForEachArgumentsRow_ShouldBeAcceptMixedArgumentsRows()
@@ -118,18 +118,18 @@ class SpecContainerArgumentsProviderTest extends SpecTest
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('foo'), $child->getAdditionalArguments());
+		$this->assertSame(array('foo'), $child->getTestCallbackArguments());
 
 		$child = $children[1];
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('bar'), $child->getAdditionalArguments());
+		$this->assertSame(array('bar'), $child->getTestCallbackArguments());
 
 		$child = $children[2];
 		$this->assertTrue($child instanceof SpecItemIt);
 		$this->assertNull($child->getName());
 		$this->assertSame($testCallback, $child->getTestCallback());
-		$this->assertSame(array('baz1', 'baz2'), $child->getAdditionalArguments());
+		$this->assertSame(array('baz1', 'baz2'), $child->getTestCallbackArguments());
 	}
 }

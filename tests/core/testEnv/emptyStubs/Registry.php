@@ -12,4 +12,10 @@ class Registry implements \spectrum\core\RegistryInterface
 {
 	static public function getRunningSpecItem(){}
 	static public function setRunningSpecItem(\spectrum\core\SpecItemInterface $instance = null){}
+
+	static public function getRunningSpecContainer(){}
+	static public function setRunningSpecContainer(\spectrum\core\SpecContainerInterface $instance = null){}
+
+	static public function getWorld(){}
+	static public function setWorld(\spectrum\core\WorldInterface $instance = null){}
 }

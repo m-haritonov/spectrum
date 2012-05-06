@@ -26,23 +26,10 @@ class RunTest extends Test
 		$this->assertTrue($isCalled);
 	}
 
-	public function testShouldBePassWorldAsFirstArgument()
+	public function testShouldBePassTestCallbackArgumentsToTestCallback()
 	{
 		$it = new SpecItemIt();
-		$it->setTestCallback(function() use(&$passedArguments){
-			$passedArguments = func_get_args();
-		});
-
-		$it->run();
-
-		$this->assertEquals(1, count($passedArguments));
-		$this->assertTrue($passedArguments[0] instanceof \spectrum\core\World);
-	}
-
-	public function testShouldBePassAdditionalArgumentsToTestCallback()
-	{
-		$it = new SpecItemIt();
-		$it->setAdditionalArguments(array('foo', 'bar'));
+		$it->setTestCallbackArguments(array('foo', 'bar', 'baz'));
 		$it->setTestCallback(function() use(&$passedArguments){
 			$passedArguments = func_get_args();
 		});
@@ -51,20 +38,9 @@ class RunTest extends Test
 
 		$this->assertEquals(3, count($passedArguments));
 
-		$this->assertTrue($passedArguments[0] instanceof \spectrum\core\World);
-		$this->assertEquals('foo', $passedArguments[1]);
-		$this->assertEquals('bar', $passedArguments[2]);
-	}
-
-	public function testShouldBeThrowExceptionIfTestCallbackIsNotCallable()
-	{
-		$it = new SpecItemIt();
-		$it->setTestCallback('iAmNotCallableFunctionOhOhOh');
-		$it->errorHandling->setCatchExceptions(false);
-
-		$this->assertThrowException('\spectrum\core\Exception', 'callback is not callable', function() use($it) {
-			$it->run();
-		});
+		$this->assertEquals('foo', $passedArguments[0]);
+		$this->assertEquals('bar', $passedArguments[1]);
+		$this->assertEquals('baz', $passedArguments[2]);
 	}
 
 	public function testShouldBeCreateNewEmptyRunResultsBufferBeforeEveryRun()

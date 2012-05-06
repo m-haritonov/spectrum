@@ -37,7 +37,7 @@ class BeforeTest extends Test
 		Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 
 		$spec = new SpecItemIt();
-		$spec->builders->add(function($world){ $world->foo = 'bar'; });
+		$spec->builders->add(function(){ $this->foo = 'bar'; });
 		$spec->setTestCallback(function(){});
 		$spec->run();
 

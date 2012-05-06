@@ -30,7 +30,7 @@ class SpecContainerArgumentsProvider extends SpecContainer implements SpecContai
 			$itClass = \spectrum\core\Config::getSpecItemItClass();
 			$it = new $itClass();
 			$it->setTestCallback($testCallback);
-			$it->setAdditionalArguments($args);
+			$it->setTestCallbackArguments($args);
 
 			$this->addSpec($it);
 		}

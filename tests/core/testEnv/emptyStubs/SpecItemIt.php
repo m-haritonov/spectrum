@@ -11,8 +11,8 @@ namespace spectrum\core\testEnv\emptyStubs;
 class SpecItemIt extends SpecItem implements \spectrum\core\SpecItemItInterface
 {
 	public function getRunResultsBuffer(){}
-	public function setTestCallback($callback){}
+	public function setTestCallback(\Closure $callback = null){}
 	public function getTestCallback(){}
-	public function setAdditionalArguments(array $args){}
-	public function getAdditionalArguments(){}
+	public function setTestCallbackArguments(array $args){}
+	public function getTestCallbackArguments(){}
 }

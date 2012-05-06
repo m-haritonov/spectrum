@@ -27,6 +27,7 @@ class ManagerTest extends \spectrum\Test
 
 			'the' => '\spectrum\constructionCommands\baseCommands\the',
 
+			'world' => '\spectrum\constructionCommands\baseCommands\world',
 			'fail' => '\spectrum\constructionCommands\baseCommands\fail',
 			'message' => '\spectrum\constructionCommands\baseCommands\message',
 

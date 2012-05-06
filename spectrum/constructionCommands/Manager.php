@@ -21,6 +21,7 @@ require_once dirname(__FILE__) . '/baseCommands/itLikePattern.php';
 
 require_once dirname(__FILE__) . '/baseCommands/the.php';
 
+require_once dirname(__FILE__) . '/baseCommands/world.php';
 require_once dirname(__FILE__) . '/baseCommands/fail.php';
 require_once dirname(__FILE__) . '/baseCommands/message.php';
 
@@ -42,6 +43,7 @@ require_once dirname(__FILE__) . '/baseCommands/isRunningState.php';
  * @method \spectrum\core\SpecContainerInterface container()
  * @method \spectrum\core\SpecContainerContext context()
  * @method \spectrum\core\SpecContainerDescribe describe()
+ * @method \spectrum\core\WorldInterface world()
  * @method fail()
  * @method message()
  * @method \spectrum\core\SpecContainerInterface getCurrentContainer()
@@ -69,6 +71,7 @@ class Manager implements ManagerInterface
 
 		'the' => '\spectrum\constructionCommands\baseCommands\the',
 
+		'world' => '\spectrum\constructionCommands\baseCommands\world',
 		'fail' => '\spectrum\constructionCommands\baseCommands\fail',
 		'message' => '\spectrum\constructionCommands\baseCommands\message',
 

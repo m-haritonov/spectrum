@@ -34,5 +34,9 @@ function afterEach()     { return call_user_func_array('\spectrum\constructionCo
  * @return \spectrum\core\asserts\Assert
  */
 function the()           { return call_user_func_array('\spectrum\constructionCommands\Manager::' . __FUNCTION__, func_get_args()); }
+/**
+ * @return \spectrum\core\WorldInterface
+ */
+function world()           { return call_user_func_array('\spectrum\constructionCommands\Manager::' . __FUNCTION__, func_get_args()); }
 function fail()          { return call_user_func_array('\spectrum\constructionCommands\Manager::' . __FUNCTION__, func_get_args()); }
 function message()       { return call_user_func_array('\spectrum\constructionCommands\Manager::' . __FUNCTION__, func_get_args()); }

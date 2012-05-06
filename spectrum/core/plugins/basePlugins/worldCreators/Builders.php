@@ -13,9 +13,7 @@ class Builders extends WorldCreators
 	public function applyToWorld($world)
 	{
 		foreach ($this->getAllPrependAncestorsWithRunningContexts() as $creator)
-		{
-			call_user_func($creator['callback'], $world);
-		}
+			\spectrum\core\Tools::callClosureInWorld($creator['callback'], array(), $world);
 
 		return $world;
 	}

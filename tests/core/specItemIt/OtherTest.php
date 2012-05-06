@@ -21,7 +21,7 @@ class OtherTest extends Test
 
 		$this->assertNull($it->getName());
 		$this->assertNull($it->getTestCallback());
-		$this->assertSame(array(), $it->getAdditionalArguments());
+		$this->assertSame(array(), $it->getTestCallbackArguments());
 	}
 
 /**/
@@ -150,26 +150,6 @@ class OtherTest extends Test
 		$this->assertTrue($it->run());
 	}
 
-	public function testSetTestCallback_ShouldBeAcceptCreatedAnonymousFunction()
-	{
-		$it = new SpecItemIt();
-
-		\spectrum\Test::$tmp['testSpec'] = $it;
-		$it->setTestCallback(create_function('', '\spectrum\Test::$tmp[\'testSpec\']->getRunResultsBuffer()->addResult(true);'));
-
-		$this->assertTrue($it->run());
-	}
-
-	public function testSetTestCallback_ShouldBeAcceptFunctionStringName()
-	{
-		$it = new SpecItemIt();
-
-		\spectrum\Test::$tmp['testSpec'] = $it;
-		$it->setTestCallback(__CLASS__ . '::myTestCallback');
-
-		$this->assertTrue($it->run());
-	}
-
 	public function testSetTestCallback_ShouldBeThrowExceptionIfNotAllowSpecsModifyWhenRunning()
 	{
 		Config::setAllowSpecsModifyWhenRunning(false);
@@ -205,21 +185,21 @@ class OtherTest extends Test
 
 /**/
 
-	public function testSetAdditionalArguments_ShouldBeAcceptArray()
+	public function testSetTestCallbackArguments_ShouldBeAcceptArray()
 	{
 		$it = new SpecItemIt();
-		$it->setAdditionalArguments(array('foo', 'bar'));
-		$this->assertSame(array('foo', 'bar'), $it->getAdditionalArguments());
+		$it->setTestCallbackArguments(array('foo', 'bar'));
+		$this->assertSame(array('foo', 'bar'), $it->getTestCallbackArguments());
 	}
 
-	public function testSetAdditionalArguments_ShouldBeThrowExceptionIfNotAllowSpecsModifyWhenRunning()
+	public function testSetTestCallbackArguments_ShouldBeThrowExceptionIfNotAllowSpecsModifyWhenRunning()
 	{
 		Config::setAllowSpecsModifyWhenRunning(false);
 
 		$spec = $this->createCurrentSpec();
 		$spec->errorHandling->setCatchExceptions(false);
 		$spec->setTestCallback(function() use($spec){
-			$spec->setAdditionalArguments(array());
+			$spec->setTestCallbackArguments(array());
 		});
 
 		$this->assertThrowException('\spectrum\core\Exception', 'Modify specs when running deny', function() use($spec){
@@ -229,23 +209,16 @@ class OtherTest extends Test
 
 /**/
 
-	public function testGetAdditionalArguments_ShouldBeReturnEmptyArrayByDefault()
+	public function testGetTestCallbackArguments_ShouldBeReturnEmptyArrayByDefault()
 	{
 		$it = new SpecItemIt();
-		$this->assertSame(array(), $it->getAdditionalArguments());
+		$this->assertSame(array(), $it->getTestCallbackArguments());
 	}
 
-	public function testGetAdditionalArguments_ShouldBeReturnSourceValue()
+	public function testGetTestCallbackArguments_ShouldBeReturnSourceValue()
 	{
 		$it = new SpecItemIt();
-		$it->setAdditionalArguments(array('foo'));
-		$this->assertSame(array('foo'), $it->getAdditionalArguments());
-	}
-
-/*** Test ware ***/
-
-	static public function myTestCallback()
-	{
-		\spectrum\Test::$tmp['testSpec']->getRunResultsBuffer()->addResult(true);
+		$it->setTestCallbackArguments(array('foo'));
+		$this->assertSame(array('foo'), $it->getTestCallbackArguments());
 	}
 }

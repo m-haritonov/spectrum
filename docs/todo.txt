@@ -1,12 +1,13 @@
 
 Assert($actualValue) rename to $value?
-throwException -> thrownException?
 
 RunResultsBuffer: rename $result['result'] to $result['value/flag']
 RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (буффер может использоваться не только для хранения результатов запуска)?
 Config::setClassFor();
 
 Matchers - add reserved word "should", "shouldbe", "should_be"
+
+if test callback return false — throw exception: test callback return not null
 
 Matchers plugin:
 ---Плагин report
@@ -139,8 +140,8 @@ FileSystemMockVirtual
 			Spec->setName(),
 			SpecContainerPattern->setArguments(),
 			SpecContainerPattern->getArguments() — при передаче callback функции в itLikePattern()
-			SpecItemIt->setAdditionalArguments(),
-			SpecItemIt->getAdditionalArguments() — при передаче testCallback функции
+			SpecItemIt->setTestCallbackArguments(),
+			SpecItemIt->getTestCallbackArguments() — при передаче testCallback функции
 		Плюс плагины будут видеть данные world в исходной кодировке, т.к. полностью (включая данные их возможных в нем
 		методов) перекодировать его будет проблематично.
 

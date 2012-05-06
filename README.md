@@ -29,20 +29,21 @@ Result:
 	require_once 'spectrum/init.php';
 
 	describe('AddressBook', function(){
-		beforeEach(function($w){
-			$w->addressBook = new AddressBook();
+		beforeEach(function(){
+			// Use "world()" instead of "$this" in php < 5.4
+			$this->addressBook = new AddressBook();
 		});
 
-		it('Should find person by first name', function($w){
-			the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+		it('Should find person by first name', function(){
+			the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 		});
 
 		it('Should find person by phone number', array(
 			'+7 (495) 123-456-7',
 			'(495) 123-456-7',
 			'123-456-7',
-		), function($w, $phoneNumber){
-			the($w->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
+		), function($phoneNumber){
+			the($this->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
 		});
 	});
 
@@ -63,32 +64,33 @@ Result:
 	require_once 'spectrum/init.php';
 
 	describe('AddressBook', function(){
-		beforeEach(function($w){
-			$w->addressBook = new AddressBook();
+		beforeEach(function(){
+			// Use "world()" instead of "$this" in php < 5.4
+			$this->addressBook = new AddressBook();
 		});
 
 		context('Data storage "MySQL"', function(){
-			beforeEach(function($w){ $w->addressBook->setDataStorage('mysql'); });
+			beforeEach(function(){ $this->addressBook->setDataStorage('mysql'); });
 		});
 
 		context('Data storage "Oracle"', function(){
-			beforeEach(function($w){ $w->addressBook->setDataStorage('oracle'); });
+			beforeEach(function(){ $this->addressBook->setDataStorage('oracle'); });
 		});
 
 		context('Data storage "files"', function(){
-			beforeEach(function($w){ $w->addressBook->setDataStorage('files'); });
+			beforeEach(function(){ $this->addressBook->setDataStorage('files'); });
 		});
 
-		it('Should find person by first name', function($w){
-			the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+		it('Should find person by first name', function(){
+			the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 		});
 
 		it('Should find person by phone number', array(
 			'+7 (495) 123-456-7',
 			'(495) 123-456-7',
 			'123-456-7',
-		), function($w, $phoneNumber){
-			the($w->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
+		), function($phoneNumber){
+			the($this->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
 		});
 	});
 
@@ -122,33 +124,34 @@ Result:
 	require_once 'spectrum/init.php';
 
 	describe('AddressBook', function(){
-		beforeEach(function($w){
-			$w->addressBook = new AddressBook();
+		beforeEach(function(){
+			// Use "world()" instead of "$this" in php < 5.4
+			$this->addressBook = new AddressBook();
 		});
 
 		context('Database storage', function(){
-			beforeEach(function($w){ $w->addressBook->setCacheSql(false); });
+			beforeEach(function(){ $this->addressBook->setCacheSql(false); });
 
 			context('MySQL', function(){
-				beforeEach(function($w){ $w->addressBook->setDataStorage('mysql'); });
+				beforeEach(function(){ $this->addressBook->setDataStorage('mysql'); });
 			});
 
 			context('Oracle', function(){
-				beforeEach(function($w){ $w->addressBook->setDataStorage('oracle'); });
+				beforeEach(function(){ $this->addressBook->setDataStorage('oracle'); });
 			});
 		});
 
 		context('Data storage "files"', function(){
-			beforeEach(function($w){ $w->addressBook->setDataStorage('files'); });
+			beforeEach(function(){ $this->addressBook->setDataStorage('files'); });
 		});
 
 		describe('findPerson()', function(){
-			it('Should find person by first name', function($w){
-				the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+			it('Should find person by first name', function(){
+				the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 			});
 
-			it('Should find person by last name', function($w){
-				the($w->addressBook->findPerson('Smith')->lastName)->eq('Smith');
+			it('Should find person by last name', function(){
+				the($this->addressBook->findPerson('Smith')->lastName)->eq('Smith');
 			});
 		});
 	});
@@ -182,12 +185,13 @@ Result:
 		require(__DIR__ . '/addressBookContexts.php');
 
 		describe('findPerson()', function(){
-			it('Should find person by first name', function($w){
-				the($w->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+			it('Should find person by first name', function(){
+				// Use "world()" instead of "$this" in php < 5.4
+				the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
 			});
 
-			it('Should find person by last name', function($w){
-				the($w->addressBook->findPerson('Smith')->lastName)->eq('Smith');
+			it('Should find person by last name', function(){
+				the($this->addressBook->findPerson('Smith')->lastName)->eq('Smith');
 			});
 		});
 	});

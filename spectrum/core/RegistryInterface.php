@@ -15,4 +15,7 @@ interface RegistryInterface
 
 	static public function getRunningSpecContainer();
 	static public function setRunningSpecContainer(SpecContainerInterface $instance = null);
+
+	static public function getWorld();
+	static public function setWorld(WorldInterface $instance = null);
 }

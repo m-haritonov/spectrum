@@ -51,7 +51,7 @@ class AfterTest extends Test
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function(){});
-		$spec->destroyers->add(function($world){ $world->foo = 'bar'; });
+		$spec->destroyers->add(function(){ $this->foo = 'bar'; });
 		$spec->run();
 
 		Manager::unregisterPlugin('foo');

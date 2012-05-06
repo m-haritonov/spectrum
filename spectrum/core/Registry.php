@@ -20,6 +20,11 @@ class Registry
 	 */
 	static protected $runningSpecContainer;
 
+	/**
+	 * @var WorldInterface
+	 */
+	static protected $world;
+
 	static public function getRunningSpecItem()
 	{
 		return static::$runningSpecItem;
@@ -44,5 +49,15 @@ class Registry
 			throw new Exception('Method "' . __METHOD__ . '" should be accept only running specs');
 
 		static::$runningSpecContainer = $instance;
+	}
+
+	static public function getWorld()
+	{
+		return static::$world;
+	}
+
+	static public function setWorld(World $instance = null)
+	{
+		static::$world = $instance;
 	}
 }
