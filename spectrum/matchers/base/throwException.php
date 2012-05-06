@@ -9,36 +9,39 @@
 namespace spectrum\matchers\base;
 
 /**
- * Return true, if code in $callbackWithActualCode throw exception instance of $expectedClass with
+ * Return true, if code in $callbackWithTestedCode throw exception instance of $expectedClass with
  * $expectedStringInMessage (if not null) and $expectedCode (if not null)
  * @return bool
  */
-function throwException($callbackWithActualCode, $expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
+function throwException($callbackWithTestedCode, $expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
 {
 	if ($expectedClass == null)
 		$expectedClass = '\Exception';
 
 	if (!is_subclass_of($expectedClass, '\Exception') && $expectedClass != '\Exception')
-		throw new \spectrum\matchers\Exception('Excepted class should be subclass of \Exception');
+		throw new \spectrum\matchers\Exception('Excepted class "' . $expectedClass . '" should be subclass of "\Exception"');
 
 	try {
-		call_user_func($callbackWithActualCode);
+		call_user_func($callbackWithTestedCode);
 	}
 	catch (\Exception $e)
 	{
 		$actualClass = '\\' . get_class($e);
-		// Class found
+
 		if ($actualClass == $expectedClass || is_subclass_of($actualClass, $expectedClass))
 		{
-			$isOk = true;
-			if ($expectedStringInMessage !== null && mb_stripos($e->getMessage(), $expectedStringInMessage) === false)
-				$isOk = false;
-			elseif ($expectedCode !== null && $e->getCode() != $expectedCode)
-				$isOk = false;
+			$actualMessage = $e->getMessage();
+			$actualCode = $e->getCode();
 
-			return $isOk;
+			if ($expectedStringInMessage !== null && mb_stripos($actualMessage, $expectedStringInMessage) === false)
+				throw new \spectrum\matchers\Exception('Actual message "' . $actualMessage . '" not contains expected string "' . $expectedStringInMessage . '"');
+
+			if ($expectedCode !== null && $actualCode != $expectedCode)
+				throw new \spectrum\matchers\Exception('Actual code "' . $actualCode . '" not equal to expected code "' . $expectedCode . '"');
+
+			return true;
 		}
 	}
 
-	return false;
+	throw new \spectrum\matchers\Exception('Excepted exception "' . $expectedClass . '" not thrown');
 }
