@@ -8,7 +8,7 @@
 
 namespace spectrum;
 
-require_once dirname(__FILE__) . '/init.php';
+require_once __DIR__ . '/init.php';
 
 abstract class Test extends \PHPUnit_Framework_TestCase
 {

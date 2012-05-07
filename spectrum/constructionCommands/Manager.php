@@ -8,32 +8,33 @@
 
 namespace spectrum\constructionCommands;
 
-require_once dirname(__FILE__) . '/baseCommands/addPattern.php';
-require_once dirname(__FILE__) . '/baseCommands/addMatcher.php';
-require_once dirname(__FILE__) . '/baseCommands/beforeEach.php';
-require_once dirname(__FILE__) . '/baseCommands/afterEach.php';
+// Include base commands by default for available through "Manager" class without additional movement
+require_once __DIR__ . '/baseCommands/addPattern.php';
+require_once __DIR__ . '/baseCommands/addMatcher.php';
+require_once __DIR__ . '/baseCommands/beforeEach.php';
+require_once __DIR__ . '/baseCommands/afterEach.php';
 
-require_once dirname(__FILE__) . '/baseCommands/container.php';
-require_once dirname(__FILE__) . '/baseCommands/describe.php';
-require_once dirname(__FILE__) . '/baseCommands/context.php';
-require_once dirname(__FILE__) . '/baseCommands/it.php';
-require_once dirname(__FILE__) . '/baseCommands/itLikePattern.php';
+require_once __DIR__ . '/baseCommands/container.php';
+require_once __DIR__ . '/baseCommands/describe.php';
+require_once __DIR__ . '/baseCommands/context.php';
+require_once __DIR__ . '/baseCommands/it.php';
+require_once __DIR__ . '/baseCommands/itLikePattern.php';
 
-require_once dirname(__FILE__) . '/baseCommands/the.php';
+require_once __DIR__ . '/baseCommands/the.php';
 
-require_once dirname(__FILE__) . '/baseCommands/world.php';
-require_once dirname(__FILE__) . '/baseCommands/fail.php';
-require_once dirname(__FILE__) . '/baseCommands/message.php';
+require_once __DIR__ . '/baseCommands/world.php';
+require_once __DIR__ . '/baseCommands/fail.php';
+require_once __DIR__ . '/baseCommands/message.php';
 
-require_once dirname(__FILE__) . '/baseCommands/setDeclaringContainer.php';
-require_once dirname(__FILE__) . '/baseCommands/getDeclaringContainer.php';
-require_once dirname(__FILE__) . '/baseCommands/getCurrentContainer.php';
-require_once dirname(__FILE__) . '/baseCommands/getCurrentItem.php';
+require_once __DIR__ . '/baseCommands/setDeclaringContainer.php';
+require_once __DIR__ . '/baseCommands/getDeclaringContainer.php';
+require_once __DIR__ . '/baseCommands/getCurrentContainer.php';
+require_once __DIR__ . '/baseCommands/getCurrentItem.php';
 
-require_once dirname(__FILE__) . '/baseCommands/setSettings.php';
+require_once __DIR__ . '/baseCommands/setSettings.php';
 
-require_once dirname(__FILE__) . '/baseCommands/isDeclaringState.php';
-require_once dirname(__FILE__) . '/baseCommands/isRunningState.php';
+require_once __DIR__ . '/baseCommands/isDeclaringState.php';
+require_once __DIR__ . '/baseCommands/isRunningState.php';
 
 /**
  * @method \spectrum\core\asserts\Assert the()

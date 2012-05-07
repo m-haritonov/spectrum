@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\matchers\base;
-require_once dirname(__FILE__) . '/../../init.php';
+require_once __DIR__ . '/../../init.php';
 require_once 'base/throwException.php';
 
 class ThrowExceptionTest extends \spectrum\matchers\Test

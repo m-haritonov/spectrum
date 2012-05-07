@@ -14,7 +14,7 @@ spl_autoload_register(function($class)
 		$file = $class;
 		$file = str_replace($rootNamespace, '', $file);
 		$file = str_replace('\\', '/', $file);
-		$file = dirname(__FILE__) . '/' . $file . '.php';
+		$file = __DIR__ . '/' . $file . '.php';
 
 		if (file_exists($file))
 			require_once $file;

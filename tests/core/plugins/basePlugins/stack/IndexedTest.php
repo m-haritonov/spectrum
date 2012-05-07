@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\core\plugins\basePlugins\stack;
-require_once dirname(__FILE__) . '/../../../../init.php';
+require_once __DIR__ . '/../../../../init.php';
 
 /**
  * @see \spectrum\core\plugins\basePlugins\stack\named\getCascadeThroughRunningContexts\Test

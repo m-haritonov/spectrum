@@ -9,7 +9,7 @@
 namespace spectrum\core\asserts\assert\callMatcher\matcherReturnTrue;
 use spectrum\core\asserts\Assert;
 
-require_once dirname(__FILE__) . '/../../../../../init.php';
+require_once __DIR__ . '/../../../../../init.php';
 
 class BreakOnFirstMatcherFailEnabledTest extends Test
 {

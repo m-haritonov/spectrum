@@ -10,7 +10,7 @@ namespace spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\breakOnF
 use spectrum\core\plugins\Manager;
 use spectrum\core\SpecItem;
 
-require_once dirname(__FILE__) . '/../../../../../../init.php';
+require_once __DIR__ . '/../../../../../../init.php';
 
 abstract class Test extends \spectrum\core\specItemIt\errorHandling\catchPhpErrors\enabled\Test
 {

@@ -9,7 +9,7 @@
 namespace spectrum\core\plugins\basePlugins\stack\named\getCascadeThroughRunningContexts\running\specItem;
 use spectrum\core\plugins\basePlugins\stack\Named;
 
-require_once dirname(__FILE__) . '/../../../../../../../../init.php';
+require_once __DIR__ . '/../../../../../../../../init.php';
 
 class ItTest extends Test
 {

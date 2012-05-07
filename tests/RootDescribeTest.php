@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-require_once dirname(__FILE__) . '/init.php';
+require_once __DIR__ . '/init.php';
 
 /*
 class \spectrum\RootDescribeTest extends spectrum_BaseAbstract
@@ -45,7 +45,7 @@ class \spectrum\RootDescribeTest extends spectrum_BaseAbstract
 	protected function getDefaultMatchers()
 	{
 		$matchers = array();
-		$defaultMatchersDir = dirname(__FILE__) . '/../../spectrum/DefaultMatchers/';
+		$defaultMatchersDir = __DIR__ . '/../../spectrum/DefaultMatchers/';
 		foreach ($this->scanDirRecursive($defaultMatchersDir) as $file)
 		{
 			if (preg_match('/(abstract\s+)?class\s+([^\s]+)\s/is', file_get_contents($file), $sp))

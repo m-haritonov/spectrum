@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\running\specContainer\noChildren;
-require_once dirname(__FILE__) . '/../../../../../../../init.php';
+require_once __DIR__ . '/../../../../../../../init.php';
 
 class DescribeTest extends \spectrum\core\plugins\plugin\callCascadeThroughRunningContexts\running\Test
 {

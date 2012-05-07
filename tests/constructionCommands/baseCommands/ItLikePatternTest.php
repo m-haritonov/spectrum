@@ -9,7 +9,7 @@
 namespace spectrum\constructionCommands\baseCommands;
 use spectrum\constructionCommands\Manager;
 
-require_once dirname(__FILE__) . '/../../init.php';
+require_once __DIR__ . '/../../init.php';
 
 class ItLikePatternTest extends \spectrum\constructionCommands\baseCommands\Test
 {

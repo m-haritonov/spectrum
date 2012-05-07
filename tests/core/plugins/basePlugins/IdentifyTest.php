@@ -9,7 +9,7 @@
 namespace spectrum\core\plugins\basePlugins;
 use spectrum\core\SpecItemIt;
 
-require_once dirname(__FILE__) . '/../../../init.php';
+require_once __DIR__ . '/../../../init.php';
 
 class IdentifyTest extends Test
 {

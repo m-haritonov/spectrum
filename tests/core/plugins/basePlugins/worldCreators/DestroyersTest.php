@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\core\plugins\basePlugins\worldCreators;
-require_once dirname(__FILE__) . '/../../../../init.php';
+require_once __DIR__ . '/../../../../init.php';
 
 class DestroyersTest extends WorldCreatorsTest
 {

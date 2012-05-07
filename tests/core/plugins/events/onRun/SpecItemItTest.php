@@ -12,7 +12,7 @@ use spectrum\core\SpecItemIt;
 use spectrum\core\RunResultsBuffer;
 use spectrum\core\World;
 
-require_once dirname(__FILE__) . '/../../../../init.php';
+require_once __DIR__ . '/../../../../init.php';
 
 class SpecItemItTest extends Test
 {
