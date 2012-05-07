@@ -6,7 +6,6 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-
 require_once dirname(__FILE__) . '/../spectrum/init.php';
 
 class Person
@@ -45,20 +44,18 @@ describe('Doors', function(){
 
 	describe('Doors', function(){
 		context('На земле', function(){
-			beforeEach(function($w){
+			beforeEach(function(){
 				$w->doors = 3;
 			});
 		});
 		context('На земле', function(){
-			beforeEach(function($w){
+			beforeEach(function(){
 				$w->doors = 4;
 			});
 		});
 
 		it('Кол-во дверей должно быть 3', function($w){
-			the($w->doors)->eq(3);
-			the($w->doors)->eq(4);
-			the($w->doors)->eq(3);
+
 		});
 
 		it('Кол-во окон должно быть ', function($w){
