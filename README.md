@@ -3,35 +3,30 @@ Spectrum is a PHP framework for BDD specification test.
 
 **Current version is alpha and not stable.**
 
-Documentation (for a while only on Russian): http://mkharitonov.net/spectrum/
+Documentation (for a while only on Russian):
+http://mkharitonov.net/spectrum/
+https://bitbucket.org/mkharitonov/spectrum-framework.org/src
 
 ###Examples:
 	<?php
-	require_once 'spectrum/init.php';
-
-	describe('AddressBook', function(){
-		it('Should find person by first name', function(){
-			$addressBook = new AddressBook();
-			the($addressBook->findPerson('Bob')->firstName)->eq('Bob');
-		});
-	});
-
-	\spectrum\RootDescribe::run();
-
-Result:
-
-1. AddressBook — success
-	1. Should find person by first name — success
-
-**Use [world creators](http://mkharitonov.net/spectrum/#worlds) and [arguments providers](http://mkharitonov.net/spectrum/#arguments-providers) for remove duplications:**
-
-	<?php
-	require_once 'spectrum/init.php';
+	require_once __DIR__ . '/spectrum/init.php';
 
 	describe('AddressBook', function(){
 		beforeEach(function(){
-			// Use "world()" instead of "$this" in php < 5.4
+			// Use "world()" instead of "$this" in php 5.3, "$this" available only in php >= 5.4
 			$this->addressBook = new AddressBook();
+		});
+
+		context('"MySql" driver', function(){
+			beforeEach(function(){
+				$this->addressBook->setDriver(new drivers\MySql());
+			});
+		});
+
+		context('"Files" driver', function(){
+			beforeEach(function(){
+				$this->addressBook->setDriver(new drivers\Files());
+			});
 		});
 
 		it('Should find person by first name', function(){
@@ -52,168 +47,18 @@ Result:
 Result:
 
 1. AddressBook — success
-	1. Should find person by first name — success
-	2. Should find person by phone number — success
-		1. +7 (495) 123-456-7 — success
-		2. (495) 123-456-7 — success
-		3. 123-456-7 — success
-
-**Use [contexts](http://mkharitonov.net/spectrum/#contexts) to test existing specs in various configurations:**
-
-	<?php
-	require_once 'spectrum/init.php';
-
-	describe('AddressBook', function(){
-		beforeEach(function(){
-			// Use "world()" instead of "$this" in php < 5.4
-			$this->addressBook = new AddressBook();
-		});
-
-		context('Data storage "MySQL"', function(){
-			beforeEach(function(){ $this->addressBook->setDataStorage('mysql'); });
-		});
-
-		context('Data storage "Oracle"', function(){
-			beforeEach(function(){ $this->addressBook->setDataStorage('oracle'); });
-		});
-
-		context('Data storage "files"', function(){
-			beforeEach(function(){ $this->addressBook->setDataStorage('files'); });
-		});
-
-		it('Should find person by first name', function(){
-			the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
-		});
-
-		it('Should find person by phone number', array(
-			'+7 (495) 123-456-7',
-			'(495) 123-456-7',
-			'123-456-7',
-		), function($phoneNumber){
-			the($this->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
-		});
-	});
-
-	\spectrum\RootDescribe::run();
-
-Result:
-
-1. AddressBook — success
-	1. Data storage "MySQL" — success
+	1. "MySql" driver — success
 		1. Should find person by first name — success
 		2. Should find person by phone number — success
 			1. +7 (495) 123-456-7 — success
 			2. (495) 123-456-7 — success
 			3. 123-456-7 — success
-	2. Data storage "Oracle" — success
+	2. "Files" driver — success
 		1. Should find person by first name — success
 		2. Should find person by phone number — success
 			1. +7 (495) 123-456-7 — success
 			2. (495) 123-456-7 — success
 			3. 123-456-7 — success
-	3. Data storage "files" — success
-		1. Should find person by first name — success
-		2. Should find person by phone number — success
-			1. +7 (495) 123-456-7 — success
-			2. (495) 123-456-7 — success
-			3. 123-456-7 — success
-
-**Group [contexts](http://mkharitonov.net/spectrum/#contexts) and other specs as you wish:**
-
-	<?php
-	require_once 'spectrum/init.php';
-
-	describe('AddressBook', function(){
-		beforeEach(function(){
-			// Use "world()" instead of "$this" in php < 5.4
-			$this->addressBook = new AddressBook();
-		});
-
-		context('Database storage', function(){
-			beforeEach(function(){ $this->addressBook->setCacheSql(false); });
-
-			context('MySQL', function(){
-				beforeEach(function(){ $this->addressBook->setDataStorage('mysql'); });
-			});
-
-			context('Oracle', function(){
-				beforeEach(function(){ $this->addressBook->setDataStorage('oracle'); });
-			});
-		});
-
-		context('Data storage "files"', function(){
-			beforeEach(function(){ $this->addressBook->setDataStorage('files'); });
-		});
-
-		describe('findPerson()', function(){
-			it('Should find person by first name', function(){
-				the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
-			});
-
-			it('Should find person by last name', function(){
-				the($this->addressBook->findPerson('Smith')->lastName)->eq('Smith');
-			});
-		});
-	});
-
-	\spectrum\RootDescribe::run();
-
-Result:
-
-1. AddressBook — success
-	1. Database storage — success
-		1. MySQL — success
-			1. findPerson() — success
-				1. Should find person by first name — success
-				2. Should find person by last name — success
-		2. Oracle — success
-			1. findPerson() — success
-				1. Should find person by first name — success
-				2. Should find person by last name — success
-	2. Data storage "files" — success
-		1. findPerson() — success
-
-			1. Should find person by first name — success
-			2. Should find person by last name — success
-
-**Use "require" statement to place duplicated or big constructions in separate file:**
-
-	<?php
-	require_once 'spectrum/init.php';
-
-	describe('AddressBook', function(){
-		require(__DIR__ . '/addressBookContexts.php');
-
-		describe('findPerson()', function(){
-			it('Should find person by first name', function(){
-				// Use "world()" instead of "$this" in php < 5.4
-				the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
-			});
-
-			it('Should find person by last name', function(){
-				the($this->addressBook->findPerson('Smith')->lastName)->eq('Smith');
-			});
-		});
-	});
-
-	\spectrum\RootDescribe::run();
-
-Result:
-
-1. AddressBook — success
-	1. Database storage — success
-		1. MySQL — success
-			1. findPerson() — success
-				1. Should find person by first name — success
-				2. Should find person by last name — success
-		2. Oracle — success
-			1. findPerson() — success
-				1. Should find person by first name — success
-				2. Should find person by last name — success
-	2. Data storage "files" — success
-		1. findPerson() — success
-			1. Should find person by first name — success
-			2. Should find person by last name — success
 
 ###Copyright
 (c) Mikhail Kharitonov <mail@mkharitonov.net>
