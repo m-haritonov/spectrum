@@ -25,15 +25,15 @@ class ManagerTest extends \spectrum\core\Test
 		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
 
 		$this->assertSame(array(
-			'matchers' => array('class' => '\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'whenFirstAccess'),
-			'builders' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Builders', 'activateMoment' => 'whenFirstAccess'),
-			'destroyers' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Destroyers', 'activateMoment' => 'whenFirstAccess'),
-			'selector' => array('class' => '\spectrum\core\plugins\basePlugins\Selector', 'activateMoment' => 'whenFirstAccess'),
-			'identify' => array('class' => '\spectrum\core\plugins\basePlugins\Identify', 'activateMoment' => 'whenFirstAccess'),
-			'errorHandling' => array('class' => '\spectrum\core\plugins\basePlugins\ErrorHandling', 'activateMoment' => 'whenFirstAccess'),
-			'output' => array('class' => '\spectrum\core\plugins\basePlugins\Output', 'activateMoment' => 'whenFirstAccess'),
-			'messages' => array('class' => '\spectrum\core\plugins\basePlugins\Messages', 'activateMoment' => 'whenFirstAccess'),
-			'patterns' => array('class' => '\spectrum\core\plugins\basePlugins\Patterns', 'activateMoment' => 'whenFirstAccess'),
+			'matchers' => array('class' => '\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'firstAccess'),
+			'builders' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Builders', 'activateMoment' => 'firstAccess'),
+			'destroyers' => array('class' => '\spectrum\core\plugins\basePlugins\worldCreators\Destroyers', 'activateMoment' => 'firstAccess'),
+			'selector' => array('class' => '\spectrum\core\plugins\basePlugins\Selector', 'activateMoment' => 'firstAccess'),
+			'identify' => array('class' => '\spectrum\core\plugins\basePlugins\Identify', 'activateMoment' => 'firstAccess'),
+			'errorHandling' => array('class' => '\spectrum\core\plugins\basePlugins\ErrorHandling', 'activateMoment' => 'firstAccess'),
+			'output' => array('class' => '\spectrum\core\plugins\basePlugins\Output', 'activateMoment' => 'firstAccess'),
+			'messages' => array('class' => '\spectrum\core\plugins\basePlugins\Messages', 'activateMoment' => 'firstAccess'),
+			'patterns' => array('class' => '\spectrum\core\plugins\basePlugins\Patterns', 'activateMoment' => 'firstAccess'),
 		), Manager::getRegisteredPlugins());
 	}
 
@@ -43,42 +43,42 @@ class ManagerTest extends \spectrum\core\Test
 	{
 		$this->assertSame(array(), Manager::getRegisteredPlugins());
 
-		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'whenSpecConstruct');
+		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'specConstruct');
 		$this->assertSame(array(
-			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'whenSpecConstruct'),
+			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'specConstruct'),
 		), Manager::getRegisteredPlugins());
 
-		Manager::registerPlugin('bar', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		Manager::registerPlugin('bar', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 		$this->assertSame(array(
-			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'whenSpecConstruct'),
-			'bar' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'whenFirstAccess'),
+			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'specConstruct'),
+			'bar' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'firstAccess'),
 		), Manager::getRegisteredPlugins());
 
-		Manager::registerPlugin('baz', '\spectrum\core\plugins\basePlugins\Matchers', 'whenEveryAccess');
+		Manager::registerPlugin('baz', '\spectrum\core\plugins\basePlugins\Matchers', 'everyAccess');
 		$this->assertSame(array(
-			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'whenSpecConstruct'),
-			'bar' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'whenFirstAccess'),
-			'baz' => array('class' => '\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'whenEveryAccess'),
+			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'specConstruct'),
+			'bar' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'firstAccess'),
+			'baz' => array('class' => '\spectrum\core\plugins\basePlugins\Matchers', 'activateMoment' => 'everyAccess'),
 		), Manager::getRegisteredPlugins());
 	}
 
 	public function testRegisterPlugin_ShouldBeReplaceExistsPlugin()
 	{
-		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'whenEveryAccess');
-		Manager::registerPlugin('foo', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenSpecConstruct');
+		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'everyAccess');
+		Manager::registerPlugin('foo', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'specConstruct');
 
 		$this->assertSame(
-			array('foo' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'whenSpecConstruct'))
+			array('foo' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'specConstruct'))
 			, Manager::getRegisteredPlugins()
 		);
 	}
 
-	public function testRegisterPlugin_ShouldBeSetStackIndexedClassAndWhenFirstAccessActivatedMomentByDefault()
+	public function testRegisterPlugin_ShouldBeSetStackIndexedClassAndFirstAccessActivatedMomentByDefault()
 	{
 		Manager::registerPlugin('foo');
 
 		$this->assertSame(
-			array('foo' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'whenFirstAccess'))
+			array('foo' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'firstAccess'))
 			, Manager::getRegisteredPlugins()
 		);
 	}
@@ -99,9 +99,9 @@ class ManagerTest extends \spectrum\core\Test
 
 	public function testRegisterPlugin_ShouldAcceptAllowedActivateMoments()
 	{
-		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'whenSpecConstruct');
-		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'whenFirstAccess');
-		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'whenEveryAccess');
+		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'specConstruct');
+		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'firstAccess');
+		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'everyAccess');
 	}
 
 	public function testRegisterPlugin_ShouldBeThrowExceptionIfNotAllowPluginsRegistration()
@@ -126,17 +126,17 @@ class ManagerTest extends \spectrum\core\Test
 	public function testRegisterPlugins_ShouldBeSubstituteDefaultClassAndActivateMoment()
 	{
 		Manager::registerPlugins(array(
-			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'whenEveryAccess'),
+			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'everyAccess'),
 			'bar' => array('class' => '\spectrum\core\plugins\Plugin'),
 			'baz' => array(),
 			'qux' => null,
 		));
 
 		$this->assertSame(array(
-			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'whenEveryAccess'),
-			'bar' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'whenFirstAccess'),
-			'baz' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'whenFirstAccess'),
-			'qux' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'whenFirstAccess'),
+			'foo' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'everyAccess'),
+			'bar' => array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'firstAccess'),
+			'baz' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'firstAccess'),
+			'qux' => array('class' => '\spectrum\core\plugins\basePlugins\stack\Indexed', 'activateMoment' => 'firstAccess'),
 		), Manager::getRegisteredPlugins());
 	}
 
@@ -209,10 +209,10 @@ class ManagerTest extends \spectrum\core\Test
 
 	public function testGetRegisteredPlugin()
 	{
-		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'whenEveryAccess');
+		Manager::registerPlugin('foo', '\spectrum\core\plugins\Plugin', 'everyAccess');
 
 		$this->assertSame(
-			array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'whenEveryAccess')
+			array('class' => '\spectrum\core\plugins\Plugin', 'activateMoment' => 'everyAccess')
 			, Manager::getRegisteredPlugin('foo')
 		);
 	}

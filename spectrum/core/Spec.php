@@ -37,7 +37,7 @@ abstract class Spec implements SpecInterface
 		$class = Config::getPluginsManagerClass();
 		foreach ($class::getRegisteredPlugins() as $pluginAccessName => $plugin)
 		{
-			if ($plugin['activateMoment'] == 'whenSpecConstruct')
+			if ($plugin['activateMoment'] == 'specConstruct')
 				$this->activatePlugin($pluginAccessName);
 		}
 	}
@@ -52,7 +52,7 @@ abstract class Spec implements SpecInterface
 		$manager = Config::getPluginsManagerClass();
 		$plugin = $manager::getRegisteredPlugin($pluginAccessName);
 
-		if ($plugin['activateMoment'] == 'whenEveryAccess' || !array_key_exists($pluginAccessName, $this->activatedPlugins))
+		if ($plugin['activateMoment'] == 'everyAccess' || !array_key_exists($pluginAccessName, $this->activatedPlugins))
 			$this->activatePlugin($pluginAccessName);
 
 		return $this->activatedPlugins[$pluginAccessName];

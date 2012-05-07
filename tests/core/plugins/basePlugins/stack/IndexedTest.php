@@ -102,7 +102,7 @@ class IndexedTest extends Test
 
 	public function testGet_ShouldNotBeGetValueFromParent()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 		
 		$specs = $this->createSpecsTree('
 			Describe
@@ -129,7 +129,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeSearchValueInSelfFirst()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -144,7 +144,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeSearchValueInParentIfInSelfValueNotExists()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -165,7 +165,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeSearchValueInAncestorIfInParentValueNotExists()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -185,7 +185,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ParentDescribeWithChildContexts_ShouldBeGetValueFromCurrentDeepChildRunningContext()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -214,7 +214,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ParentContextWithChildContexts_ShouldBeGetValueFromCurrentDeepChildRunningContext()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Context
@@ -243,7 +243,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ParentContext_ShouldNotBeGetValueFromParentSiblingContexts()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -268,7 +268,7 @@ class IndexedTest extends Test
 
 	public function testGetCascadeThroughRunningContexts_ShouldBeThrowExceptionIfValueNotExistsInAllAncestors()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -300,7 +300,7 @@ class IndexedTest extends Test
 
 	public function testGetAll_ShouldNotBeGetValuesFromParent()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -332,7 +332,7 @@ class IndexedTest extends Test
 
 	public function testGetAllPrependAncestorsWithRunningContexts_ShouldBeGetValuesFromSelfAndPrependAncestorsValuesAndValuesFromAncestorsChildRunningContexts()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -398,7 +398,7 @@ class IndexedTest extends Test
 
 	public function testGetAllPrependAncestorsWithRunningContexts_ShouldBeReturnEmptyArrayIfNoValues()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 		$spec = new \spectrum\core\SpecContainerDescribe();
 		$this->assertSame(array(), $spec->testPlugin->getAllPrependAncestorsWithRunningContexts());
 	}
@@ -407,7 +407,7 @@ class IndexedTest extends Test
 
 	public function testGetAllAppendAncestorsWithRunningContexts_ShouldBeGetValuesFromSelfAndAppendAncestorsValuesAndValuesFromAncestorsChildRunningContexts()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 
 		$specs = $this->createSpecsTree('
 			Describe
@@ -473,7 +473,7 @@ class IndexedTest extends Test
 
 	public function testGetAllAppendAncestorsWithRunningContexts_ShouldBeReturnEmptyArrayIfNoValues()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('testPlugin', '\spectrum\core\plugins\basePlugins\stack\Indexed', 'firstAccess');
 		$spec = new \spectrum\core\SpecContainerDescribe();
 		$this->assertSame(array(), $spec->testPlugin->getAllAppendAncestorsWithRunningContexts());
 	}

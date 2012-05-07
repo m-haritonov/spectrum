@@ -1,5 +1,4 @@
 constrCom - делать require_once при registerCommand
-activateMoment — remove when?
 getOnceInstance rename to getInstance?
 
 Assert($actualValue) rename to $value?

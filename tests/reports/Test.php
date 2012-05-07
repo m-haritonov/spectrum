@@ -14,7 +14,7 @@ abstract class Test extends \spectrum\Test
 	protected function setUp()
 	{
 		parent::setUp();
-		\spectrum\core\plugins\Manager::registerPlugin('reports', '\spectrum\reports\Plugin', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('reports', '\spectrum\reports\Plugin', 'firstAccess');
 	}
 
 	protected function tearDown()

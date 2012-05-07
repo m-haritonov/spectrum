@@ -18,9 +18,9 @@ abstract class SpecTest extends Test
 	}
 
 /**/
-	public function testGetPlugin_WhenSpecConstruct_ShouldBeCreatePluginInSpecConstructorAndReturnCreatedInstanceLater()
+	public function testGetPlugin_SpecConstruct_ShouldBeCreatePluginInSpecConstructorAndReturnCreatedInstanceLater()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenSpecConstruct');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'specConstruct');
 
 		$spec = $this->createCurrentSpec();
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
@@ -32,9 +32,9 @@ abstract class SpecTest extends Test
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
-	public function testGetPlugin_WhenFirstAccess_ShouldBeCreatePluginOnlyWhenFirstCallAndReturnCreatedInstanceLater()
+	public function testGetPlugin_FirstAccess_ShouldBeCreatePluginOnlyWhenFirstCallAndReturnCreatedInstanceLater()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenFirstAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'firstAccess');
 
 		$spec = $this->createCurrentSpec();
 		$this->assertEquals(0, \spectrum\core\testEnv\PluginStub::getActivationsCount());
@@ -48,9 +48,9 @@ abstract class SpecTest extends Test
 		$this->assertEquals(1, \spectrum\core\testEnv\PluginStub::getActivationsCount());
 	}
 
-	public function testGetPlugin_WhenEveryAccess_ShouldBeCreatePluginWhenEveryAccessAndReturnNewInstanceLater()
+	public function testGetPlugin_EveryAccess_ShouldBeCreatePluginEveryAccessAndReturnNewInstanceLater()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenEveryAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'everyAccess');
 
 		$spec = $this->createCurrentSpec();
 		$this->assertEquals(0, \spectrum\core\testEnv\PluginStub::getActivationsCount());
@@ -68,7 +68,7 @@ abstract class SpecTest extends Test
 
 	public function testGetPlugin_ShouldBeSupportAccessThroughMagicGetProperty()
 	{
-		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'whenEveryAccess');
+		\spectrum\core\plugins\Manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginStub', 'everyAccess');
 
 		$spec = $this->createCurrentSpec();
 		$activatedPlugin = $spec->foo;

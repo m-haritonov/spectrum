@@ -10,7 +10,7 @@ namespace spectrum\core\plugins;
 
 interface ManagerInterface
 {
-	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'whenFirstAccess');
+	static public function registerPlugin($accessName, $class = '\spectrum\core\plugins\basePlugins\stack\Indexed', $activateMoment = 'firstAccess');
 	static public function registerPlugins($plugins);
 	static public function unregisterPlugin($accessName);
 	static public function unregisterAllPlugins();
