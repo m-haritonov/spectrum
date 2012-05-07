@@ -1,7 +1,5 @@
 constrCom - делать require_once при registerCommand
 activateMoment — remove when?
-globalAliases.php в init.php перенести
-init.php — dirname заменить на __DIR__
 getOnceInstance rename to getInstance?
 
 Assert($actualValue) rename to $value?
