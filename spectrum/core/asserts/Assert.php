@@ -50,9 +50,6 @@ class Assert implements AssertInterface
 		{
 			$result = $specItem->matchers->callMatcher($matcherName, array_merge(array($this->getActualValue()), $expectedArgs));
 			$matcherCallDetails->setMatcherReturnValue($result);
-
-			if ($this->getNot())
-				$result = !$result;
 		}
 		catch (\Exception $e)
 		{
@@ -64,6 +61,9 @@ class Assert implements AssertInterface
 			else
 				throw $e;
 		}
+		
+		if ($this->getNot())
+			$result = !$result;
 
 		$specItem->getRunResultsBuffer()->addResult($result, $matcherCallDetails);
 		$this->resetNot();

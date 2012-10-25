@@ -124,7 +124,7 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 		$this->assertTrue($isCalled);
 	}
 
-	public function testWithNot_ShouldBeAddFalseWithDetailsToRunResultsBufferOnce()
+	public function testWithNot_ShouldBeAddTrueWithDetailsToRunResultsBuffer()
 	{
 		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
 		{
@@ -132,15 +132,15 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 
 			$assert = new Assert(true);
 			$assert->not->bad();
-			$assert->not->bad();
+			$assert->bad();
 
 			$test->fail('Should be break');
 		});
 
 		$results = $runResultsBuffer->getResults();
 
-		$this->assertEquals(1, count($results));
-		$this->assertFalse($results[0]['result']);
+		$this->assertEquals(2, count($results));
+		$this->assertTrue($results[0]['result']);
 		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
 	}
 

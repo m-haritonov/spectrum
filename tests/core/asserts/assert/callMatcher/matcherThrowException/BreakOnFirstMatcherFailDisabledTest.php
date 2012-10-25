@@ -161,7 +161,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$this->assertTrue($isExecuted);
 	}
 
-	public function testWithNot_ShouldBeIgnoreNotAndAddToRunResultsBufferFalseAnyway()
+	public function testWithNot_ShouldNotBeIgnoreNotAndAddToRunResultsBufferTrue()
 	{
 		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
 		{
@@ -172,11 +172,11 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$results = $runResultsBuffer->getResults();
 		$this->assertEquals(1, count($results));
-		$this->assertSame(false, $results[0]['result']);
+		$this->assertSame(true, $results[0]['result']);
 		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
 	}
 
-	public function testWithNot_ShouldBeAddFalseWithDetailsToRunResultsBufferForEachMatcher()
+	public function testWithNot_ShouldBeAddTrueWithDetailsToRunResultsBufferForEachMatcher()
 	{
 		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
 		{
@@ -194,9 +194,9 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 
 		$this->assertEquals(3, count($results));
 
-		$this->assertFalse($results[0]['result']);
-		$this->assertFalse($results[1]['result']);
-		$this->assertFalse($results[2]['result']);
+		$this->assertTrue($results[0]['result']);
+		$this->assertTrue($results[1]['result']);
+		$this->assertTrue($results[2]['result']);
 
 		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
 		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
