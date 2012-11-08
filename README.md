@@ -13,32 +13,33 @@ https://bitbucket.org/mkharitonov/spectrum-framework.org/src
 
 	describe('AddressBook', function(){
 		beforeEach(function(){
-			// Use "world()" instead of "$this" in php 5.3, "$this" available only in php >= 5.4
-			$this->addressBook = new AddressBook();
+			world()->addressBook = new AddressBook();
 		});
 
 		context('"MySql" driver', function(){
 			beforeEach(function(){
-				$this->addressBook->setDriver(new drivers\MySql());
+				world()->addressBook->setDriver(new drivers\MySql());
 			});
 		});
 
 		context('"Files" driver', function(){
 			beforeEach(function(){
-				$this->addressBook->setDriver(new drivers\Files());
+				world()->addressBook->setDriver(new drivers\Files());
 			});
 		});
 
 		it('Should find person by first name', function(){
-			verify($this->addressBook->findPerson('Bob')->firstName, '==', 'Bob');
+			$person = world()->addressBook->findPerson('Bob');
+			verify($person->firstName, '==', 'Bob');
 		});
 
-		it('Should find person by phone number', array(
+		it('Should find person by phone number in any format', array(
 			'+7 (495) 123-456-7',
 			'(495) 123-456-7',
 			'123-456-7',
 		), function($phoneNumber){
-			verify($this->addressBook->findPerson($phoneNumber)->phoneNumber, '==', '+74951234567');
+			$person = world()->addressBook->findPerson($phoneNumber);
+			verify($person->phoneNumber, '==', '+74951234567');
 		});
 	});
 

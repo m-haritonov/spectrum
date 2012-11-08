@@ -16,6 +16,9 @@ class WorldTest extends Test
 {
 	public function testShouldBeBindWorldToThisVariable()
 	{
+		if (version_compare(PHP_VERSION, '5.4', '<'))
+			return;
+		
 		$it = new SpecItemIt();
 		$it->builders->add(function(){
 			$this->foo = 123;
@@ -66,7 +69,7 @@ class WorldTest extends Test
 	{
 		$it = new SpecItemIt();
 		$it->setTestCallback(function() use(&$worlds){
-			$worlds[] = $this;
+			$worlds[] = \spectrum\core\Registry::getWorld();
 		});
 
 		$it->run();
@@ -81,11 +84,11 @@ class WorldTest extends Test
 	{
 		$it = new SpecItemIt();
 		$it->builders->add(function(){
-			$this->foo = 'bar';
+			\spectrum\core\Registry::getWorld()->foo = 'bar';
 		});
 
 		$it->setTestCallback(function() use(&$isApplyBeforeRun){
-			$isApplyBeforeRun = ($this->foo == 'bar');
+			$isApplyBeforeRun = (\spectrum\core\Registry::getWorld()->foo == 'bar');
 		});
 
 		$it->run();
@@ -97,11 +100,11 @@ class WorldTest extends Test
 	{
 		$it = new SpecItemIt();
 		$it->setTestCallback(function(){
-			$this->foo = 'bar';
+			\spectrum\core\Registry::getWorld()->foo = 'bar';
 		});
 
 		$it->builders->add(function() use(&$isApplyAfterRun){
-			$isApplyAfterRun = (@$this->foo == 'bar');
+			$isApplyAfterRun = (@\spectrum\core\Registry::getWorld()->foo == 'bar');
 		});
 
 		$it->run();
@@ -113,11 +116,11 @@ class WorldTest extends Test
 	{
 		$it = new SpecItemIt();
 		$it->setTestCallback(function(){
-			$this->foo = 'bar';
+			\spectrum\core\Registry::getWorld()->foo = 'bar';
 		});
 
 		$it->destroyers->add(function() use(&$isApplyAfterRun){
-			$isApplyAfterRun = ($this->foo == 'bar');
+			$isApplyAfterRun = (\spectrum\core\Registry::getWorld()->foo == 'bar');
 		});
 
 		$it->run();
@@ -129,11 +132,11 @@ class WorldTest extends Test
 	{
 		$it = new SpecItemIt();
 		$it->destroyers->add(function(){
-			$this->foo = 'bar';
+			\spectrum\core\Registry::getWorld()->foo = 'bar';
 		});
 
 		$it->setTestCallback(function() use(&$isApplyBeforeRun){
-			$isApplyBeforeRun = (@$this->foo == 'bar');
+			$isApplyBeforeRun = (@\spectrum\core\Registry::getWorld()->foo == 'bar');
 		});
 
 		$it->run();
@@ -145,15 +148,15 @@ class WorldTest extends Test
 	{
 		$it = new SpecItemIt();
 		$it->builders->add(function() use(&$worlds, $it){
-			$worlds['inBuilder'] = $this;
+			$worlds['inBuilder'] = \spectrum\core\Registry::getWorld();
 		});
 
 		$it->setTestCallback(function() use(&$worlds, $it){
-			$worlds['inTest'] = $this;
+			$worlds['inTest'] = \spectrum\core\Registry::getWorld();
 		});
 
 		$it->destroyers->add(function() use(&$worlds, $it){
-			$worlds['inDestroyer'] = $this;
+			$worlds['inDestroyer'] = \spectrum\core\Registry::getWorld();
 		});
 
 		$it->run();
@@ -175,16 +178,16 @@ class WorldTest extends Test
 			->->It
 		');
 
-		$specs[0]->builders->add(function(){ $this->callOrder[] = 0; });
-		$specs[1]->builders->add(function(){ $this->callOrder[] = 1; });
-		$specs[2]->builders->add(function(){ $this->callOrder[] = 2; });
-		$specs[3]->builders->add(function(){ $this->callOrder[] = 3; });
-		$specs[4]->builders->add(function(){ $this->callOrder[] = 4; });
-		$specs[5]->builders->add(function(){ $this->callOrder[] = 5; });
-		$specs[6]->builders->add(function(){ $this->callOrder[] = 6; });
+		$specs[0]->builders->add(function(){ \spectrum\core\Registry::getWorld()->callOrder[] = 0; });
+		$specs[1]->builders->add(function(){ \spectrum\core\Registry::getWorld()->callOrder[] = 1; });
+		$specs[2]->builders->add(function(){ \spectrum\core\Registry::getWorld()->callOrder[] = 2; });
+		$specs[3]->builders->add(function(){ \spectrum\core\Registry::getWorld()->callOrder[] = 3; });
+		$specs[4]->builders->add(function(){ \spectrum\core\Registry::getWorld()->callOrder[] = 4; });
+		$specs[5]->builders->add(function(){ \spectrum\core\Registry::getWorld()->callOrder[] = 5; });
+		$specs[6]->builders->add(function(){ \spectrum\core\Registry::getWorld()->callOrder[] = 6; });
 
 		$specs[6]->setTestCallback(function() use(&$resultCallOrder){
-			$resultCallOrder = $this->callOrder;
+			$resultCallOrder = \spectrum\core\Registry::getWorld()->callOrder;
 		});
 
 		$specs[0]->run();
