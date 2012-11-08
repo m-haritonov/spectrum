@@ -1,3 +1,7 @@
+добавить title к элементам ползунка "Details"
+
+BreakOnFirstMatcherFail rename to BreakOnFirstVerificationFail
+
 getOnceInstance rename to getInstance?
 
 Assert($actualValue) rename to $value?

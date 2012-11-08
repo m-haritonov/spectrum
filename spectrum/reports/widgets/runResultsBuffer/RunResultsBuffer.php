@@ -8,6 +8,7 @@
 
 namespace spectrum\reports\widgets\runResultsBuffer;
 use \spectrum\core\asserts\MatcherCallDetailsInterface;
+use spectrum\core\verifications\CallDetailsInterface;
 use \spectrum\core\SpecItemInterface;
 
 class RunResultsBuffer extends \spectrum\reports\widgets\Widget
@@ -95,7 +96,7 @@ class RunResultsBuffer extends \spectrum\reports\widgets\Widget
 			$output .= $this->getIndention(2) . '<div class="result ' . ($result['result'] ? 'true' : 'false') . '">' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="' . $this->translate('Show full details (also available by mouse middle click on the card)') . '"></a>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="num" title="' . $this->translate('Order in run results buffer') . '">' . $this->translate('No.') . ' ' . $num . '</div>' . $this->getNewline();
-			$output .= $this->getIndention(3) . '<div class="value" title="' . $this->translate('Result') . '">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
+			$output .= $this->getIndention(3) . '<div class="value" title="' . $this->translate('Result, contains in run results buffer') . '">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
 			$output .= $this->getHtmlForResultDetails($result['details']) . $this->getNewline();
 			$output .= $this->getIndention(2) . '</div>' . $this->getNewline();
 		}
@@ -111,6 +112,8 @@ class RunResultsBuffer extends \spectrum\reports\widgets\Widget
 	{
 		if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
 			$widget = $this->getOwnerPlugin()->createWidget('runResultsBuffer\details\MatcherCall');
+		else if (is_object($details) && $details instanceof CallDetailsInterface)
+			$widget = $this->getOwnerPlugin()->createWidget('runResultsBuffer\details\VerifyCall');
 		else
 			$widget = $this->getOwnerPlugin()->createWidget('runResultsBuffer\details\Unknown');
 

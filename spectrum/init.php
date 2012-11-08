@@ -42,6 +42,7 @@ function afterEach()     { return call_user_func_array('\spectrum\constructionCo
  * @return \spectrum\core\asserts\Assert
  */
 function the()           { return call_user_func_array('\spectrum\constructionCommands\Manager::' . __FUNCTION__, func_get_args()); }
+function verify()        { return call_user_func_array('\spectrum\constructionCommands\Manager::' . __FUNCTION__, func_get_args()); }
 
 /**
  * @return \spectrum\core\WorldInterface

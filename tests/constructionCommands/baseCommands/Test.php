@@ -16,11 +16,6 @@ abstract class Test extends \spectrum\Test
 	protected function setUp()
 	{
 		parent::setUp();
-		\spectrum\RootDescribe::getOnceInstance()->removeAllSpecs();
-		\spectrum\RootDescribe::getOnceInstance()->matchers->removeAll();
-		\spectrum\RootDescribe::getOnceInstance()->builders->removeAll();
-		\spectrum\RootDescribe::getOnceInstance()->destroyers->removeAll();
-		\spectrum\RootDescribe::getOnceInstance()->patterns->removeAll();
 		Manager::setDeclaringContainer(null);
 	}
 }

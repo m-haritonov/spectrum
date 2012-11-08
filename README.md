@@ -30,7 +30,7 @@ https://bitbucket.org/mkharitonov/spectrum-framework.org/src
 		});
 
 		it('Should find person by first name', function(){
-			the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
+			verify($this->addressBook->findPerson('Bob')->firstName, '==', 'Bob');
 		});
 
 		it('Should find person by phone number', array(
@@ -38,7 +38,7 @@ https://bitbucket.org/mkharitonov/spectrum-framework.org/src
 			'(495) 123-456-7',
 			'123-456-7',
 		), function($phoneNumber){
-			the($this->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
+			verify($this->addressBook->findPerson($phoneNumber)->phoneNumber, '==', '+74951234567');
 		});
 	});
 

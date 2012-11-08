@@ -109,6 +109,104 @@ class ConfigTest extends Test
 
 /**/
 
+	public function testGetVerificationClass_ShouldBeReturnSpectrumClassByDefault()
+	{
+		$this->assertEquals('\spectrum\core\verifications\Verification', Config::getVerificationClass());
+	}
+
+/**/
+
+	public function testSetVerificationClass_ShouldBeSetNewClass()
+	{
+		Config::setVerificationClass('\spectrum\core\testEnv\emptyStubs\verifications\Verification');
+		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\verifications\Verification', Config::getVerificationClass());
+	}
+
+	public function testSetVerificationClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
+	{
+		$oldClass = Config::getVerificationClass();
+
+		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
+			Config::setVerificationClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		});
+
+		$this->assertEquals($oldClass, Config::getVerificationClass());
+	}
+
+	public function testSetVerificationClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
+	{
+		$oldClass = Config::getVerificationClass();
+
+		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
+			Config::setVerificationClass('\stdClass');
+		});
+
+		$this->assertEquals($oldClass, Config::getVerificationClass());
+	}
+
+	public function testSetVerificationClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	{
+		$oldClass = Config::getVerificationClass();
+		Config::lock();
+
+		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
+			Config::setVerificationClass('\spectrum\core\testEnv\emptyStubs\verifications\Verification');
+		});
+
+		$this->assertEquals($oldClass, Config::getVerificationClass());
+	}
+
+/**/
+
+	public function testGetVerificationCallDetailsClass_ShouldBeReturnSpectrumClassByDefault()
+	{
+		$this->assertEquals('\spectrum\core\verifications\CallDetails', Config::getVerificationCallDetailsClass());
+	}
+
+/**/
+
+	public function testSetVerificationCallDetailsClass_ShouldBeSetNewClass()
+	{
+		Config::setVerificationCallDetailsClass('\spectrum\core\testEnv\emptyStubs\verifications\CallDetails');
+		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\verifications\CallDetails', Config::getVerificationCallDetailsClass());
+	}
+
+	public function testSetVerificationCallDetailsClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
+	{
+		$oldClass = Config::getVerificationCallDetailsClass();
+
+		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
+			Config::setVerificationCallDetailsClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		});
+
+		$this->assertEquals($oldClass, Config::getVerificationCallDetailsClass());
+	}
+
+	public function testSetVerificationCallDetailsClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
+	{
+		$oldClass = Config::getVerificationCallDetailsClass();
+
+		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
+			Config::setVerificationCallDetailsClass('\stdClass');
+		});
+
+		$this->assertEquals($oldClass, Config::getVerificationCallDetailsClass());
+	}
+
+	public function testSetVerificationCallDetailsClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	{
+		$oldClass = Config::getVerificationCallDetailsClass();
+		Config::lock();
+
+		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
+			Config::setVerificationCallDetailsClass('\spectrum\core\testEnv\emptyStubs\verifications\CallDetails');
+		});
+
+		$this->assertEquals($oldClass, Config::getVerificationCallDetailsClass());
+	}
+
+/**/
+
 	public function testGetPluginsManagerClass_ShouldBeReturnSpectrumClassByDefault()
 	{
 		$this->assertEquals('\spectrum\core\plugins\Manager', Config::getPluginsManagerClass());

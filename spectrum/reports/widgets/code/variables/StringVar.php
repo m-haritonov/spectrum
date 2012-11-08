@@ -19,7 +19,8 @@ class StringVar extends Variable
 		return
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $widgetSelector .value { white-space: pre; line-height: 12px; }" . $this->getNewline() .
+				$this->getIndention() . "$widgetSelector .quote { color: rgba(0, 0, 0, 0.6); }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector .value { white-space: pre; }" . $this->getNewline() .
 				$this->getIndention() . "$this->expandedParentSelector $widgetSelector .value .char { display: inline-block; overflow: hidden; position: relative; height: 12px; }" . $this->getNewline() .
 
 				$this->getIndention() . "$this->expandedParentSelector $widgetSelector .value .char.space { width: 8px; height: 10px; }" . $this->getNewline() .

@@ -6,6 +6,9 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
+
+
+
 namespace addressBook\drivers
 {
 	abstract class Driver {}
@@ -18,7 +21,7 @@ namespace addressBook
 
 	class Person
 	{
-		public $firstName = 'Bob';
+		public $firstName = 'Ted';
 		public $lastName = 'Smith';
 		public $phoneNumber = '+74951234567';
 	}
@@ -32,33 +35,33 @@ namespace addressBook
 	require_once __DIR__ . '/spectrum/init.php';
 
 	describe('AddressBook', function(){
-		beforeEach(function(){
-			// Use "world()" instead of "$this" in php 5.3, "$this" available only in php >= 5.4
-			$this->addressBook = new AddressBook();
-		});
-
-		context('"MySql" driver', function(){
-			beforeEach(function(){
-				$this->addressBook->setDriver(new drivers\MySql());
-			});
-		});
-
-		context('"Files" driver', function(){
-			beforeEach(function(){
-				$this->addressBook->setDriver(new drivers\Files());
-			});
-		});
-
 		it('Should find person by first name', function(){
-			the($this->addressBook->findPerson('Bob')->firstName)->eq('Bob');
-		});
+			$addressBook = new AddressBook();
+			$firstName = $addressBook->findPerson('Bob')->firstName;
 
-		it('Should find person by phone number', array(
-			'+7 (495) 123-456-7',
-			'(495) 123-456-7',
-			'123-456-7',
-		), function($phoneNumber){
-			the($this->addressBook->findPerson($phoneNumber)->phoneNumber)->eq('+74951234567');
+			verify(new \stdClass(), '!instanceof', '\stdClass');
+			
+			trim('');verify  (file_exists('fo,o') , '==', false);trim('');
+			
+			verify(file_exists($firstName));
+			verify(function(){
+				if ($foo == 'abc')
+				{
+					$bar = 'foo';
+					$baz = 'abc';
+				}
+				else
+					exit;
+			}, '==', array(
+				'foo1' => 'bar',
+				'foo2' => 'bar',
+				'foo3' => 'bar',
+			));
+			verify($firstName, '==', 'Ted asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs 
+			sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd 
+			asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd asdfsdaddfs sdsd');
+			
+			the($firstName)->eq('Bob');
 		});
 	});
 

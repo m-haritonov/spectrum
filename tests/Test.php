@@ -18,6 +18,10 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		parent::setUp();
+		
+		$reflection = new \ReflectionProperty('\spectrum\RootDescribe', 'onceInstance');
+		$reflection->setAccessible(true);
+		$reflection->setValue(null, null);
 
 		$this->backupStaticProperties('\spectrum\core\Config');
 		$this->backupStaticProperties('\spectrum\core\Registry');

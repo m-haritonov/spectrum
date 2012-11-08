@@ -35,7 +35,7 @@ class Variable extends \spectrum\reports\widgets\Widget
 		{
 			$closure = function(){};
 			if ($variable instanceof $closure)
-				$type = 'closure';
+				$type = 'function';
 			else
 				$type = 'object';
 		}

@@ -26,6 +26,7 @@ class ManagerTest extends \spectrum\Test
 			'itLikePattern' => '\spectrum\constructionCommands\baseCommands\itLikePattern',
 
 			'the' => '\spectrum\constructionCommands\baseCommands\the',
+			'verify' => '\spectrum\constructionCommands\baseCommands\verify',
 
 			'world' => '\spectrum\constructionCommands\baseCommands\world',
 			'fail' => '\spectrum\constructionCommands\baseCommands\fail',

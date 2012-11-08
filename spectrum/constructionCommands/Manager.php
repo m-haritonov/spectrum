@@ -21,6 +21,7 @@ require_once __DIR__ . '/baseCommands/it.php';
 require_once __DIR__ . '/baseCommands/itLikePattern.php';
 
 require_once __DIR__ . '/baseCommands/the.php';
+require_once __DIR__ . '/baseCommands/verify.php';
 
 require_once __DIR__ . '/baseCommands/world.php';
 require_once __DIR__ . '/baseCommands/fail.php';
@@ -71,6 +72,7 @@ class Manager implements ManagerInterface
 		'itLikePattern' => '\spectrum\constructionCommands\baseCommands\itLikePattern',
 
 		'the' => '\spectrum\constructionCommands\baseCommands\the',
+		'verify' => '\spectrum\constructionCommands\baseCommands\verify',
 
 		'world' => '\spectrum\constructionCommands\baseCommands\world',
 		'fail' => '\spectrum\constructionCommands\baseCommands\fail',

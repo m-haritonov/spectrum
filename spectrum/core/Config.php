@@ -11,6 +11,8 @@ namespace spectrum\core;
 class Config
 {
 	private static $assertClass = '\spectrum\core\asserts\Assert';
+	private static $verificationClass = '\spectrum\core\verifications\Verification';
+	private static $verificationCallDetailsClass = '\spectrum\core\verifications\CallDetails';
 	private static $matcherCallDetailsClass = '\spectrum\core\asserts\MatcherCallDetails';
 	private static $pluginsManagerClass = '\spectrum\core\plugins\Manager';
 	private static $registryClass = '\spectrum\core\Registry';
@@ -34,6 +36,12 @@ class Config
 
 	public static function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\asserts\AssertInterface'); }
 	public static function getAssertClass(){ return static::$assertClass; }
+	
+	public static function setVerificationClass($className){ return static::setConfigClassValue(static::$verificationClass, $className, '\spectrum\core\verifications\VerificationInterface'); }
+	public static function getVerificationClass(){ return static::$verificationClass; }
+	
+	public static function setVerificationCallDetailsClass($className){ return static::setConfigClassValue(static::$verificationCallDetailsClass, $className, '\spectrum\core\verifications\CallDetailsInterface'); }
+	public static function getVerificationCallDetailsClass(){ return static::$verificationCallDetailsClass; }
 
 	public static function setMatcherCallDetailsClass($className){ return static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\asserts\MatcherCallDetailsInterface'); }
 	public static function getMatcherCallDetailsClass(){ return static::$matcherCallDetailsClass; }
