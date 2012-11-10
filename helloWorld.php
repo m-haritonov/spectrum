@@ -33,12 +33,21 @@ namespace addressBook
 	}
 
 	require_once __DIR__ . '/spectrum/init.php';
+	
+	function someFunc()
+	{
+		throw new \Exception('aaa bbb', 111);
+	}
 
 	describe('AddressBook', function(){
 		it('Should find person by first name', function(){
 			$addressBook = new AddressBook();
 			$firstName = $addressBook->findPerson('Bob')->firstName;
-
+			
+			verify(function(){ someFunc(); }, 'throws', array('\Exception', 'aaa ccc'));
+			verify(function(){ someFunc(); }, '!throws', array('\Exception', 'aaa bbb', 111));
+			
+			
 			verify(new \stdClass(), '!instanceof', '\stdClass');
 			
 			trim('');verify  (file_exists('fo,o') , '==', false);trim('');

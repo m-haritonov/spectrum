@@ -23,6 +23,8 @@ class Verification implements VerificationInterface
 		'>=',
 		'instanceof',
 		'!instanceof',
+		'throws',
+		'!throws',
 	);
 
 	public function __construct($value1, $operator = null, $value2 = null)
@@ -76,7 +78,7 @@ class Verification implements VerificationInterface
 		return $this->callDetails;
 	}
 	
-	protected function evaluateResult($value1, $operator, $value2)
+	protected function evaluateResult(&$value1, $operator, &$value2)
 	{
 		if ($operator == null)
 			return ($value1 == true);
@@ -96,9 +98,84 @@ class Verification implements VerificationInterface
 				
 				return !($value1 instanceof $value2);
 			}
+			else if ($operator == 'throws')
+				return $this->evaluateThrowsOperator($value1, $operator, $value2);
+			else if ($operator == '!throws')
+				return !$this->evaluateThrowsOperator($value1, $operator, $value2);
 			else
 				return eval('return ($value1 ' . $operator . ' $value2);');
 		}
+	}
+	
+	/**
+	 * Return true, if code in $value1 function throws exception instance of $value2 class.
+	 * @param string|array $value2 Accept string with class name or array with class, string in message, code. Examples: 
+	 *                             '\SomeException' 
+	 *                             array('\SomeException')
+	 *                             array('\SomeException', 'string in exception message') 
+	 *                             array('\SomeException', 'string in exception message', code) 
+	 *                             array('\SomeException', null, code)
+	 *                             array(null, null, code)
+	 *                             array(null, 'string in exception message', null)
+	 * @return bool
+	 */
+	protected function evaluateThrowsOperator(&$value1, $operator, &$value2)
+	{
+		if (!is_callable($value1))
+			throw new Exception('"' . $operator . '" operator in verification can accept only callable function as first operand (now passed callback not callable)');
+		
+		if (is_array($value2))
+		{
+			if (count($value2) == 0)
+				throw new Exception('"' . $operator . '" operator in verification can\'t accept empty array as second operand');
+			
+			if (@$value2[0] === null && @$value2[1] === null && @$value2[2] === null)
+				throw new Exception('"' . $operator . '" operator in verification can\'t accept array with all null elements as second operand');
+			
+			$expectedClass = @$value2[0];
+			$expectedStringInMessage = @$value2[1];
+			$expectedCode = @$value2[2];
+		}
+		else if (is_string($value2))
+		{
+			$expectedClass = @$value2;
+			$expectedStringInMessage = null;
+			$expectedCode = null;
+		}
+		else
+			throw new Exception('"' . $operator . '" operator in verification can accept only string or array as second operand (now passed ' . gettype($value2) . ')');
+		
+		if ($expectedClass == null)
+			$expectedClass = '\Exception';
+	
+		if (!is_subclass_of($expectedClass, '\Exception') && $expectedClass != '\Exception')
+			throw new Exception('Excepted class in "' . $operator . '" verification should be subclass of "\Exception" (now class "' . $expectedClass . '" not subclass of "\Exception")');
+	
+		try
+		{
+			call_user_func($value1);
+		}
+		catch (\Exception $e)
+		{
+			$value1 = $e;
+			$actualClass = '\\' . get_class($e);
+	
+			if ($actualClass == $expectedClass || is_subclass_of($actualClass, $expectedClass))
+			{
+				$actualMessage = $e->getMessage();
+				$actualCode = $e->getCode();
+	
+				if ($expectedStringInMessage !== null && mb_stripos($actualMessage, $expectedStringInMessage) === false)
+					return false;
+	
+				if ($expectedCode !== null && $actualCode != $expectedCode)
+					return false;
+	
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

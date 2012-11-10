@@ -38,7 +38,12 @@ class ObjectVar extends VariableHierarchical
 		{
 			$output .= '<span class="elements">';
 			foreach ($properties as $key => $val)
+			{
+				if ($variable instanceof \Exception && $key == 'trace')
+					$val = '<removed from reports preview>';
+				
 				$output .= $this->getHtmlForElement($key, $val);
+			}
 
 			$output .= '</span>';
 		}

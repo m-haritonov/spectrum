@@ -1,6 +1,8 @@
 добавить title к элементам ползунка "Details"
 
 BreakOnFirstMatcherFail rename to BreakOnFirstVerificationFail
+реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
+вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
 
 getOnceInstance rename to getInstance?
 
