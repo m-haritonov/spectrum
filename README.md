@@ -3,8 +3,8 @@ Spectrum is a PHP framework for BDD specification test. Works in php 5.3 and new
 
 **Current version is alpha and not stable.**
 
-Web site: `http://spectrum-framework.org/ <http://spectrum-framework.org/>`_
-Documentation (old and for a while only on Russian) available on: `http://mkharitonov.net/spectrum/ <http://mkharitonov.net/spectrum/>`_
+Web site: [http://spectrum-framework.org/][1]
+Documentation (old and for a while only on Russian) available on: [http://mkharitonov.net/spectrum/][2]
 
 ###Example:
 	<?php
@@ -64,3 +64,6 @@ Result:
 (c) Mikhail Kharitonov <mail@mkharitonov.net>
 
 For the full copyright and license information, see the LICENSE.txt file.
+
+[1]: http://spectrum-framework.org/
+[2]: http://mkharitonov.net/spectrum/
