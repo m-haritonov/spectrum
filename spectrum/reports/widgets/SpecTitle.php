@@ -20,7 +20,7 @@ class SpecTitle extends \spectrum\reports\widgets\Widget
 		return
 			'<span class="g-specTitle">' .
 				'<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
-				$this->getIndention() . '<span class="separator"> — </span>' . $this->getNewline() .
+				$this->getIndention() . '<span class="separator"> &mdash; </span>' . $this->getNewline() .
 				$this->prependIndentionToEachLine($this->trimNewline($this->getOwnerPlugin()->createWidget('finalResult\Result')->getHtml())) . $this->getNewline() .
 			'</span>';
 	}
