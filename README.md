@@ -1,13 +1,12 @@
 ###Spectrum
-Spectrum is a PHP framework for BDD specification test.
+Spectrum is a PHP framework for BDD specification test. Works in php 5.3 and newer.
 
 **Current version is alpha and not stable.**
 
-Documentation (for a while only on Russian):
-http://mkharitonov.net/spectrum/
-https://bitbucket.org/mkharitonov/spectrum-framework.org/src
+Web site: `http://spectrum-framework.org/ <http://spectrum-framework.org/>`_
+Documentation (old and for a while only on Russian) available on: `http://mkharitonov.net/spectrum/ <http://mkharitonov.net/spectrum/>`_
 
-###Examples:
+###Example:
 	<?php
 	require_once __DIR__ . '/spectrum/init.php';
 
