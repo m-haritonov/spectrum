@@ -1,7 +1,10 @@
-добавить title к элементам ползунка "Details"
 
-BreakOnFirstMatcherFail rename to BreakOnFirstVerificationFail
+success ("has empty" or "success, has empty")
 реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
+
+добавить title к элементам ползунка "Details"
+синхронизировать переключатели элемента ползунка
+BreakOnFirstMatcherFail rename to BreakOnFirstVerificationFail
 вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
 
 getOnceInstance rename to getInstance?
@@ -9,12 +12,96 @@ getOnceInstance rename to getInstance?
 Assert($actualValue) rename to $value?
 
 RunResultsBuffer: rename $result['result'] to $result['value/flag']
-RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer (буффер может использоваться не только для хранения результатов запуска)?
+RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer or VerificationBuffer (буффер может использоваться не только для хранения результатов запуска)?
 Config::setClassFor();
 translate throwException messages
 Matchers - add reserved word "should", "shouldbe", "should_be"
 
+/**
+ * @lang ru Делает что-нибудь
+ */
+it('Makes something', function(){});
+
+rename argumentProviders feature to dataSets
 if test callback return false — throw exception: test callback return not null
+в классе Spec предусмотреть возможность создания тестов, где разделено объявление тестов и проверка (verify) результатов выполнения
+в core отойти от именования классов согласно constructionCommands, возможно переименовать класс It в Test
+см. заметку на ipad про контексты
+назвать контексты и провайдеры аргументов одним термином (например, генераторы или комбинаторы) - ???
+
+
+it('Register "$componentId" with ', array(
+	'g-foo-bar',
+	row('Returns foo', 'arg1', 'arg2'),
+	group('Foreign phone', [ 
+		row('Nested foo', array('arg1', 'arg2')),
+		row('Nested foo', array('arg1', 'arg2')),
+	]),
+	array('arg1', 'agr2'), // такой синтаксис убрать, возможно запретить массивы в качестве единичного аргумента
+), function($componentId, $componentElementsRoutes, $useForDescendantComponentsSearch){
+	// ...
+});
+
+vs
+
+// этот вариант лучше, т.к. больше возможностей (контексты и т.п. и не вводит нового синтаксиса для групп)
+it('Return declared in current component params', function(){
+	describe('Repeat call', function(){
+		beforeEach(function(){ });
+	});
+}, function(){ /* test code */ });
+
+объединить Spec* классы в один Spec класс, сделав возможным добавлять дочерние узлы для классов вида it
+добавить в класс Spec методы set/getType/IdentityString/ConstructionCommand
+Context — сделать поведение по умолчанию аналогичное Describe, но добавить параметр runParentSpecs ??? 
+context - команду конструирования context заменить на group/describe, добавив параметр "selector": group('Some name', 'selector', function(){})
+describe()/it()/context() vs group()/test()/combine()
+
+на главной закрепить образец использования:
+test('ожидаемый результат', function(){
+	// код для проверки ожидаемого результата
+})
+
+
+describe('Some specification', function(){
+	beforeEach(function(){
+		world()->abc = 123;
+	});
+	
+	afterEach(function(){
+		world()->abc = null;
+	});
+	
+	it('Some test', function(){
+		setSomeNumber(world()->abc);
+	});
+});
+
+vs
+
+describe('Some specification', function(){
+	beforeEach(function($world){
+		$world->abc = 123;
+	});
+	
+	afterEach(function($world){
+		$world->abc = null;
+	});
+	
+	it('Some test', array('aaa', 'bbb'), function($argument1, $world){
+		setSomeNumber($world->abc);
+	});
+});
+
+
+---
+describe('') use($foo, $bar)
+{
+	it('', array())
+	{
+		
+	}
+}
 
 Matchers plugin:
 ---Плагин report
@@ -58,7 +145,7 @@ Matchers plugin:
 		one or more specs is "empty" and has no "fail"
 
 	написать тесты только для правильности вывода результата - fail и т.п.
-	testShouldBeGenerateValidXhtml
+	testShouldBeGenerateValidXhtml 
 
 
 Doc: Расширение и конфигурация
