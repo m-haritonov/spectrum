@@ -5,8 +5,6 @@ Spectrum is a PHP framework for BDD specification test. Works in php 5.3 and new
 
 Web site: [http://spectrum-framework.org/][1]
 
-Documentation (old and for a while only on Russian) available on: [http://mkharitonov.net/spectrum/][2]
-
 ###Example:
 	<?php
 	require_once __DIR__ . '/spectrum/init.php';
@@ -67,4 +65,3 @@ Result:
 For the full copyright and license information, see the LICENSE.txt file.
 
 [1]: http://spectrum-framework.org/
-[2]: http://mkharitonov.net/spectrum/
