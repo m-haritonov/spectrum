@@ -6,32 +6,32 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class SetDeclaringContainerTest extends \spectrum\constructionCommands\baseCommands\Test
+class SetDeclaringContainerTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeSetDeclaringContainer()
 	{
 		$describe = new \spectrum\core\SpecContainerDescribe();
-		Manager::setDeclaringContainer($describe);
+		manager::setDeclaringContainer($describe);
 
-		$this->assertSame($describe, Manager::getCurrentContainer());
+		$this->assertSame($describe, manager::getCurrentContainer());
 	}
 
 	public function testShouldBeAcceptNull()
 	{
-		Manager::setDeclaringContainer(new \spectrum\core\SpecContainerDescribe());
-		Manager::setDeclaringContainer(null);
-		$this->assertSame(\spectrum\RootDescribe::getOnceInstance(), Manager::getCurrentContainer());
+		manager::setDeclaringContainer(new \spectrum\core\SpecContainerDescribe());
+		manager::setDeclaringContainer(null);
+		$this->assertSame(\spectrum\RootSpec::getOnceInstance(), manager::getCurrentContainer());
 	}
 
 	public function testShouldBeAcceptOnlySpecContainerInstances()
 	{
 		$this->assertThrowException('\Exception', function(){
-			Manager::setDeclaringContainer(new \spectrum\core\SpecItemIt());
+			manager::setDeclaringContainer(new \spectrum\core\SpecItemIt());
 		});
 	}
 }
