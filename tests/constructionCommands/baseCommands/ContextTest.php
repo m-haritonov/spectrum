@@ -6,16 +6,16 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class ContextTest extends \spectrum\constructionCommands\baseCommands\Test
+class ContextTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeAllowToCallAtDeclaringState()
 	{
-		$context = Manager::context('', function(){});
+		$context = manager::context('', function(){});
 		$this->assertTrue($context instanceof \spectrum\core\SpecContainerContextInterface);
 	}
 
@@ -26,7 +26,7 @@ class ContextTest extends \spectrum\constructionCommands\baseCommands\Test
 			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
-				Manager::context('', function(){});
+				manager::context('', function(){});
 			});
 			$it->run();
 		});
@@ -34,7 +34,7 @@ class ContextTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldBeReturnNewSpecContainerContextInstance()
 	{
-		$describe = Manager::context('', function(){});
+		$describe = manager::context('', function(){});
 		$this->assertTrue($describe instanceof \spectrum\core\SpecContainerContextInterface);
 	}
 
@@ -42,8 +42,8 @@ class ContextTest extends \spectrum\constructionCommands\baseCommands\Test
 //	{
 //		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"context"', function()
 //		{
-//			$it = Manager::it('', function(){
-//				Manager::context('', function(){});
+//			$it = manager::it('', function(){
+//				manager::context('', function(){});
 //			});
 //
 //			$it->run();

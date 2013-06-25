@@ -6,9 +6,13 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\matchers;
 
-class Exception extends \spectrum\Exception
+/**
+ * Matcher for identical operator ($actual === $expected).
+ * @return bool
+ */
+function ident($actual, $expected)
 {
-	
+	return ($actual === $expected);
 }

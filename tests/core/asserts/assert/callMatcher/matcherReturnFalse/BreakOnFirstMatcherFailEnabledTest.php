@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts\assert\callMatcher\matcherReturnFalse;
+namespace spectrum\tests\core\asserts\assert\callMatcher\matcherReturnFalse;
 use spectrum\core\asserts\Assert;
 
 require_once __DIR__ . '/../../../../../init.php';
@@ -28,11 +28,11 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 		$this->assertTrue($isCalled);
 	}
 
-	public function testShouldBeAddFalseWithDetailsToRunResultsBufferOnce()
+	public function testShouldBeAddFalseWithDetailsToResultBufferOnce()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->false();
@@ -41,18 +41,18 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 			$test->fail('Should be break');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$this->assertEquals(1, count($results));
 		$this->assertFalse($results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
 	}
 
 	public function testShouldBeProvidePropertiesToDetailsOnce()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert('foo');
 			$assert->eq('bar');
@@ -60,10 +60,10 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 			$test->fail('Should be break');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$details = $results[0]['details'];
-		$this->assertTrue($details instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($details instanceof \spectrum\core\asserts\CallDetails);
 		$this->assertSame('foo', $details->getActualValue());
 		$this->assertSame(false, $details->getNot());
 		$this->assertSame('eq', $details->getMatcherName());
@@ -89,11 +89,11 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 		$this->assertTrue($isCalled);
 	}
 
-	public function testWithNot_ShouldBeAddFalseWithDetailsToRunResultsBufferOnce()
+	public function testWithNot_ShouldBeAddFalseWithDetailsToResultBufferOnce()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->not->true();
@@ -102,18 +102,18 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 			$test->fail('Should be break');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$this->assertEquals(1, count($results));
 		$this->assertFalse($results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
 	}
 
 	public function testWithNot_ShouldBeProvidePropertiesToDetailsOnce()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert('foo');
 			$assert->not->eq('foo');
@@ -121,10 +121,10 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 			$test->fail('Should be break');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$details = $results[0]['details'];
-		$this->assertTrue($details instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($details instanceof \spectrum\core\asserts\CallDetails);
 		$this->assertSame('foo', $details->getActualValue());
 		$this->assertSame(true, $details->getNot());
 		$this->assertSame('eq', $details->getMatcherName());
@@ -135,15 +135,15 @@ class BreakOnFirstMatcherFailEnabledTest extends \spectrum\core\asserts\assert\c
 
 	public function testWithNot_ShouldBeProvideNotInvertedMatcherReturnValue()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->not->true();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 		$this->assertSame(true, $results[0]['details']->getMatcherReturnValue());
 	}
 

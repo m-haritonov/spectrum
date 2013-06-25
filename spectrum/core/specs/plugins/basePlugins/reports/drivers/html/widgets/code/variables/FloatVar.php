@@ -6,9 +6,9 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\core\specs\plugins\basePlugins\reports\drivers\html\widgets\code\variables;
 
-class Exception extends \spectrum\Exception
+class FloatVar extends Variable
 {
-	
+	protected $type = 'float';
 }

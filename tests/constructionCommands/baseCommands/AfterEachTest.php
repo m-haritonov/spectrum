@@ -6,12 +6,12 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
+class AfterEachTest extends \spectrum\constructionCommands\commands\Test
 {
 	protected function setUp()
 	{
@@ -21,8 +21,8 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldBeAllowToCallAtDeclaringState()
 	{
-		$describe = Manager::describe('', function(){
-			Manager::afterEach(function(){});
+		$describe = manager::describe('', function(){
+			manager::afterEach(function(){});
 		});
 
 		$this->assertTrue($describe->destroyers->isExists(0));
@@ -35,7 +35,7 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
-				Manager::afterEach(function(){});
+				manager::afterEach(function(){});
 			});
 			$it->run();
 		});
@@ -44,8 +44,8 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testShouldBeReturnAddedValue()
 	{
 		$function = function(){};
-		$describe = Manager::describe('', function() use($function, &$return) {
-			$return = Manager::afterEach($function);
+		$describe = manager::describe('', function() use($function, &$return) {
+			$return = manager::afterEach($function);
 		});
 
 		$this->assertSame($function, $return);
@@ -53,7 +53,7 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldNotBeCallCallbackDuringCall()
 	{
-		Manager::afterEach(function() use(&$isCalled){
+		manager::afterEach(function() use(&$isCalled){
 			$isCalled = true;
 		});
 
@@ -63,9 +63,9 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testNoParentCommand_ShouldBeAddDestroyerToRootDescribe()
 	{
 		$function = function(){};
-		Manager::afterEach($function);
+		manager::afterEach($function);
 
-		$destroyer = \spectrum\RootDescribe::getOnceInstance()->destroyers->get(0);
+		$destroyer = \spectrum\RootSpec::getOnceInstance()->destroyers->get(0);
 		$this->assertSame($function, $destroyer['callback']);
 		$this->assertSame('each', $destroyer['type']);
 	}
@@ -73,8 +73,8 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testInsideDescribeCommand_ShouldBeAddDestroyerToParentDescribe()
 	{
 		$function = function(){};
-		$describe = Manager::describe('', function() use($function) {
-			Manager::afterEach($function);
+		$describe = manager::describe('', function() use($function) {
+			manager::afterEach($function);
 		});
 
 		$destroyer = $describe->destroyers->get(0);
@@ -85,8 +85,8 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testInsideContextCommand_ShouldBeAddDestroyerToParentContext()
 	{
 		$function = function(){};
-		$context = Manager::context('', function() use($function) {
-			Manager::afterEach($function);
+		$context = manager::context('', function() use($function) {
+			manager::afterEach($function);
 		});
 
 		$destroyer = $context->destroyers->get(0);
@@ -98,7 +98,7 @@ class AfterEachTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function assertDestroyerNotExistsInDescribe($name)
 	{
-		$describe = Manager::describe('', function(){});
+		$describe = manager::describe('', function(){});
 		$this->assertFalse($describe->destroyers->isExists($name));
 	}
 }

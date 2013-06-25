@@ -6,9 +6,12 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\core\specs;
 
-class Exception extends \spectrum\Exception
+/**
+ * Be carefully, this exception not adds to ResultBuffer and should be throw only for softly break execution.
+ */
+class ExceptionBreak extends Exception
 {
 	
 }

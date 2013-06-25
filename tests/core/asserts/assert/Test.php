@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts\assert;
+namespace spectrum\tests\core\asserts\assert;
 require_once __DIR__ . '/../../../init.php';
 
 abstract class Test extends \spectrum\core\Test

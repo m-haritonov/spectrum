@@ -6,9 +6,10 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\tests\core\plugins\basePlugins\stack;
+require_once __DIR__ . '/../../../../init.php';
 
-class Exception extends \spectrum\Exception
+abstract class Test extends \spectrum\core\plugins\basePlugins\Test
 {
-	
+
 }

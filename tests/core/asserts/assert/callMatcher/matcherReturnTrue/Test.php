@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts\assert\callMatcher\matcherReturnTrue;
+namespace spectrum\tests\core\asserts\assert\callMatcher\matcherReturnTrue;
 use spectrum\core\asserts\Assert;
 
 require_once __DIR__ . '/../../../../../init.php';
@@ -25,11 +25,11 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 		$this->assertTrue($isExecuted);
 	}
 
-	public function testShouldBeAddTrueWithDetailsToRunResultsBufferForEachMatcher()
+	public function testShouldBeAddTrueWithDetailsToResultBufferForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->true();
@@ -39,7 +39,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 			$assert->true();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$this->assertEquals(3, count($results));
 
@@ -47,18 +47,18 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 		$this->assertTrue($results[1]['result']);
 		$this->assertTrue($results[2]['result']);
 
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\CallDetails);
 
 		$this->assertAllResultsDetailsDifferent($results);
 	}
 
 	public function testShouldBeProvidePropertiesToDetailsForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->true();
@@ -68,7 +68,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 			$assert->eq('foo');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());
@@ -149,26 +149,26 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 		$this->assertTrue($isExecuted);
 	}
 
-	public function testWithNot_ShouldBeAddToRunResultsBufferInvertedResult()
+	public function testWithNot_ShouldBeAddToResultBufferInvertedResult()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 			$assert = new Assert(true);
 			$assert->not->false();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(true, $results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
 	}
 
-	public function testWithNot_ShouldBeAddTrueWithDetailsToRunResultsBufferForEachMatcher()
+	public function testWithNot_ShouldBeAddTrueWithDetailsToResultBufferForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->not->false();
@@ -178,7 +178,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 			$assert->not->false();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$this->assertEquals(3, count($results));
 
@@ -186,18 +186,18 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 		$this->assertTrue($results[1]['result']);
 		$this->assertTrue($results[2]['result']);
 
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\CallDetails);
 
 		$this->assertAllResultsDetailsDifferent($results);
 	}
 
 	public function testWithNot_ShouldBeProvidePropertiesToDetailsForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->not->false();
@@ -207,7 +207,7 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 			$assert->not->eq('bar');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());
@@ -236,15 +236,15 @@ class Test extends \spectrum\core\asserts\assert\callMatcher\Test
 
 	public function testWithNot_ShouldBeProvideNotInvertedMatcherReturnValue()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->not->false();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 		$this->assertSame(false, $results[0]['details']->getMatcherReturnValue());
 	}
 

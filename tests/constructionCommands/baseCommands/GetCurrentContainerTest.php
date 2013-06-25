@@ -6,30 +6,30 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class GetCurrentContainerTest extends \spectrum\constructionCommands\baseCommands\Test
+class GetCurrentContainerTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testDeclaringState_ShouldBeReturnCurrentContainerIfItSet()
 	{
 		$container = new \spectrum\core\SpecContainerDescribe();
-		Manager::setDeclaringContainer($container);
+		manager::setDeclaringContainer($container);
 
-		$this->assertSame($container, Manager::getCurrentContainer());
+		$this->assertSame($container, manager::getCurrentContainer());
 	}
 
 	public function testDeclaringState_ShouldBeReturnRootDescribeIfCurrentContainerNotSet()
 	{
-		$this->assertSame(\spectrum\RootDescribe::getOnceInstance(), Manager::getCurrentContainer());
+		$this->assertSame(\spectrum\RootSpec::getOnceInstance(), manager::getCurrentContainer());
 	}
 
 	public function testDeclaringState_ShouldBeReturnOnceRootDescribeInstance()
 	{
-		$container1 = Manager::getCurrentContainer();
-		$container2 = Manager::getCurrentContainer();
+		$container1 = manager::getCurrentContainer();
+		$container2 = manager::getCurrentContainer();
 		$this->assertSame($container1, $container2);
 	}
 
@@ -44,7 +44,7 @@ class GetCurrentContainerTest extends \spectrum\constructionCommands\baseCommand
 		');
 
 		$specs[2]->setTestCallback(function() use(&$currentContainer) {
-			$currentContainer = Manager::getCurrentContainer();
+			$currentContainer = manager::getCurrentContainer();
 		});
 		$specs[2]->run();
 
@@ -60,7 +60,7 @@ class GetCurrentContainerTest extends \spectrum\constructionCommands\baseCommand
 		');
 
 		$specs[2]->setTestCallback(function() use(&$currentContainer) {
-			$currentContainer = Manager::getCurrentContainer();
+			$currentContainer = manager::getCurrentContainer();
 		});
 		$specs[2]->run();
 
@@ -72,7 +72,7 @@ class GetCurrentContainerTest extends \spectrum\constructionCommands\baseCommand
 		$it = new \spectrum\core\SpecItemIt();
 		$it->setTestCallback(function() use(&$isCalled, &$currentContainer) {
 			$isCalled = true;
-			$currentContainer = Manager::getCurrentContainer();
+			$currentContainer = manager::getCurrentContainer();
 		});
 		$it->run();
 
