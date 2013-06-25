@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum;
+namespace spectrum\tests;
 
 require_once __DIR__ . '/init.php';
 
@@ -19,29 +19,27 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	{
 		parent::setUp();
 		
-		$reflection = new \ReflectionProperty('\spectrum\RootDescribe', 'onceInstance');
-		$reflection->setAccessible(true);
-		$reflection->setValue(null, null);
+		$this->backupStaticProperties('\spectrum\core\config');
+		$this->backupStaticProperties('\spectrum\core\Spec');
+		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\Output');
+		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
+		
+		$this->backupStaticProperties('\spectrum\constructionCommands\config');
+		$this->backupStaticProperties('\spectrum\constructionCommands\manager');
 
-		$this->backupStaticProperties('\spectrum\core\Config');
-		$this->backupStaticProperties('\spectrum\core\Registry');
-		$this->backupStaticProperties('\spectrum\core\plugins\Manager');
-		$this->backupStaticProperties('\spectrum\constructionCommands\Config');
-		$this->backupStaticProperties('\spectrum\constructionCommands\Manager');
-		$this->backupStaticProperties('\spectrum\reports\Config');
-
-		\spectrum\Test::$tmp = null;
-		\spectrum\core\testEnv\PluginStub::reset();
+		\spectrum\tests\Test::$tmp = null;
+		\spectrum\tests\testHelpers\agents\core\PluginStub::reset();
 	}
 
 	protected function tearDown()
 	{
-		$this->restoreStaticProperties('\spectrum\reports\Config');
-		$this->restoreStaticProperties('\spectrum\constructionCommands\Manager');
-		$this->restoreStaticProperties('\spectrum\constructionCommands\Config');
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
-		$this->restoreStaticProperties('\spectrum\core\Registry');
-		$this->restoreStaticProperties('\spectrum\core\Config');
+		$this->restoreStaticProperties('\spectrum\constructionCommands\manager');
+		$this->restoreStaticProperties('\spectrum\constructionCommands\config');
+		
+		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
+		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\Output');
+		$this->restoreStaticProperties('\spectrum\core\Spec');
+		$this->restoreStaticProperties('\spectrum\core\config');
 
 		parent::tearDown();
 	}
@@ -64,9 +62,10 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 /**/
 
+	/*
 	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesOrIndexes()
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\plugins\manager');
 		$specs = $this->createSpecsTree('
 			Describe
 			->Context(foo)
@@ -84,7 +83,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesAndIndexesIfAddIndexNameAlwaysIsTrue()
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\plugins\manager');
 		$specs = $this->createSpecsTree('
 			Describe(foo)
 			->It(bar)
@@ -105,7 +104,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	final public function testCreateSpecsTree_ShouldBeReturnPreparedInstanceIfExists()
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\plugins\manager');
 		$describe = new \spectrum\core\SpecContainerDescribe();
 		$it = new \spectrum\core\SpecItemIt();
 
@@ -189,7 +188,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	final public function testCreateSpecsTree_ShouldBeAddChildSpecsToParent()
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
+		$this->restoreStaticProperties('\spectrum\core\plugins\manager');
 		$specs = $this->createSpecsTree('
 			Describe
 			->Context
@@ -199,12 +198,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			Describe
 		');
 
-		$this->assertNull($specs['0']->getParent());
-		$this->assertSame($specs['0'], $specs['1']->getParent());
-		$this->assertSame($specs['1'], $specs['2']->getParent());
-		$this->assertSame($specs['2'], $specs['3']->getParent());
-		$this->assertSame($specs['0'], $specs['4']->getParent());
-		$this->assertNull($specs['5']->getParent());
+		$this->assertNull($specs['0']->getParentSpec());
+		$this->assertSame($specs['0'], $specs['1']->getParentSpec());
+		$this->assertSame($specs['1'], $specs['2']->getParentSpec());
+		$this->assertSame($specs['2'], $specs['3']->getParentSpec());
+		$this->assertSame($specs['0'], $specs['4']->getParentSpec());
+		$this->assertNull($specs['5']->getParentSpec());
 	}
 
 	final public function testCreateSpecsTree_ShouldBeThrowExceptionIfLevelBreakMoreThenOne()
@@ -223,17 +222,20 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 		$this->fail('Should be thrown exception');
 	}
+	*/
 
 	/**
 	 * $treePattern example:
-	 * Describe(root_spec)
-	 * ->Context(name)
-	 * ->->It
-	 * ->Context
-	 * Describe
+	 * Spec
+	 * ->Spec(name)
+	 * ->->Spec
+	 * ->Spec
+	 * Spec
 	 *
 	 * @return array
 	 */
+	
+	/*
 	protected function createSpecsTree($treePattern, array $preparedInstances = array(), $addIndexNameAlways = false)
 	{
 		$treePattern = trim($treePattern);
@@ -352,38 +354,39 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		else
 			return null;
 	}
+	*/
 
 	public function injectToRunStartCallsCounter(\spectrum\core\SpecInterface $spec, $counterName = 'callsCounter')
 	{
 		$spec->__injectFunctionToRunStart(function() use($counterName) {
-			\spectrum\Test::$tmp[$counterName] = (int) \spectrum\Test::$tmp[$counterName] + 1;
+			\spectrum\tests\Test::$tmp[$counterName] = (int) \spectrum\tests\Test::$tmp[$counterName] + 1;
 		});
 	}
 
 	public function injectToRunStartSaveInstanceToCollection(\spectrum\core\SpecInterface $spec)
 	{
 		$spec->__injectFunctionToRunStart(function() use($spec) {
-			\spectrum\Test::$tmp['instancesCollection'][] = $spec;
+			\spectrum\tests\Test::$tmp['instancesCollection'][] = $spec;
 		});
 	}
 
 	public function injectToRunStartCallsOrderChecker(\spectrum\core\SpecInterface $spec, $expectedZeroBasedIndex)
 	{
 		$spec->__injectFunctionToRunStart(function() use($spec, $expectedZeroBasedIndex) {
-			\spectrum\Test::$tmp['callsOrderChecker'][] = $expectedZeroBasedIndex;
+			\spectrum\tests\Test::$tmp['callsOrderChecker'][] = $expectedZeroBasedIndex;
 		});
 	}
 
 	public function assertCallsCounterEquals($expectedCount, $counterName = 'callsCounter')
 	{
-		$this->assertEquals($expectedCount, (int) @\spectrum\Test::$tmp[$counterName]);
+		$this->assertEquals($expectedCount, (int) @\spectrum\tests\Test::$tmp[$counterName]);
 	}
 
 	public function assertCallsInOrder($expectedCount)
 	{
-		$this->assertEquals($expectedCount, count((array) @\spectrum\Test::$tmp['callsOrderChecker']));
+		$this->assertEquals($expectedCount, count((array) @\spectrum\tests\Test::$tmp['callsOrderChecker']));
 
-		foreach ((array) \spectrum\Test::$tmp['callsOrderChecker'] as $actualIndex => $expectedIndex)
+		foreach ((array) \spectrum\tests\Test::$tmp['callsOrderChecker'] as $actualIndex => $expectedIndex)
 		{
 			$this->assertEquals($expectedIndex, $actualIndex);
 		}
@@ -391,15 +394,15 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	public function assertInstanceInCollection(\spectrum\core\SpecInterface $spec)
 	{
-		$this->assertTrue(in_array($spec, (array) \spectrum\Test::$tmp['instancesCollection'], true));
+		$this->assertTrue(in_array($spec, (array) \spectrum\tests\Test::$tmp['instancesCollection'], true));
 	}
 
 	public function assertInstanceNotInCollection(\spectrum\core\SpecInterface $spec)
 	{
-		$this->assertFalse(in_array($spec, (array) \spectrum\Test::$tmp['instancesCollection'], true));
+		$this->assertFalse(in_array($spec, (array) \spectrum\tests\Test::$tmp['instancesCollection'], true));
 	}
 
-	public function assertThrowException($expectedClass, $stringInMessageOrCallback, $callback = null)
+	public function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null)
 	{
 		if ($callback === null)
 		{

@@ -6,5 +6,11 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/autoload.php';
-require_once __DIR__ . '/../spectrum/autoload.php';
+namespace spectrum\tests\core\plugins\events\onTestCallbackCall;
+
+require_once __DIR__ . '/../../../../init.php';
+
+abstract class Test extends \spectrum\core\plugins\events\Test
+{
+
+}

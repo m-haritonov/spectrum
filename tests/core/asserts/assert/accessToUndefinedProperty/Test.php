@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts\assert\accessToUndefinedProperty;
+namespace spectrum\tests\core\asserts\assert\accessToUndefinedProperty;
 use spectrum\core\asserts\Assert;
 
 require_once __DIR__ . '/../../../../init.php';
@@ -29,14 +29,14 @@ class Test extends \spectrum\core\Test
 		});
 	}
 
-	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsDisabled_ShouldNotBeAddResultToRunResultsBuffer()
+	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsDisabled_ShouldNotBeAddResultToResultBuffer()
 	{
 		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(false);
 		$it->errorHandling->setCatchExceptions(false);
 
-		$it->setTestCallback(function() use(&$runResultsBuffer, $it){
-			$runResultsBuffer = $it->getRunResultsBuffer();
+		$it->setTestCallback(function() use(&$resultBuffer, $it){
+			$resultBuffer = $it->getResultBuffer();
 			$assert = new Assert('');
 			$assert->foo;
 		});
@@ -47,7 +47,7 @@ class Test extends \spectrum\core\Test
 		}
 		catch (\Exception $e){}
 
-		$this->assertSame(array(), $runResultsBuffer->getResults());
+		$this->assertSame(array(), $resultBuffer->getResults());
 	}
 
 /**/
@@ -66,21 +66,21 @@ class Test extends \spectrum\core\Test
 		$it->run();
 	}
 
-	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsEnabled_ShouldBeAddFalseResultWithExceptionToRunResultsBuffer()
+	public function testBreakOnFirstMatcherFailDisabled_CatchExceptionsEnabled_ShouldBeAddFalseResultWithExceptionToResultBuffer()
 	{
 		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(false);
 		$it->errorHandling->setCatchExceptions(true);
 
-		$it->setTestCallback(function() use(&$runResultsBuffer, $it){
-			$runResultsBuffer = $it->getRunResultsBuffer();
+		$it->setTestCallback(function() use(&$resultBuffer, $it){
+			$resultBuffer = $it->getResultBuffer();
 			$assert = new Assert('');
 			$assert->foo;
 		});
 
 		$it->run();
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
 		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\Exception);
@@ -122,14 +122,14 @@ class Test extends \spectrum\core\Test
 		});
 	}
 
-	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsDisabled_ShouldNotBeAddResultToRunResultsBuffer()
+	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsDisabled_ShouldNotBeAddResultToResultBuffer()
 	{
 		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(true);
 		$it->errorHandling->setCatchExceptions(false);
 
-		$it->setTestCallback(function() use(&$runResultsBuffer, $it){
-			$runResultsBuffer = $it->getRunResultsBuffer();
+		$it->setTestCallback(function() use(&$resultBuffer, $it){
+			$resultBuffer = $it->getResultBuffer();
 			$assert = new Assert('');
 			$assert->foo;
 		});
@@ -140,26 +140,26 @@ class Test extends \spectrum\core\Test
 		}
 		catch (\Exception $e){}
 
-		$this->assertSame(array(), $runResultsBuffer->getResults());
+		$this->assertSame(array(), $resultBuffer->getResults());
 	}
 
 /**/
 
-	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsEnabled_ShouldBeAddFalseResultWithExceptionToRunResultsBuffer()
+	public function testBreakOnFirstMatcherFailEnabled_CatchExceptionsEnabled_ShouldBeAddFalseResultWithExceptionToResultBuffer()
 	{
 		$it = new \spectrum\core\SpecItemIt();
 		$it->errorHandling->setBreakOnFirstMatcherFail(true);
 		$it->errorHandling->setCatchExceptions(true);
 
-		$it->setTestCallback(function() use(&$runResultsBuffer, $it){
-			$runResultsBuffer = $it->getRunResultsBuffer();
+		$it->setTestCallback(function() use(&$resultBuffer, $it){
+			$resultBuffer = $it->getResultBuffer();
 			$assert = new Assert('');
 			$assert->foo;
 		});
 
 		$it->run();
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
 		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\Exception);

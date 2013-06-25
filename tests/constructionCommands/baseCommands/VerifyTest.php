@@ -6,17 +6,17 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class VerifyTest extends \spectrum\constructionCommands\baseCommands\Test
+class VerifyTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeAllowToCallAtRunningState()
 	{
-		$it = Manager::it('', function() use(&$isCalled) {
-			Manager::verify(true, '==', true);
+		$it = manager::it('', function() use(&$isCalled) {
+			manager::verify(true, '==', true);
 			$isCalled = true;
 		});
 
@@ -27,16 +27,16 @@ class VerifyTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testShouldBeThrowExceptionIfCalledAtDeclaringState()
 	{
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"verify" should be call only at running state', function(){
-			Manager::describe('', function(){
-				Manager::verify(true, '==', true);
+			manager::describe('', function(){
+				manager::verify(true, '==', true);
 			});
 		});
 	}
 
 	public function testShouldBeReturnVerificationInstance()
 	{
-		$it = Manager::it('', function() use(&$result) {
-			$result = Manager::verify(true, '==', true);
+		$it = manager::it('', function() use(&$result) {
+			$result = manager::verify(true, '==', true);
 		});
 
 		$it->run();
@@ -50,8 +50,8 @@ class VerifyTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testOneArgumentPassed_ShouldBeForwardArgumentsToVerificationInstance()
 	{
-		$it = Manager::it('', function() use(&$instance) {
-			$instance = Manager::verify('aaa');
+		$it = manager::it('', function() use(&$instance) {
+			$instance = manager::verify('aaa');
 		});
 		
 		$it->run();
@@ -63,8 +63,8 @@ class VerifyTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testTwoArgumentPassed_ShouldBeThrowException()
 	{
 		$this->assertThrowException('\spectrum\core\verifications\Exception', 'Verification can accept only 1 or 3 arguments (now 2 arguments passed)', function(){
-			$it = Manager::it('', function() use(&$instance) {
-				$instance = Manager::verify('aaa', '==');
+			$it = manager::it('', function() use(&$instance) {
+				$instance = manager::verify('aaa', '==');
 			});
 			$it->errorHandling->setCatchExceptions(false);
 			$it->run();
@@ -73,8 +73,8 @@ class VerifyTest extends \spectrum\constructionCommands\baseCommands\Test
 	
 	public function testThreeArgumentPassed_ShouldBeForwardArgumentsToVerificationInstance()
 	{
-		$it = Manager::it('', function() use(&$instance) {
-			$instance = Manager::verify('aaa', '==', 'bbb');
+		$it = manager::it('', function() use(&$instance) {
+			$instance = manager::verify('aaa', '==', 'bbb');
 		});
 		
 		$it->run();

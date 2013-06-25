@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts\assert;
+namespace spectrum\tests\core\asserts\assert;
 use spectrum\core\asserts\Assert;
 
 require_once __DIR__ . '/../../../init.php';
@@ -16,7 +16,7 @@ class OtherTest extends Test
 	public function testConstructor_ShouldBeAcceptActualValue()
 	{
 		$assert = new Assert('foo');
-		$this->assertEquals('foo', $assert->getActualValue());
+		$this->assertEquals('foo', $assert->getTestedValue());
 	}
 
 /**/

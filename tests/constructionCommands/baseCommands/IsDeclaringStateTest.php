@@ -6,22 +6,22 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class IsDeclaringStateTest extends \spectrum\constructionCommands\baseCommands\Test
+class IsDeclaringStateTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testNoParentCommand_ShouldBeReturnTrue()
 	{
-		$this->assertTrue(Manager::isDeclaringState());
+		$this->assertTrue(manager::isDeclaringState());
 	}
 
 	public function testInsideDescribeCommand_ShouldBeReturnTrue()
 	{
-		Manager::describe('', function() use(&$result){
-			$result = Manager::isDeclaringState();
+		manager::describe('', function() use(&$result){
+			$result = manager::isDeclaringState();
 		});
 
 		$this->assertTrue($result);
@@ -29,8 +29,8 @@ class IsDeclaringStateTest extends \spectrum\constructionCommands\baseCommands\T
 
 	public function testInsideContextCommand_ShouldBeReturnTrue()
 	{
-		Manager::context('', function() use(&$result){
-			$result = Manager::isDeclaringState();
+		manager::context('', function() use(&$result){
+			$result = manager::isDeclaringState();
 		});
 
 		$this->assertTrue($result);
@@ -40,11 +40,11 @@ class IsDeclaringStateTest extends \spectrum\constructionCommands\baseCommands\T
 
 	public function testInsideAddMatcherCommand_ShouldBeReturnFalse()
 	{
-		Manager::addMatcher('foo', function() use(&$result){
-			$result = Manager::isDeclaringState();
+		manager::addMatcher('foo', function() use(&$result){
+			$result = manager::isDeclaringState();
 		});
 
-		$it = Manager::it('', function(){
+		$it = manager::it('', function(){
 			the('')->foo();
 		});
 
@@ -55,11 +55,11 @@ class IsDeclaringStateTest extends \spectrum\constructionCommands\baseCommands\T
 
 	public function testInsideBeforeEachCommand_ShouldBeReturnFalse()
 	{
-		Manager::beforeEach(function() use(&$result){
-			$result = Manager::isDeclaringState();
+		manager::beforeEach(function() use(&$result){
+			$result = manager::isDeclaringState();
 		});
 
-		$it = Manager::it('', function(){});
+		$it = manager::it('', function(){});
 		$it->run();
 
 		$this->assertFalse($result);
@@ -67,11 +67,11 @@ class IsDeclaringStateTest extends \spectrum\constructionCommands\baseCommands\T
 
 	public function testInsideAfterEachCommand_ShouldBeReturnFalse()
 	{
-		Manager::afterEach(function() use(&$result){
-			$result = Manager::isDeclaringState();
+		manager::afterEach(function() use(&$result){
+			$result = manager::isDeclaringState();
 		});
 
-		$it = Manager::it('', function(){});
+		$it = manager::it('', function(){});
 		$it->run();
 
 		$this->assertFalse($result);
@@ -79,8 +79,8 @@ class IsDeclaringStateTest extends \spectrum\constructionCommands\baseCommands\T
 
 	public function testInsideItCommand_ShouldBeReturnFalse()
 	{
-		$it = Manager::it('', function() use(&$result){
-			$result = Manager::isDeclaringState();
+		$it = manager::it('', function() use(&$result){
+			$result = manager::isDeclaringState();
 		});
 		$it->run();
 
@@ -89,10 +89,10 @@ class IsDeclaringStateTest extends \spectrum\constructionCommands\baseCommands\T
 
 	public function testInsideItCommand_InsideDescribeCommand_ShouldBeReturnFalse()
 	{
-		$describe = Manager::describe('', function() use(&$result)
+		$describe = manager::describe('', function() use(&$result)
 		{
-			Manager::it('', function() use(&$result){
-				$result = Manager::isDeclaringState();
+			manager::it('', function() use(&$result){
+				$result = manager::isDeclaringState();
 			});
 		});
 		$describe->run();

@@ -1,0 +1,41 @@
+<?php
+/*
+ * (c) Mikhail Kharitonov <mail@mkharitonov.net>
+ *
+ * For the full copyright and license information, see the
+ * LICENSE.txt file that was distributed with this source code.
+ */
+
+namespace spectrum\core\specs\plugins\basePlugins\reports\drivers\html\widgets\code\variables;
+
+class ArrayVar extends VariableHierarchical
+{
+	protected $type = 'array';
+
+	public function getHtml($variable)
+	{
+		$output = '';
+		$output .= '<span class="g-code-variables-' . htmlspecialchars($this->type) . ' g-code-variables">';
+		$output .= $this->getHtmlForType($variable) . $this->getNewline();
+		$output .= $this->createWidget('code\Operator')->getHtml('{');
+
+		if (count($variable))
+		{
+			$output .= '<span class="elements">';
+			foreach ($variable as $key => $val)
+				$output .= $this->getHtmlForElement($key, $val);
+
+			$output .= '</span>';
+		}
+
+		$output .= $this->createWidget('code\Operator')->getHtml('}');
+		$output .= '</span>';
+
+		return $output;
+	}
+
+	protected function getHtmlForType($variable)
+	{
+		return '<span class="type">' . htmlspecialchars($this->type) . '<span title="' . $this->translate('Elements count') . '">(' . count($variable) . ')</span></span>';
+	}
+}

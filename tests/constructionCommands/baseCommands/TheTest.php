@@ -6,17 +6,17 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class TheTest extends \spectrum\constructionCommands\baseCommands\Test
+class TheTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeAllowToCallAtRunningState()
 	{
-		$it = Manager::it('', function() use(&$assert) {
-			$assert = Manager::the('');
+		$it = manager::it('', function() use(&$assert) {
+			$assert = manager::the('');
 		});
 
 		$it->run();
@@ -26,16 +26,16 @@ class TheTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testShouldBeThrowExceptionIfCalledAtDeclaringState()
 	{
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"the" should be call only at running state', function(){
-			Manager::describe('', function(){
-				Manager::the('');
+			manager::describe('', function(){
+				manager::the('');
 			});
 		});
 	}
 
 	public function testShouldBeReturnAssertInstance()
 	{
-		$it = Manager::it('', function() use(&$assert) {
-			$assert = Manager::the('');
+		$it = manager::it('', function() use(&$assert) {
+			$assert = manager::the('');
 		});
 
 		$it->run();
@@ -44,8 +44,8 @@ class TheTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldBeSetActualValueToAssertInstance()
 	{
-		$it = Manager::it('', function() use(&$assert) {
-			$assert = Manager::the('foo');
+		$it = manager::it('', function() use(&$assert) {
+			$assert = manager::the('foo');
 		});
 
 		$it->run();

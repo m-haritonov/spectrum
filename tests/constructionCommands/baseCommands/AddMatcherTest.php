@@ -6,12 +6,12 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
+class AddMatcherTest extends \spectrum\constructionCommands\commands\Test
 {
 	protected function setUp()
 	{
@@ -21,8 +21,8 @@ class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldBeAllowToCallAtDeclaringState()
 	{
-		$describe = Manager::describe('', function(){
-			Manager::addMatcher('foo', function(){});
+		$describe = manager::describe('', function(){
+			manager::addMatcher('foo', function(){});
 		});
 
 		$this->assertTrue($describe->matchers->isExists('foo'));
@@ -35,7 +35,7 @@ class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
-				Manager::addMatcher('foo', function(){});
+				manager::addMatcher('foo', function(){});
 			});
 			$it->run();
 		});
@@ -44,8 +44,8 @@ class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testShouldBeReturnAddedCallback()
 	{
 		$function = function(){};
-		$describe = Manager::describe('', function() use($function, &$return) {
-			$return = Manager::addMatcher('foo', $function);
+		$describe = manager::describe('', function() use($function, &$return) {
+			$return = manager::addMatcher('foo', $function);
 		});
 
 		$this->assertSame($function, $return);
@@ -53,7 +53,7 @@ class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldNotBeCallCallbackDuringCall()
 	{
-		Manager::addMatcher('foo', function() use(&$isCalled){
+		manager::addMatcher('foo', function() use(&$isCalled){
 			$isCalled = true;
 		});
 
@@ -63,16 +63,16 @@ class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testNoParentCommand_ShouldBeAddMatcherToRootDescribe()
 	{
 		$function = function(){};
-		Manager::addMatcher('foo', $function);
+		manager::addMatcher('foo', $function);
 
-		$this->assertSame($function, \spectrum\RootDescribe::getOnceInstance()->matchers->get('foo'));
+		$this->assertSame($function, \spectrum\RootSpec::getOnceInstance()->matchers->get('foo'));
 	}
 
 	public function testInsideDescribeCommand_ShouldBeAddMatcherToParentDescribe()
 	{
 		$function = function(){};
-		$describe = Manager::describe('', function() use($function) {
-			Manager::addMatcher('foo', $function);
+		$describe = manager::describe('', function() use($function) {
+			manager::addMatcher('foo', $function);
 		});
 
 		$this->assertSame($function, $describe->matchers->get('foo'));
@@ -81,8 +81,8 @@ class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testInsideContextCommand_ShouldBeAddMatcherToParentContext()
 	{
 		$function = function(){};
-		$context = Manager::context('', function() use($function) {
-			Manager::addMatcher('foo', $function);
+		$context = manager::context('', function() use($function) {
+			manager::addMatcher('foo', $function);
 		});
 
 		$this->assertSame($function, $context->matchers->get('foo'));
@@ -92,7 +92,7 @@ class AddMatcherTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function assertMatcherNotExistsInDescribe($name)
 	{
-		$describe = Manager::describe('', function(){});
+		$describe = manager::describe('', function(){});
 		$this->assertFalse($describe->matchers->isExists($name));
 	}
 }

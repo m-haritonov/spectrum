@@ -6,5 +6,13 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/autoload.php';
-require_once __DIR__ . '/../spectrum/autoload.php';
+namespace spectrum\matchers;
+
+/**
+ * Matcher for equal operator ($actual == $expected).
+ * @return bool
+ */
+function eq($actual, $expected)
+{
+	return ($actual == $expected);
+}

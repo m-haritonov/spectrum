@@ -6,18 +6,18 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class MessageTest extends \spectrum\constructionCommands\baseCommands\Test
+class MessageTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeAddMessageToMessagesPlugin()
 	{
-		$it = Manager::it('foo', function(){
-			Manager::message('bar baz');
-			Manager::message('foooo');
+		$it = manager::it('foo', function(){
+			manager::message('bar baz');
+			manager::message('foooo');
 		});
 
 		$this->assertSame(array(), $it->messages->getAll());

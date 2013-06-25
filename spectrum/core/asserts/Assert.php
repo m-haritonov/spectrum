@@ -7,7 +7,8 @@
  */
 
 namespace spectrum\core\asserts;
-use spectrum\core\Exception;
+use spectrum\core\specs\SpecInterface;
+use spectrum\core\specs\Spec;
 
 /**
  * @property Assert $not
@@ -20,118 +21,107 @@ use spectrum\core\Exception;
  * @method lt($expected)
  * @method lte($expected)
  * @method null()
- * @method throwException($expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
+ * @method throwsException($expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
  * @method true()
  */
 class Assert implements AssertInterface
 {
-	protected $actualValue;
-	protected $notEnabled = false;
+	protected $testedValue;
+	protected $notValue = false;
+	/**
+	 * @var SpecInterface|Spec
+	 */
+	protected $ownerSpec;
 
-	public function __construct($actualValue)
+	public function __construct(SpecInterface $ownerSpec, $testedValue)
 	{
-		$this->actualValue = $actualValue;
+		$this->ownerSpec = $ownerSpec;
+		$this->testedValue = $testedValue;
 	}
 
-	public function __call($name, array $expectedArgs = array())
+	/**
+	 * Handle matchers call
+	 */
+	public function __call($matcherName, array $matcherArguments = array())
 	{
-		$this->callMatcher($name, $expectedArgs);
-		return $this;
-	}
-
-	protected function callMatcher($matcherName, array $expectedArgs)
-	{
-		$specItem = $this->getRunningSpecItem();
-		$matcherCallDetails = $this->createMatcherCallDetails();
-		$matcherCallDetails->setMatcherName($matcherName);
-		$matcherCallDetails->setMatcherArgs($expectedArgs);
-
+		$this->dispatchPluginEvent('onMatcherCallBefore', array($this->testedValue, $matcherName, $matcherArguments, $this->ownerSpec));
+		
 		try
 		{
-			$result = $specItem->matchers->callMatcher($matcherName, array_merge(array($this->getActualValue()), $expectedArgs));
-			$matcherCallDetails->setMatcherReturnValue($result);
+//			$argumentsSourceCode = $this->parseArgumentsSourceCode($this->getCurrentVerifyCallSourceCode($verifyFunctionName), $verifyFunctionName);
+			
+			$callDetailsClass = \spectrum\core\config::getAssertCallDetailsClass();
+			$callDetails = new $callDetailsClass();
+			$callDetails->setTestedValue($this->getTestedValue());
+			$callDetails->setNot($this->getNot());
+			$callDetails->setMatcherName($matcherName);
+			$callDetails->setMatcherArguments($matcherArguments);
+			
+			$matcherFunction = $this->ownerSpec->matchers->getThroughRunningAncestors($matcherName);
+			
+			if ($matcherFunction === null)
+				throw new Exception('Matcher "' . $matcherName . '" not found');
+			
+			$result = call_user_func_array($matcherFunction, array_merge(array($this->getTestedValue()), $matcherArguments));
+			$callDetails->setMatcherReturnValue($result);
 		}
 		catch (\Exception $e)
 		{
-			if ($specItem->errorHandling->getCatchExceptionsCascade())
-			{
-				$result = false;
-				$matcherCallDetails->setException($e);
-			}
-			else
-				throw $e;
+			$result = false;
+			$callDetails = $e;
 		}
 		
 		if ($this->getNot())
 			$result = !$result;
 
-		$specItem->getRunResultsBuffer()->addResult($result, $matcherCallDetails);
+		if ($result)
+			$this->ownerSpec->getResultBuffer()->addSuccessResult($callDetails);
+		else
+			$this->ownerSpec->getResultBuffer()->addFailResult($callDetails);
+		
 		$this->resetNot();
-
-		if (!$result && $specItem->errorHandling->getBreakOnFirstMatcherFailCascade())
-			throw new \spectrum\core\ExceptionBreak();
+		$this->dispatchPluginEvent('onMatcherCallAfter', array((bool) $result, $callDetails, $this->ownerSpec));
+		return $this;
 	}
-
+	
 	/**
-	 * @return \spectrum\core\SpecItemIt
+	 * Handle "not" property
 	 */
-	protected function getRunningSpecItem()
-	{
-		$registryClass = \spectrum\core\Config::getRegistryClass();
-		return $registryClass::getRunningSpecItem();
-	}
-
-	/**
-	 * @return \spectrum\core\asserts\MatcherCallDetails
-	 */
-	protected function createMatcherCallDetails()
-	{
-		$class = \spectrum\core\Config::getMatcherCallDetailsClass();
-		$matcherCallDetails = new $class();
-		$matcherCallDetails->setActualValue($this->getActualValue());
-		$matcherCallDetails->setNot($this->getNot());
-		return $matcherCallDetails;
-	}
-
 	public function __get($name)
 	{
 		if ($name == 'not')
 			$this->invertNot();
 		else
-		{
-			$specItem = $this->getRunningSpecItem();
-
-			$e = new \spectrum\core\asserts\Exception('Undefined property "Assert->' . $name . '"');
-
-			if ($specItem->errorHandling->getCatchExceptionsCascade())
-				$specItem->getRunResultsBuffer()->addResult(false, $e);
-			else
-				throw $e;
-
-			if ($specItem->errorHandling->getBreakOnFirstMatcherFailCascade())
-				throw new \spectrum\core\ExceptionBreak();
-		}
+			throw new Exception('Undefined property "Assert->' . $name . '" in method "' . __METHOD__ . '"');
 
 		return $this;
 	}
-
-	public function getActualValue()
+	
+	protected function invertNot()
 	{
-		return $this->actualValue;
+		$this->notValue = !$this->notValue;
 	}
 
-	public function getNot()
+	protected function getTestedValue()
 	{
-		return $this->notEnabled;
+		return $this->testedValue;
 	}
 
-	public function invertNot()
+	protected function getNot()
 	{
-		$this->notEnabled = !$this->notEnabled;
+		return $this->notValue;
 	}
 
-	public function resetNot()
+	protected function resetNot()
 	{
-		$this->notEnabled = false;
+		$this->notValue = false;
+	}
+	
+	protected function dispatchPluginEvent($eventName, array $arguments = array())
+	{
+		$reflectionClass = new \ReflectionClass($this->ownerSpec);
+		$reflectionMethod = $reflectionClass->getMethod('dispatchPluginEvent');
+		$reflectionMethod->setAccessible(true);
+		$reflectionMethod->invokeArgs($this->ownerSpec, $arguments);
 	}
 }
