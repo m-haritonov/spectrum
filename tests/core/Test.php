@@ -6,46 +6,20 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\tests\core;
 require_once __DIR__ . '/../init.php';
 
-abstract class Test extends \spectrum\Test
+abstract class Test extends \spectrum\tests\Test
 {
-	protected $currentSpecClass;
-	protected $currentSpecMockClass;
 
 /*** Test ware ***/
 	
-	/**
-	 * @return SpecContainerContext|
-	 *         SpecContainerDescribe|
-	 *         SpecItemIt
-	 */
-	protected function createCurrentSpec()
-	{
-		$args = func_get_args();
-		$reflection = new \ReflectionClass($this->currentSpecClass);
-		return $reflection->newInstanceArgs($args);
-	}
-
-	/**
-	 * @return \spectrum\core\testEnv\SpecContainerContextMock|
-	 *         \spectrum\core\testEnv\SpecContainerDescribeMock|
-	 *         \spectrum\core\testEnv\SpecItemItMock
-	 */
-	protected function createCurrentSpecMock()
-	{
-		$args = func_get_args();
-		$reflection = new \ReflectionClass($this->currentSpecMockClass);
-		return $reflection->newInstanceArgs($args);
-	}
-
 	protected function assertEventTriggeredCount($expectedCount, $eventName)
 	{
 		$eventClassName = $this->getEventClassNameByEventName($eventName);
 
 		$count = 0;
-		foreach (\spectrum\Test::$tmp['triggeredEvents'][$eventClassName] as $event)
+		foreach (\spectrum\tests\Test::$tmp['triggeredEvents'][$eventClassName] as $event)
 		{
 			if ($event['name'] == $eventName)
 				$count++;

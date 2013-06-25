@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts\assert\callMatcher\matcherThrowException;
+namespace spectrum\tests\core\asserts\assert\callMatcher\matcherThrowException;
 use spectrum\core\asserts\Assert;
 
 require_once __DIR__ . '/../../../../../init.php';
@@ -42,11 +42,11 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$this->assertTrue($isExecuted);
 	}
 
-	public function testShouldBeAddFalseWithDetailsToRunResultsBufferForEachMatcher()
+	public function testShouldBeAddFalseWithDetailsToResultBufferForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->bad();
@@ -56,7 +56,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 			$assert->bad();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$this->assertEquals(3, count($results));
 
@@ -64,18 +64,18 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$this->assertFalse($results[1]['result']);
 		$this->assertFalse($results[2]['result']);
 
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\CallDetails);
 
 		$this->assertAllResultsDetailsDifferent($results);
 	}
 
 	public function testShouldBeProvidePropertiesToDetailsForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->bad();
@@ -85,7 +85,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 			$assert->badToo('bar');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());
@@ -161,26 +161,26 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$this->assertTrue($isExecuted);
 	}
 
-	public function testWithNot_ShouldNotBeIgnoreNotAndAddToRunResultsBufferTrue()
+	public function testWithNot_ShouldNotBeIgnoreNotAndAddToResultBufferTrue()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 			$assert = new Assert(true);
 			$assert->not->bad();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(true, $results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
 	}
 
-	public function testWithNot_ShouldBeAddTrueWithDetailsToRunResultsBufferForEachMatcher()
+	public function testWithNot_ShouldBeAddTrueWithDetailsToResultBufferForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->not->bad();
@@ -190,7 +190,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 			$assert->not->bad();
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$this->assertEquals(3, count($results));
 
@@ -198,18 +198,18 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$this->assertTrue($results[1]['result']);
 		$this->assertTrue($results[2]['result']);
 
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
-		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\MatcherCallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\CallDetails);
 
 		$this->assertAllResultsDetailsDifferent($results);
 	}
 
 	public function testWithNot_ShouldBeProvidePropertiesToDetailsForEachMatcher()
 	{
-		$this->runInTestCallback(function($test, $it) use(&$runResultsBuffer)
+		$this->runInTestCallback(function($test, $it) use(&$resultBuffer)
 		{
-			$runResultsBuffer = $it->getRunResultsBuffer();
+			$resultBuffer = $it->getResultBuffer();
 
 			$assert = new Assert(true);
 			$assert->not->bad();
@@ -219,7 +219,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 			$assert->not->badToo('bar');
 		});
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$details = $results[0]['details'];
 		$this->assertSame(true, $details->getActualValue());

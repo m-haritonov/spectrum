@@ -6,17 +6,17 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class GetCurrentItemTest extends \spectrum\constructionCommands\baseCommands\Test
+class GetCurrentItemTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeAllowToCallAtRunningState()
 	{
-		$it = Manager::it('', function() use(&$return) {
-			$return = Manager::getCurrentItem('');
+		$it = manager::it('', function() use(&$return) {
+			$return = manager::getCurrentItem('');
 		});
 
 		$it->run();
@@ -26,16 +26,16 @@ class GetCurrentItemTest extends \spectrum\constructionCommands\baseCommands\Tes
 	public function testShouldBeThrowExceptionIfCalledAtDeclaringState()
 	{
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', '"getCurrentItem"', function(){
-			Manager::describe('', function(){
-				Manager::getCurrentItem('');
+			manager::describe('', function(){
+				manager::getCurrentItem('');
 			});
 		});
 	}
 	
 	public function testShouldBeReturnRunningSpecItemInstance()
 	{
-		$it = Manager::it('', function() use(&$return) {
-			$return = Manager::getCurrentItem('');
+		$it = manager::it('', function() use(&$return) {
+			$return = manager::getCurrentItem('');
 		});
 
 		$it->run();

@@ -6,12 +6,12 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
+class BeforeEachTest extends \spectrum\constructionCommands\commands\Test
 {
 	protected function setUp()
 	{
@@ -21,8 +21,8 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldBeAllowToCallAtDeclaringState()
 	{
-		$describe = Manager::describe('', function(){
-			Manager::beforeEach(function(){});
+		$describe = manager::describe('', function(){
+			manager::beforeEach(function(){});
 		});
 
 		$this->assertTrue($describe->builders->isExists(0));
@@ -35,7 +35,7 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
-				Manager::beforeEach(function(){});
+				manager::beforeEach(function(){});
 			});
 			$it->run();
 		});
@@ -44,8 +44,8 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testShouldBeReturnAddedValue()
 	{
 		$function = function(){};
-		$describe = Manager::describe('', function() use($function, &$return) {
-			$return = Manager::beforeEach($function);
+		$describe = manager::describe('', function() use($function, &$return) {
+			$return = manager::beforeEach($function);
 		});
 
 		$this->assertSame($function, $return);
@@ -53,7 +53,7 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldNotBeCallCallbackDuringCall()
 	{
-		Manager::beforeEach(function() use(&$isCalled){
+		manager::beforeEach(function() use(&$isCalled){
 			$isCalled = true;
 		});
 
@@ -63,9 +63,9 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testNoParentCommand_ShouldBeAddBuilderToRootDescribe()
 	{
 		$function = function(){};
-		Manager::beforeEach($function);
+		manager::beforeEach($function);
 
-		$builder = \spectrum\RootDescribe::getOnceInstance()->builders->get(0);
+		$builder = \spectrum\RootSpec::getOnceInstance()->builders->get(0);
 		$this->assertSame($function, $builder['callback']);
 		$this->assertSame('each', $builder['type']);
 	}
@@ -73,8 +73,8 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testInsideDescribeCommand_ShouldBeAddBuilderToParentDescribe()
 	{
 		$function = function(){};
-		$describe = Manager::describe('', function() use($function) {
-			Manager::beforeEach($function);
+		$describe = manager::describe('', function() use($function) {
+			manager::beforeEach($function);
 		});
 
 		$builder = $describe->builders->get(0);
@@ -85,8 +85,8 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 	public function testInsideContextCommand_ShouldBeAddBuilderToParentContext()
 	{
 		$function = function(){};
-		$context = Manager::context('', function() use($function) {
-			Manager::beforeEach($function);
+		$context = manager::context('', function() use($function) {
+			manager::beforeEach($function);
 		});
 
 		$builder = $context->builders->get(0);
@@ -98,7 +98,7 @@ class BeforeEachTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function assertBuilderNotExistsInDescribe($name)
 	{
-		$describe = Manager::describe('', function(){});
+		$describe = manager::describe('', function(){});
 		$this->assertFalse($describe->builders->isExists($name));
 	}
 }

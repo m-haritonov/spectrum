@@ -1,22 +1,32 @@
+TODO: reports — по умолчанию не разворачивать список ошибок
+TODO: instanceofMatcher -> instanceof_
+TODO: config::__descruct — проверять отличаются ли текущие свойства от свойств в lock()::static
 
-success ("has empty" or "success, has empty")
-реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
+TODO: для получения исходного кода вызова утверждений добавить счётчик вызовов матчеров на строках 
+TODO: config::setCodeParserClass, config::setHighlightCodeFormatterClass
+TODO: HighlightCodeFormatter->CodeFormatter|CodeHighlight|CodeDecorator
+TODO: удалить verifications, verify из виджетов
+TODO: reports->getOutputType, getIndention, getNewline => get...ThroughRunningAncestors
 
-добавить title к элементам ползунка "Details"
-синхронизировать переключатели элемента ползунка
-BreakOnFirstMatcherFail rename to BreakOnFirstVerificationFail
-вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
+TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
+TODO: написать doc комментарии к методам
+TODO: проработать тексты сообщений в исключениях (возможно, примести к единому формату вида "function/method name: message") 
 
-getOnceInstance rename to getInstance?
 
-Assert($actualValue) rename to $value?
+TODO: success ("has empty" or "success, has empty")
+TODO: реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
+TODO: добавить всплывающие подсказки с разъяснениями к элементам ползунка "Details"
+TODO: синхронизировать переключатели элемента ползунка
+TODO: вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
+TODO: ResultBuffer: rename $result['result'] to $result['value/flag']
+TODO: translate throwsException messages
 
-RunResultsBuffer: rename $result['result'] to $result['value/flag']
-RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer or VerificationBuffer (буффер может использоваться не только для хранения результатов запуска)?
-Config::setClassFor();
-translate throwException messages
-Matchers - add reserved word "should", "shouldbe", "should_be"
+TO DOC: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
 
+terms:
+	Context switching
+	Argument switching
+	
 /**
  * @lang ru Делает что-нибудь
  */
@@ -45,19 +55,17 @@ it('Register "$componentId" with ', array(
 vs
 
 // этот вариант лучше, т.к. больше возможностей (контексты и т.п. и не вводит нового синтаксиса для групп)
-it('Return declared in current component params', function(){
-	describe('Repeat call', function(){
+test('Return declared in current component params', function(){
+	group('Repeat call', function(){
 		beforeEach(function(){ });
 	});
-}, function(){ /* test code */ });
+}, function(){
+	/* test code */
+});
 
-объединить Spec* классы в один Spec класс, сделав возможным добавлять дочерние узлы для классов вида it
-добавить в класс Spec методы set/getType/IdentityString/ConstructionCommand
-Context — сделать поведение по умолчанию аналогичное Describe, но добавить параметр runParentSpecs ??? 
-context - команду конструирования context заменить на group/describe, добавив параметр "selector": group('Some name', 'selector', function(){})
-describe()/it()/context() vs group()/test()/combine()
 
-на главной закрепить образец использования:
+
+TO DOC: на главной закрепить образец использования:
 test('ожидаемый результат', function(){
 	// код для проверки ожидаемого результата
 })
@@ -95,13 +103,72 @@ describe('Some specification', function(){
 
 
 ---
-describe('') use($foo, $bar)
-{
-	it('', array())
-	{
-		
-	}
-}
+
+
+
+
+
+describe('AddressBook', function(){
+	beforeEach(function(){
+		world()->addressBook = new AddressBook();
+	});
+
+	context('"MySql" driver', function(){
+		beforeEach(function(){ world()->addressBook->setDriver(new drivers\MySql()); });
+	});
+
+	context('"Oracle" driver', function(){
+		beforeEach(function(){ world()->addressBook->setDriver(new drivers\Oracle()); });
+	});
+
+	it('Should find person by first name', function(){
+		verify(world()->addressBook->findPerson('Bob')->firstName, '==', 'Bob');
+	});
+
+	it('Should find person by phone number', array(
+		'+7 (495) 123-456-7',
+		'(495) 123-456-7',
+		'123-456-7',
+	), function($phoneNumber){
+		verify(world()->addressBook->findPerson($phoneNumber)->phoneNumber, '==', '+74951234567');
+	});
+});
+
+
+
+
+
+group('AddressBook', function(){
+	beforeEach(function(){
+		world()->addressBook = new AddressBook();
+	});
+
+	group('"MySql" driver', function(){
+		beforeEach(function(){ world()->addressBook->setDriver(new drivers\MySql()); });
+	});
+
+	group('"Oracle" driver', function(){
+		beforeEach(function(){ world()->addressBook->setDriver(new drivers\Oracle()); });
+	});
+}, function(){
+	test('Should find person by first name', function(){
+		verify(world()->addressBook->findPerson('Bob')->firstName, '==', 'Bob');
+	});
+
+	test('Should find person by phone number', array(
+		'+7 (495) 123-456-7',
+		'(495) 123-456-7',
+		'123-456-7',
+	), function($phoneNumber){
+		verify(world()->addressBook->findPerson($phoneNumber)->phoneNumber, '==', '+74951234567');
+	});
+});
+
+
+
+
+
+
 
 Matchers plugin:
 ---Плагин report
@@ -206,7 +273,7 @@ FileSystemMockVirtual
 		$it->dispatchEvent('onMatcherCallBefore', $onMatcherCallEvent);
 		$it->dispatchEvent('onMatcherCallAfter', $onMatcherCallEvent); — вызывать в конце и в случае выброса исключения
 		сделать метод Spec->dispatchEvent() публичным
-		добавить проверку на Config::allowAlienEventDispatching() в Spec->dispatchEvent()
+		добавить проверку на config::allowAlienEventDispatching() в Spec->dispatchEvent()
 		OnMatcherCallEvent
 			Assert $owner
 			$matcherName
@@ -219,7 +286,7 @@ FileSystemMockVirtual
 			$isBreak
 
 --- world
-	Вопрос: Что лучше: constructionCommands\Manager::world() или параметр $world в тестовой функции
+	Вопрос: Что лучше: constructionCommands\manager::world() или параметр $world в тестовой функции
 	Ответ:
 		Лучше $world, т.к.:
 		- обеспечивает защиту мира (ф-я world() может быть вызвана из глубин тестируемого кода)

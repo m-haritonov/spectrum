@@ -6,16 +6,16 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class DescribeTest extends \spectrum\constructionCommands\baseCommands\Test
+class DescribeTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeAllowToCallAtDeclaringState()
 	{
-		$describe = Manager::describe('', function(){});
+		$describe = manager::describe('', function(){});
 		$this->assertTrue($describe instanceof \spectrum\core\SpecContainerDescribeInterface);
 	}
 
@@ -26,7 +26,7 @@ class DescribeTest extends \spectrum\constructionCommands\baseCommands\Test
 			$it = new \spectrum\core\SpecItemIt();
 			$it->errorHandling->setCatchExceptions(false);
 			$it->setTestCallback(function(){
-				Manager::describe('', function(){});
+				manager::describe('', function(){});
 			});
 			$it->run();
 		});
@@ -34,7 +34,7 @@ class DescribeTest extends \spectrum\constructionCommands\baseCommands\Test
 
 	public function testShouldBeReturnNewSpecContainerDescribeInstance()
 	{
-		$describe = Manager::describe('', function(){});
+		$describe = manager::describe('', function(){});
 		$this->assertTrue($describe instanceof \spectrum\core\SpecContainerDescribeInterface);
 	}
 }

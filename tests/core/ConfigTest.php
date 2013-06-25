@@ -6,852 +6,487 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\tests\core;
+use spectrum\config;
+
 require_once __DIR__ . '/../init.php';
 
 class ConfigTest extends Test
 {
 	public function testGetAssertClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\spectrum\core\asserts\Assert', Config::getAssertClass());
+		$this->assertEquals('\spectrum\core\asserts\Assert', config::getAssertClass());
 	}
 
 /**/
 
 	public function testSetAssertClass_ShouldBeSetNewClass()
 	{
-		Config::setAssertClass('\spectrum\core\testEnv\emptyStubs\asserts\Assert');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\asserts\Assert', Config::getAssertClass());
+		config::setAssertClass('\spectrum\tests\testHelpers\emptyStubs\core\asserts\Assert');
+		$this->assertEquals('\spectrum\tests\testHelpers\emptyStubs\core\asserts\Assert', config::getAssertClass());
 	}
 
 	public function testSetAssertClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getAssertClass();
+		$oldClass = config::getAssertClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setAssertClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		$this->assertThrowsException('\spectrum\core\Exception', 'not exists', function(){
+			config::setAssertClass('\spectrum\tests\testHelpers\emptyStubs\core\NotExistsClassFooBarBaz');
 		});
 
-		$this->assertEquals($oldClass, Config::getAssertClass());
+		$this->assertEquals($oldClass, config::getAssertClass());
 	}
 
 	public function testSetAssertClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getAssertClass();
+		$oldClass = config::getAssertClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setAssertClass('\stdClass');
+		$this->assertThrowsException('\spectrum\core\Exception', 'should be implement interface', function(){
+			config::setAssertClass('\stdClass');
 		});
 
-		$this->assertEquals($oldClass, Config::getAssertClass());
+		$this->assertEquals($oldClass, config::getAssertClass());
 	}
 
 	public function testSetAssertClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getAssertClass();
-		Config::lock();
+		$oldClass = config::getAssertClass();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setAssertClass('\spectrum\core\testEnv\emptyStubs\asserts\Assert');
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAssertClass('\spectrum\tests\testHelpers\emptyStubs\core\asserts\Assert');
 		});
 
-		$this->assertEquals($oldClass, Config::getAssertClass());
+		$this->assertEquals($oldClass, config::getAssertClass());
 	}
 
 /**/
 
-	public function testGetMatcherCallDetailsClass_ShouldBeReturnSpectrumClassByDefault()
+	public function testGetAssertCallDetailsClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\spectrum\core\asserts\MatcherCallDetails', Config::getMatcherCallDetailsClass());
+		$this->assertEquals('\spectrum\core\asserts\CallDetails', config::getAssertCallDetailsClass());
 	}
 
 /**/
 
-	public function testSetMatcherCallDetailsClass_ShouldBeSetNewClass()
+	public function testSetAssertCallDetailsClass_ShouldBeSetNewClass()
 	{
-		Config::setMatcherCallDetailsClass('\spectrum\core\testEnv\emptyStubs\asserts\MatcherCallDetails');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\asserts\MatcherCallDetails', Config::getMatcherCallDetailsClass());
+		config::setAssertCallDetailsClass('\spectrum\tests\testHelpers\emptyStubs\core\asserts\CallDetails');
+		$this->assertEquals('\spectrum\tests\testHelpers\emptyStubs\core\asserts\CallDetails', config::getAssertCallDetailsClass());
 	}
 
-	public function testSetMatcherCallDetailsClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetAssertCallDetailsClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getMatcherCallDetailsClass();
+		$oldClass = config::getAssertCallDetailsClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setMatcherCallDetailsClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		$this->assertThrowsException('\spectrum\core\Exception', 'not exists', function(){
+			config::setAssertCallDetailsClass('\spectrum\tests\testHelpers\emptyStubs\core\NotExistsClassFooBarBaz');
 		});
 
-		$this->assertEquals($oldClass, Config::getMatcherCallDetailsClass());
+		$this->assertEquals($oldClass, config::getAssertCallDetailsClass());
 	}
 
-	public function testSetMatcherCallDetailsClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetAssertCallDetailsClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getMatcherCallDetailsClass();
+		$oldClass = config::getAssertCallDetailsClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setMatcherCallDetailsClass('\stdClass');
+		$this->assertThrowsException('\spectrum\core\Exception', 'should be implement interface', function(){
+			config::setAssertCallDetailsClass('\stdClass');
 		});
 
-		$this->assertEquals($oldClass, Config::getMatcherCallDetailsClass());
+		$this->assertEquals($oldClass, config::getAssertCallDetailsClass());
 	}
 
-	public function testSetMatcherCallDetailsClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetAssertCallDetailsClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getMatcherCallDetailsClass();
-		Config::lock();
+		$oldClass = config::getAssertCallDetailsClass();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setMatcherCallDetailsClass('\spectrum\core\testEnv\emptyStubs\asserts\MatcherCallDetails');
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAssertCallDetailsClass('\spectrum\tests\testHelpers\emptyStubs\core\asserts\CallDetails');
 		});
 
-		$this->assertEquals($oldClass, Config::getMatcherCallDetailsClass());
+		$this->assertEquals($oldClass, config::getAssertCallDetailsClass());
 	}
 
 /**/
 
-	public function testGetVerificationClass_ShouldBeReturnSpectrumClassByDefault()
+	public function testGetResultBufferClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\spectrum\core\verifications\Verification', Config::getVerificationClass());
+		$this->assertEquals('\spectrum\core\ResultBuffer', config::getResultBufferClass());
 	}
 
 /**/
 
-	public function testSetVerificationClass_ShouldBeSetNewClass()
+	public function testSetResultBufferClass_ShouldBeSetNewClass()
 	{
-		Config::setVerificationClass('\spectrum\core\testEnv\emptyStubs\verifications\Verification');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\verifications\Verification', Config::getVerificationClass());
+		config::setResultBufferClass('\spectrum\tests\testHelpers\emptyStubs\core\ResultBuffer');
+		$this->assertEquals('\spectrum\tests\testHelpers\emptyStubs\core\ResultBuffer', config::getResultBufferClass());
 	}
 
-	public function testSetVerificationClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetResultBufferClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getVerificationClass();
+		$oldClass = config::getResultBufferClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setVerificationClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		$this->assertThrowsException('\spectrum\core\Exception', 'not exists', function(){
+			config::setResultBufferClass('\spectrum\tests\testHelpers\emptyStubs\core\NotExistsClassFooBarBaz');
 		});
 
-		$this->assertEquals($oldClass, Config::getVerificationClass());
+		$this->assertEquals($oldClass, config::getResultBufferClass());
 	}
 
-	public function testSetVerificationClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetResultBufferClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getVerificationClass();
+		$oldClass = config::getResultBufferClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setVerificationClass('\stdClass');
+		$this->assertThrowsException('\spectrum\core\Exception', 'should be implement interface', function(){
+			config::setResultBufferClass('\stdClass');
 		});
 
-		$this->assertEquals($oldClass, Config::getVerificationClass());
+		$this->assertEquals($oldClass, config::getResultBufferClass());
 	}
 
-	public function testSetVerificationClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetResultBufferClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getVerificationClass();
-		Config::lock();
+		$oldClass = config::getResultBufferClass();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setVerificationClass('\spectrum\core\testEnv\emptyStubs\verifications\Verification');
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setResultBufferClass('\spectrum\tests\testHelpers\emptyStubs\core\ResultBuffer');
 		});
 
-		$this->assertEquals($oldClass, Config::getVerificationClass());
+		$this->assertEquals($oldClass, config::getResultBufferClass());
 	}
 
 /**/
 
-	public function testGetVerificationCallDetailsClass_ShouldBeReturnSpectrumClassByDefault()
+	public function testGetSpecClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\spectrum\core\verifications\CallDetails', Config::getVerificationCallDetailsClass());
+		$this->assertEquals('\spectrum\core\Spec', config::getSpecClass());
 	}
 
 /**/
 
-	public function testSetVerificationCallDetailsClass_ShouldBeSetNewClass()
+	public function testSetSpecClass_ShouldBeSetNewClass()
 	{
-		Config::setVerificationCallDetailsClass('\spectrum\core\testEnv\emptyStubs\verifications\CallDetails');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\verifications\CallDetails', Config::getVerificationCallDetailsClass());
+		config::setSpecClass('\spectrum\tests\testHelpers\emptyStubs\core\Spec');
+		$this->assertEquals('\spectrum\tests\testHelpers\emptyStubs\core\Spec', config::getSpecClass());
 	}
 
-	public function testSetVerificationCallDetailsClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetSpecClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getVerificationCallDetailsClass();
+		$oldClass = config::getSpecClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setVerificationCallDetailsClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		$this->assertThrowsException('\spectrum\core\Exception', 'not exists', function(){
+			config::setSpecClass('\spectrum\tests\testHelpers\emptyStubs\core\NotExistsClassFooBarBaz');
 		});
 
-		$this->assertEquals($oldClass, Config::getVerificationCallDetailsClass());
+		$this->assertEquals($oldClass, config::getSpecClass());
 	}
 
-	public function testSetVerificationCallDetailsClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetSpecClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getVerificationCallDetailsClass();
+		$oldClass = config::getSpecClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setVerificationCallDetailsClass('\stdClass');
+		$this->assertThrowsException('\spectrum\core\Exception', 'should be implement interface', function(){
+			config::setSpecClass('\stdClass');
 		});
 
-		$this->assertEquals($oldClass, Config::getVerificationCallDetailsClass());
+		$this->assertEquals($oldClass, config::getSpecClass());
 	}
 
-	public function testSetVerificationCallDetailsClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetSpecClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getVerificationCallDetailsClass();
-		Config::lock();
+		$oldClass = config::getSpecClass();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setVerificationCallDetailsClass('\spectrum\core\testEnv\emptyStubs\verifications\CallDetails');
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setSpecClass('\spectrum\tests\testHelpers\emptyStubs\core\Spec');
 		});
 
-		$this->assertEquals($oldClass, Config::getVerificationCallDetailsClass());
+		$this->assertEquals($oldClass, config::getSpecClass());
 	}
 
 /**/
 
-	public function testGetPluginsManagerClass_ShouldBeReturnSpectrumClassByDefault()
+	public function testGetContextDataClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\spectrum\core\plugins\Manager', Config::getPluginsManagerClass());
+		$this->assertEquals('\spectrum\core\Context', config::getContextDataClass());
 	}
 
 /**/
 
-	public function testSetPluginsManagerClass_ShouldBeSetNewClass()
+	public function testSetContextDataClass_ShouldBeSetNewClass()
 	{
-		Config::setPluginsManagerClass('\spectrum\core\testEnv\emptyStubs\plugins\Manager');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\plugins\Manager', Config::getPluginsManagerClass());
+		config::setContextDataClass('\spectrum\tests\testHelpers\emptyStubs\core\Context');
+		$this->assertEquals('\spectrum\tests\testHelpers\emptyStubs\core\Context', config::getContextDataClass());
 	}
 
-	public function testSetPluginsManagerClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetContextDataClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getPluginsManagerClass();
+		$oldClass = config::getContextDataClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setPluginsManagerClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+		$this->assertThrowsException('\spectrum\core\Exception', 'not exists', function(){
+			config::setContextDataClass('\spectrum\tests\testHelpers\emptyStubs\core\NotExistsClassFooBarBaz');
 		});
 
-		$this->assertEquals($oldClass, Config::getPluginsManagerClass());
+		$this->assertEquals($oldClass, config::getContextDataClass());
 	}
 
-	public function testSetPluginsManagerClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetContextDataClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getPluginsManagerClass();
+		$oldClass = config::getContextDataClass();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setPluginsManagerClass('\stdClass');
+		$this->assertThrowsException('\spectrum\core\Exception', 'should be implement interface', function(){
+			config::setContextDataClass('\stdClass');
 		});
 
-		$this->assertEquals($oldClass, Config::getPluginsManagerClass());
+		$this->assertEquals($oldClass, config::getContextDataClass());
 	}
 
-	public function testSetPluginsManagerClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetContextDataClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getPluginsManagerClass();
-		Config::lock();
+		$oldClass = config::getContextDataClass();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setPluginsManagerClass('\spectrum\core\testEnv\emptyStubs\plugins\Manager');
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setContextDataClass('\spectrum\tests\testHelpers\emptyStubs\core\Context');
 		});
 
-		$this->assertEquals($oldClass, Config::getPluginsManagerClass());
-	}
-/**/
-
-	public function testGetRegistryClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\Registry', Config::getRegistryClass());
-	}
-
-/**/
-
-	public function testSetRegistryClass_ShouldBeSetNewClass()
-	{
-		Config::setRegistryClass('\spectrum\core\testEnv\emptyStubs\Registry');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\Registry', Config::getRegistryClass());
-	}
-
-	public function testSetRegistryClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getRegistryClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setRegistryClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getRegistryClass());
-	}
-
-	public function testSetRegistryClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getRegistryClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setRegistryClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getRegistryClass());
-	}
-
-	public function testSetRegistryClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getRegistryClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setRegistryClass('\spectrum\core\testEnv\emptyStubs\Registry');
-		});
-
-		$this->assertEquals($oldClass, Config::getRegistryClass());
-	}
-	
-/**/
-
-	public function testGetRunResultsBufferClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\RunResultsBuffer', Config::getRunResultsBufferClass());
-	}
-
-/**/
-
-	public function testSetRunResultsBufferClass_ShouldBeSetNewClass()
-	{
-		Config::setRunResultsBufferClass('\spectrum\core\testEnv\emptyStubs\RunResultsBuffer');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\RunResultsBuffer', Config::getRunResultsBufferClass());
-	}
-
-	public function testSetRunResultsBufferClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getRunResultsBufferClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setRunResultsBufferClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getRunResultsBufferClass());
-	}
-
-	public function testSetRunResultsBufferClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getRunResultsBufferClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setRunResultsBufferClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getRunResultsBufferClass());
-	}
-
-	public function testSetRunResultsBufferClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getRunResultsBufferClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setRunResultsBufferClass('\spectrum\core\testEnv\emptyStubs\RunResultsBuffer');
-		});
-
-		$this->assertEquals($oldClass, Config::getRunResultsBufferClass());
-	}
-
-/**/
-
-	public function testGetSpecContainerContextClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\SpecContainerContext', Config::getSpecContainerContextClass());
-	}
-
-/**/
-
-	public function testSetSpecContainerContextClass_ShouldBeSetNewClass()
-	{
-		Config::setSpecContainerContextClass('\spectrum\core\testEnv\emptyStubs\SpecContainerContext');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\SpecContainerContext', Config::getSpecContainerContextClass());
-	}
-
-	public function testSetSpecContainerContextClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerContextClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setSpecContainerContextClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerContextClass());
-	}
-
-	public function testSetSpecContainerContextClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerContextClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setSpecContainerContextClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerContextClass());
-	}
-
-	public function testSetSpecContainerContextClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerContextClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setSpecContainerContextClass('\spectrum\core\testEnv\emptyStubs\SpecContainerContext');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerContextClass());
-	}
-
-/**/
-
-	public function testGetSpecContainerArgumentsProviderClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\SpecContainerArgumentsProvider', Config::getSpecContainerArgumentsProviderClass());
-	}
-
-/**/
-
-	public function testSetSpecContainerArgumentsProviderClass_ShouldBeSetNewClass()
-	{
-		Config::setSpecContainerArgumentsProviderClass('\spectrum\core\testEnv\emptyStubs\SpecContainerArgumentsProvider');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\SpecContainerArgumentsProvider', Config::getSpecContainerArgumentsProviderClass());
-	}
-
-	public function testSetSpecContainerArgumentsProviderClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerArgumentsProviderClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setSpecContainerArgumentsProviderClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerArgumentsProviderClass());
-	}
-
-	public function testSetSpecContainerArgumentsProviderClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerArgumentsProviderClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setSpecContainerArgumentsProviderClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerArgumentsProviderClass());
-	}
-
-	public function testSetSpecContainerArgumentsProviderClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerArgumentsProviderClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setSpecContainerArgumentsProviderClass('\spectrum\core\testEnv\emptyStubs\SpecContainerArgumentsProvider');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerArgumentsProviderClass());
-	}
-
-/**/
-
-	public function testGetSpecContainerDescribeClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\SpecContainerDescribe', Config::getSpecContainerDescribeClass());
-	}
-
-/**/
-
-	public function testSetSpecContainerDescribeClass_ShouldBeSetNewClass()
-	{
-		Config::setSpecContainerDescribeClass('\spectrum\core\testEnv\emptyStubs\SpecContainerDescribe');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\SpecContainerDescribe', Config::getSpecContainerDescribeClass());
-	}
-
-	public function testSetSpecContainerDescribeClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerDescribeClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setSpecContainerDescribeClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerDescribeClass());
-	}
-
-	public function testSetSpecContainerDescribeClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerDescribeClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setSpecContainerDescribeClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerDescribeClass());
-	}
-
-	public function testSetSpecContainerDescribeClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerDescribeClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setSpecContainerDescribeClass('\spectrum\core\testEnv\emptyStubs\SpecContainerDescribe');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerDescribeClass());
-	}
-	
-	
-/**/
-
-	public function testGetSpecContainerPatternClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\SpecContainerPattern', Config::getSpecContainerPatternClass());
-	}
-
-/**/
-
-	public function testSetSpecContainerPatternClass_ShouldBeSetNewClass()
-	{
-		Config::setSpecContainerPatternClass('\spectrum\core\testEnv\emptyStubs\SpecContainerPattern');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\SpecContainerPattern', Config::getSpecContainerPatternClass());
-	}
-
-	public function testSetSpecContainerPatternClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerPatternClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setSpecContainerPatternClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerPatternClass());
-	}
-
-	public function testSetSpecContainerPatternClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerPatternClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setSpecContainerPatternClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerPatternClass());
-	}
-
-	public function testSetSpecContainerPatternClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecContainerPatternClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setSpecContainerPatternClass('\spectrum\core\testEnv\emptyStubs\SpecContainerPattern');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecContainerPatternClass());
-	}
-
-/**/
-
-	public function testGetSpecItemItClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\SpecItemIt', Config::getSpecItemItClass());
-	}
-
-/**/
-
-	public function testSetSpecItemItClass_ShouldBeSetNewClass()
-	{
-		Config::setSpecItemItClass('\spectrum\core\testEnv\emptyStubs\SpecItemIt');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\SpecItemIt', Config::getSpecItemItClass());
-	}
-
-	public function testSetSpecItemItClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecItemItClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setSpecItemItClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecItemItClass());
-	}
-
-	public function testSetSpecItemItClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecItemItClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setSpecItemItClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecItemItClass());
-	}
-
-	public function testSetSpecItemItClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecItemItClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'Config is locked', function(){
-			Config::setSpecItemItClass('\spectrum\core\testEnv\emptyStubs\SpecItemIt');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecItemItClass());
-	}
-
-/**/
-
-	public function testGetWorldClass_ShouldBeReturnSpectrumClassByDefault()
-	{
-		$this->assertEquals('\spectrum\core\World', Config::getWorldClass());
-	}
-
-/**/
-
-	public function testSetWorldClass_ShouldBeSetNewClass()
-	{
-		Config::setWorldClass('\spectrum\core\testEnv\emptyStubs\World');
-		$this->assertEquals('\spectrum\core\testEnv\emptyStubs\World', Config::getWorldClass());
-	}
-
-	public function testSetWorldClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getWorldClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'not exists', function(){
-			Config::setWorldClass('\spectrum\core\testEnv\emptyStubs\NotExistsClassFooBarBaz');
-		});
-
-		$this->assertEquals($oldClass, Config::getWorldClass());
-	}
-
-	public function testSetWorldClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getSpecItemItClass();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'should be implement interface', function(){
-			Config::setSpecItemItClass('\stdClass');
-		});
-
-		$this->assertEquals($oldClass, Config::getSpecItemItClass());
-	}
-
-	public function testSetWorldClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
-	{
-		$oldClass = Config::getWorldClass();
-		Config::lock();
-
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setWorldClass('\spectrum\core\testEnv\emptyStubs\World');
-		});
-
-		$this->assertEquals($oldClass, Config::getWorldClass());
+		$this->assertEquals($oldClass, config::getContextDataClass());
 	}
 
 /**/
 
 	public function testGetAllowPluginsRegistration_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowPluginsRegistration());
+		$this->assertTrue(config::getAllowSpecPluginsRegistration());
 	}
 
 /**/
 
 	public function testSetAllowPluginsRegistration_ShouldBeSetNewValue()
 	{
-		Config::setAllowPluginsRegistration(false);
-		$this->assertFalse(Config::getAllowPluginsRegistration());
+		config::setAllowSpecPluginsRegistration(false);
+		$this->assertFalse(config::getAllowSpecPluginsRegistration());
 	}
 
 	public function testSetAllowPluginsRegistration_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowPluginsRegistration(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowSpecPluginsRegistration(false);
 		});
 
-		$this->assertTrue(Config::getAllowPluginsRegistration());
+		$this->assertTrue(config::getAllowSpecPluginsRegistration());
 	}
 
 /**/
 
 	public function testGetAllowPluginsOverride_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowPluginsOverride());
+		$this->assertTrue(config::getAllowSpecPluginsOverride());
 	}
 
 /**/
 
 	public function testSetAllowPluginsOverride_ShouldBeSetNewValue()
 	{
-		Config::setAllowPluginsOverride(false);
-		$this->assertFalse(Config::getAllowPluginsOverride());
+		config::setAllowSpecPluginsOverride(false);
+		$this->assertFalse(config::getAllowSpecPluginsOverride());
 	}
 
 	public function testSetAllowPluginsOverride_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowPluginsOverride(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowSpecPluginsOverride(false);
 		});
 
-		$this->assertTrue(Config::getAllowPluginsOverride());
+		$this->assertTrue(config::getAllowSpecPluginsOverride());
 	}
 
 /**/
 
 	public function testGetAllowMatchersAdd_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowMatchersAdd());
+		$this->assertTrue(config::getAllowMatchersAdd());
 	}
 
 /**/
 
 	public function testSetAllowMatchersAdd_ShouldBeSetNewValue()
 	{
-		Config::setAllowMatchersAdd(false);
-		$this->assertFalse(Config::getAllowMatchersAdd());
+		config::setAllowMatchersAdd(false);
+		$this->assertFalse(config::getAllowMatchersAdd());
 	}
 
 	public function testSetAllowMatchersAdd_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowMatchersAdd(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowMatchersAdd(false);
 		});
 
-		$this->assertTrue(Config::getAllowMatchersAdd());
+		$this->assertTrue(config::getAllowMatchersAdd());
 	}
 
 /**/
 
-	public function testGetAllowMatchersOverride_ShouldBeReturnTrueByDefault()
+	public function testGetAllowBaseMatchersOverride_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowMatchersOverride());
+		$this->assertTrue(config::getAllowBaseMatchersOverride());
 	}
 
 /**/
 
-	public function testSetAllowMatchersOverride_ShouldBeSetNewValue()
+	public function testSetAllowBaseMatchersOverride_ShouldBeSetNewValue()
 	{
-		Config::setAllowMatchersOverride(false);
-		$this->assertFalse(Config::getAllowMatchersOverride());
+		config::setAllowBaseMatchersOverride(false);
+		$this->assertFalse(config::getAllowBaseMatchersOverride());
 	}
 
-	public function testSetAllowMatchersOverride_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	public function testSetAllowBaseMatchersOverride_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowMatchersOverride(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowBaseMatchersOverride(false);
 		});
 
-		$this->assertTrue(Config::getAllowMatchersOverride());
+		$this->assertTrue(config::getAllowBaseMatchersOverride());
 	}
 
 /**/
 
 	public function testGetAllowErrorHandlingModify_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowErrorHandlingModify());
+		$this->assertTrue(config::getAllowErrorHandlingModify());
 	}
 
 /**/
 
 	public function testSetAllowErrorHandlingModify_ShouldBeSetNewValue()
 	{
-		Config::setAllowErrorHandlingModify(false);
-		$this->assertFalse(Config::getAllowErrorHandlingModify());
+		config::setAllowErrorHandlingModify(false);
+		$this->assertFalse(config::getAllowErrorHandlingModify());
 	}
 
 	public function testSetAllowErrorHandlingModify_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowErrorHandlingModify(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowErrorHandlingModify(false);
 		});
 
-		$this->assertTrue(Config::getAllowErrorHandlingModify());
+		$this->assertTrue(config::getAllowErrorHandlingModify());
 	}
 
 /**/
 
 	public function testGetAllowInputEncodingModify_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowInputEncodingModify());
+		$this->assertTrue(config::getAllowInputEncodingModify());
 	}
 
 /**/
 
 	public function testSetAllowInputEncodingModify_ShouldBeSetNewValue()
 	{
-		Config::setAllowInputEncodingModify(false);
-		$this->assertFalse(Config::getAllowInputEncodingModify());
+		config::setAllowInputEncodingModify(false);
+		$this->assertFalse(config::getAllowInputEncodingModify());
 	}
 
 	public function testSetAllowInputEncodingModify_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowInputEncodingModify(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowInputEncodingModify(false);
 		});
 
-		$this->assertTrue(Config::getAllowInputEncodingModify());
+		$this->assertTrue(config::getAllowInputEncodingModify());
 	}
 
 /**/
 
 	public function testGetAllowOutputEncodingModify_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowOutputEncodingModify());
+		$this->assertTrue(config::getAllowOutputEncodingModify());
 	}
 
 /**/
 
 	public function testSetAllowOutputEncodingModify_ShouldBeSetNewValue()
 	{
-		Config::setAllowOutputEncodingModify(false);
-		$this->assertFalse(Config::getAllowOutputEncodingModify());
+		config::setAllowOutputEncodingModify(false);
+		$this->assertFalse(config::getAllowOutputEncodingModify());
 	}
 
 	public function testSetAllowOutputEncodingModify_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowOutputEncodingModify(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowOutputEncodingModify(false);
 		});
 
-		$this->assertTrue(Config::getAllowOutputEncodingModify());
+		$this->assertTrue(config::getAllowOutputEncodingModify());
 	}
 	
+/**/
+	
+	public function testGetAllowReportsSettingsModify_ShouldBeReturnTrueByDefault()
+	{
+		$this->assertTrue(config::getAllowReportsSettingsModify());
+	}
+
+/**/
+
+	public function testSetAllowReportsSettingsModify_ShouldBeSetNewValue()
+	{
+		config::setAllowReportsSettingsModify(false);
+		$this->assertFalse(config::getAllowReportsSettingsModify());
+	}
+
+	public function testSetAllowReportsSettingsModify_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
+	{
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowReportsSettingsModify(false);
+		});
+
+		$this->assertTrue(config::getAllowReportsSettingsModify());
+	}	
 
 /**/
 
 	public function testGetAllowSpecsModifyWhenRunning_ShouldBeReturnFalseByDefault()
 	{
-		$this->assertFalse(Config::getAllowSpecsModifyWhenRunning());
+		$this->assertFalse(config::getAllowSpecsModifyWhenRunning());
 	}
 
 /**/
 
 	public function testSetAllowSpecsModifyWhenRunning_ShouldBeSetNewValue()
 	{
-		Config::setAllowSpecsModifyWhenRunning(true);
-		$this->assertTrue(Config::getAllowSpecsModifyWhenRunning());
+		config::setAllowSpecsModifyWhenRunning(true);
+		$this->assertTrue(config::getAllowSpecsModifyWhenRunning());
 	}
 
 	public function testSetAllowSpecsModifyWhenRunning_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
-		$this->assertThrowException('\spectrum\core\Exception', 'core\Config is locked', function(){
-			Config::setAllowSpecsModifyWhenRunning(true);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Config is locked', function(){
+			config::setAllowSpecsModifyWhenRunning(true);
 		});
 
-		$this->assertFalse(Config::getAllowSpecsModifyWhenRunning());
+		$this->assertFalse(config::getAllowSpecsModifyWhenRunning());
 	}
 }

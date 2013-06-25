@@ -6,24 +6,24 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class FailTest extends \spectrum\constructionCommands\baseCommands\Test
+class FailTest extends \spectrum\constructionCommands\commands\Test
 {
-	public function testShouldBeFailResultToRunResultsBuffer()
+	public function testShouldBeFailResultToResultBuffer()
 	{
-		$it = Manager::it('foo', function() use(&$runResultsBuffer){
-			Manager::fail('bar baz');
-			Manager::fail('foooo', 110);
-			$runResultsBuffer = Manager::getCurrentItem()->getRunResultsBuffer();
+		$it = manager::it('foo', function() use(&$resultBuffer){
+			manager::fail('bar baz');
+			manager::fail('foooo', 110);
+			$resultBuffer = manager::getCurrentItem()->getResultBuffer();
 		});
 
 		$it->run();
 
-		$results = $runResultsBuffer->getResults();
+		$results = $resultBuffer->getResults();
 
 		$this->assertFalse($results[0]['result']);
 		$this->assertTrue($results[0]['details'] instanceof \spectrum\constructionCommands\ExceptionFail);

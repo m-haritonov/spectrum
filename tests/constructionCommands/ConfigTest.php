@@ -6,107 +6,107 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands;
+namespace spectrum\tests\constructionCommands;
 require_once __DIR__ . '/../init.php';
 
-class ConfigTest extends \spectrum\Test
+class ConfigTest extends \spectrum\tests\Test
 {
 	public function testGetManagerClass_ShouldBeReturnSpectrumClassByDefault()
 	{
-		$this->assertEquals('\spectrum\constructionCommands\Manager', Config::getManagerClass());
+		$this->assertEquals('\spectrum\constructionCommands\manager', config::getManagerClass());
 	}
 
 /**/
 
 	public function testSetManagerClass_ShouldBeSetNewClass()
 	{
-		Config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\Manager');
-		$this->assertEquals('\spectrum\constructionCommands\testEnv\emptyStubs\Manager', Config::getManagerClass());
+		config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\manager');
+		$this->assertEquals('\spectrum\constructionCommands\testEnv\emptyStubs\manager', config::getManagerClass());
 	}
 
 	public function testSetManagerClass_ClassNotExists_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getManagerClass();
+		$oldClass = config::getManagerClass();
 
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'not exists', function(){
-			Config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\NotExistsClassFooBarBaz');
+			config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\NotExistsClassFooBarBaz');
 		});
 
-		$this->assertEquals($oldClass, Config::getManagerClass());
+		$this->assertEquals($oldClass, config::getManagerClass());
 	}
 
 	public function testSetManagerClass_ClassNotImplementSpectrumInterface_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getManagerClass();
+		$oldClass = config::getManagerClass();
 
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'should be implement interface', function(){
-			Config::setManagerClass('\stdClass');
+			config::setManagerClass('\stdClass');
 		});
 
-		$this->assertEquals($oldClass, Config::getManagerClass());
+		$this->assertEquals($oldClass, config::getManagerClass());
 	}
 
 	public function testSetManagerClass_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		$oldClass = Config::getManagerClass();
-		Config::lock();
+		$oldClass = config::getManagerClass();
+		config::lock();
 
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
-			Config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\Manager');
+			config::setManagerClass('\spectrum\constructionCommands\testEnv\emptyStubs\manager');
 		});
 
-		$this->assertEquals($oldClass, Config::getManagerClass());
+		$this->assertEquals($oldClass, config::getManagerClass());
 	}
 	
 /**/
 
 	public function testGetAllowConstructionCommandsRegistration_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowConstructionCommandsRegistration());
+		$this->assertTrue(config::getAllowConstructionCommandsRegistration());
 	}
 
 /**/
 
 	public function testSetAllowConstructionCommandsRegistration_ShouldBeSetNewValue()
 	{
-		Config::setAllowConstructionCommandsRegistration(false);
-		$this->assertFalse(Config::getAllowConstructionCommandsRegistration());
+		config::setAllowConstructionCommandsRegistration(false);
+		$this->assertFalse(config::getAllowConstructionCommandsRegistration());
 	}
 
 	public function testSetAllowConstructionCommandsRegistration_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
-			Config::setAllowConstructionCommandsRegistration(false);
+			config::setAllowConstructionCommandsRegistration(false);
 		});
 
-		$this->assertEquals(true, Config::getAllowConstructionCommandsRegistration());
+		$this->assertEquals(true, config::getAllowConstructionCommandsRegistration());
 	}
 	
 /**/
 
 	public function testGetAllowConstructionCommandsOverride_ShouldBeReturnTrueByDefault()
 	{
-		$this->assertTrue(Config::getAllowConstructionCommandsOverride());
+		$this->assertTrue(config::getAllowConstructionCommandsOverride());
 	}
 
 /**/
 
 	public function testSetAllowConstructionCommandsOverride_ShouldBeSetNewValue()
 	{
-		Config::setAllowConstructionCommandsOverride(false);
-		$this->assertFalse(Config::getAllowConstructionCommandsOverride());
+		config::setAllowConstructionCommandsOverride(false);
+		$this->assertFalse(config::getAllowConstructionCommandsOverride());
 	}
 
 	public function testSetAllowConstructionCommandsOverride_ConfigLocked_ShouldBeThrowExceptionAndNotChangeValue()
 	{
-		Config::lock();
+		config::lock();
 
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'constructionCommands\Config is locked', function(){
-			Config::setAllowConstructionCommandsOverride(false);
+			config::setAllowConstructionCommandsOverride(false);
 		});
 
-		$this->assertEquals(true, Config::getAllowConstructionCommandsOverride());
+		$this->assertEquals(true, config::getAllowConstructionCommandsOverride());
 	}
 }
