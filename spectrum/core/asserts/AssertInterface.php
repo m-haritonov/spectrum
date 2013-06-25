@@ -7,18 +7,14 @@
  */
 
 namespace spectrum\core\asserts;
+use spectrum\core\specs\SpecInterface;
 
 /**
  * @property not
  */
 interface AssertInterface
 {
-	public function __construct($actualValue);
-	public function __call($name, array $expectedArgs = array());
+	public function __construct(SpecInterface $ownerSpec, $testedValue);
+	public function __call($name, array $matcherArguments = array());
 	public function __get($name);
-
-	public function getActualValue();
-	public function getNot();
-	public function invertNot();
-	public function resetNot();
 }

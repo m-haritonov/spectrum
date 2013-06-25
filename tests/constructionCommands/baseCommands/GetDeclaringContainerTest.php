@@ -6,22 +6,22 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands\baseCommands;
-use spectrum\constructionCommands\Manager;
+namespace spectrum\tests\constructionCommands\commands;
+use spectrum\constructionCommands\manager;
 
 require_once __DIR__ . '/../../init.php';
 
-class GetDeclaringContainerTest extends \spectrum\constructionCommands\baseCommands\Test
+class GetDeclaringContainerTest extends \spectrum\constructionCommands\commands\Test
 {
 	public function testShouldBeReturnNullByDefault()
 	{
-		$this->assertNull(Manager::getDeclaringContainer());
+		$this->assertNull(manager::getDeclaringContainer());
 	}
 
 	public function testShouldBeReturnDeclaringContainer()
 	{
 		$describe = new \spectrum\core\SpecContainerDescribe();
-		Manager::setDeclaringContainer($describe);
-		$this->assertSame($describe, Manager::getDeclaringContainer());
+		manager::setDeclaringContainer($describe);
+		$this->assertSame($describe, manager::getDeclaringContainer());
 	}
 }

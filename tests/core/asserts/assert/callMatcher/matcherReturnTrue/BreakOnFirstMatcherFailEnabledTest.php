@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts\assert\callMatcher\matcherReturnTrue;
+namespace spectrum\tests\core\asserts\assert\callMatcher\matcherReturnTrue;
 use spectrum\core\asserts\Assert;
 
 require_once __DIR__ . '/../../../../../init.php';

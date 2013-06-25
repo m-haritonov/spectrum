@@ -6,53 +6,52 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\constructionCommands;
+namespace spectrum\tests\constructionCommands;
 require_once __DIR__ . '/../init.php';
 
-class ManagerTest extends \spectrum\Test
+class ManagerTest extends \spectrum\tests\Test
 {
-	public function testShouldBeHaveRegisteredBaseCommandsByDefault()
+	public function testShouldBeHaveRegisteredcommandsByDefault()
 	{
 		$this->assertSame(array(
-			'addPattern' => '\spectrum\constructionCommands\baseCommands\addPattern',
-			'addMatcher' => '\spectrum\constructionCommands\baseCommands\addMatcher',
-			'beforeEach' => '\spectrum\constructionCommands\baseCommands\beforeEach',
-			'afterEach' => '\spectrum\constructionCommands\baseCommands\afterEach',
+			'addPattern' => '\spectrum\constructionCommands\commands\addPattern',
+			'addMatcher' => '\spectrum\constructionCommands\commands\addMatcher',
+			'beforeEach' => '\spectrum\constructionCommands\commands\beforeEach',
+			'afterEach' => '\spectrum\constructionCommands\commands\afterEach',
 
-			'container' => '\spectrum\constructionCommands\baseCommands\container',
-			'describe' => '\spectrum\constructionCommands\baseCommands\describe',
-			'context' => '\spectrum\constructionCommands\baseCommands\context',
-			'it' => '\spectrum\constructionCommands\baseCommands\it',
-			'itLikePattern' => '\spectrum\constructionCommands\baseCommands\itLikePattern',
+			'container' => '\spectrum\constructionCommands\commands\container',
+			'describe' => '\spectrum\constructionCommands\commands\describe',
+			'context' => '\spectrum\constructionCommands\commands\context',
+			'it' => '\spectrum\constructionCommands\commands\it',
+			'itLikePattern' => '\spectrum\constructionCommands\commands\itLikePattern',
 
-			'the' => '\spectrum\constructionCommands\baseCommands\the',
-			'verify' => '\spectrum\constructionCommands\baseCommands\verify',
+			'the' => '\spectrum\constructionCommands\commands\the',
+			'verify' => '\spectrum\constructionCommands\commands\verify',
 
-			'world' => '\spectrum\constructionCommands\baseCommands\world',
-			'fail' => '\spectrum\constructionCommands\baseCommands\fail',
-			'message' => '\spectrum\constructionCommands\baseCommands\message',
+			'world' => '\spectrum\constructionCommands\commands\world',
+			'fail' => '\spectrum\constructionCommands\commands\fail',
+			'message' => '\spectrum\constructionCommands\commands\message',
 
-			'getCurrentContainer' => '\spectrum\constructionCommands\baseCommands\getCurrentContainer',
-			'setDeclaringContainer' => '\spectrum\constructionCommands\baseCommands\setDeclaringContainer',
-			'getDeclaringContainer' => '\spectrum\constructionCommands\baseCommands\getDeclaringContainer',
-			'getCurrentItem' => '\spectrum\constructionCommands\baseCommands\getCurrentItem',
+			'getCurrentContainer' => '\spectrum\constructionCommands\commands\getCurrentContainer',
+			'setDeclaringContainer' => '\spectrum\constructionCommands\commands\setDeclaringContainer',
+			'getDeclaringContainer' => '\spectrum\constructionCommands\commands\getDeclaringContainer',
+			'getCurrentItem' => '\spectrum\constructionCommands\commands\getCurrentItem',
 
-			'setSettings' => '\spectrum\constructionCommands\baseCommands\setSettings',
+			'setSettings' => '\spectrum\constructionCommands\commands\setSettings',
 
-			'isDeclaringState' => '\spectrum\constructionCommands\baseCommands\isDeclaringState',
-			'isRunningState' => '\spectrum\constructionCommands\baseCommands\isRunningState',
-		), Manager::getRegisteredCommands());
+			'isRunningState' => '\spectrum\constructionCommands\commands\isRunningState',
+		), manager::getRegisteredCommands());
 	}
 
 	public function testCallStatic_ShouldBeCallRegisteredCommandAndPassArgumentsToCallback()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', function($a, $b) use(&$passedA, &$passedB){
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', function($a, $b) use(&$passedA, &$passedB){
 			$passedA = $a;
 			$passedB = $b;
 		});
 
-		Manager::foo('aaa', 'bbb');
+		manager::foo('aaa', 'bbb');
 
 		$this->assertEquals('aaa', $passedA);
 		$this->assertEquals('bbb', $passedB);
@@ -60,20 +59,20 @@ class ManagerTest extends \spectrum\Test
 
 	public function testCallStatic_ShouldBeCallRegisteredCommandAndReturnCallbackResult()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', function(){ return 'bar'; });
-		$this->assertEquals('bar', Manager::foo());
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', function(){ return 'bar'; });
+		$this->assertEquals('bar', manager::foo());
 	}
 
 	public function testCallCommand_ShouldBePassArgumentsToRegisteredCommandCallback()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', function($a, $b) use(&$passedA, &$passedB){
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', function($a, $b) use(&$passedA, &$passedB){
 			$passedA = $a;
 			$passedB = $b;
 		});
 
-		Manager::callCommand('foo', array('aaa', 'bbb'));
+		manager::callCommand('foo', array('aaa', 'bbb'));
 
 		$this->assertEquals('aaa', $passedA);
 		$this->assertEquals('bbb', $passedB);
@@ -81,122 +80,122 @@ class ManagerTest extends \spectrum\Test
 
 	public function testCallCommand_ShouldBeReturnRegisteredCommandResult()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', function(){ return 'bar'; });
-		$this->assertEquals('bar', Manager::callCommand('foo'));
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', function(){ return 'bar'; });
+		$this->assertEquals('bar', manager::callCommand('foo'));
 	}
 
 /**/
 
 	public function testRegisterCommand_ShouldBeCollectCommands()
 	{
-		Manager::unregisterAllCommands();
+		manager::unregisterAllCommands();
 
-		$this->assertSame(array(), Manager::getRegisteredCommands());
+		$this->assertSame(array(), manager::getRegisteredCommands());
 
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = 'testFunc';
 
-		Manager::registerCommand('foo', $function1);
+		manager::registerCommand('foo', $function1);
 		$this->assertSame(array(
 			'foo' => $function1,
-		), Manager::getRegisteredCommands());
+		), manager::getRegisteredCommands());
 
-		Manager::registerCommand('bar', $function2);
+		manager::registerCommand('bar', $function2);
 		$this->assertSame(array(
 			'foo' => $function1,
 			'bar' => $function2,
-		), Manager::getRegisteredCommands());
+		), manager::getRegisteredCommands());
 
-		Manager::registerCommand('baz', $function3);
+		manager::registerCommand('baz', $function3);
 		$this->assertSame(array(
 			'foo' => $function1,
 			'bar' => $function2,
 			'baz' => $function3,
-		), Manager::getRegisteredCommands());
+		), manager::getRegisteredCommands());
 	}
 
 	public function testRegisterCommand_ShouldBeReplaceExistsCommand()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', 'fooFunc');
-		Manager::registerCommand('foo', 'barFunc');
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', 'fooFunc');
+		manager::registerCommand('foo', 'barFunc');
 
 		$this->assertSame(
 			array('foo' => 'barFunc')
-			, Manager::getRegisteredCommands()
+			, manager::getRegisteredCommands()
 		);
 	}
 
 	public function testRegisterCommand_ShouldBeAcceptClosureFunction()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', function(){ return 'bar'; });
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', function(){ return 'bar'; });
 
-		$this->assertEquals('bar', Manager::foo());
+		$this->assertEquals('bar', manager::foo());
 	}
 
 	public function testRegisterCommand_ShouldBeAcceptCreatedAnonymousFunction()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', create_function('', 'return "bar";'));
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', create_function('', 'return "bar";'));
 
-		$this->assertEquals('bar', Manager::foo());
+		$this->assertEquals('bar', manager::foo());
 	}
 
 	public function testRegisterCommand_ShouldBeAcceptUserDefinedFunction()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', __CLASS__ . '::myCommand');
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', __CLASS__ . '::myCommand');
 
-		$this->assertEquals('bar', Manager::foo());
+		$this->assertEquals('bar', manager::foo());
 	}
 
 	public function testRegisterCommand_ShouldBeAcceptCallbackArray()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', array(__CLASS__, 'myCommand'));
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', array(__CLASS__, 'myCommand'));
 
-		$this->assertEquals('bar', Manager::foo());
+		$this->assertEquals('bar', manager::foo());
 	}
 
 	public function testRegisterCommand_ShouldBeThrowExceptionIfCommandNameIsNotValidFunctionName()
 	{
-		Manager::unregisterAllCommands();
+		manager::unregisterAllCommands();
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Bad name', function(){
-			Manager::registerCommand('-foo', function(){});
+			manager::registerCommand('-foo', function(){});
 		});
 	}
 
 	public function testRegisterCommand_ShouldBeThrowExceptionIfNotAllowConstructionCommandsRegistration()
 	{
-		Manager::unregisterAllCommands();
-		Config::setAllowConstructionCommandsRegistration(false);
+		manager::unregisterAllCommands();
+		config::setAllowConstructionCommandsRegistration(false);
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands registration deny', function(){
-			Manager::registerCommand('foo', function(){});
+			manager::registerCommand('foo', function(){});
 		});
 	}
 
 	public function testRegisterCommand_ShouldBeThrowExceptionIfCommandExistsAndNotAllowConstructionCommandsOverride()
 	{
-		Manager::unregisterAllCommands();
-		Config::setAllowConstructionCommandsOverride(false);
-		Manager::registerCommand('foo', function(){});
+		manager::unregisterAllCommands();
+		config::setAllowConstructionCommandsOverride(false);
+		manager::registerCommand('foo', function(){});
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
-			Manager::registerCommand('foo', function(){});
+			manager::registerCommand('foo', function(){});
 		});
 	}
 
 	public function testRegisterCommands_ShouldBeAcceptArrayWithCommandNameAndCallback()
 	{
-		Manager::unregisterAllCommands();
+		manager::unregisterAllCommands();
 
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = 'testFunc';
 
-		Manager::registerCommands(array(
+		manager::registerCommands(array(
 			'foo' => $function1,
 			'bar' => $function2,
 			'baz' => $function3,
@@ -206,28 +205,28 @@ class ManagerTest extends \spectrum\Test
 			'foo' => $function1,
 			'bar' => $function2,
 			'baz' => $function3,
-		), Manager::getRegisteredCommands());
+		), manager::getRegisteredCommands());
 	}
 
 /**/
 
 	public function testUnregisterCommand_ShouldBeRemoveCommandByName()
 	{
-		Manager::unregisterAllCommands();
+		manager::unregisterAllCommands();
 
-		Manager::registerCommand('foo', function(){});
-		Manager::unregisterCommand('foo');
+		manager::registerCommand('foo', function(){});
+		manager::unregisterCommand('foo');
 
-		$this->assertFalse(Manager::hasRegisteredCommand('foo'));
-		$this->assertSame(array(), Manager::getRegisteredCommands());
+		$this->assertFalse(manager::hasRegisteredCommand('foo'));
+		$this->assertSame(array(), manager::getRegisteredCommands());
 	}
 
 	public function testUnregisterCommand_ShouldBeThrowExceptionIfNotAllowConstructionCommandsOverride()
 	{
-		Manager::unregisterAllCommands();
-		Config::setAllowConstructionCommandsOverride(false);
+		manager::unregisterAllCommands();
+		config::setAllowConstructionCommandsOverride(false);
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
-			Manager::unregisterCommand('foo');
+			manager::unregisterCommand('foo');
 		});
 	}
 
@@ -235,17 +234,17 @@ class ManagerTest extends \spectrum\Test
 
 	public function testUnregisterAllCommands_ShouldBeLeaveEmptyArray()
 	{
-		Manager::registerCommand('foo', function(){});
-		Manager::unregisterAllCommands();
-		$this->assertSame(array(), Manager::getRegisteredCommands());
+		manager::registerCommand('foo', function(){});
+		manager::unregisterAllCommands();
+		$this->assertSame(array(), manager::getRegisteredCommands());
 	}
 
 	public function testUnregisterAllCommands_ShouldBeThrowExceptionIfNotAllowConstructionCommandsOverride()
 	{
-		Manager::unregisterAllCommands();
-		Config::setAllowConstructionCommandsOverride(false);
+		manager::unregisterAllCommands();
+		config::setAllowConstructionCommandsOverride(false);
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', 'Construction commands override deny', function(){
-			Manager::unregisterAllCommands('foo');
+			manager::unregisterAllCommands('foo');
 		});
 	}
 
@@ -253,32 +252,32 @@ class ManagerTest extends \spectrum\Test
 
 	public function testHasRegisteredCommand_ShouldBeReturnTrueIfCommandExists()
 	{
-		Manager::unregisterAllCommands();
-		Manager::registerCommand('foo', function(){});
-		$this->assertTrue(Manager::hasRegisteredCommand('foo'));
+		manager::unregisterAllCommands();
+		manager::registerCommand('foo', function(){});
+		$this->assertTrue(manager::hasRegisteredCommand('foo'));
 	}
 
 	public function testHasRegisteredCommand_ShouldBeReturnFalseIfCommandNotExists()
 	{
-		Manager::unregisterAllCommands();
-		$this->assertFalse(Manager::hasRegisteredCommand('foo'));
+		manager::unregisterAllCommands();
+		$this->assertFalse(manager::hasRegisteredCommand('foo'));
 	}
 
 	public function testGetRegisteredCommandCallback_ShouldBeReturnCallbackByCommandName()
 	{
-		Manager::unregisterAllCommands();
+		manager::unregisterAllCommands();
 		$function = function(){};
-		Manager::registerCommand('foo', $function);
+		manager::registerCommand('foo', $function);
 
-		$this->assertSame($function, Manager::getRegisteredCommandCallback('foo'));
+		$this->assertSame($function, manager::getRegisteredCommandCallback('foo'));
 	}
 
 	public function testGetRegisteredCommandCallback_ShouldBeThrowExceptionIfCommandNotExists()
 	{
-		Manager::unregisterAllCommands();
+		manager::unregisterAllCommands();
 
 		$this->assertThrowException('\spectrum\constructionCommands\Exception', function(){
-			Manager::getRegisteredCommandCallback('foo');
+			manager::getRegisteredCommandCallback('foo');
 		});
 	}
 
