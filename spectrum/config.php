@@ -24,13 +24,13 @@ final class config
 	static private $allowReportsSettingsModify = true;
 
 	static private $registeredSpecPlugins = array(
-		'\spectrum\core\specs\plugins\basePlugins\reports\Reports',
-		'\spectrum\core\specs\plugins\basePlugins\Contexts',
-		'\spectrum\core\specs\plugins\basePlugins\ErrorHandling',
-		'\spectrum\core\specs\plugins\basePlugins\TestFunction',
-		'\spectrum\core\specs\plugins\basePlugins\Matchers',
-		'\spectrum\core\specs\plugins\basePlugins\Messages',
-		'\spectrum\core\specs\plugins\basePlugins\Output',
+		'\spectrum\core\plugins\basePlugins\reports\Reports',
+		'\spectrum\core\plugins\basePlugins\Contexts',
+		'\spectrum\core\plugins\basePlugins\ErrorHandling',
+		'\spectrum\core\plugins\basePlugins\TestFunction',
+		'\spectrum\core\plugins\basePlugins\Matchers',
+		'\spectrum\core\plugins\basePlugins\Messages',
+		'\spectrum\core\plugins\basePlugins\Output',
 	);
 
 	static private $registeredConstructionCommands = array(
@@ -107,7 +107,7 @@ final class config
 			throw new Exception('\spectrum\config is locked');
 		
 		$reflection = new \ReflectionClass($class);
-		if (!$reflection->implementsInterface('\spectrum\core\specs\plugins\PluginInterface'))
+		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface'))
 			throw new Exception('Class "' . $class . '" should be implements PluginInterface');
 		
 		if (static::hasRegisteredSpecPlugin($class))

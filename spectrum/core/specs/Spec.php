@@ -10,13 +10,13 @@ namespace spectrum\core\specs;
 use spectrum\config;
 
 /**
- * @property \spectrum\core\specs\plugins\basePlugins\reports\Reports reports
- * @property \spectrum\core\specs\plugins\basePlugins\Contexts contexts
- * @property \spectrum\core\specs\plugins\basePlugins\ErrorHandling errorHandling
- * @property \spectrum\core\specs\plugins\basePlugins\TestFunction testFunction
- * @property \spectrum\core\specs\plugins\basePlugins\Matchers matchers
- * @property \spectrum\core\specs\plugins\basePlugins\Messages messages
- * @property \spectrum\core\specs\plugins\basePlugins\Output output
+ * @property \spectrum\core\plugins\basePlugins\reports\Reports reports
+ * @property \spectrum\core\plugins\basePlugins\Contexts contexts
+ * @property \spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
+ * @property \spectrum\core\plugins\basePlugins\TestFunction testFunction
+ * @property \spectrum\core\plugins\basePlugins\Matchers matchers
+ * @property \spectrum\core\plugins\basePlugins\Messages messages
+ * @property \spectrum\core\plugins\basePlugins\Output output
  */
 class Spec implements SpecInterface
 {
