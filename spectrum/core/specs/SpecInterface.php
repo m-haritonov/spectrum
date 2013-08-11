@@ -11,7 +11,6 @@ namespace spectrum\core\specs;
 interface SpecInterface
 {
 	public function __get($pluginAccessName);
-	public function dispatchPluginEvent($eventName, array $args = array());
 	
 	public function enable();
 	public function disable();
