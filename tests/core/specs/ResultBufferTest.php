@@ -7,14 +7,14 @@
  */
 
 namespace spectrum\tests\core;
-use spectrum\core\ResultBuffer;
-use spectrum\core\Spec;
+use spectrum\core\specs\ResultBuffer;
+use spectrum\core\specs\Spec;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../init.php';
 
-class ResultBufferTest extends \spectrum\tests\core\Test
+class ResultBufferTest extends \spectrum\tests\Test
 {
-	public function testAddFailResult_ShouldBeAddFalseToResults()
+	public function testAddFailResult_AddsFalseToResults()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->addFailResult('aaa');
@@ -28,7 +28,7 @@ class ResultBufferTest extends \spectrum\tests\core\Test
 		), $resultBuffer->getResults());
 	}
 	
-	public function testAddSuccessResult_ShouldBeAddTrueToResults()
+	public function testAddSuccessResult_AddsTrueToResults()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->addSuccessResult('aaa');
@@ -44,13 +44,13 @@ class ResultBufferTest extends \spectrum\tests\core\Test
 
 /**/
 
-	public function testGetResults_ShouldBeReturnEmptyArrayByDefault()
+	public function testGetResults_ReturnsEmptyArrayByDefault()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		$this->assertSame(array(), $resultBuffer->getResults());
 	}
 
-	public function testGetResults_ShouldBeReturnAddedResults()
+	public function testGetResults_ReturnsAddedResults()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->addFailResult();
@@ -68,7 +68,7 @@ class ResultBufferTest extends \spectrum\tests\core\Test
 
 /**/
 
-	public function testGetTotalResult_ShouldBeReturnFalseIfAnyResultIsFalse()
+	public function testGetTotalResult_ReturnsFalseIfAnyResultIsFail()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->addSuccessResult();
@@ -78,17 +78,7 @@ class ResultBufferTest extends \spectrum\tests\core\Test
 		$this->assertFalse($resultBuffer->getTotalResult());
 	}
 
-	public function testGetTotalResult_ShouldBeReturnFalseIfAnyResultIsNull()
-	{
-		$resultBuffer = new ResultBuffer(new Spec());
-		$resultBuffer->addSuccessResult();
-		$resultBuffer->addFailResult();
-		$resultBuffer->addSuccessResult();
-
-		$this->assertFalse($resultBuffer->getTotalResult());
-	}
-
-	public function testGetTotalResult_ShouldBeReturnTrueIfAllResultsIsTrue()
+	public function testGetTotalResult_ReturnsTrueIfAllResultsAreSuccess()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->addSuccessResult();
@@ -97,7 +87,7 @@ class ResultBufferTest extends \spectrum\tests\core\Test
 		$this->assertTrue($resultBuffer->getTotalResult());
 	}
 
-	public function testGetTotalResult_ShouldBeReturnNullOnlyIfNoResults()
+	public function testGetTotalResult_ReturnsNullIfThereAreNoResults()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		$this->assertSame(array(), $resultBuffer->getResults());
