@@ -1,3 +1,6 @@
+TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
+TODO: multiplier vs contextSwitchers
+
 TODO: reports — по умолчанию не разворачивать список ошибок
 TODO: instanceofMatcher -> instanceof_
 TODO: config::__descruct — проверять отличаются ли текущие свойства от свойств в lock()::static
@@ -10,8 +13,7 @@ TODO: reports->getOutputType, getIndention, getNewline => get...ThroughRunningAn
 
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам
-TODO: проработать тексты сообщений в исключениях (возможно, примести к единому формату вида "function/method name: message") 
-
+TODO: проработать тексты сообщений в исключениях (возможно, примести к единому формату вида "function/method name: message"), проверить их грамотность 
 
 TODO: success ("has empty" or "success, has empty")
 TODO: реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
@@ -22,10 +24,6 @@ TODO: ResultBuffer: rename $result['result'] to $result['value/flag']
 TODO: translate throwsException messages
 
 TO DOC: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
-
-terms:
-	Context switching
-	Argument switching
 	
 /**
  * @lang ru Делает что-нибудь

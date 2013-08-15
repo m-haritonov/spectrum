@@ -23,13 +23,7 @@ class PluginStub extends \spectrum\core\plugins\Plugin
 		return static::$lastInstance;
 	}
 
-	static public function reset()
-	{
-		static::$activationsCount = 0;
-		static::$lastInstance = null;
-	}
-
-	public function __construct(\spectrum\core\SpecInterface $ownerSpec, $accessName)
+	public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec, $accessName)
 	{
 		parent::__construct($ownerSpec, $accessName);
 		static::$activationsCount++;

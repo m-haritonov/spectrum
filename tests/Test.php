@@ -13,33 +13,27 @@ require_once __DIR__ . '/init.php';
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
 	public static $tmp;
+	private static $classNumber = 0;
 	private $staticPropertiesBackups = array();
 
 	protected function setUp()
 	{
 		parent::setUp();
 		
-		$this->backupStaticProperties('\spectrum\core\config');
-		$this->backupStaticProperties('\spectrum\core\Spec');
+		$this->backupStaticProperties('\spectrum\config');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\Output');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
-		
-		$this->backupStaticProperties('\spectrum\constructionCommands\config');
-		$this->backupStaticProperties('\spectrum\constructionCommands\manager');
+//		$this->backupStaticProperties('\spectrum\tests\testHelpers\agents\core\PluginStub');
 
 		\spectrum\tests\Test::$tmp = null;
-		\spectrum\tests\testHelpers\agents\core\PluginStub::reset();
 	}
 
 	protected function tearDown()
 	{
-		$this->restoreStaticProperties('\spectrum\constructionCommands\manager');
-		$this->restoreStaticProperties('\spectrum\constructionCommands\config');
-		
+//		$this->restoreStaticProperties('\spectrum\tests\testHelpers\agents\core\PluginStub');
 		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
 		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\Output');
-		$this->restoreStaticProperties('\spectrum\core\Spec');
-		$this->restoreStaticProperties('\spectrum\core\config');
+		$this->restoreStaticProperties('\spectrum\config');
 
 		parent::tearDown();
 	}
@@ -58,6 +52,22 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			$propertyReflection->setAccessible(true);
 			$propertyReflection->setValue(null, $value);
 		}
+	}
+	
+	protected function createClass($classCode)
+	{
+		$namespace = 'spectrum\tests\testHelpers\_dynamicClasses_';
+		$className = 'DynamicClass' . self::$classNumber;
+		self::$classNumber++;
+		
+		$classCode = preg_replace(
+			'/^(\s*abstract|\s*final)*\s*class\s*\.\.\./is',
+			'namespace ' . $namespace . '; class ' . $className . ' ',
+			$classCode
+		);
+		
+		eval($classCode);
+		return '\\' . $namespace . '\\' . $className;
 	}
 
 /**/

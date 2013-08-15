@@ -27,7 +27,7 @@ class PluginTest extends Test
 	
 	public function testSetIndention_ShouldBeThrowExceptionIfNotAllowReportSettingsModify()
 	{
-		config::setAllowReportsSettingsModify(false);
+		config::setAllowReportSettingsModify(false);
 		$this->assertThrowException('\spectrum\core\plugins\basePlugins\reports\Exception', 'Reports settings modify deny', function(){
 			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->reports->setIndention(false);
@@ -36,7 +36,7 @@ class PluginTest extends Test
 
 	public function testSetNewline_ShouldBeThrowExceptionIfNotAllowReportSettingsModify()
 	{
-		config::setAllowReportsSettingsModify(false);
+		config::setAllowReportSettingsModify(false);
 		$this->assertThrowException('\spectrum\core\plugins\basePlugins\reports\Exception', 'Reports settings modify deny', function(){
 			$spec = new \spectrum\core\SpecContainerDescribe();
 			$spec->reports->setNewline(false);

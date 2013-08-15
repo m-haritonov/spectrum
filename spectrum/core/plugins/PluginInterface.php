@@ -16,7 +16,7 @@ interface PluginInterface
 	static public function getAccessName();
 
 	/**
-	 * @return string specConstruct, firstAccess, everyAccess
+	 * @return string firstAccess, everyAccess, specConstruct
 	 */
 	static public function getActivateMoment();
 

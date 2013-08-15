@@ -13,15 +13,15 @@ final class config
 	static private $constructionCommandsCallBrokerClass = '\spectrum\constructionCommands\callBroker';
 	static private $assertClass = '\spectrum\core\asserts\Assert';
 	static private $assertCallDetailsClass = '\spectrum\core\asserts\CallDetails';
-	static private $specClass = '\spectrum\core\Spec';
-	static private $contextDataClass = '\spectrum\core\ContextData';
-	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
+	static private $specClass = '\spectrum\core\specs\Spec';
+	static private $contextDataClass = '\spectrum\core\specs\ContextData';
+	static private $resultBufferClass = '\spectrum\core\specs\ResultBuffer';
 	
 	static private $allowBaseMatchersOverride = false;
 	static private $allowErrorHandlingModify = true;
 	static private $allowInputEncodingModify = true;
 	static private $allowOutputEncodingModify = true;
-	static private $allowReportsSettingsModify = true;
+	static private $allowReportSettingsModify = true;
 
 	static private $registeredSpecPlugins = array(
 		'\spectrum\core\plugins\basePlugins\reports\Reports',
@@ -73,13 +73,13 @@ final class config
 	static public function setAssertCallDetailsClass($className){ return static::setConfigClassValue(static::$assertCallDetailsClass, $className, '\spectrum\core\asserts\CallDetailsInterface'); }
 	static public function getAssertCallDetailsClass(){ return static::$assertCallDetailsClass; }
 	
-	static public function setSpecClass($className){ return static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
+	static public function setSpecClass($className){ return static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\specs\SpecInterface'); }
 	static public function getSpecClass(){ return static::$specClass; }
 
-	static public function setContextDataClass($className){ return static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\ContextDataInterface'); }
+	static public function setContextDataClass($className){ return static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\specs\ContextDataInterface'); }
 	static public function getContextDataClass(){ return static::$contextDataClass; }
 	
-	static public function setResultBufferClass($className){ return static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
+	static public function setResultBufferClass($className){ return static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\specs\ResultBufferInterface'); }
 	static public function getResultBufferClass(){ return static::$resultBufferClass; }
 	
 	/**/
@@ -96,8 +96,8 @@ final class config
 	static public function setAllowOutputEncodingModify($isEnable){ return static::setConfigValue(static::$allowOutputEncodingModify, $isEnable); }
 	static public function getAllowOutputEncodingModify(){ return static::$allowOutputEncodingModify; }
 	
-	static public function setAllowReportsSettingsModify($isEnable){ return static::setConfigValue(static::$allowReportsSettingsModify, $isEnable); }
-	static public function getAllowReportsSettingsModify(){ return static::$allowReportsSettingsModify; }
+	static public function setAllowReportSettingsModify($isEnable){ return static::setConfigValue(static::$allowReportSettingsModify, $isEnable); }
+	static public function getAllowReportSettingsModify(){ return static::$allowReportSettingsModify; }
 
 /**/
 	
@@ -108,60 +108,65 @@ final class config
 		
 		$reflection = new \ReflectionClass($class);
 		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface'))
-			throw new Exception('Class "' . $class . '" should be implements PluginInterface');
+			throw new Exception('Plugin class "' . $class . '" does not implement PluginInterface');
 		
 		if (static::hasRegisteredSpecPlugin($class))
-			throw new Exception('Plugin "' . $class . '" already registered');
+			throw new Exception('Plugin with class "' . $class . '" is already registered');
 		
 		if (static::getRegisteredSpecPluginClassByAccessName($class::getAccessName()))
-			throw new Exception('Plugin with accessName "' . $class::getAccessName() . '" already registered (remove registered plugin before register new)');
+			throw new Exception('Plugin with accessName "' . $class::getAccessName() . '" is already registered (remove registered plugin before register new)');
 		
-		if (!in_array($class::getActivateMoment(), array('specConstruct', 'firstAccess', 'everyAccess')))
-			throw new Exception('Wrong activation moment "' . $class::getActivateMoment() . '" for plugin "' . $class . '"');
+		$activateMoment = $class::getActivateMoment();
+		if (!in_array($activateMoment, array('firstAccess', 'everyAccess', 'specConstruct')))
+			throw new Exception('Wrong activate moment "' . $activateMoment . '" in plugin with class "' . $class . '"');
 
-		foreach ($class::getEventListeners() as $eventListener)
+		$num = 0;
+		foreach ((array) $class::getEventListeners() as $eventListener)
 		{
+			$num++;
+			
 			if ($eventListener['event'] == '')
-				throw new Exception('Event for plugin "' . $class . '" not set');
+				throw new Exception('Event for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
 			
 			if ($eventListener['method'] == '')
-				throw new Exception('Method for plugin event "' . $class . '" not set');
+				throw new Exception('Method for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
 			
 			if ($eventListener['order'] == '')
-				throw new Exception('Order for plugin event "' . $class . '" not set');
+				throw new Exception('Order for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
 		}
 		
 		static::$registeredSpecPlugins[] = $class;
 	}
 
-	static public function unregisterSpecPlugin($class)
+	static public function unregisterSpecPlugins($classes = null)
 	{
 		if (static::$locked)
 			throw new Exception('\spectrum\config is locked');
 
-		foreach (static::$registeredSpecPlugins as $key => $registeredPluginClass)
+		$classes = (array) $classes;
+		if (!$classes)
+			static::$registeredSpecPlugins = array();
+		else
 		{
-			if (mb_strtolower($class) == mb_strtolower($registeredPluginClass))
-				unset(static::$registeredSpecPlugins[$key]);
+			foreach (static::$registeredSpecPlugins as $key => $registeredPluginClass)
+			{
+				foreach ($classes as $class)
+				{
+					if (mb_strtolower($class) == mb_strtolower($registeredPluginClass))
+						unset(static::$registeredSpecPlugins[$key]);
+				}
+			}
 		}
 	}
 
-	static public function unregisterAllSpecPlugins()
-	{
-		if (static::$locked)
-			throw new Exception('\spectrum\config is locked');
-
-		static::$registeredSpecPlugins = array();
-	}
-
-	static public function getAllRegisteredSpecPlugins()
+	static public function getRegisteredSpecPlugins()
 	{
 		return static::$registeredSpecPlugins;
 	}
 	
 	static public function getRegisteredSpecPluginClassByAccessName($pluginAccessName)
 	{
-		foreach (static::getAllRegisteredSpecPlugins() as $pluginClass)
+		foreach (static::getRegisteredSpecPlugins() as $pluginClass)
 		{
 			if ($pluginClass::getAccessName() == $pluginAccessName)
 				return $pluginClass;
@@ -182,40 +187,45 @@ final class config
 	}
 
 /**/
-	
+
 	static public function registerConstructionCommand($name, $function)
 	{
+		if (static::$locked)
+			throw new Exception('\spectrum\config is locked');
+		
 		if (static::hasRegisteredConstructionCommand($name))
-			throw new Exception('Construction command with name "' . $name . '" already registered (remove registered construction command before register new)');
+			throw new Exception('Construction command with name "' . $name . '" is already registered (remove registered construction command before register new)');
 		
 		// RegExp from http://www.php.net/manual/en/functions.user-defined.php
 		if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/is', $name))
-			throw new Exception('Bad name for construction command "' . $name . '"');
+			throw new Exception('Construction command name "' . $name . '" has deny symbols');
 
 		static::$registeredConstructionCommands[$name] = $function;
 	}
 
-	static public function unregisterConstructionCommand($name)
+	static public function unregisterConstructionCommands($names = null)
 	{
-		unset(static::$registeredConstructionCommands[$name]);
+		if (static::$locked)
+			throw new Exception('\spectrum\config is locked');
+		
+		$names = (array) $names;
+		if (!$names)
+			static::$registeredConstructionCommands = array();
+		else
+		{
+			foreach ($names as $name)
+				unset(static::$registeredConstructionCommands[$name]);
+		}
 	}
 
-	static public function unregisterAllConstructionCommands()
-	{
-		static::$registeredConstructionCommands = array();
-	}
-
-	static public function getAllRegisteredConstructionCommands()
+	static public function getRegisteredConstructionCommands()
 	{
 		return static::$registeredConstructionCommands;
 	}
 
 	static public function getRegisteredConstructionCommandFunction($name)
 	{
-		if (!static::hasRegisteredConstructionCommand($name))
-			throw new Exception('Construction command "' . $name . '" not exists');
-
-		return static::$registeredConstructionCommands[$name];
+		return @static::$registeredConstructionCommands[$name];
 	}
 
 	static public function hasRegisteredConstructionCommand($name)
