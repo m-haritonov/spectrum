@@ -69,6 +69,25 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		eval($classCode);
 		return '\\' . $namespace . '\\' . $className;
 	}
+	
+	protected function assertEventTriggeredCount($expectedCount, $eventName)
+	{
+		$eventClassName = $this->getEventClassNameByEventName($eventName);
+
+		$count = 0;
+		foreach (\spectrum\tests\Test::$tmp['triggeredEvents'][$eventClassName] as $event)
+		{
+			if ($event['name'] == $eventName)
+				$count++;
+		}
+
+		$this->assertEquals($expectedCount, $count);
+	}
+
+	protected function getEventClassNameByEventName($eventName)
+	{
+		return preg_replace('/(Before|After)$/s', '', $eventName);
+	}
 
 /**/
 

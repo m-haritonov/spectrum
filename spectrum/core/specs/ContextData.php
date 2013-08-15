@@ -8,7 +8,7 @@
 
 namespace spectrum\core\specs;
 
-class ContextData implements ContextDataInterface, \Countable, \ArrayAccess
+class ContextData implements ContextDataInterface
 {
 	public function count()
 	{

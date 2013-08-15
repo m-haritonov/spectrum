@@ -8,7 +8,7 @@
 
 namespace spectrum\core\specs;
 
-interface ContextDataInterface
+interface ContextDataInterface extends \Countable, \ArrayAccess
 {
 
 }

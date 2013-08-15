@@ -6,14 +6,14 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests\core;
-use spectrum\core\ContextData;
+namespace spectrum\tests\core\specs;
+use spectrum\core\specs\ContextData;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../init.php';
 
-class ContextDataDataTest extends \spectrum\tests\core\Test
+class ContextDataTest extends \spectrum\tests\Test
 {
-	public function testShouldBePossibleToSetAndGetPublicPropertiesThroughObjectAccessStyle()
+	public function testSupportsAccessToPropertiesThroughObjectAccessStyle()
 	{
 		$context = new ContextData();
 		$context->aaa = 'aaaVal';
@@ -25,7 +25,7 @@ class ContextDataDataTest extends \spectrum\tests\core\Test
 		$this->assertEquals('cccVal', $context->ccc);
 	}
 
-	public function testShouldBePossibleToSetAndGetPublicPropertiesThroughArrayAccessStyle()
+	public function testSupportsAccessToPropertiesThroughArrayAccessStyle()
 	{
 		$context = new ContextData();
 		$context['aaa-aaa'] = 'aaaVal';
@@ -37,7 +37,7 @@ class ContextDataDataTest extends \spectrum\tests\core\Test
 		$this->assertEquals('cccVal', $context['ccc-ccc']);
 	}
 
-	public function testShouldBePossibleToCheckPublicPropertiesExists()
+	public function testSupportsPropertyExistCheck()
 	{
 		$context = new ContextData();
 		$this->assertFalse(isset($context->aaa));
@@ -45,7 +45,7 @@ class ContextDataDataTest extends \spectrum\tests\core\Test
 		$this->assertTrue(isset($context->aaa));
 	}
 
- 	public function testShouldBePossibleToUnsetPublicProperties()
+ 	public function testSupportsPropertyUnset()
 	{
 		$context = new ContextData();
 		$context->aaa = 'aaaVal';
@@ -53,7 +53,7 @@ class ContextDataDataTest extends \spectrum\tests\core\Test
 		$this->assertFalse(property_exists($context, 'aaa'));
 	}
 
- 	public function testShouldBePossibleToGetPublicPropertiesCount()
+ 	public function testSupportsPropertyCountCheck()
 	{
 		$context = new ContextData();
 		$context->aaa = 'aaaVal';
@@ -62,7 +62,7 @@ class ContextDataDataTest extends \spectrum\tests\core\Test
 		$this->assertEquals(2, count($context));
 	}
 
-	public function testShouldBePossibleToForeachTraverse()
+	public function testSupportsForeachTraverse()
 	{
 		$context = new ContextData();
 		$context->aaa = 'aaaVal';
