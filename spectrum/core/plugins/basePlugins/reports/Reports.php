@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\reports;
 
-use spectrum\core\config;
+use spectrum\config;
 use spectrum\core\plugins\basePlugins\reports\drivers\html\Html;
 use spectrum\core\plugins\basePlugins\reports\drivers\text\Text;
 

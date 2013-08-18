@@ -6,9 +6,12 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\specs;
+namespace spectrum\core;
 
-interface ContextDataInterface extends \Countable, \ArrayAccess
+/**
+ * Be carefully, this exception not adds to ResultBuffer and should be throw only for softly break execution.
+ */
+class ExceptionBreak extends Exception
 {
-
+	
 }

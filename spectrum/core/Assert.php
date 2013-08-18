@@ -6,9 +6,9 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts;
-use spectrum\core\specs\SpecInterface;
-use spectrum\core\specs\Spec;
+namespace spectrum\core;
+use spectrum\core\SpecInterface;
+use spectrum\core\Spec;
 
 /**
  * @property Assert $not
@@ -39,18 +39,15 @@ class Assert implements AssertInterface
 		$this->testedValue = $testedValue;
 	}
 
-	/**
-	 * Handle matchers call
-	 */
 	public function __call($matcherName, array $matcherArguments = array())
 	{
-		$this->dispatchPluginEvent('onMatcherCallBefore', array($this->testedValue, $matcherName, $matcherArguments, $this->ownerSpec));
+		$this->dispatchPluginEvent('onMatcherCallBefore', array($this->testedValue, $matcherName, $matcherArguments, $this));
 		
 		try
 		{
 //			$argumentsSourceCode = $this->parseArgumentsSourceCode($this->getCurrentVerifyCallSourceCode($verifyFunctionName), $verifyFunctionName);
 			
-			$callDetailsClass = \spectrum\core\config::getAssertCallDetailsClass();
+			$callDetailsClass = \spectrum\config::getMatcherCallDetailsClass();
 			$callDetails = new $callDetailsClass();
 			$callDetails->setTestedValue($this->getTestedValue());
 			$callDetails->setNot($this->getNot());
@@ -80,21 +77,19 @@ class Assert implements AssertInterface
 			$this->ownerSpec->getResultBuffer()->addFailResult($callDetails);
 		
 		$this->resetNot();
-		$this->dispatchPluginEvent('onMatcherCallAfter', array((bool) $result, $callDetails, $this->ownerSpec));
+		$this->dispatchPluginEvent('onMatcherCallAfter', array((bool) $result, $callDetails, $this));
 		return $this;
 	}
 	
-	/**
-	 * Handle "not" property
-	 */
 	public function __get($name)
 	{
 		if ($name == 'not')
+		{
 			$this->invertNot();
-		else
-			throw new Exception('Undefined property "Assert->' . $name . '" in method "' . __METHOD__ . '"');
-
-		return $this;
+			return $this;
+		}
+		
+		throw new Exception('Undefined property "Assert->' . $name . '" in method "' . __METHOD__ . '"');
 	}
 	
 	protected function invertNot()
@@ -122,6 +117,6 @@ class Assert implements AssertInterface
 		$reflectionClass = new \ReflectionClass($this->ownerSpec);
 		$reflectionMethod = $reflectionClass->getMethod('dispatchPluginEvent');
 		$reflectionMethod->setAccessible(true);
-		$reflectionMethod->invokeArgs($this->ownerSpec, $arguments);
+		$reflectionMethod->invokeArgs($this->ownerSpec, array($eventName, $arguments));
 	}
 }

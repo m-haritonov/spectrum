@@ -8,7 +8,7 @@
 
 namespace spectrum\tests\core\plugins\basePlugins;
 require_once __DIR__ . '/../../../init.php';
-use spectrum\core\config;
+use spectrum\config;
 
 class OutputTest extends Test
 {

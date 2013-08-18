@@ -10,7 +10,7 @@ namespace spectrum\constructionCommands\commands\internal;
 use spectrum\config;
 
 /**
- * @return \spectrum\core\specs\SpecInterface|null
+ * @return \spectrum\core\SpecInterface|null
  */
 function getCurrentSpec()
 {

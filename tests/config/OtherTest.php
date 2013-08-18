@@ -86,7 +86,7 @@ class OtherTest extends \spectrum\tests\Test
 	
 	public function testGetAssertClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\asserts\Assert', config::getAssertClass());
+		$this->assertSame('\spectrum\core\Assert', config::getAssertClass());
 	}
 	
 	public function testGetAssertClass_ConfigIsLocked_DoesNotThrowException()
@@ -100,9 +100,9 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetAssertClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\asserts\AssertInterface
+			class ... implements \spectrum\core\AssertInterface
 			{
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec, $testedValue){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue){}
 				public function __call($name, array $matcherArguments = array()){}
 				public function __get($name){}
 			}
@@ -137,9 +137,9 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetAssertClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\asserts\AssertInterface
+			class ... implements \spectrum\core\AssertInterface
 			{
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec, $testedValue){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue){}
 				public function __call($name, array $matcherArguments = array()){}
 				public function __get($name){}
 			}
@@ -157,23 +157,23 @@ class OtherTest extends \spectrum\tests\Test
 
 /**/
 
-	public function testGetAssertCallDetailsClass_ReturnsSpectrumClassByDefault()
+	public function testGetMatcherCallDetailsClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\asserts\CallDetails', config::getAssertCallDetailsClass());
+		$this->assertSame('\spectrum\core\MatcherCallDetails', config::getMatcherCallDetailsClass());
 	}
 	
-	public function testGetAssertCallDetailsClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetMatcherCallDetailsClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getAssertCallDetailsClass();
+		config::getMatcherCallDetailsClass();
 	}
 
 /**/
 
-	public function testSetAssertCallDetailsClass_SetsNewClass()
+	public function testSetMatcherCallDetailsClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\asserts\CallDetailsInterface
+			class ... implements \spectrum\core\MatcherCallDetailsInterface
 			{
 				public function setTestedValue($actualValue){}
 				public function getTestedValue(){}
@@ -188,36 +188,36 @@ class OtherTest extends \spectrum\tests\Test
 			}
 		');
 		
-		config::setAssertCallDetailsClass($className);
-		$this->assertSame($className, config::getAssertCallDetailsClass());
+		config::setMatcherCallDetailsClass($className);
+		$this->assertSame($className, config::getMatcherCallDetailsClass());
 	}
 
-	public function testSetAssertCallDetailsClass_ClassNotExists_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetMatcherCallDetailsClass_ClassNotExists_ThrowsExceptionAndDoesNotChangeValue()
 	{
-		$oldClass = config::getAssertCallDetailsClass();
+		$oldClass = config::getMatcherCallDetailsClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setAssertCallDetailsClass('\spectrum\tests\testHelpers\NotExistsClass');
+			config::setMatcherCallDetailsClass('\spectrum\tests\testHelpers\NotExistsClass');
 		});
 
-		$this->assertSame($oldClass, config::getAssertCallDetailsClass());
+		$this->assertSame($oldClass, config::getMatcherCallDetailsClass());
 	}
 
-	public function testSetAssertCallDetailsClass_ClassNotImplementSpectrumInterface_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetMatcherCallDetailsClass_ClassNotImplementSpectrumInterface_ThrowsExceptionAndDoesNotChangeValue()
 	{
-		$oldClass = config::getAssertCallDetailsClass();
+		$oldClass = config::getMatcherCallDetailsClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
-			config::setAssertCallDetailsClass('\stdClass');
+			config::setMatcherCallDetailsClass('\stdClass');
 		});
 
-		$this->assertSame($oldClass, config::getAssertCallDetailsClass());
+		$this->assertSame($oldClass, config::getMatcherCallDetailsClass());
 	}
 
-	public function testSetAssertCallDetailsClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetMatcherCallDetailsClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\asserts\CallDetailsInterface
+			class ... implements \spectrum\core\MatcherCallDetailsInterface
 			{
 				public function setTestedValue($actualValue){}
 				public function getTestedValue(){}
@@ -232,21 +232,21 @@ class OtherTest extends \spectrum\tests\Test
 			}
 		');
 		
-		$oldClass = config::getAssertCallDetailsClass();
+		$oldClass = config::getMatcherCallDetailsClass();
 		config::lock();
 
 		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() use($className){
-			config::setAssertCallDetailsClass($className);
+			config::setMatcherCallDetailsClass($className);
 		});
 
-		$this->assertSame($oldClass, config::getAssertCallDetailsClass());
+		$this->assertSame($oldClass, config::getMatcherCallDetailsClass());
 	}
 
 /**/
 
 	public function testGetSpecClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\specs\Spec', config::getSpecClass());
+		$this->assertSame('\spectrum\core\Spec', config::getSpecClass());
 	}
 	
 	public function testGetSpecClass_ConfigIsLocked_DoesNotThrowException()
@@ -260,7 +260,7 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetSpecClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\specs\SpecInterface
+			class ... implements \spectrum\core\SpecInterface
 			{
 				public function __get($pluginAccessName){}
 				
@@ -281,18 +281,18 @@ class OtherTest extends \spectrum\tests\Test
 				public function getRunningParentSpec(){}
 				public function getRunningAncestorSpecs(){}
 				public function getParentSpecs(){}
-				public function hasParentSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function bindParentSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function unbindParentSpec(\spectrum\core\specs\SpecInterface $spec){}
+				public function hasParentSpec(\spectrum\core\SpecInterface $spec){}
+				public function bindParentSpec(\spectrum\core\SpecInterface $spec){}
+				public function unbindParentSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllParentSpecs(){}
 			
 				public function getChildSpecs(){}
 				public function getChildSpecsByName($name){}
 				public function getChildSpecByIndex($index){}
 				public function getDeepestRunningSpec(){}
-				public function hasChildSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function bindChildSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function unbindChildSpec(\spectrum\core\specs\SpecInterface $spec){}
+				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
+				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
+				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
 			
 				public function getResultBuffer(){}
@@ -330,7 +330,7 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetSpecClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\specs\SpecInterface
+			class ... implements \spectrum\core\SpecInterface
 			{
 				public function __get($pluginAccessName){}
 				
@@ -351,18 +351,18 @@ class OtherTest extends \spectrum\tests\Test
 				public function getRunningParentSpec(){}
 				public function getRunningAncestorSpecs(){}
 				public function getParentSpecs(){}
-				public function hasParentSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function bindParentSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function unbindParentSpec(\spectrum\core\specs\SpecInterface $spec){}
+				public function hasParentSpec(\spectrum\core\SpecInterface $spec){}
+				public function bindParentSpec(\spectrum\core\SpecInterface $spec){}
+				public function unbindParentSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllParentSpecs(){}
 			
 				public function getChildSpecs(){}
 				public function getChildSpecsByName($name){}
 				public function getChildSpecByIndex($index){}
 				public function getDeepestRunningSpec(){}
-				public function hasChildSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function bindChildSpec(\spectrum\core\specs\SpecInterface $spec){}
-				public function unbindChildSpec(\spectrum\core\specs\SpecInterface $spec){}
+				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
+				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
+				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
 			
 				public function getResultBuffer(){}
@@ -385,7 +385,7 @@ class OtherTest extends \spectrum\tests\Test
 
 	public function testGetContextDataClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\specs\ContextData', config::getContextDataClass());
+		$this->assertSame('\spectrum\core\ContextData', config::getContextDataClass());
 	}
 	
 	public function testGetContextDataClass_ConfigIsLocked_DoesNotThrowException()
@@ -399,7 +399,7 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetContextDataClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\specs\ContextDataInterface
+			class ... implements \spectrum\core\ContextDataInterface
 			{
 				public function count(){}
 				public function offsetSet($key, $value){}
@@ -438,7 +438,7 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetContextDataClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\specs\ContextDataInterface
+			class ... implements \spectrum\core\ContextDataInterface
 			{
 				public function count(){}
 				public function offsetSet($key, $value){}
@@ -462,7 +462,7 @@ class OtherTest extends \spectrum\tests\Test
 	
 	public function testGetResultBufferClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\specs\ResultBuffer', config::getResultBufferClass());
+		$this->assertSame('\spectrum\core\ResultBuffer', config::getResultBufferClass());
 	}
 	
 	public function testGetResultBufferClass_ConfigIsLocked_DoesNotThrowException()
@@ -476,9 +476,9 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetResultBufferClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\specs\ResultBufferInterface
+			class ... implements \spectrum\core\ResultBufferInterface
 			{
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
 				public function addFailResult($details = null){}
@@ -518,9 +518,9 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetResultBufferClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\specs\ResultBufferInterface
+			class ... implements \spectrum\core\ResultBufferInterface
 			{
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
 				public function addFailResult($details = null){}

@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html;
 
-use spectrum\core\config;
+use spectrum\config;
 use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
 
 class Html extends Driver

@@ -19,7 +19,7 @@ function throwsException($functionWithTestedCode, $expectedClass = '\Exception',
 		$expectedClass = '\Exception';
 
 	if (!is_subclass_of($expectedClass, '\Exception') && $expectedClass != '\Exception')
-		throw new \spectrum\core\asserts\Exception('Excepted class "' . $expectedClass . '" should be subclass of "\Exception" in "' . __FUNCTION__ . '" matcher');
+		throw new \spectrum\core\Exception('Excepted class "' . $expectedClass . '" should be subclass of "\Exception" in "' . __FUNCTION__ . '" matcher');
 
 	try
 	{

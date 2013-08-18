@@ -9,7 +9,7 @@
 namespace spectrum\tests\core\plugins;
 require_once __DIR__ . '/../../init.php';
 
-use spectrum\core\config;
+use spectrum\config;
 use spectrum\core\Spec;
 
 class PluginActivationTest extends \spectrum\tests\core\Test

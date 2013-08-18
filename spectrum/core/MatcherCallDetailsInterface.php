@@ -6,9 +6,9 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts;
+namespace spectrum\core;
 
-interface CallDetailsInterface
+interface MatcherCallDetailsInterface
 {
 	public function setTestedValue($actualValue);
 	public function getTestedValue();

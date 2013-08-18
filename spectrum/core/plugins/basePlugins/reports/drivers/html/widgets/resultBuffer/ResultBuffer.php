@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer;
-use \spectrum\core\specs\asserts\CallDetailsInterface;
+use \spectrum\core\MatcherCallDetailsInterface;
 
 class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
 {
@@ -107,9 +107,9 @@ class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\ht
 
 	protected function getHtmlForResultDetails($details)
 	{
-		if (is_object($details) && $details instanceof CallDetailsInterface)
+		if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
 			$widget = $this->createWidget('resultBuffer\details\MatcherCall');
-		else if (is_object($details) && $details instanceof CallDetailsInterface)
+		else if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
 			$widget = $this->createWidget('resultBuffer\details\VerifyCall');
 		else
 			$widget = $this->createWidget('resultBuffer\details\Unknown');

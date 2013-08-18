@@ -6,15 +6,15 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\specs;
+namespace spectrum\core;
 
 class ResultBuffer implements ResultBufferInterface
 {
-	/** @var \spectrum\core\specs\SpecInterface */
+	/** @var \spectrum\core\SpecInterface */
 	protected $ownerSpec;
 	protected $results = array();
 
-	public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec)
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec)
 	{
 		$this->ownerSpec = $ownerSpec;
 	}

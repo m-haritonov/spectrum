@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\specs;
+namespace spectrum\core;
 use spectrum\config;
 
 /**
@@ -20,7 +20,6 @@ use spectrum\config;
  */
 class Spec implements SpecInterface
 {
-	protected $activatedPlugins = array();
 	protected $name;
 	protected $isEnabled = true;
 	protected $isEnabledTemporarily = null;
@@ -40,39 +39,47 @@ class Spec implements SpecInterface
 	 */
 	protected $resultBuffer;
 	protected $isRunning = false;
+	
+	protected $activatedPlugins = array();
 
 	public function __construct()
 	{
 		foreach (config::getRegisteredSpecPlugins() as $pluginClass)
 		{
 			if ($pluginClass::getActivateMoment() == 'specConstruct')
-				$this->activatedPlugins[$pluginClass::getAccessName()] = new $pluginClass($this);
+				$this->activatedPlugins[$pluginClass] = new $pluginClass($this);
 		}
 	}
 
 	public function __get($pluginAccessName)
 	{
 		$pluginClass = config::getRegisteredSpecPluginClassByAccessName($pluginAccessName);
-
-		if ($pluginClass::getActivateMoment() == 'everyAccess' || !array_key_exists($pluginAccessName, $this->activatedPlugins))
-			$this->activatedPlugins[$pluginClass::getAccessName()] = new $pluginClass($this);
-
-		return $this->activatedPlugins[$pluginAccessName];
+		if ($pluginClass)
+			return $this->activatePluginByAccess($pluginClass);
+		
+		throw new Exception('Undefined plugin with access name "' . $pluginAccessName . '" in "' . __CLASS__ . '" class');
 	}
 
+	protected function activatePluginByAccess($pluginClass)
+	{
+		if (!array_key_exists($pluginClass, $this->activatedPlugins) || $pluginClass::getActivateMoment() == 'everyAccess')
+			$this->activatedPlugins[$pluginClass] = new $pluginClass($this);
+		
+		return $this->activatedPlugins[$pluginClass];
+	}
+	
 	protected function dispatchPluginEvent($eventName, array $arguments = array())
 	{
-		foreach ($this->getPluginMethodsToEventDispatch($eventName) as $method)
+		foreach ($this->getPluginEventMethods($eventName) as $method)
 		{
-			$plugin = $this->{$method['accessName']};
-			$reflectionClass = new \ReflectionClass($plugin);
+			$reflectionClass = new \ReflectionClass($method['class']);
 			$reflectionMethod = $reflectionClass->getMethod($method['method']);
 			$reflectionMethod->setAccessible(true);
-			$reflectionMethod->invokeArgs($plugin, $arguments);
+			$reflectionMethod->invokeArgs($this->activatePluginByAccess($method['class']), $arguments);
 		}
 	}
 	
-	protected function getPluginMethodsToEventDispatch($eventName)
+	protected function getPluginEventMethods($eventName)
 	{
 		$methods = array();
 		foreach (config::getRegisteredSpecPlugins() as $pluginClass)
@@ -82,7 +89,7 @@ class Spec implements SpecInterface
 				if ($eventListener['event'] == $eventName)
 				{
 					$methods[] = array(
-						'accessName' => $pluginClass::getAccessName(),
+						'class' => $pluginClass,
 						'method' => $eventListener['method'],
 						'order' => $eventListener['order'],
 					);

@@ -12,7 +12,7 @@ use spectrum\config;
 /**
  * @throws \spectrum\constructionCommands\Exception If called not at running state
  * @param  mixed $testedValue
- * @return \spectrum\core\asserts\Assert
+ * @return \spectrum\core\Assert
  */
 function be($testedValue)
 {

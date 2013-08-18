@@ -23,7 +23,7 @@ class PluginStub extends \spectrum\core\plugins\Plugin
 		return static::$lastInstance;
 	}
 
-	public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec, $accessName)
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec, $accessName)
 	{
 		parent::__construct($ownerSpec, $accessName);
 		static::$activationsCount++;

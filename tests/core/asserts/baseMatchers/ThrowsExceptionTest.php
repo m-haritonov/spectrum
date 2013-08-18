@@ -134,16 +134,16 @@ class ThrowsExceptionTest extends \spectrum\tests\core\Test
 	
 	public function testExceptedArgumentsIsCorrect_ShouldBeReturnTrueOrFalse($returnValue)
 	{
-		$this->assertSame($returnValue, call_user_func_array('\spectrum\core\asserts\baseMatchers\throwsException', array_slice(func_get_args(), 1)));
+		$this->assertSame($returnValue, call_user_func_array('\spectrum\core\baseMatchers\throwsException', array_slice(func_get_args(), 1)));
 	}
 	
 	public function testExceptedClassIsNotInstanceOfException_ShouldBeThrowException()
 	{
 		$this->assertThrowsException(
-			'\spectrum\core\asserts\Exception', 
-			'Matcher "\spectrum\core\asserts\baseMatchers\throwsException" can accept only callable function as first operand (now passed callback not callable)', 
+			'\spectrum\core\Exception', 
+			'Matcher "\spectrum\core\baseMatchers\throwsException" can accept only callable function as first operand (now passed callback not callable)', 
 			function(){
-				\spectrum\core\asserts\baseMatchers\throwsException(function(){ throw new \Exception(); }, '\spectrum\tests\testHelpers\NotException');
+				\spectrum\core\baseMatchers\throwsException(function(){ throw new \Exception(); }, '\spectrum\tests\testHelpers\NotException');
 			}
 		);
 	}

@@ -6,8 +6,8 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts;
-use spectrum\core\specs\SpecInterface;
+namespace spectrum\core;
+use spectrum\core\SpecInterface;
 
 /**
  * @property not

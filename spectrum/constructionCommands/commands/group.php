@@ -25,7 +25,7 @@ use spectrum\config;
  * group(array $settings)
  * 
  * @throws \spectrum\constructionCommands\Exception If called not at declaring state
- * @return \spectrum\core\specs\SpecInterface
+ * @return \spectrum\core\SpecInterface
  */
 function group($name = null, $multiplier = null, $function = null, $settings = null)
 {

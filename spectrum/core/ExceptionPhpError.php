@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\specs;
+namespace spectrum\core;
 
 class ExceptionPhpError extends Exception
 {

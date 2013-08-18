@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\tests\core\plugins\basePlugins\reports;
-use spectrum\core\config;
+use spectrum\config;
 
 require_once __DIR__ . '/../init.php';
 

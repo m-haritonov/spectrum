@@ -25,6 +25,22 @@ TODO: translate throwsException messages
 
 TO DOC: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
 	
+	
+	
+	
+	
+var_dump(is_numeric('123')); // true
+var_dump(is_numeric(' 123')); // true
+Но
+var_dump(is_numeric('   123')); // true
+var_dump(is_numeric('123 abc')); // true
+	
+	
+	
+	
+	
+	
+	
 /**
  * @lang ru Делает что-нибудь
  */

@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\constructionCommands\commands\internal;
-use spectrum\core\specs\SpecInterface;
+use spectrum\core\SpecInterface;
 
 /**
  * @see getCurrentDeclaringSpec()

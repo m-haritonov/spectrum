@@ -8,8 +8,8 @@
 
 namespace spectrum\core\plugins\basePlugins;
 use spectrum\config;
-use spectrum\core\specs\ExceptionBreak;
-use spectrum\core\specs\ExceptionPhpError;
+use spectrum\core\ExceptionBreak;
+use spectrum\core\ExceptionPhpError;
 use spectrum\core\plugins\Exception;
 
 class ErrorHandling extends \spectrum\core\plugins\Plugin

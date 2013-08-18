@@ -6,11 +6,11 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\specs;
+namespace spectrum\core;
 
 interface ResultBufferInterface
 {
-	public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec);
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec);
 	public function getOwnerSpec();
 	
 	public function addFailResult($details = null);

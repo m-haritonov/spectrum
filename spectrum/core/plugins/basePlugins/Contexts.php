@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\core\plugins\basePlugins;
-use spectrum\core\config;
+use spectrum\config;
 use spectrum\core\plugins\Exception;
 
 class Contexts extends \spectrum\core\plugins\Plugin

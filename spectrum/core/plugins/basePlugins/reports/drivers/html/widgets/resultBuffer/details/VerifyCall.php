@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\details;
-use spectrum\core\specs\verifications\CallDetailsInterface;
+use spectrum\core\verifications\CallDetailsInterface;
 
 class VerifyCall extends Details
 {

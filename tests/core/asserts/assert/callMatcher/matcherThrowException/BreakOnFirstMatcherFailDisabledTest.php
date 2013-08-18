@@ -7,11 +7,11 @@
  */
 
 namespace spectrum\tests\core\asserts\assert\callMatcher\matcherThrowException;
-use spectrum\core\asserts\Assert;
+use spectrum\core\Assert;
 
 require_once __DIR__ . '/../../../../../init.php';
 
-class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\callMatcher\Test
+class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\assert\callMatcher\Test
 {
 	public function testCatchExceptionsDisabled_ShouldNotBeCatchExceptions()
 	{
@@ -64,9 +64,9 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$this->assertFalse($results[1]['result']);
 		$this->assertFalse($results[2]['result']);
 
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
-		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\CallDetails);
-		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\MatcherCallDetails);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\MatcherCallDetails);
+		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\MatcherCallDetails);
 
 		$this->assertAllResultsDetailsDifferent($results);
 	}
@@ -173,7 +173,7 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$results = $resultBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(true, $results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\MatcherCallDetails);
 	}
 
 	public function testWithNot_ShouldBeAddTrueWithDetailsToResultBufferForEachMatcher()
@@ -198,9 +198,9 @@ class BreakOnFirstMatcherFailDisabledTest extends \spectrum\core\asserts\assert\
 		$this->assertTrue($results[1]['result']);
 		$this->assertTrue($results[2]['result']);
 
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\CallDetails);
-		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\asserts\CallDetails);
-		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\asserts\CallDetails);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\MatcherCallDetails);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\core\MatcherCallDetails);
+		$this->assertTrue($results[2]['details'] instanceof \spectrum\core\MatcherCallDetails);
 
 		$this->assertAllResultsDetailsDifferent($results);
 	}

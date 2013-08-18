@@ -8,7 +8,7 @@
 
 namespace spectrum\tests\core\specItemIt;
 use spectrum\core\SpecItemIt;
-use spectrum\core\config;
+use spectrum\config;
 use \spectrum\core\SpecContainerDescribe;
 
 require_once __DIR__ . '/../../init.php';

@@ -8,7 +8,7 @@
 
 namespace spectrum\constructionCommands\commands\internal;
 use spectrum\config;
-use spectrum\core\specs\SpecInterface;
+use spectrum\core\SpecInterface;
 
 function loadBaseMatchers(SpecInterface $spec)
 {

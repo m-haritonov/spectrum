@@ -20,7 +20,7 @@ class TheTest extends \spectrum\constructionCommands\commands\Test
 		});
 
 		$it->run();
-		$this->assertTrue($assert instanceof \spectrum\core\asserts\Assert);
+		$this->assertTrue($assert instanceof \spectrum\core\Assert);
 	}
 
 	public function testShouldBeThrowExceptionIfCalledAtDeclaringState()
@@ -39,7 +39,7 @@ class TheTest extends \spectrum\constructionCommands\commands\Test
 		});
 
 		$it->run();
-		$this->assertTrue($assert instanceof \spectrum\core\asserts\Assert);
+		$this->assertTrue($assert instanceof \spectrum\core\Assert);
 	}
 
 	public function testShouldBeSetActualValueToAssertInstance()

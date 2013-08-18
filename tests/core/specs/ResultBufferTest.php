@@ -7,8 +7,8 @@
  */
 
 namespace spectrum\tests\core;
-use spectrum\core\specs\ResultBuffer;
-use spectrum\core\specs\Spec;
+use spectrum\core\ResultBuffer;
+use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 

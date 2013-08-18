@@ -19,7 +19,7 @@ function isRunningState()
 		if (!is_object(@$trace['object']))
 			continue;
 
-		if ($trace['object'] instanceof \spectrum\core\specs\SpecInterface)
+		if ($trace['object'] instanceof \spectrum\core\SpecInterface)
 			return true;
 	}
 

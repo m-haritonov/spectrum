@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\details;
-use \spectrum\core\specs\asserts\CallDetailsInterface;
+use \spectrum\core\MatcherCallDetailsInterface;
 
 class MatcherCall extends Details
 {
@@ -26,7 +26,7 @@ class MatcherCall extends Details
 			'</style>' . $this->getNewline();
 	}
 
-	public function getHtml(CallDetailsInterface $details)
+	public function getHtml(MatcherCallDetailsInterface $details)
 	{
 		$output = '';
 		$output .= '<div class="g-resultBuffer-details-matcherCall g-resultBuffer-details">';
@@ -37,7 +37,7 @@ class MatcherCall extends Details
 		return $output;
 	}
 
-	protected function getHtmlForCallExpression(CallDetailsInterface $details)
+	protected function getHtmlForCallExpression(MatcherCallDetailsInterface $details)
 	{
 		$output = '';
 
@@ -57,7 +57,7 @@ class MatcherCall extends Details
 		return $output;
 	}
 
-	protected function getHtmlForThrownException(CallDetailsInterface $details)
+	protected function getHtmlForThrownException(MatcherCallDetailsInterface $details)
 	{
 		return
 			'<div class="thrownException">
@@ -69,7 +69,7 @@ class MatcherCall extends Details
 			'</div>';
 	}
 
-	protected function getHtmlForReturnValue(CallDetailsInterface $details)
+	protected function getHtmlForReturnValue(MatcherCallDetailsInterface $details)
 	{
 		return
 			'<div class="returnValue">

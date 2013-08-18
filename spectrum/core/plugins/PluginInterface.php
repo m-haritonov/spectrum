@@ -11,7 +11,7 @@ namespace spectrum\core\plugins;
 interface PluginInterface
 {
 	/**
-	 * @return string
+	 * @return null|string
 	 */
 	static public function getAccessName();
 
@@ -47,11 +47,6 @@ interface PluginInterface
 	 */
 	static public function getEventListeners();
 	
-	
-	/**
-	 * @param $ownerSpec
-	 * @param string $accessName
-	 */
-	public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec);
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec);
 	public function getOwnerSpec();
 }

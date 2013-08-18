@@ -6,8 +6,8 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests\core\specs;
-use spectrum\core\specs\ContextData;
+namespace spectrum\tests\core;
+use spectrum\core\ContextData;
 
 require_once __DIR__ . '/../../init.php';
 

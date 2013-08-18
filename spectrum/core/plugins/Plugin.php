@@ -10,8 +10,13 @@ namespace spectrum\core\plugins;
 
 abstract class Plugin implements PluginInterface
 {
-	/** @var \spectrum\core\specs\SpecInterface|\spectrum\core\specs\Spec */
+	/** @var \spectrum\core\SpecInterface|\spectrum\core\Spec */
 	private $ownerSpec;
+	
+	static public function getAccessName()
+	{
+		return null;
+	}
 	
 	static public function getActivateMoment()
 	{
@@ -23,13 +28,13 @@ abstract class Plugin implements PluginInterface
 		return array();
 	}
 
-	public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec)
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec)
 	{
 		$this->ownerSpec = $ownerSpec;
 	}
 
 	/**
-	 * @return \spectrum\core\specs\SpecInterface|\spectrum\core\specs\Spec
+	 * @return \spectrum\core\SpecInterface|\spectrum\core\Spec
 	 */
 	public function getOwnerSpec()
 	{
@@ -59,7 +64,7 @@ abstract class Plugin implements PluginInterface
 		$reflectionClass = new \ReflectionClass($this->getOwnerSpec());
 		$reflectionMethod = $reflectionClass->getMethod('dispatchPluginEvent');
 		$reflectionMethod->setAccessible(true);
-		$reflectionMethod->invokeArgs($this->getOwnerSpec(), $arguments);
+		$reflectionMethod->invokeArgs($this->getOwnerSpec(), array($eventName, $arguments));
 	}
 	
 	protected function handleModifyDeny()

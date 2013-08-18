@@ -7,7 +7,7 @@
  */
 
 namespace spectrum\tests\core\asserts\assert\accessToUndefinedProperty;
-use spectrum\core\asserts\Assert;
+use spectrum\core\Assert;
 
 require_once __DIR__ . '/../../../../init.php';
 
@@ -24,7 +24,7 @@ class Test extends \spectrum\core\Test
 			$assert->foo;
 		});
 
-		$this->assertThrowException('\spectrum\core\asserts\Exception', 'Undefined property "Assert->foo"', function() use($it){
+		$this->assertThrowException('\spectrum\core\Exception', 'Undefined property "Assert->foo"', function() use($it){
 			$it->run();
 		});
 	}
@@ -83,7 +83,7 @@ class Test extends \spectrum\core\Test
 		$results = $resultBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\Exception);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\Exception);
 		$this->assertEquals('Undefined property "Assert->foo"', $results[0]['details']->getMessage());
 	}
 
@@ -100,7 +100,7 @@ class Test extends \spectrum\core\Test
 
 		$it->run();
 
-		$this->assertTrue($return instanceof \spectrum\core\asserts\Assert);
+		$this->assertTrue($return instanceof \spectrum\core\Assert);
 		$this->assertSame($assert, $return);
 	}
 
@@ -117,7 +117,7 @@ class Test extends \spectrum\core\Test
 			$assert->foo;
 		});
 
-		$this->assertThrowException('\spectrum\core\asserts\Exception', 'Undefined property "Assert->foo"', function() use($it){
+		$this->assertThrowException('\spectrum\core\Exception', 'Undefined property "Assert->foo"', function() use($it){
 			$it->run();
 		});
 	}
@@ -162,7 +162,7 @@ class Test extends \spectrum\core\Test
 		$results = $resultBuffer->getResults();
 		$this->assertEquals(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\asserts\Exception);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\core\Exception);
 		$this->assertEquals('Undefined property "Assert->foo"', $results[0]['details']->getMessage());
 	}
 

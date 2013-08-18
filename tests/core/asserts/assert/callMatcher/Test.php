@@ -7,11 +7,11 @@
  */
 
 namespace spectrum\tests\core\asserts\assert\callMatcher;
-use spectrum\core\asserts\Assert;
+use spectrum\core\Assert;
 
 require_once __DIR__ . '/../../../../init.php';
 
-class Test extends \spectrum\core\asserts\assert\Test
+class Test extends \spectrum\core\assert\Test
 {
 
 /*** Test ware ***/

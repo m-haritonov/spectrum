@@ -6,9 +6,9 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\asserts;
+namespace spectrum\core;
 
-class Exception extends \spectrum\core\Exception
+interface ContextDataInterface extends \Countable, \ArrayAccess
 {
-	
+
 }

@@ -44,7 +44,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -56,7 +56,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -68,7 +68,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -83,6 +83,24 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
 	}
 	
+	public function testRegisterSpecPlugin_AddsPluginClassInOriginCase()
+	{
+		$className = $this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return "aaa"; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
+				public function getOwnerSpec(){}
+			}
+		');
+
+		config::registerSpecPlugin(mb_strtoupper($className));
+		$this->assertSame(array($className), config::getRegisteredSpecPlugins());
+	}
+	
 	public function testRegisterSpecPlugin_ConfigIsLocked_ThrowsExceptionAndDoesNotRegisterPlugin()
 	{
 		$className = $this->createClass('
@@ -92,7 +110,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -127,7 +145,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -151,7 +169,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -159,7 +177,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 		config::registerSpecPlugin($className);
 		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Plugin with class "' . mb_strtoupper($className) . '" is already registered', function() use($className){
+		$this->assertThrowsException('\spectrum\Exception', 'Plugin with class "' . $className . '" is already registered', function() use($className){
 			config::registerSpecPlugin(mb_strtoupper($className));
 		});
 
@@ -175,7 +193,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -187,7 +205,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -212,7 +230,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -224,7 +242,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "everyAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -236,7 +254,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "specConstruct"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -257,7 +275,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "AAAAAAA"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -280,7 +298,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){ return array(array("event" => "", "method" => "onEndingSpecExecute", "order" => 100)); }
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -303,7 +321,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){ return array(array("event" => "onEndingSpecExecute", "method" => "", "order" => 100)); }
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -326,7 +344,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){ return array(array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => "")); }
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -351,7 +369,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -363,7 +381,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -375,7 +393,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -399,7 +417,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -411,7 +429,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -423,7 +441,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -453,7 +471,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -465,7 +483,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -477,7 +495,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -507,7 +525,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -519,7 +537,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -531,7 +549,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -555,7 +573,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -567,7 +585,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -579,7 +597,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -603,7 +621,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -635,7 +653,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -647,7 +665,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -659,7 +677,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -688,7 +706,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -700,7 +718,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -721,7 +739,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -748,7 +766,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -767,7 +785,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');
@@ -786,7 +804,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\specs\SpecInterface $ownerSpec){}
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 			}
 		');

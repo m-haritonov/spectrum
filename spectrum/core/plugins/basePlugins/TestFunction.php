@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins;
 use spectrum\config;
-use spectrum\core\specs\ContextDataInterface;
+use spectrum\core\ContextDataInterface;
 
 class TestFunction extends \spectrum\core\plugins\Plugin
 {
@@ -86,7 +86,7 @@ class TestFunction extends \spectrum\core\plugins\Plugin
 			$this->callFunctionInContext($context['function'], array());
 		
 		$this->dispatchPluginEvent('onTestFunctionCallBefore');
-		$this->getOwnerSpec()->contexts->callFunctionInContext($function, $this->getFunctionArgumentsThroughRunningAncestors());
+		$this->getOwnerSpec()->contexts->callFunctionInContext($function, $this->getFunctionArgumentsThroughRunningAncestors(), $this->contextData);
 		$this->dispatchPluginEvent('onTestFunctionCallAfter');
 		
 		foreach ($this->getAllThroughRunningAncestors('after') as $context)

@@ -8,8 +8,8 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers;
 
-use spectrum\core\config;
-use spectrum\core\specs\SpecInterface;
+use spectrum\config;
+use spectrum\core\SpecInterface;
 use spectrum\core\plugins\basePlugins\reports\Reports;
 
 interface DriverInterface

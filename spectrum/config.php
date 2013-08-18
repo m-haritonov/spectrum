@@ -11,11 +11,11 @@ namespace spectrum;
 final class config
 {
 	static private $constructionCommandsCallBrokerClass = '\spectrum\constructionCommands\callBroker';
-	static private $assertClass = '\spectrum\core\asserts\Assert';
-	static private $assertCallDetailsClass = '\spectrum\core\asserts\CallDetails';
-	static private $specClass = '\spectrum\core\specs\Spec';
-	static private $contextDataClass = '\spectrum\core\specs\ContextData';
-	static private $resultBufferClass = '\spectrum\core\specs\ResultBuffer';
+	static private $assertClass = '\spectrum\core\Assert';
+	static private $matcherCallDetailsClass = '\spectrum\core\MatcherCallDetails';
+	static private $specClass = '\spectrum\core\Spec';
+	static private $contextDataClass = '\spectrum\core\ContextData';
+	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
 	
 	static private $allowBaseMatchersOverride = false;
 	static private $allowErrorHandlingModify = true;
@@ -67,19 +67,19 @@ final class config
 	static public function setConstructionCommandsCallBrokerClass($className){ return static::setConfigClassValue(static::$constructionCommandsCallBrokerClass, $className, '\spectrum\constructionCommands\callBrokerInterface'); }
 	static public function getConstructionCommandsCallBrokerClass(){ return static::$constructionCommandsCallBrokerClass; }
 
-	static public function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\asserts\AssertInterface'); }
+	static public function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\AssertInterface'); }
 	static public function getAssertClass(){ return static::$assertClass; }
 	
-	static public function setAssertCallDetailsClass($className){ return static::setConfigClassValue(static::$assertCallDetailsClass, $className, '\spectrum\core\asserts\CallDetailsInterface'); }
-	static public function getAssertCallDetailsClass(){ return static::$assertCallDetailsClass; }
+	static public function setMatcherCallDetailsClass($className){ return static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\MatcherCallDetailsInterface'); }
+	static public function getMatcherCallDetailsClass(){ return static::$matcherCallDetailsClass; }
 	
-	static public function setSpecClass($className){ return static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\specs\SpecInterface'); }
+	static public function setSpecClass($className){ return static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
 	static public function getSpecClass(){ return static::$specClass; }
 
-	static public function setContextDataClass($className){ return static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\specs\ContextDataInterface'); }
+	static public function setContextDataClass($className){ return static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\ContextDataInterface'); }
 	static public function getContextDataClass(){ return static::$contextDataClass; }
 	
-	static public function setResultBufferClass($className){ return static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\specs\ResultBufferInterface'); }
+	static public function setResultBufferClass($className){ return static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
 	static public function getResultBufferClass(){ return static::$resultBufferClass; }
 	
 	/**/
@@ -105,6 +105,10 @@ final class config
 	{
 		if (static::$locked)
 			throw new Exception('\spectrum\config is locked');
+		
+		// Get origin class name (in origin case)
+		$reflectionClass = new \ReflectionClass($class);
+		$class = '\\' . $reflectionClass->getName();
 		
 		$reflection = new \ReflectionClass($class);
 		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface'))
