@@ -117,8 +117,9 @@ final class config
 		if (static::hasRegisteredSpecPlugin($class))
 			throw new Exception('Plugin with class "' . $class . '" is already registered');
 		
-		if (static::getRegisteredSpecPluginClassByAccessName($class::getAccessName()))
-			throw new Exception('Plugin with accessName "' . $class::getAccessName() . '" is already registered (remove registered plugin before register new)');
+		$accessName = $class::getAccessName();
+		if ($accessName != '' && static::getRegisteredSpecPluginClassByAccessName($accessName))
+			throw new Exception('Plugin with accessName "' . $accessName . '" is already registered (remove registered plugin before register new)');
 		
 		$activateMoment = $class::getActivateMoment();
 		if (!in_array($activateMoment, array('firstAccess', 'everyAccess', 'specConstruct')))

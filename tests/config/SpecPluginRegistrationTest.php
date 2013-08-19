@@ -101,6 +101,69 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 		$this->assertSame(array($className), config::getRegisteredSpecPlugins());
 	}
 	
+	public function testRegisterSpecPlugin_AcceptsUnlimitedCountOfPluginsWithEmptyAccessName()
+	{
+		$className1 = $this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return null; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
+				public function getOwnerSpec(){}
+			}
+		');
+		
+		$className2 = $this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return null; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
+				public function getOwnerSpec(){}
+			}
+		');
+		
+		$className3 = $this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return ""; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
+				public function getOwnerSpec(){}
+			}
+		');
+		
+		$className4 = $this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return ""; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
+				public function getOwnerSpec(){}
+			}
+		');
+
+		config::registerSpecPlugin($className1);
+		config::registerSpecPlugin($className2);
+		config::registerSpecPlugin($className3);
+		config::registerSpecPlugin($className4);
+		
+		$this->assertSame(array(
+			$className1,
+			$className2,
+			$className3,
+			$className4,
+		), config::getRegisteredSpecPlugins());
+	}
+	
 	public function testRegisterSpecPlugin_ConfigIsLocked_ThrowsExceptionAndDoesNotRegisterPlugin()
 	{
 		$className = $this->createClass('
