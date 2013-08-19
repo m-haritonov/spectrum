@@ -130,13 +130,13 @@ final class config
 		{
 			$num++;
 			
-			if ($eventListener['event'] == '')
+			if ((string) $eventListener['event'] === '')
 				throw new Exception('Event for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
 			
-			if ($eventListener['method'] == '')
+			if ((string) $eventListener['method'] === '')
 				throw new Exception('Method for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
 			
-			if ($eventListener['order'] == '')
+			if ((string) $eventListener['order'] === '')
 				throw new Exception('Order for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
 		}
 		
