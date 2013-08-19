@@ -26,7 +26,7 @@ abstract class SpecContainerTest extends Test
 		');
 
 		$specs[1]->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$temp['triggeredEvents']['onRun'];
 		});
 
 		$specs[0]->run();
@@ -48,7 +48,7 @@ abstract class SpecContainerTest extends Test
 		');
 
 		$specs[1]->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$temp['triggeredEvents']['onRun'];
 		});
 
 		$specs[0]->run();

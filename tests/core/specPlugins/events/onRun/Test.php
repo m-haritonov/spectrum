@@ -23,8 +23,8 @@ abstract class Test extends \spectrum\core\plugins\events\Test
 		$spec = $this->createCurrentSpec();
 		$spec->run();
 
-		$this->assertEquals('onRunBefore', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][0]['name']);
-		$this->assertTrue(\spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][0]['isRunning']);
+		$this->assertEquals('onRunBefore', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][0]['name']);
+		$this->assertTrue(\spectrum\tests\Test::$temp['triggeredEvents']['onRun'][0]['isRunning']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -34,7 +34,7 @@ abstract class Test extends \spectrum\core\plugins\events\Test
 		manager::registerPlugin('foo', '\spectrum\core\testEnv\PluginEventOnRunStub');
 
 		$spec = $this->createCurrentSpec();
-		$this->assertNull(\spectrum\tests\Test::$tmp['triggeredEvents']['onRun']);
+		$this->assertNull(\spectrum\tests\Test::$temp['triggeredEvents']['onRun']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -45,9 +45,9 @@ abstract class Test extends \spectrum\core\plugins\events\Test
 
 		$spec = $this->createCurrentSpec();
 		$spec->run();
-		$this->assertEquals(2, count(\spectrum\tests\Test::$tmp['triggeredEvents']['onRun']));
-		$this->assertEquals('onRunBefore',\spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][0]['name']);
-		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['name']);
+		$this->assertEquals(2, count(\spectrum\tests\Test::$temp['triggeredEvents']['onRun']));
+		$this->assertEquals('onRunBefore',\spectrum\tests\Test::$temp['triggeredEvents']['onRun'][0]['name']);
+		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['name']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -58,7 +58,7 @@ abstract class Test extends \spectrum\core\plugins\events\Test
 
 		$spec = $this->createCurrentSpec();
 		$spec->run();
-		$this->assertSame(array(), \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][0]['arguments']);
+		$this->assertSame(array(), \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][0]['arguments']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -72,8 +72,8 @@ abstract class Test extends \spectrum\core\plugins\events\Test
 		$spec = $this->createCurrentSpec();
 		$spec->run();
 
-		$this->assertEquals('onRunBefore', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][0]['name']);
-		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['name']);
+		$this->assertEquals('onRunBefore', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][0]['name']);
+		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['name']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -85,8 +85,8 @@ abstract class Test extends \spectrum\core\plugins\events\Test
 		$spec = $this->createCurrentSpec();
 		$spec->run();
 
-		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['name']);
-		$this->assertTrue(\spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['isRunning']);
+		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['name']);
+		$this->assertTrue(\spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['isRunning']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -97,9 +97,9 @@ abstract class Test extends \spectrum\core\plugins\events\Test
 
 		$spec = $this->createCurrentSpec();
 		$spec->run();
-		$this->assertEquals(2, count(\spectrum\tests\Test::$tmp['triggeredEvents']['onRun']));
-		$this->assertEquals('onRunBefore', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][0]['name']);
-		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['name']);
+		$this->assertEquals(2, count(\spectrum\tests\Test::$temp['triggeredEvents']['onRun']));
+		$this->assertEquals('onRunBefore', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][0]['name']);
+		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['name']);
 
 		manager::unregisterPlugin('foo');
 	}

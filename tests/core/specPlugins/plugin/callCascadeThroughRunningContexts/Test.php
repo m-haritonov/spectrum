@@ -19,7 +19,7 @@ abstract class Test extends \spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo');
 		}, $specs['spec']);
 
-		$this->assertSame(array(), \spectrum\tests\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array(), \spectrum\tests\Test::$temp['getFoo']['arguments']);
 	}
 
 	public function testNoParents_ShouldBePassArgumentsToSelfPluginMethod()
@@ -30,7 +30,7 @@ abstract class Test extends \spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo', array('bar', 'baz'));
 		}, $specs['spec']);
 
-		$this->assertSame(array('bar', 'baz'), \spectrum\tests\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array('bar', 'baz'), \spectrum\tests\Test::$temp['getFoo']['arguments']);
 	}
 
 	public function testNoParents_SelfReturnIsEmpty_ShouldBeReturnDefaultValue()
@@ -94,7 +94,7 @@ abstract class Test extends \spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo');
 		}, $specs['spec']);
 
-		$this->assertSame(array(), \spectrum\tests\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array(), \spectrum\tests\Test::$temp['getFoo']['arguments']);
 	}
 
 	public function testHasParents_Describe_ShouldBePassArgumentsToParentPluginMethod()
@@ -108,7 +108,7 @@ abstract class Test extends \spectrum\core\plugins\plugin\Test
 			$specs['spec']->testPlugin->callCascadeThroughRunningContexts('getFoo', array('bar', 'baz'));
 		}, $specs['spec']);
 
-		$this->assertSame(array('bar', 'baz'), \spectrum\tests\Test::$tmp['getFoo']['arguments']);
+		$this->assertSame(array('bar', 'baz'), \spectrum\tests\Test::$temp['getFoo']['arguments']);
 	}
 
 	public function testHasParents_Describe_ParentReturnIsEmpty_ShouldBeReturnDefaultValue()

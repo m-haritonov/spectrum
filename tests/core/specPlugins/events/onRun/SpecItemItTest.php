@@ -24,7 +24,7 @@ class SpecItemItTest extends Test
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$temp['triggeredEvents']['onRun'];
 		});
 
 		$spec->run();
@@ -42,7 +42,7 @@ class SpecItemItTest extends Test
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'];
+			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$temp['triggeredEvents']['onRun'];
 		});
 
 		$spec->run();
@@ -50,7 +50,7 @@ class SpecItemItTest extends Test
 		$this->assertEquals(1, count($triggeredEventsBeforeExecution));
 		$this->assertNotEquals('onRunAfter', $triggeredEventsBeforeExecution[0]['name']);
 
-		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['name']);
+		$this->assertEquals('onRunAfter', \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['name']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -66,7 +66,7 @@ class SpecItemItTest extends Test
 
 		$spec->run();
 
-		$this->assertSame(array(true), \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
+		$this->assertSame(array(true), \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['arguments']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -82,7 +82,7 @@ class SpecItemItTest extends Test
 
 		$spec->run();
 
-		$this->assertSame(array(false), \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
+		$this->assertSame(array(false), \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['arguments']);
 
 		manager::unregisterPlugin('foo');
 	}
@@ -96,7 +96,7 @@ class SpecItemItTest extends Test
 
 		$spec->run();
 
-		$this->assertSame(array(null), \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][1]['arguments']);
+		$this->assertSame(array(null), \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][1]['arguments']);
 
 		manager::unregisterPlugin('foo');
 	}

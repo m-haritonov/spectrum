@@ -38,7 +38,7 @@ abstract class Test extends \spectrum\core\Test
 	{
 		$eventClassName = $this->getEventClassNameByEventName($eventName);
 
-		$event = \spectrum\tests\Test::$tmp['triggeredEvents'][$eventClassName][$index];
+		$event = \spectrum\tests\Test::$temp['triggeredEvents'][$eventClassName][$index];
 		if ($event['name'] == $eventName)
 			return $event;
 		else
@@ -52,9 +52,9 @@ abstract class Test extends \spectrum\core\Test
 		 // 2 - onRunAfter from SpecContainer
 		 // 3 - onRunAfter from SpecItemIt
 		if ($eventName == 'onRunBefore')
-			return \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][0];
+			return \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][0];
 		else if ($eventName == 'onRunAfter')
-			return \spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][2];
+			return \spectrum\tests\Test::$temp['triggeredEvents']['onRun'][2];
 		else
 			return array();
 	}

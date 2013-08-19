@@ -12,7 +12,7 @@ require_once __DIR__ . '/init.php';
 
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
-	public static $tmp;
+	public static $temp;
 	private static $classNumber = 0;
 	private $staticPropertiesBackups = array();
 
@@ -25,7 +25,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
 //		$this->backupStaticProperties('\spectrum\tests\testHelpers\agents\core\PluginStub');
 
-		\spectrum\tests\Test::$tmp = null;
+		\spectrum\tests\Test::$temp = null;
 	}
 
 	protected function tearDown()
@@ -75,7 +75,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$eventClassName = $this->getEventClassNameByEventName($eventName);
 
 		$count = 0;
-		foreach (\spectrum\tests\Test::$tmp['triggeredEvents'][$eventClassName] as $event)
+		foreach (\spectrum\tests\Test::$temp['triggeredEvents'][$eventClassName] as $event)
 		{
 			if ($event['name'] == $eventName)
 				$count++;
@@ -388,34 +388,34 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	public function injectToRunStartCallsCounter(\spectrum\core\SpecInterface $spec, $counterName = 'callsCounter')
 	{
 		$spec->__injectFunctionToRunStart(function() use($counterName) {
-			\spectrum\tests\Test::$tmp[$counterName] = (int) \spectrum\tests\Test::$tmp[$counterName] + 1;
+			\spectrum\tests\Test::$temp[$counterName] = (int) \spectrum\tests\Test::$temp[$counterName] + 1;
 		});
 	}
 
 	public function injectToRunStartSaveInstanceToCollection(\spectrum\core\SpecInterface $spec)
 	{
 		$spec->__injectFunctionToRunStart(function() use($spec) {
-			\spectrum\tests\Test::$tmp['instancesCollection'][] = $spec;
+			\spectrum\tests\Test::$temp['instancesCollection'][] = $spec;
 		});
 	}
 
 	public function injectToRunStartCallsOrderChecker(\spectrum\core\SpecInterface $spec, $expectedZeroBasedIndex)
 	{
 		$spec->__injectFunctionToRunStart(function() use($spec, $expectedZeroBasedIndex) {
-			\spectrum\tests\Test::$tmp['callsOrderChecker'][] = $expectedZeroBasedIndex;
+			\spectrum\tests\Test::$temp['callsOrderChecker'][] = $expectedZeroBasedIndex;
 		});
 	}
 
 	public function assertCallsCounterEquals($expectedCount, $counterName = 'callsCounter')
 	{
-		$this->assertEquals($expectedCount, (int) @\spectrum\tests\Test::$tmp[$counterName]);
+		$this->assertEquals($expectedCount, (int) @\spectrum\tests\Test::$temp[$counterName]);
 	}
 
 	public function assertCallsInOrder($expectedCount)
 	{
-		$this->assertEquals($expectedCount, count((array) @\spectrum\tests\Test::$tmp['callsOrderChecker']));
+		$this->assertEquals($expectedCount, count((array) @\spectrum\tests\Test::$temp['callsOrderChecker']));
 
-		foreach ((array) \spectrum\tests\Test::$tmp['callsOrderChecker'] as $actualIndex => $expectedIndex)
+		foreach ((array) \spectrum\tests\Test::$temp['callsOrderChecker'] as $actualIndex => $expectedIndex)
 		{
 			$this->assertEquals($expectedIndex, $actualIndex);
 		}
@@ -423,12 +423,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	public function assertInstanceInCollection(\spectrum\core\SpecInterface $spec)
 	{
-		$this->assertTrue(in_array($spec, (array) \spectrum\tests\Test::$tmp['instancesCollection'], true));
+		$this->assertTrue(in_array($spec, (array) \spectrum\tests\Test::$temp['instancesCollection'], true));
 	}
 
 	public function assertInstanceNotInCollection(\spectrum\core\SpecInterface $spec)
 	{
-		$this->assertFalse(in_array($spec, (array) \spectrum\tests\Test::$tmp['instancesCollection'], true));
+		$this->assertFalse(in_array($spec, (array) \spectrum\tests\Test::$temp['instancesCollection'], true));
 	}
 
 	public function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null)

@@ -206,10 +206,10 @@ abstract class SpecTest extends Test
 		$spec = new $specMockClass();
 		$spec->__injectFunctionToRun(function() use ($spec)
 		{
-			if (!in_array($spec, (array) \spectrum\tests\Test::$tmp['uniqueCallsCount'], true))
-				\spectrum\tests\Test::$tmp['uniqueCallsCount'][] = $spec;
+			if (!in_array($spec, (array) \spectrum\tests\Test::$temp['uniqueCallsCount'], true))
+				\spectrum\tests\Test::$temp['uniqueCallsCount'][] = $spec;
 
-			\spectrum\tests\Test::$tmp['asserts'][] = array(true, true);
+			\spectrum\tests\Test::$temp['asserts'][] = array(true, true);
 		});
 
 		return $spec;
@@ -222,7 +222,7 @@ abstract class SpecTest extends Test
 	{
 		$spec = new $specMockClass();
 		$spec->__injectFunctionToRun(function(){
-			\spectrum\tests\Test::$tmp['asserts'][] = array(false, true);
+			\spectrum\tests\Test::$temp['asserts'][] = array(false, true);
 		});
 
 		return $spec;
@@ -235,7 +235,7 @@ abstract class SpecTest extends Test
 	{
 		$spec = new $specMockClass();
 		$spec->__injectFunctionToRun(function(){
-			\spectrum\tests\Test::$tmp['asserts'][] = array(false, true);
+			\spectrum\tests\Test::$temp['asserts'][] = array(false, true);
 		});
 		$spec->disable();
 

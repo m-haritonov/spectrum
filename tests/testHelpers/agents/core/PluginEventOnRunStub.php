@@ -19,7 +19,7 @@ class PluginEventOnRunStub extends \spectrum\core\plugins\Plugin implements \spe
 
 	public function onRunBefore()
 	{
-		\spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][] = array(
+		\spectrum\tests\Test::$temp['triggeredEvents']['onRun'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
 			'isRunning' => $this->getOwnerSpec()->isRunning(),
@@ -32,7 +32,7 @@ class PluginEventOnRunStub extends \spectrum\core\plugins\Plugin implements \spe
 
 	public function onRunAfter($result)
 	{
-		\spectrum\tests\Test::$tmp['triggeredEvents']['onRun'][] = array(
+		\spectrum\tests\Test::$temp['triggeredEvents']['onRun'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
 			'isRunning' => $this->getOwnerSpec()->isRunning(),

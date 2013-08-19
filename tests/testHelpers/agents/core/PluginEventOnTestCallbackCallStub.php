@@ -12,7 +12,7 @@ class PluginEventOnTestCallbackCallStub extends \spectrum\core\plugins\Plugin im
 {
 	public function onTestCallbackCallBefore(\spectrum\core\DataInterface $world)
 	{
-		\spectrum\tests\Test::$tmp['triggeredEvents']['onTestCallbackCall'][] = array(
+		\spectrum\tests\Test::$temp['triggeredEvents']['onTestCallbackCall'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
 			'owner' => $this->getOwnerSpec(),
@@ -24,7 +24,7 @@ class PluginEventOnTestCallbackCallStub extends \spectrum\core\plugins\Plugin im
 
 	public function onTestCallbackCallAfter(\spectrum\core\DataInterface $world)
 	{
-		\spectrum\tests\Test::$tmp['triggeredEvents']['onTestCallbackCall'][] = array(
+		\spectrum\tests\Test::$temp['triggeredEvents']['onTestCallbackCall'][] = array(
 			'name' => __FUNCTION__,
 			'arguments' => func_get_args(),
 			'owner' => $this->getOwnerSpec(),

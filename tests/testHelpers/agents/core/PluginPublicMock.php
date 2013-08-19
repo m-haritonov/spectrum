@@ -30,7 +30,7 @@ class PluginPublicMock extends \spectrum\core\plugins\Plugin
 
 	public function getFoo()
 	{
-		\spectrum\tests\Test::$tmp['getFoo']['arguments'] = func_get_args();
+		\spectrum\tests\Test::$temp['getFoo']['arguments'] = func_get_args();
 		return $this->foo;
 	}
 }

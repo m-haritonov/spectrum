@@ -53,7 +53,7 @@ class BeforeTest extends Test
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$tmp['triggeredEvents']['onTestCallbackCall'];
+			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$temp['triggeredEvents']['onTestCallbackCall'];
 		});
 
 		$spec->run();

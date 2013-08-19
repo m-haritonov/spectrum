@@ -36,7 +36,7 @@ class DirectRunWhenHasParentsTest extends Test
 
 		$specs['testSpec']->run();
 
-		$this->assertEquals(0, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(0, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testShouldNotBeDisableContextSiblings()
@@ -50,7 +50,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->injectToRunStartCallsCounter($specs[1]);
 
 		$specs['testSpec']->run();
-		$this->assertEquals(1, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(1, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testShouldNotBeEnableDisabledContextSiblings()
@@ -65,7 +65,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$specs[1]->disable();
 		$specs['testSpec']->run();
 		
-		$this->assertEquals(0, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(0, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testShouldBeEnableSelfDuringRun()
@@ -79,7 +79,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$specs['testSpec']->disable();
 
 		$specs['testSpec']->run();
-		$this->assertEquals(1, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(1, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testShouldBeRestoreSiblingsEnabledStatusAfterRun()

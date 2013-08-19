@@ -77,7 +77,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 
 		$specs['testSpec']->run();
 
-		$this->assertEquals(0, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(0, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldNotBeDisableContextSiblings()
@@ -91,7 +91,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 		$this->injectToRunStartCallsCounter($specs[1]);
 
 		$specs['testSpec']->run();
-		$this->assertEquals(1, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(1, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldNotBeEnableDisabledContextSiblings()
@@ -106,7 +106,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 		$specs[1]->disable();
 		$specs['testSpec']->run();
 
-		$this->assertEquals(0, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(0, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldBeEnableSelfDuringRun()
@@ -120,7 +120,7 @@ class SpecContainerDescribeTest extends SpecContainerTest
 		$specs['testSpec']->disable();
 
 		$specs['testSpec']->run();
-		$this->assertEquals(1, (int) \spectrum\tests\Test::$tmp['callsCounter']);
+		$this->assertEquals(1, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
 	public function testRun_DirectRunWhenHasParents_ShouldBeRestoreSiblingsEnabledStatusAfterRun()

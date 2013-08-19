@@ -22,7 +22,7 @@ class AfterTest extends Test
 	{
 		$this->createItWithPluginEventAndRun('\spectrum\core\testEnv\PluginEventOnTestCallbackCallStub');
 
-		$events = \spectrum\tests\Test::$tmp['triggeredEvents']['onTestCallbackCall'];
+		$events = \spectrum\tests\Test::$temp['triggeredEvents']['onTestCallbackCall'];
 		$this->assertEquals('onTestCallbackCallBefore', $events[0]['name']);
 		$this->assertEquals($this->eventName, $events[1]['name']);
 	}
@@ -33,7 +33,7 @@ class AfterTest extends Test
 
 		$spec = new SpecItemIt();
 		$spec->setTestCallback(function() use(&$triggeredEventsBeforeExecution){
-			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$tmp['triggeredEvents']['onTestCallbackCall'];
+			$triggeredEventsBeforeExecution = \spectrum\tests\Test::$temp['triggeredEvents']['onTestCallbackCall'];
 		});
 
 		$spec->run();
@@ -42,7 +42,7 @@ class AfterTest extends Test
 
 		$this->assertEquals(1, count($triggeredEventsBeforeExecution));
 		$this->assertNotEquals($this->eventName, $triggeredEventsBeforeExecution[0]['name']);
-		$this->assertEquals($this->eventName, \spectrum\tests\Test::$tmp['triggeredEvents']['onTestCallbackCall'][1]['name']);
+		$this->assertEquals($this->eventName, \spectrum\tests\Test::$temp['triggeredEvents']['onTestCallbackCall'][1]['name']);
 	}
 
 	public function testShouldBeTriggeredBeforeWorldDestroyersApply()
