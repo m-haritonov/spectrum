@@ -39,11 +39,8 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	
 	public function getThroughRunningAncestors($index)
 	{
-		$stack = $this->getOwnerSpec()->getRunningAncestorSpecs();
-		$stack[] = $this->getOwnerSpec();
-		$stack = array_reverse($stack);
-
-		foreach ($stack as $spec)
+		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
+		foreach ($ancestorSpecs as $spec)
 		{
 			if ($spec->{static::getAccessName()}->isExists($index))
 				return $spec->{static::getAccessName()}->get($index);
@@ -81,11 +78,11 @@ class Contexts extends \spectrum\core\plugins\Plugin
 		$joinOrder = strtolower($joinOrder);
 		$this->checkType($joinOrder);
 		
-		$stack = $this->getOwnerSpec()->getRunningAncestorSpecs();
-		$stack[] = $this->getOwnerSpec();
-
+		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
+		$ancestorSpecs = array_reverse($ancestorSpecs);
+		
 		$result = array();
-		foreach ($stack as $spec)
+		foreach ($ancestorSpecs as $spec)
 		{
 			if ($joinOrder == 'before')
 				$result = array_merge($result, $spec->{static::getAccessName()}->getAll('before'));
@@ -103,11 +100,9 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	
 	public function isExistsThroughRunningAncestors($index)
 	{
-		$stack = $this->getOwnerSpec()->getRunningAncestorSpecs();
-		$stack[] = $this->getOwnerSpec();
-		$stack = array_reverse($stack);
+		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
 
-		foreach ($stack as $spec)
+		foreach ($ancestorSpecs as $spec)
 		{
 			if ($spec->{static::getAccessName()}->isExists($index))
 				return true;

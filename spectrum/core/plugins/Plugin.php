@@ -43,11 +43,9 @@ abstract class Plugin implements PluginInterface
 	
 	protected  function callMethodThroughRunningAncestorSpecs($methodName, $args = array(), $returnByDefaultValue = null, $notSetCheckValue = null, $strict = true)
 	{
-		$ancestors = $this->getOwnerSpec()->getRunningAncestorSpecs();
-		$ancestors[] = $this;
-		$ancestors = array_reverse($ancestors);
-
-		foreach ($ancestors as $spec)
+		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
+		
+		foreach ($ancestorSpecs as $spec)
 		{
 			$plugin = $spec->{static::getAccessName()};
 			

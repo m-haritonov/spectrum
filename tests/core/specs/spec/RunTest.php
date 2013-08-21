@@ -6,73 +6,31 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests\core\specItemIt;
-use spectrum\core\ResultBuffer;
-use spectrum\core\SpecItem;
-use spectrum\core\SpecItemIt;
+namespace spectrum\tests\core\spec;
+use spectrum\config;
+use spectrum\core\Spec;
 
-require_once __DIR__ . '/../../init.php';
+require_once __DIR__ . '/../../../init.php';
 
-class RunTest extends Test
+class RunTest extends \spectrum\tests\Test
 {
-	public function testShouldBeCallTestCallback()
+	public function setUp()
 	{
-		$it = new SpecItemIt();
-		$isCalled = false;
-		$it->setTestCallback(function() use(&$isCalled){ $isCalled = true; });
-
-		$it->run();
-
-		$this->assertTrue($isCalled);
+		parent::setUp();
+		config::unregisterSpecPlugins();
 	}
 
-	public function testShouldBePassTestCallbackArgumentsToTestCallback()
+	/*
+	public function testReturnsNewInstanceForEachEndingSpec()
 	{
-		$it = new SpecItemIt();
-		$it->setTestCallbackArguments(array('foo', 'bar', 'baz'));
-		$it->setTestCallback(function() use(&$passedArguments){
-			$passedArguments = func_get_args();
-		});
-
-		$it->run();
-
-		$this->assertEquals(3, count($passedArguments));
-
-		$this->assertEquals('foo', $passedArguments[0]);
-		$this->assertEquals('bar', $passedArguments[1]);
-		$this->assertEquals('baz', $passedArguments[2]);
+		$spec = new Spec();
+		$this->assertInstanceOf('\spectrum\core\ResultBuffer', $spec->getResultBuffer());
 	}
-
-	public function testShouldBeCreateNewEmptyResultBufferBeforeEveryRun()
+	
+	public function testReturnsNullForNotEndingSpecs()
 	{
-		$it = new SpecItemIt();
-		$it->setTestCallback(function() use($it, &$resultBuffers){
-			$resultBuffers[] = $it->getResultBuffer();
-		});
-
-		$it->run();
-		$this->assertEquals(1, count($resultBuffers));
-		$this->assertTrue($resultBuffers[0] instanceof ResultBuffer);
-		$this->assertSame(array(), $resultBuffers[0]->getResults());
-
-		$it->run();
-		$this->assertEquals(2, count($resultBuffers));
-		$this->assertTrue($resultBuffers[1] instanceof ResultBuffer);
-		$this->assertSame(array(), $resultBuffers[1]->getResults());
-
-		$this->assertNotSame($resultBuffers[0], $resultBuffers[1]);
-	}
-
-	public function testShouldBeUnsetReferenceToResultBufferAfterRun()
-	{
-		$it = new SpecItemIt();
-		$it->setTestCallback(function() use($it){
-			$it->getResultBuffer()->addResult(false);
-		});
-
-		$it->run();
-
-		$this->assertNull($it->getResultBuffer());
+		$spec = new Spec();
+		$this->assertSame(null, $spec->getDeepestRunningSpec());
 	}
 
 	public function testShouldBeUnsetResultsInResultBufferAfterRun()
@@ -103,48 +61,6 @@ class RunTest extends Test
 		$this->assertTrue($it->run());
 	}
 
-	public function testShouldBeSetSelfAsRunningSpecItemToRegistryDuringRun()
-	{
-		$it = new SpecItemIt();
-		$runningSpecItem = null;
-		$it->setTestCallback(function() use(&$runningSpecItem){
-			$runningSpecItem = \spectrum\core\Registry::getRunningSpecItem();
-		});
-
-		$it->run();
-
-		$this->assertSame($it, $runningSpecItem);
-	}
-
-	public function testShouldBeRestoreRunningSpecItemInRegistryAfterRun()
-	{
-		$runningSpecItemBackup = \spectrum\core\Registry::getRunningSpecItem();
-		$it = new SpecItemIt();
-		$it->setTestCallback(function(){});
-
-		$it->run();
-
-		$this->assertSame($runningSpecItemBackup, \spectrum\core\Registry::getRunningSpecItem());
-	}
-
-	public function testShouldBeRestoreRunningSpecItemInRegistryAfterNestedRun()
-	{
-		$it = new SpecItemIt();
-		$it->setTestCallback(function() use(&$runningSpecItemAfterNestedRun)
-		{
-			$it2 = new SpecItemIt();
-			$it2->setTestCallback(function() use($it2) {});
-			$it2->run();
-
-			$runningSpecItemAfterNestedRun = \spectrum\core\Registry::getRunningSpecItem();
-		});
-
-		$it->run();
-
-		$this->assertSame($it, $runningSpecItemAfterNestedRun);
-	}
-
-/**/
 
 	public function testReturnValue_ShouldBeReturnFalseIfAnyResultInStackIsLikeFalse()
 	{
@@ -184,4 +100,6 @@ class RunTest extends Test
 		$it = new SpecItemIt();
 		$this->assertNull($it->run());
 	}
+
+*/
 }

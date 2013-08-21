@@ -36,7 +36,7 @@ interface SpecInterface
 
 	public function getChildSpecs();
 	public function getChildSpecsByName($name);
-	public function getChildSpecByIndex($index);
+	public function getChildSpecByNumber($number);
 	public function getDeepestRunningSpec();
 	public function hasChildSpec(SpecInterface $spec);
 	public function bindChildSpec(SpecInterface $spec);

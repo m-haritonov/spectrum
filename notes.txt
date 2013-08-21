@@ -1,5 +1,9 @@
 TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
 TODO: multiplier vs contextSwitchers
+TODO: Spec::setName() — приводиль ли имя к строковому типу?
+TODO: config — reset array keys
+TODO: onSpecRunInit vs onSpecRunStart, onSpecRunFinish vs onSpecRunStop
+TODO: license text to each file head
 
 TODO: reports — по умолчанию не разворачивать список ошибок
 TODO: instanceofMatcher -> instanceof_
@@ -24,27 +28,32 @@ TODO: ResultBuffer: rename $result['result'] to $result['value/flag']
 TODO: translate throwsException messages
 
 TO DOC: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
+
+
+it(array(
+	'en' => 'Makes something',
+	'ru' => 'Делает что-либо',
+), function(){
+
+});
+
+translate('Делает что-либо', 'ru');
+it('Makes something'), function(){
+
+});
+
+group('abc', function(){
+	addSwitcher('aaa', function(){
 	
+	});
+	addSwitcher('aaa', function(){
 	
+	});
+}, function(){
+	it('Makes something'), 'aaa', function(){
 	
-	
-	
-var_dump(is_numeric('123')); // true
-var_dump(is_numeric(' 123')); // true
-Но
-var_dump(is_numeric('   123')); // true
-var_dump(is_numeric('123 abc')); // true
-	
-	
-	
-	
-	
-	
-	
-/**
- * @lang ru Делает что-нибудь
- */
-it('Makes something', function(){});
+	});
+});
 
 rename argumentProviders feature to dataSets
 if test callback return false — throw exception: test callback return not null

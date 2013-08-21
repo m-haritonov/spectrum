@@ -43,11 +43,8 @@ class Matchers extends \spectrum\core\plugins\Plugin
 	
 	public function getThroughRunningAncestors($name)
 	{
-		$stack = $this->getOwnerSpec()->getRunningAncestorSpecs();
-		$stack[] = $this->getOwnerSpec();
-		$stack = array_reverse($stack);
-
-		foreach ($stack as $spec)
+		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
+		foreach ($ancestorSpecs as $spec)
 		{
 			if ($spec->{static::getAccessName()}->isExists($name))
 				return $spec->{static::getAccessName()}->get($name);
@@ -69,11 +66,8 @@ class Matchers extends \spectrum\core\plugins\Plugin
 	
 	public function isExistsThroughRunningAncestors($name)
 	{
-		$stack = $this->getOwnerSpec()->getRunningAncestorSpecs();
-		$stack[] = $this->getOwnerSpec();
-		$stack = array_reverse($stack);
-
-		foreach ($stack as $spec)
+		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
+		foreach ($ancestorSpecs as $spec)
 		{
 			if ($spec->{static::getAccessName()}->isExists($name))
 				return true;

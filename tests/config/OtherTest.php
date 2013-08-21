@@ -288,7 +288,7 @@ class OtherTest extends \spectrum\tests\Test
 			
 				public function getChildSpecs(){}
 				public function getChildSpecsByName($name){}
-				public function getChildSpecByIndex($index){}
+				public function getChildSpecByNumber($number){}
 				public function getDeepestRunningSpec(){}
 				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
@@ -358,7 +358,7 @@ class OtherTest extends \spectrum\tests\Test
 			
 				public function getChildSpecs(){}
 				public function getChildSpecsByName($name){}
-				public function getChildSpecByIndex($index){}
+				public function getChildSpecByNumber($number){}
 				public function getDeepestRunningSpec(){}
 				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
