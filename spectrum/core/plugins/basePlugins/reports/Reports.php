@@ -26,8 +26,8 @@ class Reports extends \spectrum\core\plugins\Plugin
 	static public function getEventListeners()
 	{
 		return array(
-			array('event' => 'onSpecRunInit', 'method' => 'onSpecRunInit', 'order' => 10),
-			array('event' => 'onSpecRunFinish', 'method' => 'onSpecRunFinish', 'order' => -10),
+			array('event' => 'onSpecRunInit', 'method' => 'onSpecRunInit', 'order' => 20),
+			array('event' => 'onSpecRunFinish', 'method' => 'onSpecRunFinish', 'order' => -20),
 		);
 	}
 	
