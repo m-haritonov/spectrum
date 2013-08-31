@@ -10,6 +10,7 @@ namespace spectrum\core\plugins\basePlugins;
 use spectrum\config;
 use spectrum\core\ExceptionBreak;
 use spectrum\core\ExceptionPhpError;
+use spectrum\core\MatcherCallDetailsInterface;
 use spectrum\core\plugins\Exception;
 
 class ErrorHandling extends \spectrum\core\plugins\Plugin
@@ -111,22 +112,6 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	
 	protected function onEndingSpecExecuteBefore()
 	{
-		$this->setErrorHandler();
-	}
-	
-	protected function onEndingSpecExecuteAfter()
-	{
-		$this->restoreErrorHandler();
-	}
-	
-	protected function onMatcherCallAfter($result, $callDetails)
-	{
-		if (!$result && $this->getBreakOnFirstMatcherFailThroughRunningAncestors())
-			throw new ExceptionBreak();
-	}
-	
-	protected function setErrorHandler()
-	{
 		$catchPhpErrors = $this->getCatchPhpErrorsThroughRunningAncestors();
 
 		if (!$catchPhpErrors)
@@ -147,12 +132,18 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 
 		}, $catchPhpErrors);
 	}
-
-	protected function restoreErrorHandler()
+	
+	protected function onEndingSpecExecuteAfter()
 	{
 		if ($this->isErrorHandlerSets)
 			restore_error_handler();
 
 		$this->isErrorHandlerSets = false;
+	}
+	
+	protected function onMatcherCallAfter(MatcherCallDetailsInterface $callDetails)
+	{
+		if (!$callDetails->getResult() && $this->getBreakOnFirstMatcherFailThroughRunningAncestors())
+			throw new ExceptionBreak();
 	}
 }

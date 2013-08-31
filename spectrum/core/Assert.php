@@ -27,7 +27,7 @@ use spectrum\core\Spec;
 class Assert implements AssertInterface
 {
 	protected $testedValue;
-	protected $notValue = false;
+	protected $notFlag = false;
 	/**
 	 * @var SpecInterface|Spec
 	 */
@@ -41,43 +41,43 @@ class Assert implements AssertInterface
 
 	public function __call($matcherName, array $matcherArguments = array())
 	{
-		$this->dispatchPluginEvent('onMatcherCallBefore', array($this->testedValue, $matcherName, $matcherArguments, $this));
+//		$argumentsSourceCode = $this->parseArgumentsSourceCode($this->getCurrentVerifyCallSourceCode($verifyFunctionName), $verifyFunctionName);
+		
+		$callDetailsClass = \spectrum\config::getMatcherCallDetailsClass();
+		/** @var MatcherCallDetailsInterface $callDetails */
+		$callDetails = new $callDetailsClass();
+		$callDetails->setTestedValue($this->testedValue);
+		$callDetails->setNot($this->notFlag);
+		$callDetails->setMatcherName($matcherName);
+		$callDetails->setMatcherArguments($matcherArguments);
+	
+		$this->dispatchPluginEvent('onMatcherCallBefore', array($callDetails, $this));
+		
+		$matcherFunction = $this->ownerSpec->matchers->getThroughRunningAncestors($matcherName);
+		if ($matcherFunction === null)
+			throw new Exception('Matcher "' . $matcherName . '" not found');
 		
 		try
 		{
-//			$argumentsSourceCode = $this->parseArgumentsSourceCode($this->getCurrentVerifyCallSourceCode($verifyFunctionName), $verifyFunctionName);
-			
-			$callDetailsClass = \spectrum\config::getMatcherCallDetailsClass();
-			$callDetails = new $callDetailsClass();
-			$callDetails->setTestedValue($this->getTestedValue());
-			$callDetails->setNot($this->getNot());
-			$callDetails->setMatcherName($matcherName);
-			$callDetails->setMatcherArguments($matcherArguments);
-			
-			$matcherFunction = $this->ownerSpec->matchers->getThroughRunningAncestors($matcherName);
-			
-			if ($matcherFunction === null)
-				throw new Exception('Matcher "' . $matcherName . '" not found');
-			
-			$result = call_user_func_array($matcherFunction, array_merge(array($this->getTestedValue()), $matcherArguments));
-			$callDetails->setMatcherReturnValue($result);
+			$matcherReturnValue = call_user_func_array($matcherFunction, array_merge(array($this->testedValue), $matcherArguments));
+			$callDetails->setMatcherReturnValue($matcherReturnValue);
+			$result = ($this->notFlag ? !$matcherReturnValue : (bool) $matcherReturnValue);
 		}
 		catch (\Exception $e)
 		{
 			$result = false;
-			$callDetails = $e;
+			$callDetails->setMatcherException($e);
 		}
 		
-		if ($this->getNot())
-			$result = !$result;
-
+		$callDetails->setResult($result);
+		
 		if ($result)
 			$this->ownerSpec->getResultBuffer()->addSuccessResult($callDetails);
 		else
 			$this->ownerSpec->getResultBuffer()->addFailResult($callDetails);
 		
-		$this->resetNot();
-		$this->dispatchPluginEvent('onMatcherCallAfter', array((bool) $result, $callDetails, $this));
+		$this->notFlag = false;
+		$this->dispatchPluginEvent('onMatcherCallAfter', array($callDetails, $this));
 		return $this;
 	}
 	
@@ -85,31 +85,11 @@ class Assert implements AssertInterface
 	{
 		if ($name == 'not')
 		{
-			$this->invertNot();
+			$this->notFlag = !$this->notFlag;
 			return $this;
 		}
 		
 		throw new Exception('Undefined property "Assert->' . $name . '" in method "' . __METHOD__ . '"');
-	}
-	
-	protected function invertNot()
-	{
-		$this->notValue = !$this->notValue;
-	}
-
-	protected function getTestedValue()
-	{
-		return $this->testedValue;
-	}
-
-	protected function getNot()
-	{
-		return $this->notValue;
-	}
-
-	protected function resetNot()
-	{
-		$this->notValue = false;
 	}
 	
 	protected function dispatchPluginEvent($eventName, array $arguments = array())

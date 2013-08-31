@@ -175,16 +175,26 @@ class OtherTest extends \spectrum\tests\Test
 		$className = $this->createClass('
 			class ... implements \spectrum\core\MatcherCallDetailsInterface
 			{
-				public function setTestedValue($actualValue){}
+				public function setTestedValue($testedValue){}
 				public function getTestedValue(){}
+				
 				public function setNot($not){}
 				public function getNot(){}
+				
+				public function setResult($result){}
+				public function getResult(){}
+				
 				public function setMatcherName($matcherName){}
 				public function getMatcherName(){}
-				public function setMatcherArguments(array $matcherArgs){}
+				
+				public function setMatcherArguments(array $matcherArguments){}
 				public function getMatcherArguments(){}
+				
 				public function setMatcherReturnValue($matcherReturnValue){}
 				public function getMatcherReturnValue(){}
+				
+				public function setMatcherException(\Exception $exception = null){}
+				public function getMatcherException(){}
 			}
 		');
 		
@@ -219,16 +229,26 @@ class OtherTest extends \spectrum\tests\Test
 		$className = $this->createClass('
 			class ... implements \spectrum\core\MatcherCallDetailsInterface
 			{
-				public function setTestedValue($actualValue){}
+				public function setTestedValue($testedValue){}
 				public function getTestedValue(){}
+				
 				public function setNot($not){}
 				public function getNot(){}
+				
+				public function setResult($result){}
+				public function getResult(){}
+				
 				public function setMatcherName($matcherName){}
 				public function getMatcherName(){}
-				public function setMatcherArguments(array $matcherArgs){}
+				
+				public function setMatcherArguments(array $matcherArguments){}
 				public function getMatcherArguments(){}
+				
 				public function setMatcherReturnValue($matcherReturnValue){}
 				public function getMatcherReturnValue(){}
+				
+				public function setMatcherException(\Exception $exception = null){}
+				public function getMatcherException(){}
 			}
 		');
 		

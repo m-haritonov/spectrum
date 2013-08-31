@@ -13,11 +13,13 @@ class MatcherCallDetails implements MatcherCallDetailsInterface
 	protected $testedValue;
 //	protected $testedValueSourceCode;
 	protected $not;
+	protected $result;
 	protected $matcherName;
 	protected $matcherArguments = array();
 	protected $matcherReturnValue;
+	protected $matcherException;
 
-	public function setTestedValue($value){ $this->testedValue = $value; }
+	public function setTestedValue($testedValue){ $this->testedValue = $testedValue; }
 	public function getTestedValue(){ return $this->testedValue; }
 
 /**/
@@ -32,16 +34,26 @@ class MatcherCallDetails implements MatcherCallDetailsInterface
 
 /**/
 
+	public function setResult($result){ $this->result = $result; }
+	public function getResult(){ return $this->result; }
+
+/**/
+
 	public function setMatcherName($matcherName){ $this->matcherName = $matcherName; }
 	public function getMatcherName(){ return $this->matcherName; }
 
 /**/
 
-	public function setMatcherArguments(array $matcherArgs){ $this->matcherArguments = $matcherArgs; }
+	public function setMatcherArguments(array $matcherArguments){ $this->matcherArguments = $matcherArguments; }
 	public function getMatcherArguments(){ return $this->matcherArguments; }
 
 /**/
 
 	public function setMatcherReturnValue($matcherReturnValue){ $this->matcherReturnValue = $matcherReturnValue; }
 	public function getMatcherReturnValue(){ return $this->matcherReturnValue; }
+	
+/**/
+	
+	public function setMatcherException(\Exception $exception = null){ $this->matcherException = $exception; }
+	public function getMatcherException(){ return $this->matcherException; }
 }
