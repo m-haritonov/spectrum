@@ -13,9 +13,10 @@ interface ResultBufferInterface
 	public function __construct(\spectrum\core\SpecInterface $ownerSpec);
 	public function getOwnerSpec();
 	
-	public function addFailResult($details = null);
-	public function addSuccessResult($details = null);
-	
+	public function addResult($result, $details = null);
 	public function getResults();
 	public function getTotalResult();
+	
+	public function lock();
+	public function isLocked();
 }

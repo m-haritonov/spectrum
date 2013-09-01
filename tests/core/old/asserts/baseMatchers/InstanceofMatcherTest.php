@@ -6,10 +6,10 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests\core\plugins\basePlugins\worldCreators;
-require_once __DIR__ . '/../../../../init.php';
+namespace spectrum\tests\matchers\base;
+require_once __DIR__ . '/../../../init.php';
+require_once 'base/throwsException.php';
 
-class BuildersTest extends WorldCreatorsTest
+class InstanceofMatcherTest extends \spectrum\matchers\Test
 {
-
 }

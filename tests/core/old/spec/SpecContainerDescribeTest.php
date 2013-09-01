@@ -6,12 +6,53 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests\core\specItemIt;
-require_once __DIR__ . '/../../init.php';
+namespace spectrum\tests\core;
+require_once __DIR__ . '/../init.php';
 
-class DirectRunWhenHasParentsTest extends Test
+class SpecContainerDescribeTest extends SpecContainerTest
 {
-	public function testShouldBeReturnParentRunResult()
+	protected $currentSpecClass = '\spectrum\core\SpecContainerDescribe';
+	protected $currentSpecMockClass = '\spectrum\core\testEnv\SpecContainerDescribeMock';
+
+/**/
+
+	public function testRun_HasNoChildContexts_ShouldBeRunAllEnabledChildren()
+	{
+		$specs = $this->createSpecsTree('
+			Describe
+			->DescribeMock
+			->ItMock
+		');
+
+		$this->injectToRunStartSaveInstanceToCollection($specs[1]);
+		$this->injectToRunStartSaveInstanceToCollection($specs[2]);
+
+		$specs[0]->run();
+		$this->assertInstanceInCollection($specs[1]);
+		$this->assertInstanceInCollection($specs[2]);
+	}
+
+	public function testRun_HasNoChildContexts_ShouldNotBeRunDisabledChildren()
+	{
+		$specs = $this->createSpecsTree('
+			Describe
+			->DescribeMock
+			->ItMock
+		');
+
+		$specs[1]->disable();
+		$specs[2]->disable();
+		$this->injectToRunStartSaveInstanceToCollection($specs[1]);
+		$this->injectToRunStartSaveInstanceToCollection($specs[2]);
+
+		$specs[0]->run();
+		$this->assertInstanceNotInCollection($specs[1]);
+		$this->assertInstanceNotInCollection($specs[2]);
+	}
+
+/**/
+
+	public function testRun_DirectRunWhenHasParents_ShouldBeReturnParentRunResult()
 	{
 		$specs = $this->createSpecsTree('
 			DescribeMock
@@ -21,8 +62,8 @@ class DirectRunWhenHasParentsTest extends Test
 		$specs[0]->__setRunReturnValue('foo');
 		$this->assertEquals('foo', $specs['testSpec']->run());
 	}
-	
-	public function testShouldBeDisableAllNotContextSiblingsDuringRun()
+
+	public function testRun_DirectRunWhenHasParents_ShouldBeDisableAllNotContextSiblingsDuringRun()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
@@ -39,7 +80,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->assertEquals(0, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
-	public function testShouldNotBeDisableContextSiblings()
+	public function testRun_DirectRunWhenHasParents_ShouldNotBeDisableContextSiblings()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
@@ -53,7 +94,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->assertEquals(1, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
-	public function testShouldNotBeEnableDisabledContextSiblings()
+	public function testRun_DirectRunWhenHasParents_ShouldNotBeEnableDisabledContextSiblings()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
@@ -64,11 +105,11 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->injectToRunStartCallsCounter($specs[1]);
 		$specs[1]->disable();
 		$specs['testSpec']->run();
-		
+
 		$this->assertEquals(0, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
-	public function testShouldBeEnableSelfDuringRun()
+	public function testRun_DirectRunWhenHasParents_ShouldBeEnableSelfDuringRun()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
@@ -82,7 +123,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->assertEquals(1, (int) \spectrum\tests\Test::$temp['callsCounter']);
 	}
 
-	public function testShouldBeRestoreSiblingsEnabledStatusAfterRun()
+	public function testRun_DirectRunWhenHasParents_ShouldBeRestoreSiblingsEnabledStatusAfterRun()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
@@ -99,7 +140,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->assertTrue($specs[3]->isEnabled());
 	}
 
-	public function testShouldBeRestoreSiblingsDisabledStatusAfterRun()
+	public function testRun_DirectRunWhenHasParents_ShouldBeRestoreSiblingsDisabledStatusAfterRun()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
@@ -120,7 +161,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->assertFalse($specs[3]->isEnabled());
 	}
 
-	public function testShouldBeRestoreSelfEnabledStatusAfterRun()
+	public function testRun_DirectRunWhenHasParents_ShouldBeRestoreSelfEnabledStatusAfterRun()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
@@ -132,7 +173,7 @@ class DirectRunWhenHasParentsTest extends Test
 		$this->assertTrue($specs['testSpec']->isEnabled());
 	}
 
-	public function testShouldBeRestoreSelfDisabledStatusAfterRun()
+	public function testRun_DirectRunWhenHasParents_ShouldBeRestoreSelfDisabledStatusAfterRun()
 	{
 		$specs = $this->createSpecsTree('
 			Describe
