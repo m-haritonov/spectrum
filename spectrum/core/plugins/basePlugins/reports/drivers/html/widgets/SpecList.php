@@ -78,7 +78,7 @@ class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\w
 		$output = '';
 		$spec = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec();
 		
-		if ($spec->isRoot())
+		if (!$spec->getParentSpecs())
 		{
 			static::$depth = 0;
 			$output .= $this->getIndention($this->getSpecDepth() + 1) . '<ol class="g-specList">' . $this->getNewline();
@@ -92,7 +92,7 @@ class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\w
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecPoint() . $this->getNewline();
 			$output .= $this->prependIndentionToEachLine($this->createWidget('SpecTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
-			if ($spec->getChildSpecs() || $spec->isRoot())
+			if ($spec->getChildSpecs() || !$spec->getParentSpecs())
 			{
 				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '<ol class="g-specList">' . $this->getNewline();
 				static::$depth++;
@@ -123,7 +123,7 @@ class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\w
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();
 		}
 
-		if ($spec->isRoot())
+		if (!$spec->getParentSpecs())
 			$output .= $this->getIndention($this->getSpecDepth() + 1) . '</ol>' . $this->getNewline();
 
 		return $output;

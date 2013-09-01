@@ -99,7 +99,7 @@ class DetailsControl extends \spectrum\core\plugins\basePlugins\reports\drivers\
 
 	public function getHtml()
 	{
-		if (!$this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->isRoot())
+		if ($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 			return;
 
 		return

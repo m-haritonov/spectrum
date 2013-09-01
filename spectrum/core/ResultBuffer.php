@@ -13,6 +13,7 @@ class ResultBuffer implements ResultBufferInterface
 	/** @var \spectrum\core\SpecInterface */
 	protected $ownerSpec;
 	protected $results = array();
+	protected $locked = false;
 
 	public function __construct(\spectrum\core\SpecInterface $ownerSpec)
 	{
@@ -25,23 +26,19 @@ class ResultBuffer implements ResultBufferInterface
 	}
 
 	/**
-	 * @param mixed $details Exception object, some message, backtrace info, etc.
+	 * @param bool|null $result true, false or null
+	 * @param mixed $details Exception object, some string, backtrace info, etc.
 	 */
-	public function addFailResult($details = null)
+	public function addResult($result, $details = null)
 	{
+		if ($this->locked)
+			throw new Exception('ResultBuffer is locked');
+		
+		if ($result !== true && $result !== false && $result !== null)
+			throw new Exception('ResultBuffer is accept only "true", "false" or "null"');
+		
 		$this->results[] = array(
-			'result' => false,
-			'details' => $details,
-		);
-	}
-	
-	/**
-	 * @param mixed $details Exception object, some message, backtrace info, etc.
-	 */
-	public function addSuccessResult($details = null)
-	{
-		$this->results[] = array(
-			'result' => true,
+			'result' => $result,
 			'details' => $details,
 		);
 	}
@@ -53,15 +50,30 @@ class ResultBuffer implements ResultBufferInterface
 
 	public function getTotalResult()
 	{
+		$hasNull = false;
 		foreach ($this->results as $result)
 		{
-			if (!$result['result'])
+			if ($result['result'] === false)
 				return false;
+			else if ($result['result'] === null)
+				$hasNull = true;
 		}
 
-		if (count($this->results) > 0)
+		if ($hasNull)
+			return null;
+		else if (count($this->results) > 0)
 			return true;
 		else
 			return null;
+	}
+	
+	public function lock()
+	{
+		$this->locked = true;
+	}
+	
+	public function isLocked()
+	{
+		return $this->locked;
 	}
 }

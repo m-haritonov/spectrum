@@ -125,7 +125,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 			if (error_reporting() == 0)
 				return;
 
-			$thisObject->getOwnerSpec()->getResultBuffer()->addFailResult(new ExceptionPhpError($message, 0, $severity, $file, $line));
+			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new ExceptionPhpError($message, 0, $severity, $file, $line));
 
 			if ($thisObject->getBreakOnFirstPhpErrorThroughRunningAncestors())
 				throw new ExceptionBreak();

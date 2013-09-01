@@ -39,8 +39,8 @@ interface PluginInterface
 	 *               onSpecRunInit
 	 *               onSpecRunFinish
 	 * 
-	 *               onSpecRunBefore
-	 *               onSpecRunAfter
+	 *               onRootSpecRunBefore
+	 *               onRootSpecRunAfter
 	 * 
 	 *               onTestFunctionCallBefore
 	 *               onTestFunctionCallAfter

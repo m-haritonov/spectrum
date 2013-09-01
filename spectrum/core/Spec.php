@@ -22,6 +22,8 @@ class Spec implements SpecInterface
 {
 	protected $name;
 	protected $isEnabled = true;
+	
+	// TODO: remove
 	protected $isEnabledTemporarily = null;
 	
 	/**
@@ -236,17 +238,16 @@ class Spec implements SpecInterface
 		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!$this->hasParentSpec($spec))
-		{
 			$this->parentSpecs[] = $spec;
-			$spec->childSpecs[] = $this;
-		}
+		
+		if (!$spec->hasChildSpec($this))
+			$spec->bindChildSpec($this);
 	}
 	
 	public function unbindParentSpec(SpecInterface $spec)
 	{
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		// Remove parent spec from this parent specs list
 		$parentSpecKey = array_search($spec, $this->parentSpecs, true);
 		if ($parentSpecKey !== false)
 		{
@@ -254,13 +255,8 @@ class Spec implements SpecInterface
 			$this->parentSpecs = array_values($this->parentSpecs);
 		}
 		
-		// Remove this spec from child specs list of parent spec
-		$thisSpecKey = array_search($this, $spec->childSpecs, true);
-		if ($thisSpecKey !== false)
-		{
-			unset($spec->childSpecs[$thisSpecKey]);
-			$spec->childSpecs = array_values($spec->childSpecs);
-		}
+		if ($spec->hasChildSpec($this))
+			$spec->unbindChildSpec($this);
 	}
 
 	public function unbindAllParentSpecs()
@@ -319,17 +315,16 @@ class Spec implements SpecInterface
 		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!$this->hasChildSpec($spec))
-		{
 			$this->childSpecs[] = $spec;
-			$spec->parentSpecs[] = $this;
-		}
+		
+		if (!$spec->hasParentSpec($this))
+			$spec->bindParentSpec($this);
 	}
 	
 	public function unbindChildSpec(SpecInterface $spec)
 	{
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		// Remove child spec from this child specs list
 		$childSpecKey = array_search($spec, $this->childSpecs, true);
 		if ($childSpecKey !== false)
 		{
@@ -337,13 +332,8 @@ class Spec implements SpecInterface
 			$this->childSpecs = array_values($this->childSpecs);
 		}
 		
-		// Remove this spec from parent specs list of child spec
-		$thisSpecKey = array_search($this, $spec->parentSpecs, true);
-		if ($thisSpecKey !== false)
-		{
-			unset($spec->parentSpecs[$thisSpecKey]);
-			$this->parentSpecs = array_values($this->parentSpecs);
-		}
+		if ($spec->hasParentSpec($this))
+			$spec->unbindParentSpec($this);
 	}
 
 	public function unbindAllChildSpecs()
@@ -357,11 +347,6 @@ class Spec implements SpecInterface
 	}
 
 /**/
-	
-	public function isRoot()
-	{
-		return !$this->parentSpecs;
-	}
 	
 	public function getRootSpec()
 	{
@@ -385,7 +370,7 @@ class Spec implements SpecInterface
 		$parentSpecs = $this->parentSpecs;
 		foreach ($parentSpecs as $parentSpec)
 		{
-			if ($parentSpec->isRoot() && !in_array($parentSpec, $rootSpecs, true))
+			if (!$parentSpec->getParentSpecs() && !in_array($parentSpec, $rootSpecs, true))
 				$rootSpecs[] = $parentSpec;
 			
 			foreach ($parentSpec->getRootSpecs() as $spec)
@@ -426,8 +411,19 @@ class Spec implements SpecInterface
 		return $ancestorSpecs;
 	}
 	
+	public function getRunningChildSpec()
+	{
+		foreach ($this->childSpecs as $childSpec)
+		{
+			if ($childSpec->isRunning())
+				return $childSpec;
+		}
+		
+		return null;
+	}
+	
 	/**
-	 * Return deepest spec from running spec stack. Use it for get current running spec through root spec.
+	 * Return deepest spec from running spec stack or self (if self is running). For example, use it for get current running spec through root spec.
 	 */
 	public function getDeepestRunningSpec()
 	{
@@ -457,56 +453,70 @@ class Spec implements SpecInterface
 	
 	public function run()
 	{
-		if (count($this->getRootSpecs()) > 1)
+		$rootSpecs = $this->getRootSpecs();
+		$runningParentSpec = $this->getRunningParentSpec();
+		
+		if (count($rootSpecs) > 1)
 			throw new Exception('Spec "' . $this->getName() . '" has more than one root ancestors, but for run needs only one general root');
 		
-		if ($this->getRootSpec()->isRunning())
-			throw new Exception('Spec tree already running');
+		if ($this->isRunning())
+			throw new Exception('Spec "' . $this->getName() . '" is already running');
+			
+		if ($runningParentSpec && $runningParentSpec->getRunningChildSpec())
+			throw new Exception('Sibling spec of spec "' . $this->getName() . '" is already running');
 		
-		if (!$this->isRoot() && !$this->getRunningParentSpec())
+		if ($this->parentSpecs && !$runningParentSpec)
 		{
+			if ($rootSpecs[0]->isRunning())
+				throw new Exception('Root spec of spec "' . $this->getName() . '" is already running');
+			
 			$this->disableSiblingSpecsTemporarilyUpToRoot();
-			$result = $this->getRootSpec()->run();
+			$result = $rootSpecs[0]->run();
 			$this->resetSiblingSpecsTemporarilyUpToRoot();
 			return $result;
 		}
-		else
-			return $this->runSelf();
-	}
-	
-	protected function runSelf()
-	{
-		if (count($this->getRootSpecs()) > 1)
-			throw new Exception('Spec "' . $this->getName() . '" has more than one root ancestors, but for run needs only one general root');
+
+		// Now (after foregoing checks) we knows that this spec is spec without parent or with running parent (and the 
+		// parent for a while has no running children)
 		
-		$this->dispatchPluginEvent('onSpecRunBefore');
+		if (!$this->parentSpecs)
+			$this->dispatchPluginEvent('onRootSpecRunBefore');
+		
 		$this->isRunning = true;
 		$this->dispatchPluginEvent('onSpecRunInit');
-
+		
 		if ($this->childSpecs)
-		{
-			$results = array();
-			foreach ($this->childSpecs as $childSpec)
-			{
-				if ($childSpec->isEnabled())
-					$results[] = $childSpec->runSelf();
-			}
-			
-			$result = $this->calculateChildSpecsRunTotalResult($results);
-		}
+			$this->executeAsNotEndingSpec();
 		else
-		{
-			$this->executeEndingSpec();
-			$result = $this->getResultBuffer()->getTotalResult();
-		}
-
-		$this->dispatchPluginEvent('onSpecRunFinish', array($result));
+			$this->executeAsEndingSpec();
+		
+		$this->dispatchPluginEvent('onSpecRunFinish');
 		$this->isRunning = false;
-		$this->dispatchPluginEvent('onSpecRunAfter', array($result));
+		
+		if (!$this->parentSpecs)
+			$this->dispatchPluginEvent('onRootSpecRunAfter');
+
+		$result = $this->getResultBuffer()->getTotalResult();
+		$this->resultBuffer = null;
 		return $result;
 	}
 	
-	protected function executeEndingSpec()
+	protected function executeAsNotEndingSpec()
+	{
+		$resultBufferClass = config::getResultBufferClass();
+		$resultBuffer = new $resultBufferClass($this);
+		
+		foreach ($this->childSpecs as $childSpec)
+		{
+			if ($childSpec->isEnabled())
+				$resultBuffer->addResult($childSpec->run(), $childSpec);
+		}
+		
+		$resultBuffer->lock();
+		$this->resultBuffer = $resultBuffer;
+	}
+	
+	protected function executeAsEndingSpec()
 	{
 		$resultBufferClass = config::getResultBufferClass();
 		$this->resultBuffer = new $resultBufferClass($this);
@@ -519,63 +529,47 @@ class Spec implements SpecInterface
 		}
 		catch (ExceptionBreak $e)
 		{
-			// Just ignore special break exceptions
+			// Just ignore special break exception
 		}
 		catch (\Exception $e)
 		{
-			$this->getResultBuffer()->addFailResult($e);
+			$this->getResultBuffer()->addResult(false, $e);
 		}
 	}
 	
+	// TODO: split to two methods: "getEnabledSiblingSpecsUpToRoot" and "disableSpecs"
 	protected function disableSiblingSpecsTemporarilyUpToRoot()
 	{
+		// TODO: replace code to code with iteration style
 		$this->isEnabledTemporarily = true;
 		
-		$parentSpecs = $this->parentSpecs;
-		foreach ($parentSpecs as $parentSpec)
+		foreach ($this->parentSpecs as $parentSpec)
 		{
-			foreach ($parentSpec->childSpecs as $spec)
+			foreach ($parentSpec->childSpecs as $childSpec)
 			{
-				if ($spec->isEnabledTemporarily === null)
-					$spec->isEnabledTemporarily = false;
+				if ($childSpec->isEnabledTemporarily === null)
+					$childSpec->isEnabledTemporarily = false;
 			}
 			
 			$parentSpec->disableSiblingSpecsTemporarilyUpToRoot();
 		}
+		
+		// TODO: return only disabled specs (and do not return user disabled specs)
 	}
 	
+	// TODO: rename to "enableSpecs"
 	protected function resetSiblingSpecsTemporarilyUpToRoot()
 	{
+		// TODO: restore disabled specs by list from "getEnabledSiblingSpecsUpToRoot"
 		$this->isEnabledTemporarily = null;
 		
-		$parentSpecs = $this->parentSpecs;
-		foreach ($parentSpecs as $parentSpec)
+		foreach ($this->parentSpecs as $parentSpec)
 		{
-			foreach ($parentSpec->childSpecs as $spec)
-				$spec->isEnabledTemporarily = null;
+			foreach ($parentSpec->childSpecs as $childSpec)
+				$childSpec->isEnabledTemporarily = null;
 			
 			$parentSpec->resetSiblingSpecsTemporarilyUpToRoot();
 		}
-	}
-	
-	protected function calculateChildSpecsRunTotalResult(array $results)
-	{
-		$hasEmpty = false;
-		foreach ($results as $result)
-		{
-			// Check all results to false
-			if ($result === false)
-				return false;
-			else if ($result === null)
-				$hasEmpty = true;
-		}
-
-		if ($hasEmpty)
-			return null;
-		else if (count($results))
-			return true;
-		else
-			return null;
 	}
 	
 /**/

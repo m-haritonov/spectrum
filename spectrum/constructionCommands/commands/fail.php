@@ -21,5 +21,5 @@ function fail($message = null, $code = 0)
 	if (!$callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at running state');
 	
-	$callBrokerClass::internal_getCurrentRunningSpec()->getResultBuffer()->addFailResult(new \spectrum\constructionCommands\ExceptionFail($message, $code));
+	$callBrokerClass::internal_getCurrentRunningSpec()->getResultBuffer()->addResult(false, new \spectrum\constructionCommands\ExceptionFail($message, $code));
 }

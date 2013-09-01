@@ -1,8 +1,21 @@
+TODO: change disableSiblingSpecsTemporarilyUpToRoot and resetSiblingSpecsTemporarilyUpToRoot
+TODO: onSpecRunInit -> onSpecRunStart, onSpecRunFinish -> onSpecRunStop/Complete/Finish
+TODO: remove specConstruct activate moment, add onSpecConstruct event
+TODO: activateMoment -> activationType
+TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
+TODO: onMatcherCallBefore/After -> onMatcherCallStart/Stop
+TODO: Contexts -> ContextAppliers
+TODO: ContextData -> Context, getContextData -> getContext ???
+TODO: callFunctionInContext, $this->contextData = new $contextDataClass() перенести в Contexts на onEndingSpecExecuteBefore, getContextData -> Spec::getContextData
+!!! но тогда контексты будут инициализироваться для спеков без testFunction (однако для таких тестов beforeEach и не должен использоваться)
+
+TODO: \spectrum\root()->run();
 TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
 TODO: multiplier vs contextSwitchers
 TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: config — reset array keys
-TODO: onSpecRunInit vs onSpecRunStart, onSpecRunFinish vs onSpecRunStop
+TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunInit/Finish
+TODO: add to ContextBuffer method getCurrentTest()/getTest()/getSpec()/getSelf() для вызовов вида $this->getTest()
 TODO: license text to each file head
 
 TODO: reports — по умолчанию не разворачивать список ошибок
@@ -29,7 +42,6 @@ TODO: translate throwsException messages
 
 TO DOC: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
 
-
 it(array(
 	'en' => 'Makes something',
 	'ru' => 'Делает что-либо',
@@ -40,19 +52,6 @@ it(array(
 translate('Делает что-либо', 'ru');
 it('Makes something'), function(){
 
-});
-
-group('abc', function(){
-	addSwitcher('aaa', function(){
-	
-	});
-	addSwitcher('aaa', function(){
-	
-	});
-}, function(){
-	it('Makes something'), 'aaa', function(){
-	
-	});
 });
 
 rename argumentProviders feature to dataSets
