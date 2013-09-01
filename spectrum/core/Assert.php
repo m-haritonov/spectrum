@@ -70,11 +70,7 @@ class Assert implements AssertInterface
 		}
 		
 		$callDetails->setResult($result);
-		
-		if ($result)
-			$this->ownerSpec->getResultBuffer()->addSuccessResult($callDetails);
-		else
-			$this->ownerSpec->getResultBuffer()->addFailResult($callDetails);
+		$this->ownerSpec->getResultBuffer()->addResult($result, $callDetails);
 		
 		$this->notFlag = false;
 		$this->dispatchPluginEvent('onMatcherCallAfter', array($callDetails, $this));

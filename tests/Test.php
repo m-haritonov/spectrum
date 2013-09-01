@@ -102,83 +102,177 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 /**/
 
 	/**
-	 * Example 1 (add child specs):
+	 * Example 1 (add parent specs):
+	 * ->Spec
+	 * ->->Spec
+	 * ->Spec
+	 * Spec(name)
+	 * 
+	 * Example 2 (add child specs):
 	 * Spec(name)
 	 * ->Spec
 	 * ->->Spec
 	 * ->Spec
 	 * 
-	 * Example 2 (add parent specs):
+	 * Example 3 (add parent and child specs):
 	 * ->Spec
 	 * ->->Spec
 	 * ->Spec
 	 * Spec(name)
-	 *
+	 * ->Spec
+	 * ->->Spec
+	 * ->Spec
+	 * 
 	 * @return array
 	 */
-	final protected function createSpecsTree($treePattern)
+	final protected function createSpecsTree($specTreePattern)
 	{
-		$treePattern = trim($treePattern);
+		$specTreePattern = trim($specTreePattern);
 		
-		if (preg_match('/^\-\>/is', $treePattern))
+		if (preg_match('/^\-\>/is', $specTreePattern))
 			$isReverse = true;
 		else
 			$isReverse = false;
 
-		$specs = array();
-		$prevLevel = 0;
-		$rows = preg_split("/\r?\n/s", $treePattern);
+		$specsWithNames = array();
+		$specsWithDepths = array();
 		
-		if ($isReverse)
-			$rows = array_reverse($rows, true);
-		
-		foreach ($rows as $key => $row)
+		foreach (preg_split("/\r?\n/s", $specTreePattern) as $key => $row)
 		{
-			list($level, $className, $name) = $this->parseSpecTreeRow($row, $key);
-
-			if (array_key_exists($name, $specs))
-				throw new \Exception('Name "' . $name . '" is already use');
-
+			list($depth, $className, $name) = $this->parseSpecTreeRow($row);
+			
+			if ($depth == 0)
+				$isReverse = false;
+			else if ($isReverse)
+				$depth = -$depth;
+			
+			$className = '\spectrum\core\\' . $className;
+			
+			if ($name == '')
+				$name = $key;
+			
+			if (array_key_exists($name, $specsWithNames))
+				throw new \Exception('Name "' . $name . '" is already used');
+			
 			$spec = new $className();
-			$specs[$name] = $spec;
-			$specsOnLevels[$level] = $spec;
-
-			if ($level - $prevLevel > 1)
-				throw new \Exception('Next level can\'t jump more that one');
-	
-			if ($level > 0)
-			{
-				if ($isReverse)
-					$specsOnLevels[$level - 1]->bindParentSpec($spec);
-				else
-					$specsOnLevels[$level - 1]->bindChildSpec($spec);
-			}
-
-			$prevLevel = $level;
+			$specsWithNames[$name] = $spec;
+			$specsWithDepths[] = array('spec' => $spec, 'depth' => $depth);
 		}
 
-		return $specs;
+		foreach ($specsWithDepths as $key => $item)
+		{
+			if ($item['depth'] < 0)
+			{
+				$masterItem = $this->getNextItemWithMasterDepth($key, $specsWithDepths);
+				
+				if (!$masterItem)
+					throw new \Exception('Depth can not jump more than one');
+				
+				$masterItem['spec']->bindParentSpec($item['spec']);
+			}
+			else if ($item['depth'] > 0)
+			{
+				$masterItem = $this->getPrevItemWithMasterDepth($key, $specsWithDepths);
+				
+				if (!$masterItem)
+					throw new \Exception('Depth can not jump more than one');
+				
+				$masterItem['spec']->bindChildSpec($item['spec']);
+			}
+		}
+		
+		return $specsWithNames;
 	}
-
-	private function parseSpecTreeRow($row, $defaultName)
+	
+	private function getNextItemWithMasterDepth($itemKey, $specsWithDepths)
 	{
-		$level = null;
-		$row = str_replace('->', '', $row, $level);
-
+		foreach ($specsWithDepths as $key => $item)
+		{
+			if ($key > $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] + 1)
+				return $item;
+		}
+		
+		return null;
+	}
+	
+	private function getPrevItemWithMasterDepth($itemKey, $specsWithDepths)
+	{
+		$masterItem = null;
+		foreach ($specsWithDepths as $key => $item)
+		{
+			if ($key < $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] - 1)
+				$masterItem = $item;
+		}
+		
+		return $masterItem;
+	}
+	
+	private function parseSpecTreeRow($row)
+	{
+		$depth = null;
+		$row = str_replace('->', '', $row, $depth);
 		$parts = explode('(', $row);
+		
 		$className = trim($parts[0]);
 		
 		if (isset($parts[1]))
-			$name = $parts[1];
+			$name = trim(str_replace(')', '', $parts[1]));
 		else
 			$name = '';
 
-		$name = trim(str_replace(')', '', $name));
+		return array($depth, $className, $name);
+	}
+	
+	final public function testCreateSpecsTree_ReverseOrder_AddsUpSpecsToBottomSpecsAsParents()
+	{
+		$specs = $this->createSpecsTree('
+			->->Spec
+			->Spec(ccc)
+			->->->Spec
+			->->Spec
+			->Spec(bbb)
+			->Spec(aaa)
+			Spec
+		');
 
-		if ($name == '')
-			$name = $defaultName;
+		$this->assertEquals(7, count($specs));
+		$this->assertSame(array($specs['ccc'], $specs['bbb'], $specs['aaa']), $specs[6]->getParentSpecs());
+		$this->assertSame(array(), $specs[6]->getChildSpecs());
+		
+		$this->assertSame(array(), $specs['aaa']->getParentSpecs());
+		$this->assertSame(array($specs[6]), $specs['aaa']->getChildSpecs());
+		
+		$this->assertSame(array($specs[3]), $specs['bbb']->getParentSpecs());
+		$this->assertSame(array($specs[6]), $specs['bbb']->getChildSpecs());
+		
+		$this->assertSame(array($specs[2]), $specs[3]->getParentSpecs());
+		$this->assertSame(array($specs['bbb']), $specs[3]->getChildSpecs());
+		
+		$this->assertSame(array(), $specs[2]->getParentSpecs());
+		$this->assertSame(array($specs[3]), $specs[2]->getChildSpecs());
+		
+		$this->assertSame(array($specs[0]), $specs['ccc']->getParentSpecs());
+		$this->assertSame(array($specs[6]), $specs['ccc']->getChildSpecs());
+		
+		$this->assertSame(array(), $specs[0]->getParentSpecs());
+		$this->assertSame(array($specs['ccc']), $specs[0]->getChildSpecs());
+	}
+	
+	final public function testCreateSpecsTree_ReverseOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne()
+	{
+		try
+		{
+			$this->createSpecsTree('
+				->->Spec
+				Spec
+			');
+		}
+		catch (\Exception $e)
+		{
+			return;
+		}
 
-		return array($level, '\spectrum\core\\' . $className, $name);
+		$this->fail('Should be thrown exception');
 	}
 	
 	final public function testCreateSpecsTree_DirectOrder_AddsBottomSpecsToUpSpecsAsChildren()
@@ -202,50 +296,14 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->assertSame(array($specs[0]), $specs['ccc']->getParentSpecs());
 		$this->assertSame(array($specs['ccc']), $specs[6]->getParentSpecs());
 	}
-
-	final public function testCreateSpecsTree_ReverseOrder_AddsUpSpecsToBottomSpecsAsParents()
-	{
-		$specs = $this->createSpecsTree('
-			->->Spec
-			->Spec(ccc)
-			->->->Spec
-			->->Spec
-			->Spec(bbb)
-			->Spec(aaa)
-			Spec
-		');
-
-		$this->assertEquals(7, count($specs));
-		$this->assertSame(array($specs['aaa'], $specs['bbb'], $specs['ccc']), $specs[6]->getParentSpecs());
-		$this->assertSame(array(), $specs[6]->getChildSpecs());
-		
-		$this->assertSame(array(), $specs['aaa']->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs['aaa']->getChildSpecs());
-		
-		$this->assertSame(array($specs[3]), $specs['bbb']->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs['bbb']->getChildSpecs());
-		
-		$this->assertSame(array($specs[2]), $specs[3]->getParentSpecs());
-		$this->assertSame(array($specs['bbb']), $specs[3]->getChildSpecs());
-		
-		$this->assertSame(array(), $specs[2]->getParentSpecs());
-		$this->assertSame(array($specs[3]), $specs[2]->getChildSpecs());
-		
-		$this->assertSame(array($specs[0]), $specs['ccc']->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs['ccc']->getChildSpecs());
-		
-		$this->assertSame(array(), $specs[0]->getParentSpecs());
-		$this->assertSame(array($specs['ccc']), $specs[0]->getChildSpecs());
-		
-	}
-
-	final public function testCreateSpecsTree_ThrowsExceptionWhenNameIsDuplicate()
+	
+	final public function testCreateSpecsTree_DirectOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne()
 	{
 		try
 		{
 			$this->createSpecsTree('
-				Spec(aaa)
-				->Spec(aaa)
+				Spec
+				->->Spec
 			');
 		}
 		catch (\Exception $e)
@@ -256,13 +314,73 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->fail('Should be thrown exception');
 	}
 
-	final public function testCreateSpecsTree_ThrowsExceptionWhenLevelIsBreakMoreThenOne()
+	final public function testCreateSpecsTree_MixedOrder_AddsUpSpecsToBottomSpecsAsParentsAndAddsBottomSpecsToUpSpecsAsChildren()
+	{
+		$specs = $this->createSpecsTree('
+			->->Spec
+			->Spec
+			->->->Spec
+			->->Spec
+			->Spec
+			->Spec
+			Spec
+			->Spec
+			->Spec
+			->->Spec
+			->->->Spec
+			->Spec
+			->->Spec
+		');
+		
+		$this->assertEquals(13, count($specs));
+		
+		$this->assertSame(array(), $specs[0]->getParentSpecs());
+		$this->assertSame(array($specs[1]), $specs[0]->getChildSpecs());
+		
+		$this->assertSame(array($specs[0]), $specs[1]->getParentSpecs());
+		$this->assertSame(array($specs[6]), $specs[1]->getChildSpecs());
+		
+		$this->assertSame(array(), $specs[2]->getParentSpecs());
+		$this->assertSame(array($specs[3]), $specs[2]->getChildSpecs());
+		
+		$this->assertSame(array($specs[2]), $specs[3]->getParentSpecs());
+		$this->assertSame(array($specs[4]), $specs[3]->getChildSpecs());
+		
+		$this->assertSame(array($specs[3]), $specs[4]->getParentSpecs());
+		$this->assertSame(array($specs[6]), $specs[4]->getChildSpecs());
+		
+		$this->assertSame(array(), $specs[5]->getParentSpecs());
+		$this->assertSame(array($specs[6]), $specs[5]->getChildSpecs());
+		
+		$this->assertSame(array($specs[1], $specs[4], $specs[5]), $specs[6]->getParentSpecs());
+		$this->assertSame(array($specs[7], $specs[8], $specs[11]), $specs[6]->getChildSpecs());
+		
+		$this->assertSame(array($specs[6]), $specs[7]->getParentSpecs());
+		$this->assertSame(array(), $specs[7]->getChildSpecs());
+		
+		$this->assertSame(array($specs[6]), $specs[8]->getParentSpecs());
+		$this->assertSame(array($specs[9]), $specs[8]->getChildSpecs());
+		
+		$this->assertSame(array($specs[8]), $specs[9]->getParentSpecs());
+		$this->assertSame(array($specs[10]), $specs[9]->getChildSpecs());
+		
+		$this->assertSame(array($specs[9]), $specs[10]->getParentSpecs());
+		$this->assertSame(array(), $specs[10]->getChildSpecs());
+		
+		$this->assertSame(array($specs[6]), $specs[11]->getParentSpecs());
+		$this->assertSame(array($specs[12]), $specs[11]->getChildSpecs());
+		
+		$this->assertSame(array($specs[11]), $specs[12]->getParentSpecs());
+		$this->assertSame(array(), $specs[12]->getChildSpecs());
+	}
+
+	final public function testCreateSpecsTree_ThrowsExceptionWhenNameIsDuplicate()
 	{
 		try
 		{
 			$this->createSpecsTree('
-				Spec
-				->->Spec
+				Spec(aaa)
+				->Spec(aaa)
 			');
 		}
 		catch (\Exception $e)

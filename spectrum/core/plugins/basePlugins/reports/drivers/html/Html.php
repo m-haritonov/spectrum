@@ -48,7 +48,7 @@ class Html extends Driver
 	{
 		$output = '';
 		
-		if ($this->getOwnerPlugin()->getOwnerSpec()->isRoot())
+		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 		{
 			$output .= $this->getHeader();
 			$output .= $this->createWidget('TotalInfo')->getHtml();
@@ -66,7 +66,7 @@ class Html extends Driver
 		
 		$output .= $this->createWidget('SpecList')->getHtmlEnd();
 
-		if ($this->getOwnerPlugin()->getOwnerSpec()->isRoot())
+		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 		{
 			$totalInfoWidget = $this->createWidget('TotalInfo');
 			$output .= $totalInfoWidget->getHtml();

@@ -22,7 +22,7 @@ class TotalInfo extends \spectrum\core\plugins\basePlugins\reports\drivers\html\
 
 	public function getHtml()
 	{
-		if (!$this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->isRoot())
+		if ($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 			return;
 
 		return
@@ -43,7 +43,7 @@ class TotalInfo extends \spectrum\core\plugins\basePlugins\reports\drivers\html\
 
 	public function getHtmlForUpdate()
 	{
-		if (!$this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->isRoot())
+		if ($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 			return;
 
 		$totalResult = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getResultBuffer()->getTotalResult();

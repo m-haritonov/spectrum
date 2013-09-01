@@ -295,11 +295,6 @@ class OtherTest extends \spectrum\tests\Test
 				public function getSpecId(){}
 				public function getSpecById($specId){}
 			
-				public function isRoot(){}
-				public function getRootSpec(){}
-				public function getRootSpecs(){}
-				public function getRunningParentSpec(){}
-				public function getRunningAncestorSpecs(){}
 				public function getParentSpecs(){}
 				public function hasParentSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindParentSpec(\spectrum\core\SpecInterface $spec){}
@@ -309,11 +304,17 @@ class OtherTest extends \spectrum\tests\Test
 				public function getChildSpecs(){}
 				public function getChildSpecsByName($name){}
 				public function getChildSpecByNumber($number){}
-				public function getDeepestRunningSpec(){}
 				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
+				
+				public function getRootSpec(){}
+				public function getRootSpecs(){}
+				public function getRunningParentSpec(){}
+				public function getRunningAncestorSpecs(){}
+				public function getRunningChildSpec(){}
+				public function getDeepestRunningSpec(){}
 			
 				public function getResultBuffer(){}
 				public function isRunning(){}
@@ -365,11 +366,6 @@ class OtherTest extends \spectrum\tests\Test
 				public function getSpecId(){}
 				public function getSpecById($specId){}
 			
-				public function isRoot(){}
-				public function getRootSpec(){}
-				public function getRootSpecs(){}
-				public function getRunningParentSpec(){}
-				public function getRunningAncestorSpecs(){}
 				public function getParentSpecs(){}
 				public function hasParentSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindParentSpec(\spectrum\core\SpecInterface $spec){}
@@ -379,11 +375,17 @@ class OtherTest extends \spectrum\tests\Test
 				public function getChildSpecs(){}
 				public function getChildSpecsByName($name){}
 				public function getChildSpecByNumber($number){}
-				public function getDeepestRunningSpec(){}
 				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
+				
+				public function getRootSpec(){}
+				public function getRootSpecs(){}
+				public function getRunningParentSpec(){}
+				public function getRunningAncestorSpecs(){}
+				public function getRunningChildSpec(){}
+				public function getDeepestRunningSpec(){}
 			
 				public function getResultBuffer(){}
 				public function isRunning(){}
@@ -501,11 +503,12 @@ class OtherTest extends \spectrum\tests\Test
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
-				public function addFailResult($details = null){}
-				public function addSuccessResult($details = null){}
-				
+				public function addResult($result, $details = null){}
 				public function getResults(){}
 				public function getTotalResult(){}
+				
+				public function lock(){}
+				public function isLocked(){}
 			}
 		');
 		
@@ -543,11 +546,12 @@ class OtherTest extends \spectrum\tests\Test
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
-				public function addFailResult($details = null){}
-				public function addSuccessResult($details = null){}
-				
+				public function addResult($result, $details = null){}
 				public function getResults(){}
 				public function getTotalResult(){}
+				
+				public function lock(){}
+				public function isLocked(){}
 			}
 		');
 		
