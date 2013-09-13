@@ -37,11 +37,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->enable();
 				}
@@ -74,11 +74,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->disable();
 				}
@@ -129,11 +129,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->setName("aaa");
 				}
@@ -250,11 +250,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->bindParentSpec(new \spectrum\core\Spec());
 				}
@@ -350,11 +350,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->unbindParentSpec(new \spectrum\core\Spec());
 				}
@@ -429,11 +429,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->unbindAllParentSpecs();
 				}
@@ -559,11 +559,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->bindChildSpec(new \spectrum\core\Spec());
 				}
@@ -659,11 +659,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->unbindChildSpec(new \spectrum\core\Spec());
 				}
@@ -738,11 +738,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$this->getOwnerSpec()->unbindAllChildSpecs();
 				}
@@ -835,11 +835,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
 						\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningParentSpec();
@@ -887,11 +887,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
 						\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningAncestorSpecs();
@@ -942,11 +942,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["specs"][] = \spectrum\tests\Test::$temp["rootSpec"]->getDeepestRunningSpec();
 				}
@@ -977,11 +977,11 @@ class OtherTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
 						\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getDeepestRunningSpec();

@@ -36,7 +36,7 @@ interface PluginInterface
 	 *               onMatcherCallBefore
 	 *               onMatcherCallAfter
 	 * 
-	 *               onSpecRunInit
+	 *               onSpecRunStart
 	 *               onSpecRunFinish
 	 * 
 	 *               onRootSpecRunBefore

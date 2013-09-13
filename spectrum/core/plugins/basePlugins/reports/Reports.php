@@ -26,7 +26,7 @@ class Reports extends \spectrum\core\plugins\Plugin
 	static public function getEventListeners()
 	{
 		return array(
-			array('event' => 'onSpecRunInit', 'method' => 'onSpecRunInit', 'order' => 20),
+			array('event' => 'onSpecRunStart', 'method' => 'onSpecRunStart', 'order' => 20),
 			array('event' => 'onSpecRunFinish', 'method' => 'onSpecRunFinish', 'order' => -20),
 		);
 	}
@@ -90,7 +90,7 @@ class Reports extends \spectrum\core\plugins\Plugin
 
 /**/
 
-	protected function onSpecRunInit()
+	protected function onSpecRunStart()
 	{
 		$this->getOwnerSpec()->output->put($this->createDriver()->getContentBeforeSpec());
 		flush();

@@ -66,11 +66,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 					
@@ -113,11 +113,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					try
 					{
@@ -151,11 +151,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 					
@@ -197,11 +197,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
 					{
@@ -243,11 +243,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 					
@@ -565,11 +565,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					$ownerSpec = $this->getOwnerSpec();
 					
@@ -684,11 +684,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
 					{
@@ -731,11 +731,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 					
@@ -864,11 +864,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
 				}
@@ -901,11 +901,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
 				}
@@ -940,11 +940,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
 				}
@@ -1237,11 +1237,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
 						\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
@@ -1623,7 +1623,7 @@ class RunTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRootSpecRun_EventDispatch_OnSpecRunInit_IsDispatchedOnEverySpec()
+	public function testRootSpecRun_EventDispatch_OnSpecRunStart_IsDispatchedOnEverySpec()
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
@@ -1633,11 +1633,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
 				}
@@ -1657,7 +1657,7 @@ class RunTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testRootSpecRun_EventDispatch_OnSpecRunInit_DoesNotPassArgumentsToCalleeMethod()
+	public function testRootSpecRun_EventDispatch_OnSpecRunStart_DoesNotPassArgumentsToCalleeMethod()
 	{
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
@@ -1667,11 +1667,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
 				}
@@ -1689,7 +1689,7 @@ class RunTest extends \spectrum\tests\Test
 		$this->assertSame(array(array(), array()), \spectrum\tests\Test::$temp["passedArguments"]);
 	}
 	
-	public function testRootSpecRun_EventDispatch_OnSpecRunInit_IsDispatchedAfterRunningFlagEnable()
+	public function testRootSpecRun_EventDispatch_OnSpecRunStart_IsDispatchedAfterRunningFlagEnable()
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
@@ -1699,11 +1699,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();
 				}
@@ -1721,7 +1721,7 @@ class RunTest extends \spectrum\tests\Test
 		$this->assertSame(array(true, true), \spectrum\tests\Test::$temp["isRunningCallResults"]);
 	}
 	
-	public function testRootSpecRun_EventDispatch_OnSpecRunInit_IsDispatchedBeforeChildSpecRun()
+	public function testRootSpecRun_EventDispatch_OnSpecRunStart_IsDispatchedBeforeChildSpecRun()
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
@@ -1731,11 +1731,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
 				}
@@ -1754,7 +1754,7 @@ class RunTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[1], $specs[2]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testRootSpecRun_EventDispatch_OnSpecRunInit_IsDispatchedBeforeResultBufferCreate()
+	public function testRootSpecRun_EventDispatch_OnSpecRunStart_IsDispatchedBeforeResultBufferCreate()
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
@@ -1764,11 +1764,11 @@ class RunTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
 				}
@@ -2200,7 +2200,7 @@ class RunTest extends \spectrum\tests\Test
 				{
 					return array(
 						array("event" => "onRootSpecRunBefore", "method" => "onRootSpecRunBefore", "order" => 100),
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 						
 						array("event" => "onEndingSpecExecuteBefore", "method" => "onEndingSpecExecuteBefore", "order" => 100),
 						array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => 100),
@@ -2212,7 +2212,7 @@ class RunTest extends \spectrum\tests\Test
 				}
 				
 				public function onRootSpecRunBefore(){ \spectrum\tests\Test::$temp["calledEvents"][] = __FUNCTION__; }
-				public function onSpecRunInit(){ \spectrum\tests\Test::$temp["calledEvents"][] = __FUNCTION__; }
+				public function onSpecRunStart(){ \spectrum\tests\Test::$temp["calledEvents"][] = __FUNCTION__; }
 				
 				public function onEndingSpecExecuteBefore(){ \spectrum\tests\Test::$temp["calledEvents"][] = __FUNCTION__; }
 				public function onEndingSpecExecute(){ \spectrum\tests\Test::$temp["calledEvents"][] = __FUNCTION__; }
@@ -2230,7 +2230,7 @@ class RunTest extends \spectrum\tests\Test
 		
 		$this->assertSame(array(
 			'onRootSpecRunBefore',
-			'onSpecRunInit',
+			'onSpecRunStart',
 			
 			'onEndingSpecExecuteBefore',
 			'onEndingSpecExecute',

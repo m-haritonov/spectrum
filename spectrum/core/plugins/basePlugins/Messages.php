@@ -21,7 +21,7 @@ class Messages extends \spectrum\core\plugins\Plugin
 	static public function getEventListeners()
 	{
 		return array(
-			array('event' => 'onSpecRunInit', 'method' => 'onSpecRunInit', 'order' => 10),
+			array('event' => 'onSpecRunStart', 'method' => 'onSpecRunStart', 'order' => 10),
 		);
 	}
 	
@@ -38,7 +38,7 @@ class Messages extends \spectrum\core\plugins\Plugin
 		return $this->messages;
 	}
 
-	protected function onSpecRunInit()
+	protected function onSpecRunStart()
 	{
 		$this->messages = array();
 	}

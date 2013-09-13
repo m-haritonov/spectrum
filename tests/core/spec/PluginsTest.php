@@ -242,7 +242,7 @@ class PluginsTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
@@ -252,7 +252,7 @@ class PluginsTest extends \spectrum\tests\Test
 				}
 				
 				public function getOwnerSpec(){}
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["eventDispatchCount"]++;
 				}
@@ -407,7 +407,7 @@ class PluginsTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
@@ -418,7 +418,7 @@ class PluginsTest extends \spectrum\tests\Test
 				}
 				
 				public function getOwnerSpec(){}
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["eventDispatchCount"]++;
 					\spectrum\tests\Test::$temp["pluginInstanceOnEventDispatch"] = $this;
@@ -640,7 +640,7 @@ class PluginsTest extends \spectrum\tests\Test
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "onSpecRunInit", "method" => "onSpecRunInit", "order" => 100),
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
@@ -650,7 +650,7 @@ class PluginsTest extends \spectrum\tests\Test
 				}
 				
 				public function getOwnerSpec(){}
-				public function onSpecRunInit()
+				public function onSpecRunStart()
 				{
 					\spectrum\tests\Test::$temp["eventDispatchCount"]++;
 				}

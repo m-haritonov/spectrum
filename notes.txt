@@ -1,5 +1,4 @@
 TODO: change disableSiblingSpecsTemporarilyUpToRoot and resetSiblingSpecsTemporarilyUpToRoot
-TODO: onSpecRunInit -> onSpecRunStart, onSpecRunFinish -> onSpecRunStop/Complete/Finish
 TODO: remove specConstruct activate moment, add onSpecConstruct event
 TODO: activateMoment -> activationType
 TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
@@ -14,7 +13,7 @@ TODO: в $multiplier array в test передавать значения в Cont
 TODO: multiplier vs contextSwitchers
 TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: config — reset array keys
-TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunInit/Finish
+TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 TODO: add to ContextBuffer method getCurrentTest()/getTest()/getSpec()/getSelf() для вызовов вида $this->getTest()
 TODO: license text to each file head
 

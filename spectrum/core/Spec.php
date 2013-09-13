@@ -483,7 +483,7 @@ class Spec implements SpecInterface
 			$this->dispatchPluginEvent('onRootSpecRunBefore');
 		
 		$this->isRunning = true;
-		$this->dispatchPluginEvent('onSpecRunInit');
+		$this->dispatchPluginEvent('onSpecRunStart');
 		
 		if ($this->childSpecs)
 			$this->executeAsNotEndingSpec();
