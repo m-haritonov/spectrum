@@ -1,14 +1,14 @@
-TODO: change disableSiblingSpecsTemporarilyUpToRoot and resetSiblingSpecsTemporarilyUpToRoot
 TODO: remove specConstruct activate moment, add onSpecConstruct event
 TODO: activateMoment -> activationType
 TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
-TODO: onMatcherCallBefore/After -> onMatcherCallStart/Stop
+TODO: onMatcherCallBefore/After -> onMatcherCallStart/Finish
 TODO: Contexts -> ContextAppliers
 TODO: ContextData -> Context, getContextData -> getContext ???
 TODO: callFunctionInContext, $this->contextData = new $contextDataClass() перенести в Contexts на onEndingSpecExecuteBefore, getContextData -> Spec::getContextData
 !!! но тогда контексты будут инициализироваться для спеков без testFunction (однако для таких тестов beforeEach и не должен использоваться)
 
-TODO: \spectrum\root()->run();
+TODO: \spectrum\root()->run(), удалить run()
+TODO: getInitialSpec -> getRootSpec
 TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
 TODO: multiplier vs contextSwitchers
 TODO: Spec::setName() — приводиль ли имя к строковому типу?

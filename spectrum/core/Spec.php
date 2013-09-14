@@ -23,9 +23,6 @@ class Spec implements SpecInterface
 	protected $name;
 	protected $isEnabled = true;
 	
-	// TODO: remove
-	protected $isEnabledTemporarily = null;
-	
 	/**
 	 * @var SpecInterface[]
 	 */
@@ -119,22 +116,17 @@ class Spec implements SpecInterface
 	{
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->isEnabled = true;
-		$this->isEnabledTemporarily = null;
 	}
 
 	public function disable()
 	{
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->isEnabled = false;
-		$this->isEnabledTemporarily = null;
 	}
 
 	public function isEnabled()
 	{
-		if ($this->isEnabledTemporarily !== null)
-			return $this->isEnabledTemporarily;
-		else
-			return $this->isEnabled;
+		return $this->isEnabled;
 	}
 	
 /**/
@@ -470,9 +462,16 @@ class Spec implements SpecInterface
 			if ($rootSpecs[0]->isRunning())
 				throw new Exception('Root spec of spec "' . $this->getName() . '" is already running');
 			
-			$this->disableSiblingSpecsTemporarilyUpToRoot();
+			$siblingSpecs = $this->getEnabledSiblingSpecsUpToRoot();
+			
+			foreach ($siblingSpecs as $spec)
+				$spec->disable();
+			
 			$result = $rootSpecs[0]->run();
-			$this->resetSiblingSpecsTemporarilyUpToRoot();
+			
+			foreach ($siblingSpecs as $spec)
+				$spec->enable();
+			
 			return $result;
 		}
 
@@ -537,39 +536,44 @@ class Spec implements SpecInterface
 		}
 	}
 	
-	// TODO: split to two methods: "getEnabledSiblingSpecsUpToRoot" and "disableSpecs"
-	protected function disableSiblingSpecsTemporarilyUpToRoot()
+	protected function getEnabledSiblingSpecsUpToRoot()
 	{
-		// TODO: replace code to code with iteration style
-		$this->isEnabledTemporarily = true;
-		
-		foreach ($this->parentSpecs as $parentSpec)
+		$siblingSpecs = array();
+		$notSiblingSpecs = array_merge(array($this), $this->getAncestorSpecs());
+		$specsToWalk = array($this);
+		while ($specsToWalk)
 		{
-			foreach ($parentSpec->childSpecs as $childSpec)
+			$spec = array_shift($specsToWalk);
+			foreach ($spec->getParentSpecs() as $parentSpec)
 			{
-				if ($childSpec->isEnabledTemporarily === null)
-					$childSpec->isEnabledTemporarily = false;
+				if (!$parentSpec->isEnabled())
+					continue;
+				
+				$specsToWalk[] = $parentSpec;
+				
+				foreach ($parentSpec->getChildSpecs() as $childSpec)
+				{
+					if ($childSpec->isEnabled() && !in_array($childSpec, $siblingSpecs, true) && !in_array($childSpec, $notSiblingSpecs, true))
+						$siblingSpecs[] = $childSpec;
+				}
 			}
-			
-			$parentSpec->disableSiblingSpecsTemporarilyUpToRoot();
 		}
 		
-		// TODO: return only disabled specs (and do not return user disabled specs)
+		return $siblingSpecs;
 	}
 	
-	// TODO: rename to "enableSpecs"
-	protected function resetSiblingSpecsTemporarilyUpToRoot()
+	protected function getAncestorSpecs()
 	{
-		// TODO: restore disabled specs by list from "getEnabledSiblingSpecsUpToRoot"
-		$this->isEnabledTemporarily = null;
-		
-		foreach ($this->parentSpecs as $parentSpec)
+		$ancestorSpecs = array();
+		$specsToWalk = $this->getParentSpecs();
+		while ($specsToWalk)
 		{
-			foreach ($parentSpec->childSpecs as $childSpec)
-				$childSpec->isEnabledTemporarily = null;
-			
-			$parentSpec->resetSiblingSpecsTemporarilyUpToRoot();
+			$spec = array_shift($specsToWalk);
+			$specsToWalk = array_merge($specsToWalk, $spec->getParentSpecs());
+			$ancestorSpecs[] = $spec;
 		}
+
+		return $ancestorSpecs;
 	}
 	
 /**/
