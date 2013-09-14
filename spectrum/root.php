@@ -8,8 +8,8 @@
 
 namespace spectrum;
 
-function run()
+function root()
 {
 	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
-	return $callBrokerClass::getRootSpec()->run();
+	return $callBrokerClass::getRootSpec();
 }
