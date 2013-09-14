@@ -30,7 +30,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 		return array(
 			array('event' => 'onEndingSpecExecuteBefore', 'method' => 'onEndingSpecExecuteBefore', 'order' => 10),
 			array('event' => 'onEndingSpecExecuteAfter', 'method' => 'onEndingSpecExecuteAfter', 'order' => -10),
-			array('event' => 'onMatcherCallAfter', 'method' => 'onMatcherCallAfter', 'order' => -10),
+			array('event' => 'onMatcherCallFinish', 'method' => 'onMatcherCallFinish', 'order' => -10),
 		);
 	}
 
@@ -141,7 +141,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 		$this->isErrorHandlerSets = false;
 	}
 	
-	protected function onMatcherCallAfter(MatcherCallDetailsInterface $callDetails)
+	protected function onMatcherCallFinish(MatcherCallDetailsInterface $callDetails)
 	{
 		if (!$callDetails->getResult() && $this->getBreakOnFirstMatcherFailThroughRunningAncestors())
 			throw new ExceptionBreak();

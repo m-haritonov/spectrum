@@ -44,8 +44,8 @@ interface PluginInterface
 	 *               onTestFunctionCallBefore
 	 *               onTestFunctionCallAfter
 	 * 
-	 *               onMatcherCallBefore
-	 *               onMatcherCallAfter
+	 *               onMatcherCallStart
+	 *               onMatcherCallFinish
 	 */
 	static public function getEventListeners();
 	

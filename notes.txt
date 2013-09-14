@@ -1,6 +1,5 @@
 TODO: activateMoment -> activationType
 TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
-TODO: onMatcherCallBefore/After -> onMatcherCallStart/Finish
 TODO: Contexts -> ContextAppliers
 TODO: ContextData -> Context, getContextData -> getContext ???
 TODO: callFunctionInContext, $this->contextData = new $contextDataClass() перенести в Contexts на onEndingSpecExecuteBefore, getContextData -> Spec::getContextData
@@ -290,8 +289,8 @@ FileSystemMockVirtual
 
 --- events
 	Добавить события onMatcherCall в callMatcher()
-		$it->dispatchEvent('onMatcherCallBefore', $onMatcherCallEvent);
-		$it->dispatchEvent('onMatcherCallAfter', $onMatcherCallEvent); — вызывать в конце и в случае выброса исключения
+		$it->dispatchEvent('onMatcherCallStart', $onMatcherCallEvent);
+		$it->dispatchEvent('onMatcherCallFinish', $onMatcherCallEvent); — вызывать в конце и в случае выброса исключения
 		сделать метод Spec->dispatchEvent() публичным
 		добавить проверку на config::allowAlienEventDispatching() в Spec->dispatchEvent()
 		OnMatcherCallEvent

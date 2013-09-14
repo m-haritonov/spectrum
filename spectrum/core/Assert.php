@@ -51,7 +51,7 @@ class Assert implements AssertInterface
 		$callDetails->setMatcherName($matcherName);
 		$callDetails->setMatcherArguments($matcherArguments);
 	
-		$this->dispatchPluginEvent('onMatcherCallBefore', array($callDetails, $this));
+		$this->dispatchPluginEvent('onMatcherCallStart', array($callDetails, $this));
 		
 		$matcherFunction = $this->ownerSpec->matchers->getThroughRunningAncestors($matcherName);
 		if ($matcherFunction === null)
@@ -73,7 +73,7 @@ class Assert implements AssertInterface
 		$this->ownerSpec->getResultBuffer()->addResult($result, $callDetails);
 		
 		$this->notFlag = false;
-		$this->dispatchPluginEvent('onMatcherCallAfter', array($callDetails, $this));
+		$this->dispatchPluginEvent('onMatcherCallFinish', array($callDetails, $this));
 		return $this;
 	}
 	
