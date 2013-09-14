@@ -20,5 +20,5 @@ function getCurrentDeclaringSpec()
 	if ($vars['currentSpec'])
 		return $vars['currentSpec'];
 	else
-		return $callBrokerClass::internal_getInitialSpec();
+		return $callBrokerClass::internal_getRootSpec();
 }

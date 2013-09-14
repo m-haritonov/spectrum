@@ -15,5 +15,5 @@ use spectrum\config;
 function getCurrentRunningSpec()
 {
 	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
-	return $callBrokerClass::internal_getInitialSpec()->getDeepestRunningSpec();
+	return $callBrokerClass::internal_getRootSpec()->getDeepestRunningSpec();
 }

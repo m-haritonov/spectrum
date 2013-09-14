@@ -6,7 +6,6 @@ TODO: callFunctionInContext, $this->contextData = new $contextDataClass() пер
 !!! но тогда контексты будут инициализироваться для спеков без testFunction (однако для таких тестов beforeEach и не должен использоваться)
 
 TODO: \spectrum\root()->run(), удалить run()
-TODO: getInitialSpec -> getRootSpec
 TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
 TODO: multiplier vs contextSwitchers
 TODO: Spec::setName() — приводиль ли имя к строковому типу?

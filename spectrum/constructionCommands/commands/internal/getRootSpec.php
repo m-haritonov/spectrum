@@ -10,7 +10,7 @@ namespace spectrum\constructionCommands\commands\internal;
 
 use spectrum\config;
 
-function getInitialSpec()
+function getRootSpec()
 {
 	static $initialSpec;
 	if ($initialSpec === null)

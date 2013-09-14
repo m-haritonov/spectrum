@@ -24,7 +24,7 @@ require_once __DIR__ . '/constructionCommands/commands/internal/getArgumentsForT
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentDeclaringSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentRunningSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentSpec.php';
-require_once __DIR__ . '/constructionCommands/commands/internal/getInitialSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getRootSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getMultiplierEndingSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getMultiplierExclusionSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getNameForArguments.php';
