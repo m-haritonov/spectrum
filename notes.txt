@@ -1,4 +1,3 @@
-TODO: remove specConstruct activate moment, add onSpecConstruct event
 TODO: activateMoment -> activationType
 TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
 TODO: onMatcherCallBefore/After -> onMatcherCallStart/Finish

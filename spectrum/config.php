@@ -122,7 +122,7 @@ final class config
 			throw new Exception('Plugin with accessName "' . $accessName . '" is already registered (remove registered plugin before register new)');
 		
 		$activateMoment = $class::getActivateMoment();
-		if (!in_array($activateMoment, array('firstAccess', 'everyAccess', 'specConstruct')))
+		if (!in_array($activateMoment, array('firstAccess', 'everyAccess')))
 			throw new Exception('Wrong activate moment "' . $activateMoment . '" in plugin with class "' . $class . '"');
 
 		$num = 0;

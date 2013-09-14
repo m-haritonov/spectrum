@@ -43,11 +43,7 @@ class Spec implements SpecInterface
 
 	public function __construct()
 	{
-		foreach (config::getRegisteredSpecPlugins() as $pluginClass)
-		{
-			if ($pluginClass::getActivateMoment() == 'specConstruct')
-				$this->activatedPlugins[$pluginClass] = new $pluginClass($this);
-		}
+		$this->dispatchPluginEvent('onSpecConstruct');
 	}
 
 	public function __get($pluginAccessName)
@@ -86,7 +82,7 @@ class Spec implements SpecInterface
 		$methods = array();
 		foreach (config::getRegisteredSpecPlugins() as $pluginClass)
 		{
-			foreach ($pluginClass::getEventListeners() as $eventListener)
+			foreach ((array) $pluginClass::getEventListeners() as $eventListener)
 			{
 				if ($eventListener['event'] == $eventName)
 				{

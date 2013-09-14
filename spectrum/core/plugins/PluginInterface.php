@@ -16,7 +16,7 @@ interface PluginInterface
 	static public function getAccessName();
 
 	/**
-	 * @return string firstAccess, everyAccess, specConstruct
+	 * @return string firstAccess, everyAccess
 	 */
 	static public function getActivateMoment();
 
@@ -29,21 +29,23 @@ interface PluginInterface
 	 *               );
 	 * 
 	 *               Available events:
-	 *               onEndingSpecExecute
-	 *               onEndingSpecExecuteBefore
-	 *               onEndingSpecExecuteAfter
-	 * 
-	 *               onMatcherCallBefore
-	 *               onMatcherCallAfter
-	 * 
-	 *               onSpecRunStart
-	 *               onSpecRunFinish
+	 *               onSpecConstruct
 	 * 
 	 *               onRootSpecRunBefore
 	 *               onRootSpecRunAfter
 	 * 
+	 *               onSpecRunStart
+	 *               onSpecRunFinish
+	 * 
+	 *               onEndingSpecExecute
+	 *               onEndingSpecExecuteBefore
+	 *               onEndingSpecExecuteAfter
+	 * 
 	 *               onTestFunctionCallBefore
 	 *               onTestFunctionCallAfter
+	 * 
+	 *               onMatcherCallBefore
+	 *               onMatcherCallAfter
 	 */
 	static public function getEventListeners();
 	

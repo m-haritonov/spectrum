@@ -310,23 +310,10 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 			}
 		');
 		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "specConstruct"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
 		config::registerSpecPlugin($className1);
 		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
 		
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
+		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
 	}
 	
 	public function testRegisterSpecPlugin_PluginWithWrongActivateMoment_ThrowsExceptionAndDoesNotRegisterPlugin()
