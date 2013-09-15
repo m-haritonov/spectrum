@@ -6,10 +6,9 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\plugins\basePlugins;
+namespace spectrum\core\plugins\basePlugins\errorHandling;
 use spectrum\config;
 use spectrum\core\ExceptionBreak;
-use spectrum\core\ExceptionPhpError;
 use spectrum\core\MatcherCallDetailsInterface;
 use spectrum\core\plugins\Exception;
 
@@ -125,7 +124,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 			if (error_reporting() == 0)
 				return;
 
-			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new ExceptionPhpError($message, 0, $severity, $file, $line));
+			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new PhpErrorException($message, 0, $severity, $file, $line));
 
 			if ($thisObject->getBreakOnFirstPhpErrorThroughRunningAncestors())
 				throw new ExceptionBreak();

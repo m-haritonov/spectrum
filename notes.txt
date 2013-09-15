@@ -1,10 +1,9 @@
-TODO: ExceptionPhpError -> errorHandling\PhpErrorException
 TODO: config — reset array keys
 TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
 TODO: remove TestFunction::$functionArguments
 TODO: multiplier vs contextSwitchers
 TODO: activateMoment -> activationType ???
-TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
+TODO: ExceptionBreak -> BreakException, ExceptionFail -> FailException
 TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 TODO: license text to each file head

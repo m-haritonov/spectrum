@@ -12,7 +12,7 @@ use spectrum\config;
 /**
  * @property \spectrum\core\plugins\basePlugins\reports\Reports reports
  * @property \spectrum\core\plugins\basePlugins\contexts\Contexts contexts
- * @property \spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
+ * @property \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling errorHandling
  * @property \spectrum\core\plugins\basePlugins\TestFunction testFunction
  * @property \spectrum\core\plugins\basePlugins\Matchers matchers
  * @property \spectrum\core\plugins\basePlugins\Messages messages

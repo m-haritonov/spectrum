@@ -6,9 +6,9 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\core\plugins\basePlugins\errorHandling;
 
-class ExceptionPhpError extends Exception
+class PhpErrorException extends \spectrum\core\plugins\Exception
 {
 	protected $file;
 	protected $line;

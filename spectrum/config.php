@@ -26,7 +26,7 @@ final class config
 	static private $registeredSpecPlugins = array(
 		'\spectrum\core\plugins\basePlugins\reports\Reports',
 		'\spectrum\core\plugins\basePlugins\contexts\Contexts',
-		'\spectrum\core\plugins\basePlugins\ErrorHandling',
+		'\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling',
 		'\spectrum\core\plugins\basePlugins\TestFunction',
 		'\spectrum\core\plugins\basePlugins\Matchers',
 		'\spectrum\core\plugins\basePlugins\Messages',
