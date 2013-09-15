@@ -38,7 +38,6 @@ class Spec implements SpecInterface
 	 */
 	protected $resultBuffer;
 	protected $isRunning = false;
-	
 	protected $activatedPlugins = array();
 
 	public function __construct()
@@ -498,8 +497,7 @@ class Spec implements SpecInterface
 	
 	protected function executeAsNotEndingSpec()
 	{
-		$resultBufferClass = config::getResultBufferClass();
-		$resultBuffer = new $resultBufferClass($this);
+		$resultBuffer = $this->createResultBuffer();
 		
 		foreach ($this->childSpecs as $childSpec)
 		{
@@ -513,8 +511,7 @@ class Spec implements SpecInterface
 	
 	protected function executeAsEndingSpec()
 	{
-		$resultBufferClass = config::getResultBufferClass();
-		$this->resultBuffer = new $resultBufferClass($this);
+		$this->resultBuffer = $this->createResultBuffer();
 		
 		try
 		{
@@ -530,6 +527,15 @@ class Spec implements SpecInterface
 		{
 			$this->getResultBuffer()->addResult(false, $e);
 		}
+	}
+
+	/**
+	 * @return ResultBufferInterface
+	 */
+	protected function createResultBuffer()
+	{
+		$resultBufferClass = config::getResultBufferClass();
+		return new $resultBufferClass($this);
 	}
 	
 	protected function getEnabledSiblingSpecsUpToRoot()

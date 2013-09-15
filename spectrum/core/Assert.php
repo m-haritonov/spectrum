@@ -43,15 +43,13 @@ class Assert implements AssertInterface
 	{
 //		$argumentsSourceCode = $this->parseArgumentsSourceCode($this->getCurrentVerifyCallSourceCode($verifyFunctionName), $verifyFunctionName);
 		
-		$callDetailsClass = \spectrum\config::getMatcherCallDetailsClass();
-		/** @var MatcherCallDetailsInterface $callDetails */
-		$callDetails = new $callDetailsClass();
-		$callDetails->setTestedValue($this->testedValue);
-		$callDetails->setNot($this->notFlag);
-		$callDetails->setMatcherName($matcherName);
-		$callDetails->setMatcherArguments($matcherArguments);
+		$matcherCallDetails = $this->createMatcherCallDetails();
+		$matcherCallDetails->setTestedValue($this->testedValue);
+		$matcherCallDetails->setNot($this->notFlag);
+		$matcherCallDetails->setMatcherName($matcherName);
+		$matcherCallDetails->setMatcherArguments($matcherArguments);
 	
-		$this->dispatchPluginEvent('onMatcherCallStart', array($callDetails, $this));
+		$this->dispatchPluginEvent('onMatcherCallStart', array($matcherCallDetails, $this));
 		
 		$matcherFunction = $this->ownerSpec->matchers->getThroughRunningAncestors($matcherName);
 		if ($matcherFunction === null)
@@ -60,20 +58,20 @@ class Assert implements AssertInterface
 		try
 		{
 			$matcherReturnValue = call_user_func_array($matcherFunction, array_merge(array($this->testedValue), $matcherArguments));
-			$callDetails->setMatcherReturnValue($matcherReturnValue);
+			$matcherCallDetails->setMatcherReturnValue($matcherReturnValue);
 			$result = ($this->notFlag ? !$matcherReturnValue : (bool) $matcherReturnValue);
 		}
 		catch (\Exception $e)
 		{
 			$result = false;
-			$callDetails->setMatcherException($e);
+			$matcherCallDetails->setMatcherException($e);
 		}
 		
-		$callDetails->setResult($result);
-		$this->ownerSpec->getResultBuffer()->addResult($result, $callDetails);
+		$matcherCallDetails->setResult($result);
+		$this->ownerSpec->getResultBuffer()->addResult($result, $matcherCallDetails);
 		
 		$this->notFlag = false;
-		$this->dispatchPluginEvent('onMatcherCallFinish', array($callDetails, $this));
+		$this->dispatchPluginEvent('onMatcherCallFinish', array($matcherCallDetails, $this));
 		return $this;
 	}
 	
@@ -86,6 +84,15 @@ class Assert implements AssertInterface
 		}
 		
 		throw new Exception('Undefined property "Assert->' . $name . '" in method "' . __METHOD__ . '"');
+	}
+
+	/**
+	 * @return MatcherCallDetailsInterface
+	 */
+	protected function createMatcherCallDetails()
+	{
+		$callDetailsClass = \spectrum\config::getMatcherCallDetailsClass();
+		return new $callDetailsClass();
 	}
 	
 	protected function dispatchPluginEvent($eventName, array $arguments = array())
