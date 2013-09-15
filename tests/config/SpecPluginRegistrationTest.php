@@ -410,6 +410,40 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 	
 /**/
 	
+	public function testUnregisterSpecPlugins_ResetsArrayIndexes()
+	{
+		$className1 = $this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return "aaa"; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
+				public function getOwnerSpec(){}
+			}
+		');
+		
+		$className2 = $this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return "bbb"; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
+				public function getOwnerSpec(){}
+			}
+		');
+
+		config::registerSpecPlugin($className1);
+		config::registerSpecPlugin($className2);
+		
+		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
+		config::unregisterSpecPlugins($className1);
+		$this->assertSame(array($className2), config::getRegisteredSpecPlugins());
+	}
+	
 	public function testUnregisterSpecPlugins_NoArguments_RemovesAllPluginClassesFromRegisteredPlugins()
 	{
 		$className1 = $this->createClass('
@@ -611,7 +645,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
 		
 		config::unregisterSpecPlugins(array($className1, $className3));
-		$this->assertSame(array(1 => $className2), config::getRegisteredSpecPlugins());
+		$this->assertSame(array($className2), config::getRegisteredSpecPlugins());
 	}
 	
 	public function testUnregisterSpecPlugins_ArrayWithManyClassesAsFirstArgument_PluginClassInDifferentCase_RemovesPluginClassFromRegisteredPlugins()
@@ -659,7 +693,7 @@ class SpecPluginRegistrationTest extends \spectrum\tests\Test
 		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
 		
 		config::unregisterSpecPlugins(array(mb_strtoupper($className1), mb_strtoupper($className3)));
-		$this->assertSame(array(1 => $className2), config::getRegisteredSpecPlugins());
+		$this->assertSame(array($className2), config::getRegisteredSpecPlugins());
 	}
 	
 	public function testUnregisterSpecPlugins_ConfigIsLocked_ThrowsExceptionAndDoesNotUnregisterPlugin()

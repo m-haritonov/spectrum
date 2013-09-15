@@ -1,4 +1,3 @@
-TODO: config — reset array keys
 TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
 TODO: remove TestFunction::$functionArguments
 TODO: multiplier vs contextSwitchers
@@ -8,7 +7,7 @@ TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After
 TODO: license text to each file head
 TODO: rename ContextData to Context/ContextScope/etc. ???
 TODO: remove config::setContextDataClass ???
-
+TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: reports — по умолчанию не разворачивать список ошибок
 TODO: instanceofMatcher -> instanceof_
 TODO: config::__descruct — проверять отличаются ли текущие свойства от свойств в lock()::static

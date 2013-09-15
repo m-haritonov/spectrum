@@ -161,6 +161,8 @@ final class config
 						unset(static::$registeredSpecPlugins[$key]);
 				}
 			}
+			
+			static::$registeredSpecPlugins = array_values(static::$registeredSpecPlugins);
 		}
 	}
 
