@@ -1,0 +1,1 @@
+Namespace "\spectrum\tests\testHelpers\_dynamicClasses_" reserved for method "\spectrum\tests\Test\createClass"
