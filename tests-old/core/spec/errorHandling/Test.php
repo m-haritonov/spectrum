@@ -33,7 +33,7 @@ abstract class Test extends \spectrum\core\specItemIt\Test
 		$it->setTestCallback(function() use(&$resultBuffer, $it)
 		{
 			$resultBuffer = $it->getResultBuffer();
-			throw new \spectrum\core\ExceptionBreak();
+			throw new \spectrum\core\BreakException();
 		});
 
 		$it->run();

@@ -185,6 +185,6 @@ class Test extends \spectrum\core\Test
 
 		$it->run();
 
-		$this->assertTrue($thrownException instanceof \spectrum\core\ExceptionBreak);
+		$this->assertTrue($thrownException instanceof \spectrum\core\BreakException);
 	}
 }

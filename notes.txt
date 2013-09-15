@@ -3,7 +3,6 @@ TODO: в $multiplier array в test передавать значения в Cont
 TODO: remove TestFunction::$functionArguments
 TODO: multiplier vs contextSwitchers
 TODO: activateMoment -> activationType ???
-TODO: ExceptionBreak -> BreakException, ExceptionFail -> FailException
 TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 TODO: license text to each file head

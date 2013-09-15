@@ -26,12 +26,12 @@ class FailTest extends \spectrum\constructionCommands\commands\Test
 		$results = $resultBuffer->getResults();
 
 		$this->assertFalse($results[0]['result']);
-		$this->assertTrue($results[0]['details'] instanceof \spectrum\constructionCommands\ExceptionFail);
+		$this->assertTrue($results[0]['details'] instanceof \spectrum\constructionCommands\FailException);
 		$this->assertEquals('bar baz', $results[0]['details']->getMessage());
 		$this->assertEquals(0, $results[0]['details']->getCode());
 
 		$this->assertFalse($results[1]['result']);
-		$this->assertTrue($results[1]['details'] instanceof \spectrum\constructionCommands\ExceptionFail);
+		$this->assertTrue($results[1]['details'] instanceof \spectrum\constructionCommands\FailException);
 		$this->assertEquals('foooo', $results[1]['details']->getMessage());
 		$this->assertEquals(110, $results[1]['details']->getCode());
 	}

@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\errorHandling;
 use spectrum\config;
-use spectrum\core\ExceptionBreak;
+use spectrum\core\BreakException;
 use spectrum\core\MatcherCallDetailsInterface;
 use spectrum\core\plugins\Exception;
 
@@ -127,7 +127,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new PhpErrorException($message, 0, $severity, $file, $line));
 
 			if ($thisObject->getBreakOnFirstPhpErrorThroughRunningAncestors())
-				throw new ExceptionBreak();
+				throw new BreakException();
 
 		}, $catchPhpErrors);
 	}
@@ -143,6 +143,6 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	protected function onMatcherCallFinish(MatcherCallDetailsInterface $callDetails)
 	{
 		if (!$callDetails->getResult() && $this->getBreakOnFirstMatcherFailThroughRunningAncestors())
-			throw new ExceptionBreak();
+			throw new BreakException();
 	}
 }

@@ -8,7 +8,7 @@
 
 namespace spectrum\constructionCommands;
 
-class ExceptionFail extends Exception
+class FailException extends Exception
 {
 	
 }

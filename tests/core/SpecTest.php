@@ -3937,7 +3937,7 @@ class SpecTest extends \spectrum\tests\Test
 				
 				public function ' . $eventName . '()
 				{
-					$e = new \spectrum\core\ExceptionBreak();
+					$e = new \spectrum\core\BreakException();
 					\spectrum\tests\Test::$temp["thrownExceptions"][] = $e;
 					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
 					

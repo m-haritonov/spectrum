@@ -519,7 +519,7 @@ class Spec implements SpecInterface
 			$this->dispatchPluginEvent('onEndingSpecExecute');
 			$this->dispatchPluginEvent('onEndingSpecExecuteAfter');
 		}
-		catch (ExceptionBreak $e)
+		catch (BreakException $e)
 		{
 			// Just ignore special break exception
 		}

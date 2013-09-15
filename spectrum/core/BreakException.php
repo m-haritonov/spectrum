@@ -11,7 +11,7 @@ namespace spectrum\core;
 /**
  * Be carefully, this exception not adds to ResultBuffer and should be throw only for softly break execution.
  */
-class ExceptionBreak extends Exception
+class BreakException extends Exception
 {
 	
 }
