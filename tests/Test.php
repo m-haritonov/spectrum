@@ -23,14 +23,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->backupStaticProperties('\spectrum\config');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\Output');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
-//		$this->backupStaticProperties('\spectrum\tests\testHelpers\agents\core\PluginStub');
 
 		\spectrum\tests\Test::$temp = null;
 	}
 
 	protected function tearDown()
 	{
-//		$this->restoreStaticProperties('\spectrum\tests\testHelpers\agents\core\PluginStub');
 		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
 		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\Output');
 		$this->restoreStaticProperties('\spectrum\config');
