@@ -6,10 +6,10 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests\core;
-use spectrum\core\ContextData;
+namespace spectrum\tests\core\plugins\basePlugins\contexts;
+use spectrum\core\plugins\basePlugins\contexts\ContextData;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../../../init.php';
 
 class ContextDataTest extends \spectrum\tests\Test
 {

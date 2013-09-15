@@ -16,5 +16,5 @@ function this()
 	if (!$callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at running state');
 
-	return $callBrokerClass::internal_getCurrentRunningSpec()->testFunction->getContextData();
+	return $callBrokerClass::internal_getCurrentRunningSpec()->contexts->getContextData();
 }

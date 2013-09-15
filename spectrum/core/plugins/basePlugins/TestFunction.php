@@ -7,8 +7,6 @@
  */
 
 namespace spectrum\core\plugins\basePlugins;
-use spectrum\config;
-use spectrum\core\ContextDataInterface;
 
 class TestFunction extends \spectrum\core\plugins\Plugin
 {
@@ -17,8 +15,6 @@ class TestFunction extends \spectrum\core\plugins\Plugin
 	 */
 	protected $function;
 	protected $functionArguments = array();
-	/** @var ContextDataInterface */
-	protected $contextData;
 	
 	static public function getAccessName()
 	{
@@ -68,28 +64,10 @@ class TestFunction extends \spectrum\core\plugins\Plugin
 	
 /**/
 	
-	public function getContextData()
-	{
-		return $this->contextData;
-	}
-	
 	protected function onEndingSpecExecute()
 	{
 		$function = $this->getFunctionThroughRunningAncestors();
-		if (!$function)
-			return;
-		
-		$contextDataClass = config::getContextDataClass();
-		$this->contextData = new $contextDataClass();
-		
-		foreach ($this->getAllThroughRunningAncestors('before') as $context)
-			$this->callFunctionInContext($context['function'], array());
-		
-		$this->dispatchPluginEvent('onTestFunctionCallBefore');
-		$this->getOwnerSpec()->contexts->callFunctionInContext($function, $this->getFunctionArgumentsThroughRunningAncestors(), $this->contextData);
-		$this->dispatchPluginEvent('onTestFunctionCallAfter');
-		
-		foreach ($this->getAllThroughRunningAncestors('after') as $context)
-			$this->callFunctionInContext($context['function'], array());
+		if ($function)
+			$this->getOwnerSpec()->contexts->callFunctionInContext($function, $this->getFunctionArgumentsThroughRunningAncestors());
 	}
 }

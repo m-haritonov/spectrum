@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core;
+namespace spectrum\core\plugins\basePlugins\contexts;
 
 interface ContextDataInterface extends \Countable, \ArrayAccess
 {

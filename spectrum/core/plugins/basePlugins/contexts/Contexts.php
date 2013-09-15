@@ -6,17 +6,27 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\core\plugins\basePlugins;
+namespace spectrum\core\plugins\basePlugins\contexts;
 use spectrum\config;
 use spectrum\core\plugins\Exception;
 
 class Contexts extends \spectrum\core\plugins\Plugin
 {
+	/** @var ContextDataInterface */
+	protected $contextData;
 	protected $items = array();
 	
 	static public function getAccessName()
 	{
 		return 'contexts';
+	}
+	
+	static public function getEventListeners()
+	{
+		return array(
+			array('event' => 'onEndingSpecExecuteBefore', 'method' => 'onEndingSpecExecuteBefore', 'order' => 20),
+			array('event' => 'onEndingSpecExecuteAfter', 'method' => 'onEndingSpecExecuteAfter', 'order' => -20),
+		);
 	}
 	
 	public function add($function, $type = 'before')
@@ -126,17 +136,44 @@ class Contexts extends \spectrum\core\plugins\Plugin
 		$this->items = array();
 	}
 	
-	public function callFunctionInContext($function, $arguments, $context)
+	public function getContextData()
+	{
+		return $this->contextData;
+	}
+	
+	public function callFunctionInContext($function, array $arguments = array())
 	{
 		// Access to context through "$this" variable, available in php >= 5.4
 		if (method_exists($function, 'bindTo'))
 		{
-			$function = $function->bindTo($context);
+			$function = $function->bindTo($this->contextData);
 			if (!$function)
 				throw new Exception('Can\'t bind "$this" variable to context object');
 		}
 
 		return call_user_func_array($function, $arguments);
+	}
+	
+	protected function onEndingSpecExecuteBefore()
+	{
+		$this->contextData = $this->createContextData();
+		
+		foreach ($this->getAllThroughRunningAncestors('before') as $context)
+			$this->callFunctionInContext($context['function']);
+	}
+	
+	protected function onEndingSpecExecuteAfter()
+	{
+		foreach ($this->getAllThroughRunningAncestors('after') as $context)
+			$this->callFunctionInContext($context['function']);
+		
+		$this->contextData = null;
+	}
+	
+	protected function createContextData()
+	{
+		$contextClass = config::getContextDataClass();
+		return new $contextClass();
 	}
 	
 /**/

@@ -1,17 +1,15 @@
-TODO: activateMoment -> activationType
-TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
-TODO: Contexts -> ContextAppliers
-TODO: ContextData -> Context, getContextData -> getContext ???
-TODO: callFunctionInContext, $this->contextData = new $contextDataClass() перенести в Contexts на onEndingSpecExecuteBefore, getContextData -> Spec::getContextData
-!!! но тогда контексты будут инициализироваться для спеков без testFunction (однако для таких тестов beforeEach и не должен использоваться)
-
-TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
-TODO: multiplier vs contextSwitchers
-TODO: Spec::setName() — приводиль ли имя к строковому типу?
+TODO: ExceptionPhpError -> errorHandling\PhpErrorException
 TODO: config — reset array keys
+TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
+TODO: remove TestFunction::$functionArguments
+TODO: multiplier vs contextSwitchers
+TODO: activateMoment -> activationType ???
+TODO: ExceptionBreak -> BreakException, ExceptionPhpError -> PhpErrorException, ExceptionFail -> FailException
+TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
-TODO: add to ContextBuffer method getCurrentTest()/getTest()/getSpec()/getSelf() для вызовов вида $this->getTest()
 TODO: license text to each file head
+TODO: rename ContextData to Context/ContextScope/etc. ???
+TODO: remove config::setContextDataClass ???
 
 TODO: reports — по умолчанию не разворачивать список ошибок
 TODO: instanceofMatcher -> instanceof_

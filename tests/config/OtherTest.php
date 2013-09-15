@@ -407,7 +407,7 @@ class OtherTest extends \spectrum\tests\Test
 
 	public function testGetContextDataClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\ContextData', config::getContextDataClass());
+		$this->assertSame('\spectrum\core\plugins\basePlugins\contexts\ContextData', config::getContextDataClass());
 	}
 	
 	public function testGetContextDataClass_ConfigIsLocked_DoesNotThrowException()
@@ -421,7 +421,7 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetContextDataClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\ContextDataInterface
+			class ... implements \spectrum\core\plugins\basePlugins\contexts\ContextDataInterface
 			{
 				public function count(){}
 				public function offsetSet($key, $value){}
@@ -460,7 +460,7 @@ class OtherTest extends \spectrum\tests\Test
 	public function testSetContextDataClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\ContextDataInterface
+			class ... implements \spectrum\core\plugins\basePlugins\contexts\ContextDataInterface
 			{
 				public function count(){}
 				public function offsetSet($key, $value){}

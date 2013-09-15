@@ -14,7 +14,7 @@ final class config
 	static private $assertClass = '\spectrum\core\Assert';
 	static private $matcherCallDetailsClass = '\spectrum\core\MatcherCallDetails';
 	static private $specClass = '\spectrum\core\Spec';
-	static private $contextDataClass = '\spectrum\core\ContextData';
+	static private $contextDataClass = '\spectrum\core\plugins\basePlugins\contexts\ContextData';
 	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
 	
 	static private $allowBaseMatchersOverride = false;
@@ -25,7 +25,7 @@ final class config
 
 	static private $registeredSpecPlugins = array(
 		'\spectrum\core\plugins\basePlugins\reports\Reports',
-		'\spectrum\core\plugins\basePlugins\Contexts',
+		'\spectrum\core\plugins\basePlugins\contexts\Contexts',
 		'\spectrum\core\plugins\basePlugins\ErrorHandling',
 		'\spectrum\core\plugins\basePlugins\TestFunction',
 		'\spectrum\core\plugins\basePlugins\Matchers',
@@ -76,7 +76,7 @@ final class config
 	static public function setSpecClass($className){ return static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
 	static public function getSpecClass(){ return static::$specClass; }
 
-	static public function setContextDataClass($className){ return static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\ContextDataInterface'); }
+	static public function setContextDataClass($className){ return static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\plugins\basePlugins\contexts\ContextDataInterface'); }
 	static public function getContextDataClass(){ return static::$contextDataClass; }
 	
 	static public function setResultBufferClass($className){ return static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
