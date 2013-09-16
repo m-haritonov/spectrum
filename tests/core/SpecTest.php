@@ -2353,14 +2353,7 @@ class SpecTest extends \spectrum\tests\Test
 		');
 		
 		config::registerSpecPlugin($pluginClassName);
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree($specTreePattern);
-		
-		foreach ($specBindings as $parent => $children)
-		{
-			foreach ((array) $children as $child)
-				\spectrum\tests\Test::$temp["specs"][$parent]->bindChildSpec(\spectrum\tests\Test::$temp["specs"][$child]);
-		}
-		
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree($specTreePattern, $specBindings);
 		\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		
 		$this->assertSame($specStates, \spectrum\tests\Test::$temp["specStates"]);
@@ -2372,14 +2365,7 @@ class SpecTest extends \spectrum\tests\Test
 	 */
 	public function testRun_ChildSpecRunWithoutRunningParent_EnablesDisabledSpecsAfterRun($specTreePattern, $specStates, $calledSpecs, $specBindings = array())
 	{
-		$specs = $this->createSpecsTree($specTreePattern);
-		
-		foreach ($specBindings as $parent => $children)
-		{
-			foreach ((array) $children as $child)
-				$specs[$parent]->bindChildSpec($specs[$child]);
-		}
-		
+		$specs = $this->createSpecsTree($specTreePattern, $specBindings);
 		$specs["callee"]->run();
 		
 		foreach ($specs as $spec)

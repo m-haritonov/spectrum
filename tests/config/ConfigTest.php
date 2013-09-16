@@ -11,7 +11,7 @@ use spectrum\config;
 
 require_once __DIR__ . '/../init.php';
 
-class OtherTest extends \spectrum\tests\Test
+class ConfigTest extends \spectrum\tests\Test
 {
 	public function testGetConstructionCommandsCallBrokerClass_ReturnsSpectrumClassByDefault()
 	{

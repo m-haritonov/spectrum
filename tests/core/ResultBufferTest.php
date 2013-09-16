@@ -14,6 +14,15 @@ require_once __DIR__ . '/../init.php';
 
 class ResultBufferTest extends \spectrum\tests\Test
 {
+	public function testGetOwnerSpec_ReturnsPassedToConstructorSpecInstance()
+	{
+		$spec = new Spec();
+		$resultBuffer = new ResultBuffer($spec);
+		$this->assertSame($spec, $resultBuffer->getOwnerSpec());
+	}
+	
+/**/
+	
 	public function testAddResult_AcceptsTrueOrFalseOrNullWithDetailsOrWithoutDetails()
 	{
 		$resultBuffer = new ResultBuffer(new Spec());

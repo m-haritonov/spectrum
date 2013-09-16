@@ -121,9 +121,16 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	 * ->->Spec
 	 * ->Spec
 	 * 
+	 * @param $specBindings Example:
+	 *                      array(
+	 *                          'name' => array(4, 5, 6, 'aaa'),
+	 *                          4 => array('bbb', 'ccc'),
+	 *                          5 => array('zzz'),
+	 *                      );
+	 * 
 	 * @return array
 	 */
-	final protected function createSpecsTree($specTreePattern)
+	final protected function createSpecsTree($specTreePattern, array $specBindings = array())
 	{
 		$specTreePattern = trim($specTreePattern);
 		
@@ -177,6 +184,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				
 				$masterItem['spec']->bindChildSpec($item['spec']);
 			}
+		}
+		
+		foreach ($specBindings as $parentSpecName => $childrenSpecNames)
+		{
+			foreach ((array) $childrenSpecNames as $childSpecName)
+				$specsWithNames[$parentSpecName]->bindChildSpec($specsWithNames[$childSpecName]);
 		}
 		
 		return $specsWithNames;
