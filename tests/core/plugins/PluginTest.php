@@ -251,10 +251,10 @@ class PluginTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerCallMethodThroughRunningAncestorSpecs2
 	 */
-	public function testCallMethodThroughRunningAncestorSpecs_UsesPassedTestedValueToDetectNotSetValues($specTreePattern, $specBindings, $pluginValues, $notSetTestedValue, $useStrictComparison, $returnValues)
+	public function testCallMethodThroughRunningAncestorSpecs_DiscardsIgnoredReturnValues($specTreePattern, $specBindings, $pluginValues, $ignoredReturnValue, $useStrictComparison, $returnValues)
 	{
 		\spectrum\tests\Test::$temp["returnValues"] = array();
-		\spectrum\tests\Test::$temp["notSetTestedValue"] = $notSetTestedValue;
+		\spectrum\tests\Test::$temp["ignoredReturnValue"] = $ignoredReturnValue;
 		\spectrum\tests\Test::$temp["useStrictComparison"] = $useStrictComparison;
 		
 		config::registerSpecPlugin($this->createClass('
@@ -282,7 +282,7 @@ class PluginTest extends \spectrum\tests\Test
 				protected function onSpecRunStart()
 				{
 					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
-						\spectrum\tests\Test::$temp["returnValues"][] = $this->callMethodThroughRunningAncestorSpecs("getValue", array(), null, \spectrum\tests\Test::$temp["notSetTestedValue"], \spectrum\tests\Test::$temp["useStrictComparison"]);
+						\spectrum\tests\Test::$temp["returnValues"][] = $this->callMethodThroughRunningAncestorSpecs("getValue", array(), null, \spectrum\tests\Test::$temp["ignoredReturnValue"], \spectrum\tests\Test::$temp["useStrictComparison"]);
 				}
 			}
 		'));
@@ -297,7 +297,7 @@ class PluginTest extends \spectrum\tests\Test
 		$this->assertSame($returnValues, \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testCallMethodThroughRunningAncestorSpecs_ReturnValueNotEqualToPassedTestedValue_ReturnsDefaultReturnValue()
+	public function testCallMethodThroughRunningAncestorSpecs_ProperReturnValueIsNotFound_ReturnsDefaultReturnValue()
 	{
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		

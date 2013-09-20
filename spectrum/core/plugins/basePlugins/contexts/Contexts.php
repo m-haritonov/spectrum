@@ -41,23 +41,6 @@ class Contexts extends \spectrum\core\plugins\Plugin
 			'type' => $type,
 		);
 	}
-
-	public function get($index)
-	{
-		return @$this->items[$index];
-	}
-	
-	public function getThroughRunningAncestors($index)
-	{
-		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
-		foreach ($ancestorSpecs as $spec)
-		{
-			if ($spec->{static::getAccessName()}->isExists($index))
-				return $spec->{static::getAccessName()}->get($index);
-		}
-
-		return null;
-	}
 	
 	public function getAll($type = null)
 	{
@@ -80,54 +63,32 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	}
 	
 	/**
-	 * Order "before": from parent to child
-	 * Order "after": from child to parent
+	 * "before" type: order is from parent to child
+	 * "after" type: order is from child to parent
 	 */
-	public function getAllThroughRunningAncestors($joinOrder = 'before')
+	public function getAllThroughRunningAncestors($type = 'before')
 	{
-		$joinOrder = strtolower($joinOrder);
-		$this->checkType($joinOrder);
+		$type = strtolower($type);
+		$this->checkType($type);
 		
 		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
-		$ancestorSpecs = array_reverse($ancestorSpecs);
 		
 		$result = array();
 		foreach ($ancestorSpecs as $spec)
 		{
-			if ($joinOrder == 'before')
-				$result = array_merge($result, $spec->{static::getAccessName()}->getAll('before'));
+			if ($type == 'before')
+				$result = array_merge($spec->{static::getAccessName()}->getAll('before'), $result);
 			else
-				$result = array_merge($spec->{static::getAccessName()}->getAll('after'), $result);
+				$result = array_merge($result, array_reverse($spec->{static::getAccessName()}->getAll('after')));
 		}
 
 		return $result;
 	}
 	
-	public function isExists($index)
-	{
-		return array_key_exists($index, $this->items);
-	}
-	
-	public function isExistsThroughRunningAncestors($index)
-	{
-		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
-
-		foreach ($ancestorSpecs as $spec)
-		{
-			if ($spec->{static::getAccessName()}->isExists($index))
-				return true;
-		}
-
-		return false;
-	}
-	
 	public function remove($index)
 	{
 		$this->handleModifyDeny();
-		
-		$value = $this->items[$index];
 		unset($this->items[$index]);
-		return $value;
 	}
 
 	public function removeAll()
@@ -143,6 +104,9 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	
 	public function callFunctionInContext($function, array $arguments = array())
 	{
+		if (!$this->contextData)
+			throw new Exception('Context data is not initialized (call this method on spec run)');
+		
 		// Access to context through "$this" variable, available in php >= 5.4
 		if (method_exists($function, 'bindTo'))
 		{

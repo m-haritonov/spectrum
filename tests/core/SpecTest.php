@@ -678,25 +678,7 @@ class SpecTest extends \spectrum\tests\Test
 	public function testPlugins_EventDispatch_OnSpecConstruct_IsDispatchedOnSpecInstanceCreation()
 	{
 		\spectrum\tests\Test::$temp["createdSpecs"] = array();
-		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecConstruct", "method" => "onSpecConstruct", "order" => 100),
-					);
-				}
-				
-				public function onSpecConstruct()
-				{
-					\spectrum\tests\Test::$temp["createdSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["createdSpecs"][] = $this->getOwnerSpec();', 'onSpecConstruct');
 		$specs = array(new Spec(), new Spec(), new Spec());
 		$this->assertSame($specs, \spectrum\tests\Test::$temp["createdSpecs"]);
 	}
@@ -704,26 +686,7 @@ class SpecTest extends \spectrum\tests\Test
 	public function testPlugins_EventDispatch_OnSpecConstruct_DoesNotPassArgumentsToCalleeMethod()
 	{
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
-		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecConstruct", "method" => "onSpecConstruct", "order" => 100),
-					);
-				}
-				
-				public function onSpecConstruct()
-				{
-					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
-		
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onSpecConstruct');
 		new Spec();
 		new Spec();
 		$this->assertSame(array(array(), array()), \spectrum\tests\Test::$temp["passedArguments"]);
@@ -740,30 +703,24 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(true, $spec->isEnabled());
 	}
 	
-	public function testEnable_ThrowsExceptionWhenCallOnRun()
+	public function testEnable_CallOnRun_ThrowsExceptionAndDoesNotEnableSpec()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->enable();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["specs"][1]->enable();
 		');
 		
-		config::registerSpecPlugin($pluginClassName);
-		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "enable" method is deny on running', function() use($spec){
-			$spec->run();
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+			Spec
+			->Spec
+		');
+		
+		\spectrum\tests\Test::$temp["specs"][1]->disable();
+		
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "enable" method is deny on running', function(){
+			\spectrum\tests\Test::$temp["specs"][0]->run();
 		});
+		
+		$this->assertSame(false, \spectrum\tests\Test::$temp["specs"][1]->isEnabled());
 	}
 	
 /**/
@@ -777,30 +734,15 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(false, $spec->isEnabled());
 	}
 	
-	public function testDisable_ThrowsExceptionWhenCallOnRun()
+	public function testDisable_CallOnRun_ThrowsExceptionAndDoesNotDisableSpec()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->disable();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->disable();');
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "disable" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame(true, $spec->isEnabled());
 	}
 	
 /**/
@@ -832,30 +774,17 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame('bbb', $spec->getName());
 	}
 	
-	public function testSetName_ThrowsExceptionWhenCallOnRun()
+	public function testSetName_CallOnRun_ThrowsExceptionAndDoesNotChangeName()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->setName("aaa");
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->setName("bbb");');
 		$spec = new Spec();
+		$spec->setName('aaa');
+		
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "setName" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame('aaa', $spec->getName());
 	}
 	
 /**/
@@ -953,30 +882,16 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $parentSpec->getChildSpecs());
 	}
 	
-	public function testBindParentSpec_ThrowsExceptionWhenCallOnRun()
+	public function testBindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->bindParentSpec(new \spectrum\core\Spec());
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindParentSpec(new \spectrum\core\Spec());');
 		$spec = new Spec();
+		
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "bindParentSpec" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame(array(), $spec->getParentSpecs());
 	}
 	
 /**/
@@ -1053,30 +968,18 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($childSpec1, $childSpec3), $spec->getChildSpecs());
 	}
 	
-	public function testUnbindParentSpec_ThrowsExceptionWhenCallOnRun()
+	public function testUnbindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->unbindParentSpec(new \spectrum\core\Spec());
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		\spectrum\tests\Test::$temp["newSpec"] = new Spec();
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindParentSpec(\spectrum\tests\Test::$temp["newSpec"]);');
 		$spec = new Spec();
+		$spec->bindParentSpec(\spectrum\tests\Test::$temp["newSpec"]);
+		
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindParentSpec" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame(array(\spectrum\tests\Test::$temp["newSpec"]), $spec->getParentSpecs());
 	}
 	
 /**/
@@ -1132,30 +1035,18 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($childSpec1, $childSpec3), $spec->getChildSpecs());
 	}
 	
-	public function testUnbindAllParentSpecs_ThrowsExceptionWhenCallOnRun()
+	public function testUnbindAllParentSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->unbindAllParentSpecs();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindAllParentSpecs();');
+		$newSpec = new Spec();
 		$spec = new Spec();
+		$spec->bindParentSpec($newSpec);
+		
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindAllParentSpecs" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame(array($newSpec), $spec->getParentSpecs());
 	}
 	
 /**/
@@ -1262,30 +1153,15 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $childSpec->getParentSpecs());
 	}
 	
-	public function testBindChildSpec_ThrowsExceptionWhenCallOnRun()
+	public function testBindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->bindChildSpec(new \spectrum\core\Spec());
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindChildSpec(new \spectrum\core\Spec());');
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "bindChildSpec" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame(array(), $spec->getChildSpecs());
 	}
 	
 /**/
@@ -1362,30 +1238,18 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($parentSpec1, $parentSpec3), $spec->getParentSpecs());
 	}
 
-	public function testUnbindChildSpec_ThrowsExceptionWhenCallOnRun()
+	public function testUnbindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->unbindChildSpec(new \spectrum\core\Spec());
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		\spectrum\tests\Test::$temp["newSpec"] = new Spec();
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindChildSpec(\spectrum\tests\Test::$temp["newSpec"]);');
 		$spec = new Spec();
+		$spec->bindChildSpec(\spectrum\tests\Test::$temp["newSpec"]);
+		
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindChildSpec" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame(array(\spectrum\tests\Test::$temp["newSpec"]), $spec->getChildSpecs());
 	}
 	
 /**/
@@ -1441,30 +1305,18 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($parentSpec1, $parentSpec3), $spec->getParentSpecs());
 	}
 
-	public function testUnbindAllChildSpecs_ThrowsExceptionWhenCallOnRun()
+	public function testUnbindAllChildSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs()
 	{
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$this->getOwnerSpec()->unbindAllChildSpecs();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindAllChildSpecs();');
+		$newSpec = new Spec();
 		$spec = new Spec();
+		$spec->bindChildSpec($newSpec);
+		
 		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindAllChildSpecs" method is deny on running', function() use($spec){
 			$spec->run();
 		});
+		
+		$this->assertSame(array($newSpec), $spec->getChildSpecs());
 	}
 
 /**/
@@ -1540,25 +1392,10 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["specs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
-						\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningParentSpec();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
+				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningParentSpec();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		$specs = $this->createSpecsTree('
 			->Spec
@@ -1592,25 +1429,10 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["specs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
-						\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningAncestorSpecs();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
+				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningAncestorSpecs();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		$specs = $this->createSpecsTree('
 			->Spec
@@ -1646,25 +1468,7 @@ class SpecTest extends \spectrum\tests\Test
 	public function testGetDeepestRunningSpec_ReturnsDeepestRunningChildSpec()
 	{
 		\spectrum\tests\Test::$temp["specs"] = array();
-		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["specs"][] = \spectrum\tests\Test::$temp["rootSpec"]->getDeepestRunningSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["specs"][] = \spectrum\tests\Test::$temp["rootSpec"]->getDeepestRunningSpec();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -1682,25 +1486,10 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["specs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
-						\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getDeepestRunningSpec();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
+				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getDeepestRunningSpec();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -1725,29 +1514,14 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["returnSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
+		$this->registerPluginWithCodeInEvent('
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
 			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => 100),
-					);
-				}
-				
-				public function onEndingSpecExecute()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
-					{
-						\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningChildSpec();
-						\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"][1]->getRunningChildSpec();
-						\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"]["checkpoint"]->getRunningChildSpec();
-					}
-				}
+				\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningChildSpec();
+				\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"][1]->getRunningChildSpec();
+				\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"]["checkpoint"]->getRunningChildSpec();
 			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		', 'onEndingSpecExecute');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -1828,27 +1602,12 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
-					
-					if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
-						\spectrum\tests\Test::$temp["specs"]["callee"]->run();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
+			
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
+				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			->->Spec(caller)
@@ -1875,31 +1634,16 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
+		$this->registerPluginWithCodeInEvent('
+			try
 			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					try
-					{
-						$this->getOwnerSpec()->run();
-					}
-					catch (\Exception $e)
-					{
-						\spectrum\tests\Test::$temp["exception"] = $e;
-					}
-				}
+				$this->getOwnerSpec()->run();
+			}
+			catch (\Exception $e)
+			{
+				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		$spec = new Spec();
 		$spec->setName('aaa');
@@ -1913,27 +1657,12 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
-					
-					if (\spectrum\tests\Test::$temp["specs"]["spec"] === $this->getOwnerSpec())
-						\spectrum\tests\Test::$temp["specs"]["spec"]->run();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
+			
+			if (\spectrum\tests\Test::$temp["specs"]["spec"] === $this->getOwnerSpec())
+				\spectrum\tests\Test::$temp["specs"]["spec"]->run();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -1959,34 +1688,19 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
+		$this->registerPluginWithCodeInEvent('
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
 			{
-				static public function getEventListeners()
+				try
 				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
+					\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 				}
-				
-				public function onSpecRunStart()
+				catch (\Exception $e)
 				{
-					if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
-					{
-						try
-						{
-							\spectrum\tests\Test::$temp["specs"]["callee"]->run();
-						}
-						catch (\Exception $e)
-						{
-							\spectrum\tests\Test::$temp["exception"] = $e;
-						}
-					}
+					\spectrum\tests\Test::$temp["exception"] = $e;
 				}
 			}
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -2005,27 +1719,12 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
-					
-					if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
-						\spectrum\tests\Test::$temp["specs"]["callee"]->run();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
+			
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
+				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -2327,32 +2026,18 @@ class SpecTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["specStates"] = array();
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
+		$this->registerPluginWithCodeInEvent('
+			$ownerSpec = $this->getOwnerSpec();
+			
+			if ($ownerSpec === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
 			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					$ownerSpec = $this->getOwnerSpec();
-					
-					if ($ownerSpec === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
-					{
-						foreach (\spectrum\tests\Test::$temp["specs"] as $spec)
-							\spectrum\tests\Test::$temp["specStates"][] = $spec->isEnabled();
-					}
-					
-					\spectrum\tests\Test::$temp["calledSpecs"][] = array_search($ownerSpec, \spectrum\tests\Test::$temp["specs"], true);
-				}
+				foreach (\spectrum\tests\Test::$temp["specs"] as $spec)
+					\spectrum\tests\Test::$temp["specStates"][] = $spec->isEnabled();
 			}
+			
+			\spectrum\tests\Test::$temp["calledSpecs"][] = array_search($ownerSpec, \spectrum\tests\Test::$temp["specs"], true);
 		');
 		
-		config::registerSpecPlugin($pluginClassName);
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree($specTreePattern, $specBindings);
 		\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		
@@ -2432,34 +2117,19 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
+		$this->registerPluginWithCodeInEvent('
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
 			{
-				static public function getEventListeners()
+				try
 				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
+					\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 				}
-				
-				public function onSpecRunStart()
+				catch (\Exception $e)
 				{
-					if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
-					{
-						try
-						{
-							\spectrum\tests\Test::$temp["specs"]["callee"]->run();
-						}
-						catch (\Exception $e)
-						{
-							\spectrum\tests\Test::$temp["exception"] = $e;
-						}
-					}
+					\spectrum\tests\Test::$temp["exception"] = $e;
 				}
 			}
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec(caller)
@@ -2479,27 +2149,12 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
-					
-					if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
-						\spectrum\tests\Test::$temp["specs"]["callee"]->run();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
+			
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
+				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec(caller)
@@ -2523,29 +2178,14 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
+		$this->registerPluginWithCodeInEvent('
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][2])
 			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => 100),
-					);
-				}
-				
-				public function onEndingSpecExecute()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][2])
-					{
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][0]->isRunning();
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][1]->isRunning();
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][2]->isRunning();
-					}
-				}
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][0]->isRunning();
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][1]->isRunning();
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][2]->isRunning();
 			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		', 'onEndingSpecExecute');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -2570,31 +2210,16 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
+		$this->registerPluginWithCodeInEvent('
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][4])
 			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => 100),
-					);
-				}
-				
-				public function onEndingSpecExecute()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][4])
-					{
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][0]->isRunning();
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][1]->isRunning();
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][2]->isRunning();
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][3]->isRunning();
-						\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][4]->isRunning();
-					}
-				}
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][0]->isRunning();
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][1]->isRunning();
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][2]->isRunning();
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][3]->isRunning();
+				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][4]->isRunning();
 			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		', 'onEndingSpecExecute');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -2612,24 +2237,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -2649,24 +2257,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -2688,24 +2279,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -2747,6 +2321,25 @@ class SpecTest extends \spectrum\tests\Test
 	}
 	
 /**/
+	
+	public function testRun_RootSpecRun_ResultBuffer_UseConfigForResultBufferClassGetting()
+	{
+		\spectrum\tests\Test::$temp["resultBuffers"] = array();
+		$resultBufferClassName = $this->createClass('class ... extends \spectrum\core\ResultBuffer {}');
+		config::setResultBufferClass($resultBufferClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
+		
+		$specs = $this->createSpecsTree('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		
+		$this->assertSame(2, count(\spectrum\tests\Test::$temp["resultBuffers"]));
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\Test::$temp["resultBuffers"][0]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\Test::$temp["resultBuffers"][1]);
+	}
 	
 	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferWithProperLinkToOwnerSpecForEachSpec()
 	{
@@ -2950,25 +2543,10 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0])
-						\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0])
+				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
+		', 'onSpecRunFinish');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -2985,25 +2563,10 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
-						\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
-				}
-			}
+		$this->registerPluginWithCodeInEvent('
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
+				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
 		');
-		
-		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -3018,25 +2581,10 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0])
-						\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0])
+				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
+		', 'onSpecRunFinish');
 		
 		$resultBufferClassName = $this->createClass('
 			class ... extends \spectrum\core\ResultBuffer
@@ -3077,25 +2625,10 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
-						\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][1]->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
+				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][1]->getResultBuffer();
+		', 'onSpecRunFinish');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -3115,24 +2648,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunBefore", "method" => "onRootSpecRunBefore", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunBefore()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunBefore');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3148,24 +2664,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunBefore", "method" => "onRootSpecRunBefore", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunBefore()
-				{
-					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunBefore');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3180,24 +2679,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunBefore", "method" => "onRootSpecRunBefore", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunBefore()
-				{
-					\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunBefore');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3212,24 +2694,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunBefore", "method" => "onRootSpecRunBefore", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunBefore()
-				{
-					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunBefore');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3246,24 +2711,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunAfter", "method" => "onRootSpecRunAfter", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunAfter()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunAfter');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3279,24 +2727,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunAfter", "method" => "onRootSpecRunAfter", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunAfter()
-				{
-					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunAfter');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3311,24 +2742,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunAfter", "method" => "onRootSpecRunAfter", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunAfter()
-				{
-					\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunAfter');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3343,24 +2757,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onRootSpecRunAfter", "method" => "onRootSpecRunAfter", "order" => 100),
-					);
-				}
-				
-				public function onRootSpecRunAfter()
-				{
-					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunAfter');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3381,24 +2778,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3415,24 +2795,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3447,24 +2810,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3479,24 +2825,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3512,24 +2841,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunStart()
-				{
-					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3546,24 +2858,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3580,24 +2875,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onSpecRunFinish');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3612,24 +2890,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onSpecRunFinish');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3644,24 +2905,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3677,24 +2921,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onSpecRunFinish()
-				{
-					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3730,24 +2957,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => 100),
-					);
-				}
-				
-				public function ' . $eventName . '()
-				{
-					\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', $eventName);
 		
 		$specs = $this->createSpecsTree('
 			Spec
@@ -3769,24 +2979,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => 100),
-					);
-				}
-				
-				public function ' . $eventName . '()
-				{
-					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', $eventName);
 		
 		$spec = new Spec();
 		$spec->run();
@@ -3801,24 +2994,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => 100),
-					);
-				}
-				
-				public function ' . $eventName . '()
-				{
-					\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', $eventName);
 		
 		$spec = new Spec();
 		$spec->run();
@@ -3833,24 +3009,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => 100),
-					);
-				}
-				
-				public function ' . $eventName . '()
-				{
-					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', $eventName);
 		
 		$spec = new Spec();
 		$spec->run();
@@ -3867,28 +3026,13 @@ class SpecTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["thrownExceptions"] = array();
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => 100),
-					);
-				}
-				
-				public function ' . $eventName . '()
-				{
-					$e = new \Exception("aaa");
-					\spectrum\tests\Test::$temp["thrownExceptions"][] = $e;
-					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-					
-					throw $e;
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('
+			$e = new \Exception("aaa");
+			\spectrum\tests\Test::$temp["thrownExceptions"][] = $e;
+			\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
+			
+			throw $e;
+		', $eventName);
 		
 		$spec = new Spec();
 		$spec->run();
@@ -3911,28 +3055,13 @@ class SpecTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["thrownExceptions"] = array();
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
-					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => 100),
-					);
-				}
-				
-				public function ' . $eventName . '()
-				{
-					$e = new \spectrum\core\BreakException();
-					\spectrum\tests\Test::$temp["thrownExceptions"][] = $e;
-					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-					
-					throw $e;
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		$this->registerPluginWithCodeInEvent('
+			$e = new \spectrum\core\BreakException();
+			\spectrum\tests\Test::$temp["thrownExceptions"][] = $e;
+			\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
+			
+			throw $e;
+		', $eventName);
 		
 		$spec = new Spec();
 		$spec->run();

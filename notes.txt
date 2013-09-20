@@ -9,7 +9,7 @@ TODO: put license text to each file head, remove LICENSE.txt, add to README.md n
 TODO: в config::lock() и в ResultBuffer::lock записывать в static переменную метода свойства класса, а затем, в __destruct методе проверять, отличаются ли текущие свойства объекта от свойств в lock()::static (выбрасывая исключения в случае отличия) ???
 
 TODO: rename ContextData to Context/ContextScope/etc. ???
-TODO: remove config::setContextDataClass ???
+TODO: rename contexts->add to addFunction/addApplierFunction ???
 TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: rename activateMoment to activateType/activationType ???
 TODO: переименовать beforeEach/afterEach в before/after ???

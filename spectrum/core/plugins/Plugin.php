@@ -41,7 +41,7 @@ abstract class Plugin implements PluginInterface
 		return $this->ownerSpec;
 	}
 	
-	protected function callMethodThroughRunningAncestorSpecs($methodName, $arguments = array(), $defaultReturnValue = null, $notSetTestedValue = null, $useStrictComparison = true)
+	protected function callMethodThroughRunningAncestorSpecs($methodName, $arguments = array(), $defaultReturnValue = null, $ignoredReturnValue = null, $useStrictComparison = true)
 	{
 		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
 		
@@ -50,7 +50,7 @@ abstract class Plugin implements PluginInterface
 			$plugin = $spec->{static::getAccessName()};
 			
 			$return = call_user_func_array(array($plugin, $methodName), $arguments);
-			if (($useStrictComparison && $return !== $notSetTestedValue) || (!$useStrictComparison && $return != $notSetTestedValue))
+			if (($useStrictComparison && $return !== $ignoredReturnValue) || (!$useStrictComparison && $return != $ignoredReturnValue))
 				return $return;
 		}
 

@@ -58,16 +58,6 @@ class ResultBufferTest extends \spectrum\tests\Test
 		), $resultBuffer->getResults());
 	}
 	
-	public function testAddResult_ThrowsExceptionResultBufferIsLocked()
-	{
-		$resultBuffer = new ResultBuffer(new Spec());
-		$resultBuffer->lock();
-		
-		$this->assertThrowsException('\spectrum\core\Exception', 'ResultBuffer is locked', function() use($resultBuffer){
-			$resultBuffer->addResult(true);
-		});
-	}
-	
 	public function providerBadResultValues()
 	{
 		return array(
@@ -86,13 +76,27 @@ class ResultBufferTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerBadResultValues
 	 */
-	public function testAddResult_ThrowsExceptionWhenResultIsNotTrueOrIsNotFalseOrIsNotNull($badResultValue)
+	public function testAddResult_ResultIsNotTrueAndIsNotFalseAndIsNotNull_ThrowsExceptionAndDoesNotAddResult($badResultValue)
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		
 		$this->assertThrowsException('\spectrum\core\Exception', 'ResultBuffer is accept only "true", "false" or "null"', function() use($resultBuffer, $badResultValue){
 			$resultBuffer->addResult($badResultValue);
 		});
+		
+		$this->assertSame(array(), $resultBuffer->getResults());
+	}
+	
+	public function testAddResult_ResultBufferIsLocked_ThrowsExceptionAndDoesNotAddResult()
+	{
+		$resultBuffer = new ResultBuffer(new Spec());
+		$resultBuffer->lock();
+		
+		$this->assertThrowsException('\spectrum\core\Exception', 'ResultBuffer is locked', function() use($resultBuffer){
+			$resultBuffer->addResult(true);
+		});
+		
+		$this->assertSame(array(), $resultBuffer->getResults());
 	}
 
 /**/
