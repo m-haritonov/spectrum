@@ -6,10 +6,8 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests\core\plugins\basePlugins\worldCreators;
-require_once __DIR__ . '/../../../../init.php';
+namespace spectrum\core\plugins\basePlugins\errorHandling;
 
-class DestroyersTest extends WorldCreatorsTest
+class ErrorException extends \ErrorException
 {
-
 }

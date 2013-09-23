@@ -10,6 +10,7 @@ TODO: в config::lock() и в ResultBuffer::lock записывать в static 
 
 TODO: rename ContextData to Context/ContextScope/etc. ???
 TODO: rename contexts->add to addFunction/addApplierFunction ???
+TODO: rename setCatchPhpErrors to setPhpErrorLevel ???
 TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: rename activateMoment to activateType/activationType ???
 TODO: переименовать beforeEach/afterEach в before/after ???

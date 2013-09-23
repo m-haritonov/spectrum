@@ -17,7 +17,8 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	protected $catchPhpErrors;
 	protected $breakOnFirstPhpError;
 	protected $breakOnFirstMatcherFail;
-	protected $isErrorHandlerSets = false;
+	protected $errorHandler;
+	protected $errorReportingBackup;
 
 	static public function getAccessName()
 	{
@@ -32,9 +33,11 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 			array('event' => 'onMatcherCallFinish', 'method' => 'onMatcherCallFinish', 'order' => -10),
 		);
 	}
+	
+/**/
 
 	/**
-	 * False or 0 turn off fail on php error. True = -1 (catch all PHP errors)
+	 * False or "0" is turn off PHP errors catching. True = -1 (catches all PHP errors).
 	 * @param int|boolean|null $errorReportingLevel
 	 */
 	public function setCatchPhpErrors($errorReportingLevel)
@@ -61,9 +64,11 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	{
 		return $this->callMethodThroughRunningAncestorSpecs('getCatchPhpErrors', array(), -1);
 	}
+	
+/**/
 
 	/**
-	 * Affected only when setFailOnPhpError() enabled
+	 * Affected only when getCatchPhpErrorsThroughRunningAncestors() is not "0"
 	 */
 	public function setBreakOnFirstPhpError($isEnable)
 	{
@@ -111,35 +116,68 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	
 	protected function onEndingSpecExecuteBefore()
 	{
-		$catchPhpErrors = $this->getCatchPhpErrorsThroughRunningAncestors();
-
-		if (!$catchPhpErrors)
-			return;
-
-		$this->isErrorHandlerSets = true;
-
+		$this->errorReportingBackup = error_reporting($this->getCatchPhpErrorsThroughRunningAncestors());
+		
 		$thisObject = $this;
-		set_error_handler(function($severity, $message, $file, $line) use($thisObject)
+		$this->errorHandler = function($errorSeverity, $errorMessage, $file, $line) use($thisObject)
 		{
-			if (error_reporting() == 0)
+			if (!($errorSeverity & error_reporting()))
 				return;
-
-			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new PhpErrorException($message, 0, $severity, $file, $line));
+			
+			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new ErrorException($errorMessage, 0, $errorSeverity, $file, $line));
 
 			if ($thisObject->getBreakOnFirstPhpErrorThroughRunningAncestors())
 				throw new BreakException();
-
-		}, $catchPhpErrors);
+		};
+		
+		set_error_handler($this->errorHandler, -1);
 	}
 	
 	protected function onEndingSpecExecuteAfter()
 	{
-		if ($this->isErrorHandlerSets)
+		$this->removeSubsequentErrorHandlers($this->errorHandler);
+		
+		if ($this->getLastErrorHandler() === $this->errorHandler)
 			restore_error_handler();
+		else
+			$this->getOwnerSpec()->getResultBuffer()->addResult(false, 'Error handler in spec "' . $this->getOwnerSpec()->getName() . '" was removed');
 
-		$this->isErrorHandlerSets = false;
+		$this->errorHandler = null;
+		error_reporting($this->errorReportingBackup);
 	}
 	
+	protected function removeSubsequentErrorHandlers($checkErrorHandler)
+	{
+		$errorHandlers = array();
+		while (true)
+		{
+			$lastErrorHandler = $this->getLastErrorHandler();
+			if ($lastErrorHandler === null)
+				break;
+			
+			if ($lastErrorHandler === $checkErrorHandler)
+			{
+				$errorHandlers = array();
+				break;
+			}
+			
+			$errorHandlers[] = $lastErrorHandler;
+			restore_error_handler();
+		}
+		
+		// Rollback all error handlers if $checkErrorHandler is not find
+		foreach (array_reverse($errorHandlers) as $errorHandler)
+			set_error_handler($errorHandler);
+	}
+	
+	protected function getLastErrorHandler()
+	{
+		$lastErrorHandler = set_error_handler(function($errorSeverity, $errorMessage){});
+		restore_error_handler();
+		return $lastErrorHandler;
+	}
+		
+		
 	protected function onMatcherCallFinish(MatcherCallDetailsInterface $callDetails)
 	{
 		if (!$callDetails->getResult() && $this->getBreakOnFirstMatcherFailThroughRunningAncestors())
