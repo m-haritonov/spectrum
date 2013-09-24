@@ -269,7 +269,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			Spec
 		');
 
-		$this->assertEquals(7, count($specs));
+		$this->assertSame(7, count($specs));
 		$this->assertSame(array($specs['ccc'], $specs['bbb'], $specs['aaa']), $specs[6]->getParentSpecs());
 		$this->assertSame(array(), $specs[6]->getChildSpecs());
 		
@@ -321,7 +321,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			->->Spec
 		');
 
-		$this->assertEquals(7, count($specs));
+		$this->assertSame(7, count($specs));
 		$this->assertSame(array(), $specs[0]->getParentSpecs());
 		$this->assertSame(array($specs[0]), $specs['aaa']->getParentSpecs());
 		$this->assertSame(array($specs[0]), $specs['bbb']->getParentSpecs());
@@ -366,7 +366,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			->->Spec
 		');
 		
-		$this->assertEquals(13, count($specs));
+		$this->assertSame(13, count($specs));
 		
 		$this->assertSame(array(), $specs[0]->getParentSpecs());
 		$this->assertSame(array($specs[1]), $specs[0]->getChildSpecs());

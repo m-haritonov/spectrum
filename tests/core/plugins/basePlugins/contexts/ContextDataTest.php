@@ -20,9 +20,9 @@ class ContextDataTest extends \spectrum\tests\Test
 		$context->bbb = 'bbbVal';
 		$context->ccc = 'cccVal';
 
-		$this->assertEquals('aaaVal', $context->aaa);
-		$this->assertEquals('bbbVal', $context->bbb);
-		$this->assertEquals('cccVal', $context->ccc);
+		$this->assertSame('aaaVal', $context->aaa);
+		$this->assertSame('bbbVal', $context->bbb);
+		$this->assertSame('cccVal', $context->ccc);
 	}
 
 	public function testSupportsAccessToPropertiesThroughArrayAccessStyle()
@@ -32,9 +32,9 @@ class ContextDataTest extends \spectrum\tests\Test
 		$context['bbb-bbb'] = 'bbbVal';
 		$context['ccc-ccc'] = 'cccVal';
 
-		$this->assertEquals('aaaVal', $context['aaa-aaa']);
-		$this->assertEquals('bbbVal', $context['bbb-bbb']);
-		$this->assertEquals('cccVal', $context['ccc-ccc']);
+		$this->assertSame('aaaVal', $context['aaa-aaa']);
+		$this->assertSame('bbbVal', $context['bbb-bbb']);
+		$this->assertSame('cccVal', $context['ccc-ccc']);
 	}
 
 	public function testSupportsPropertyExistCheck()
@@ -59,7 +59,7 @@ class ContextDataTest extends \spectrum\tests\Test
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 
-		$this->assertEquals(2, count($context));
+		$this->assertSame(2, count($context));
 	}
 
 	public function testSupportsForeachTraverse()
@@ -73,7 +73,7 @@ class ContextDataTest extends \spectrum\tests\Test
 		foreach ($context as $key => $val)
 			$values[$key] = $val;
 
-		$this->assertEquals(array(
+		$this->assertSame(array(
 			'aaa' => 'aaaVal',
 			'bbb' => 'bbbVal',
 			'ccc' => 'cccVal',

@@ -19,14 +19,12 @@ class Output extends \spectrum\core\plugins\Plugin
 	protected $inputEncoding;
 	protected $outputEncoding;
 
-	static protected $defaultInputEncoding = 'utf-8';
-	static protected $defaultOutputEncoding = 'utf-8';
-
 	/**
 	 * For more performance
 	 * @var bool
 	 */
-	static protected $isEncodingChanged = false;
+	static protected $isInputEncodingChanged = false;
+	static protected $isOutputEncodingChanged = false;
 
 	static public function getAccessName()
 	{
@@ -43,7 +41,7 @@ class Output extends \spectrum\core\plugins\Plugin
 			throw new Exception('Input encoding modify deny in config');
 
 		$this->inputEncoding = $encoding;
-		static::$isEncodingChanged = true;
+		static::$isInputEncodingChanged = true;
 	}
 
 	public function getInputEncoding()
@@ -53,10 +51,12 @@ class Output extends \spectrum\core\plugins\Plugin
 
 	public function getInputEncodingThroughRunningAncestors()
 	{
-		if (static::$isEncodingChanged)
-			return $this->callMethodThroughRunningAncestorSpecs('getInputEncoding', array(), static::$defaultInputEncoding);
+		$defaultEncoding = 'utf-8';
+		
+		if (static::$isInputEncodingChanged)
+			return $this->callMethodThroughRunningAncestorSpecs('getInputEncoding', array(), $defaultEncoding);
 		else
-			return static::$defaultInputEncoding;
+			return $defaultEncoding;
 	}
 
 /**/
@@ -69,7 +69,7 @@ class Output extends \spectrum\core\plugins\Plugin
 			throw new Exception('Output encoding modify deny in config');
 
 		$this->outputEncoding = $encoding;
-		static::$isEncodingChanged = true;
+		static::$isOutputEncodingChanged = true;
 	}
 
 	public function getOutputEncoding()
@@ -79,10 +79,12 @@ class Output extends \spectrum\core\plugins\Plugin
 
 	public function getOutputEncodingThroughRunningAncestors()
 	{
-		if (static::$isEncodingChanged)
-			return $this->callMethodThroughRunningAncestorSpecs('getOutputEncoding', array(), static::$defaultOutputEncoding);
+		$defaultEncoding = 'utf-8';
+		
+		if (static::$isOutputEncodingChanged)
+			return $this->callMethodThroughRunningAncestorSpecs('getOutputEncoding', array(), $defaultEncoding);
 		else
-			return static::$defaultOutputEncoding;
+			return $defaultEncoding;
 	}
 
 /**/
@@ -97,7 +99,7 @@ class Output extends \spectrum\core\plugins\Plugin
 		$inputEncoding = $this->getInputEncodingThroughRunningAncestors();
 		$outputEncoding = $this->getOutputEncodingThroughRunningAncestors();
 
-		if (mb_strtolower($inputEncoding) == mb_strtolower($outputEncoding))
+		if (mb_strtolower($inputEncoding) === mb_strtolower($outputEncoding))
 			return $string;
 		else
 			return iconv($inputEncoding, $outputEncoding, $string);
