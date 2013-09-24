@@ -7,22 +7,17 @@
  */
 
 namespace spectrum\constructionCommands\commands\internal;
-use spectrum\config;
 use spectrum\core\SpecInterface;
 
 function loadBaseMatchers(SpecInterface $spec)
 {
-	if (config::getAllowBaseMatchersOverride())
-		$allowOverride = true;
-	else
-		$allowOverride = false;
-	
 	$matchers = array(
 		'eq',
 		'false',
 		'gt',
 		'gte',
 		'ident',
+		'instanceof',
 		'lt',
 		'lte',
 		'null',
@@ -32,10 +27,16 @@ function loadBaseMatchers(SpecInterface $spec)
 	
 	foreach ($matchers as $matcherName)
 	{
-		require_once __DIR__ . '/../../../matchers/' . $matcherName . '.php';
-		$spec->matchers->add($matcherName, '\spectrum\matchers\\' .$matcherName, $allowOverride);
+		$matcherFileName = __DIR__ . '/../../../matchers/' . $matcherName . '.php';
+		$matcherClassName = '\spectrum\matchers\\' .$matcherName;
+		
+		if ($matcherName == 'instanceof')
+		{
+			$matcherFileName = __DIR__ . '/../../../matchers/instanceofMatcher.php';
+			$matcherClassName = '\spectrum\matchers\instanceofMatcher';
+		}
+		
+		require_once $matcherFileName;
+		$spec->matchers->add($matcherName, $matcherClassName);
 	}
-	
-	require_once __DIR__ . '/../../../matchers/instanceofMatcher.php';
-	$spec->matchers->add('instanceof', '\spectrum\matchers\instanceofMatcher', $allowOverride);
 }

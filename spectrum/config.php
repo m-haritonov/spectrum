@@ -17,7 +17,6 @@ final class config
 	static private $contextDataClass = '\spectrum\core\plugins\basePlugins\contexts\ContextData';
 	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
 	
-	static private $allowBaseMatchersOverride = false;
 	static private $allowErrorHandlingModify = true;
 	static private $allowInputEncodingModify = true;
 	static private $allowOutputEncodingModify = true;
@@ -63,6 +62,8 @@ final class config
 	
 	// For abstract class imitation (using "abstract" keyword with "final" not allowed)
 	private function __construct(){}
+	
+/**/
 
 	static public function setConstructionCommandsCallBrokerClass($className){ return static::setConfigClassValue(static::$constructionCommandsCallBrokerClass, $className, '\spectrum\constructionCommands\callBrokerInterface'); }
 	static public function getConstructionCommandsCallBrokerClass(){ return static::$constructionCommandsCallBrokerClass; }
@@ -82,10 +83,7 @@ final class config
 	static public function setResultBufferClass($className){ return static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
 	static public function getResultBufferClass(){ return static::$resultBufferClass; }
 	
-	/**/
-	
-	static public function setAllowBaseMatchersOverride($isEnable){ return static::setConfigValue(static::$allowBaseMatchersOverride, $isEnable); }
-	static public function getAllowBaseMatchersOverride(){ return static::$allowBaseMatchersOverride; }
+/**/
 
 	static public function setAllowErrorHandlingModify($isEnable){ return static::setConfigValue(static::$allowErrorHandlingModify, $isEnable); }
 	static public function getAllowErrorHandlingModify(){ return static::$allowErrorHandlingModify; }

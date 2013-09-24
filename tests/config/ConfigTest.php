@@ -567,38 +567,6 @@ class ConfigTest extends \spectrum\tests\Test
 
 /**/
 
-	public function testGetAllowBaseMatchersOverride_ReturnsFalseByDefault()
-	{
-		$this->assertFalse(config::getAllowBaseMatchersOverride());
-	}
-	
-	public function testGetAllowBaseMatchersOverride_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getAllowBaseMatchersOverride();
-	}
-
-/**/
-
-	public function testSetAllowBaseMatchersOverride_SetsNewValue()
-	{
-		config::setAllowBaseMatchersOverride(true);
-		$this->assertTrue(config::getAllowBaseMatchersOverride());
-	}
-
-	public function testSetAllowBaseMatchersOverride_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::lock();
-
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setAllowBaseMatchersOverride(true);
-		});
-
-		$this->assertFalse(config::getAllowBaseMatchersOverride());
-	}
-
-/**/
-
 	public function testGetAllowErrorHandlingModify_ReturnsTrueByDefault()
 	{
 		$this->assertTrue(config::getAllowErrorHandlingModify());
