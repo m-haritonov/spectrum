@@ -512,12 +512,16 @@ class Spec implements SpecInterface
 	protected function executeAsEndingSpec()
 	{
 		$this->resultBuffer = $this->createResultBuffer();
-		
+		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteBefore');
+		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecute');
+		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteAfter');
+	}
+	
+	protected function dispatchPluginEventAndCatchExceptions($eventName, array $arguments = array())
+	{
 		try
 		{
-			$this->dispatchPluginEvent('onEndingSpecExecuteBefore');
-			$this->dispatchPluginEvent('onEndingSpecExecute');
-			$this->dispatchPluginEvent('onEndingSpecExecuteAfter');
+			$this->dispatchPluginEvent($eventName, $arguments);
 		}
 		catch (BreakException $e)
 		{

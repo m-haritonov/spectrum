@@ -3034,7 +3034,7 @@ class SpecTest extends \spectrum\tests\Test
 			throw $e;
 		', $eventName);
 		
-		$spec = new Spec();
+				$spec = new Spec();
 		$spec->run();
 		
 		$this->assertSame(1, count(\spectrum\tests\Test::$temp["thrownExceptions"]));
@@ -3068,6 +3068,50 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->assertSame(1, count(\spectrum\tests\Test::$temp["thrownExceptions"]));
 		$this->assertSame(array(), \spectrum\tests\Test::$temp["resultBuffers"][0]->getResults());
+	}
+	
+	/**
+	 * @dataProvider providerEndingSpecExecuteEvents
+	 */
+	public function testRun_RootSpecRun_EventDispatch_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByException($testEventName)
+	{
+		$this->registerPluginWithCodeInEvent('throw new \Exception("aaa");', $testEventName);
+		
+		\spectrum\tests\Test::$temp["calledEvents"] = array();
+		
+		$otherEvents = array('onEndingSpecExecuteBefore', 'onEndingSpecExecute', 'onEndingSpecExecuteAfter');
+		unset($otherEvents[array_search($testEventName, $otherEvents)]);
+		$otherEvents = array_values($otherEvents);
+		
+		foreach ($otherEvents as $otherEventName)
+			$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledEvents"][] = "' . $otherEventName . '";', $otherEventName);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame($otherEvents, \spectrum\tests\Test::$temp["calledEvents"]);
+	}
+	
+	/**
+	 * @dataProvider providerEndingSpecExecuteEvents
+	 */
+	public function testRun_RootSpecRun_EventDispatch_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByBreakException($testEventName)
+	{
+		$this->registerPluginWithCodeInEvent('throw new \spectrum\core\BreakException();', $testEventName);
+		
+		\spectrum\tests\Test::$temp["calledEvents"] = array();
+		
+		$otherEvents = array('onEndingSpecExecuteBefore', 'onEndingSpecExecute', 'onEndingSpecExecuteAfter');
+		unset($otherEvents[array_search($testEventName, $otherEvents)]);
+		$otherEvents = array_values($otherEvents);
+		
+		foreach ($otherEvents as $otherEventName)
+			$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledEvents"][] = "' . $otherEventName . '";', $otherEventName);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame($otherEvents, \spectrum\tests\Test::$temp["calledEvents"]);
 	}
 	
 /**/
