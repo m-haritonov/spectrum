@@ -23,8 +23,8 @@ interface PluginInterface
 	/**
 	 * @return array Value example:
 	 *               array(
-	 *                   array('event' => 'onEndingSpecExecute', 'method' => 'onEndingSpecExecute', 'order' => 100),
 	 *                   array('event' => 'onEndingSpecExecuteBefore', 'method' => 'onEndingSpecExecuteBefore', 'order' => 100),
+	 *                   array('event' => 'onEndingSpecExecute', 'method' => 'onEndingSpecExecute', 'order' => 100),
 	 *                   array('event' => 'onEndingSpecExecuteAfter', 'method' => 'onEndingSpecExecuteAfter', 'order' => -100),
 	 *               );
 	 * 
@@ -41,11 +41,8 @@ interface PluginInterface
 	 *               onEndingSpecExecuteBefore
 	 *               onEndingSpecExecuteAfter
 	 * 
-	 *               onTestFunctionCallBefore
-	 *               onTestFunctionCallAfter
-	 * 
-	 *               onMatcherCallStart
-	 *               onMatcherCallFinish
+	 *               onMatcherCallStart(\spectrum\core\MatcherCallDetailsInterface $matcherCallDetails)
+	 *               onMatcherCallFinish(\spectrum\core\MatcherCallDetailsInterface $matcherCallDetails)
 	 */
 	static public function getEventListeners();
 	

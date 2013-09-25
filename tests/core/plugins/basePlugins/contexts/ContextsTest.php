@@ -750,7 +750,7 @@ class ContextsTest extends \spectrum\tests\Test
 		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\ContextData', \spectrum\tests\Test::$temp["contextData"]);
 	}
 	
-	public function testContextDataInitialization_UseConfigForContextDataClassGetting()
+	public function testContextDataInitialization_UsesConfigForContextDataClassGetting()
 	{
 		$contextDataClassName = $this->createClass('class ... extends \spectrum\core\plugins\basePlugins\contexts\ContextData {}');
 		config::setContextDataClass($contextDataClassName);

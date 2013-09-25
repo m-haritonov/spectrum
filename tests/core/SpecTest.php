@@ -2322,7 +2322,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRun_RootSpecRun_ResultBuffer_UseConfigForResultBufferClassGetting()
+	public function testRun_RootSpecRun_ResultBuffer_UsesConfigForResultBufferClassGetting()
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		$resultBufferClassName = $this->createClass('class ... extends \spectrum\core\ResultBuffer {}');
