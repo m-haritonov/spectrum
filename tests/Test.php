@@ -54,7 +54,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	
 	protected function createClass($classCode)
 	{
-		$namespace = 'spectrum\tests\testHelpers\_dynamicClasses_';
+		$namespace = 'spectrum\tests\testware\_dynamicClasses_';
 		$className = 'DynamicClass' . self::$classNumber;
 		self::$classNumber++;
 		

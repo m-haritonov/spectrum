@@ -45,7 +45,7 @@ class ConfigTest extends \spectrum\tests\Test
 		$oldClass = config::getConstructionCommandsCallBrokerClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setConstructionCommandsCallBrokerClass('\spectrum\tests\testHelpers\NotExistsClass');
+			config::setConstructionCommandsCallBrokerClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getConstructionCommandsCallBrokerClass());
@@ -117,7 +117,7 @@ class ConfigTest extends \spectrum\tests\Test
 		$oldClass = config::getAssertClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setAssertClass('\spectrum\tests\testHelpers\NotExistsClass');
+			config::setAssertClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getAssertClass());
@@ -207,7 +207,7 @@ class ConfigTest extends \spectrum\tests\Test
 		$oldClass = config::getMatcherCallDetailsClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setMatcherCallDetailsClass('\spectrum\tests\testHelpers\NotExistsClass');
+			config::setMatcherCallDetailsClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getMatcherCallDetailsClass());
@@ -331,7 +331,7 @@ class ConfigTest extends \spectrum\tests\Test
 		$oldClass = config::getSpecClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setSpecClass('\spectrum\tests\testHelpers\NotExistsClass');
+			config::setSpecClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getSpecClass());
@@ -440,7 +440,7 @@ class ConfigTest extends \spectrum\tests\Test
 		$oldClass = config::getContextDataClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setContextDataClass('\spectrum\tests\testHelpers\NotExistsClass');
+			config::setContextDataClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getContextDataClass());
@@ -521,7 +521,7 @@ class ConfigTest extends \spectrum\tests\Test
 		$oldClass = config::getResultBufferClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setResultBufferClass('\spectrum\tests\testHelpers\NotExistsClass');
+			config::setResultBufferClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getResultBufferClass());
