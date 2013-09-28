@@ -8,6 +8,31 @@
 
 namespace spectrum;
 
+require_once __DIR__ . '/constructionCommands/commands/addMatcher.php';
+require_once __DIR__ . '/constructionCommands/commands/afterEach.php';
+require_once __DIR__ . '/constructionCommands/commands/be.php';
+require_once __DIR__ . '/constructionCommands/commands/beforeEach.php';
+require_once __DIR__ . '/constructionCommands/commands/fail.php';
+require_once __DIR__ . '/constructionCommands/commands/group.php';
+require_once __DIR__ . '/constructionCommands/commands/message.php';
+require_once __DIR__ . '/constructionCommands/commands/test.php';
+require_once __DIR__ . '/constructionCommands/commands/this.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/addExclusionSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/callFunctionOnDeclaringSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/convertContextArrayToSpecs.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getArgumentsForSpecDeclaringCommand.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentDeclaringSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentRunningSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getRootSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/filterOutExclusionSpecs.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getExclusionSpecs.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getNameForArguments.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/isRunningState.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/loadBaseMatchers.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/setCurrentDeclaringSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/setSpecSettings.php';
+
 final class config
 {
 	static private $constructionCommandsCallBrokerClass = '\spectrum\constructionCommands\callBroker';
