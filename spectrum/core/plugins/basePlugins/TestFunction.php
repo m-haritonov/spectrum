@@ -29,7 +29,7 @@ class TestFunction extends \spectrum\core\plugins\Plugin
 	
 	public function setFunction($function)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		$this->function = $function;
 	}
 

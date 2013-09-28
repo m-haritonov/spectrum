@@ -600,6 +600,6 @@ class Spec implements SpecInterface
 	protected function handleModifyDeny($functionName)
 	{
 		if ($this->getRootSpec()->isRunning())
-			throw new Exception('Call of "' . $functionName . '" method is deny on running');
+			throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
 	}
 }

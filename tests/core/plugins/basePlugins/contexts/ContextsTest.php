@@ -70,7 +70,7 @@ class ContextsTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->run();
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\contexts\Contexts::add" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(array(), $spec->contexts->getAll());
 	}
 	
@@ -592,7 +592,7 @@ class ContextsTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\contexts\Contexts::remove" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'before'), 
 		), $spec->contexts->getAll());
@@ -647,7 +647,7 @@ class ContextsTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\contexts\Contexts::removeAll" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'before'), 
 		), $spec->contexts->getAll());

@@ -42,7 +42,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	 */
 	public function setCatchPhpErrors($errorReportingLevel)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowErrorHandlingModify())
 			throw new Exception('Error handling modify deny in config');
@@ -72,7 +72,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	 */
 	public function setBreakOnFirstPhpError($isEnable)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowErrorHandlingModify())
 			throw new Exception('Error handling modify deny in config');
@@ -94,7 +94,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 
 	public function setBreakOnFirstMatcherFail($isEnable)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowErrorHandlingModify())
 			throw new Exception('Error handling modify deny in config');

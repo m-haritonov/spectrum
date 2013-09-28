@@ -31,7 +31,7 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	
 	public function add($function, $type = 'before')
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		$type = strtolower($type);
 		$this->checkType($type);
@@ -87,13 +87,13 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	
 	public function remove($index)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		unset($this->items[$index]);
 	}
 
 	public function removeAll()
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		$this->items = array();
 	}
 	

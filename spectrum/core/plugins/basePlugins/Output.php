@@ -35,7 +35,7 @@ class Output extends \spectrum\core\plugins\Plugin
 
 	public function setInputEncoding($encoding)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowInputEncodingModify())
 			throw new Exception('Input encoding modify deny in config');
@@ -63,7 +63,7 @@ class Output extends \spectrum\core\plugins\Plugin
 
 	public function setOutputEncoding($encoding)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowOutputEncodingModify())
 			throw new Exception('Output encoding modify deny in config');

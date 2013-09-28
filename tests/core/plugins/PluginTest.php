@@ -395,7 +395,7 @@ class PluginTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["caughtException"] = null;
 
-		config::registerSpecPlugin($this->createClass('
+		$pluginClassName = $this->createClass('
 			class ... extends \spectrum\core\plugins\Plugin
 			{
 				static public function getAccessName()
@@ -416,7 +416,7 @@ class PluginTest extends \spectrum\tests\Test
 					{
 						try
 						{
-							\spectrum\tests\Test::$temp["specs"]["tested"]->testPlugin->handleModifyDeny();
+							\spectrum\tests\Test::$temp["specs"]["tested"]->testPlugin->handleModifyDeny("aaa");
 						}
 						catch(\Exception $e)
 						{
@@ -425,7 +425,9 @@ class PluginTest extends \spectrum\tests\Test
 					}
 				}
 			}
-		'));
+		');
+		
+		config::registerSpecPlugin($pluginClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
@@ -436,6 +438,6 @@ class PluginTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["specs"][0]->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["caughtException"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["caughtException"]->getMessage());
+		$this->assertSame('Call of "' . $pluginClassName . '::aaa" method is forbidden on run', \spectrum\tests\Test::$temp["caughtException"]->getMessage());
 	}
 }

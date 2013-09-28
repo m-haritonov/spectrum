@@ -716,7 +716,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		\spectrum\tests\Test::$temp["specs"][1]->disable();
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "enable" method is deny on running', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::enable" method is forbidden on run', function(){
 			\spectrum\tests\Test::$temp["specs"][0]->run();
 		});
 		
@@ -738,7 +738,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->disable();');
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "disable" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::disable" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -780,7 +780,7 @@ class SpecTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->setName('aaa');
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "setName" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::setName" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -887,7 +887,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindParentSpec(new \spectrum\core\Spec());');
 		$spec = new Spec();
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "bindParentSpec" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::bindParentSpec" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -975,7 +975,7 @@ class SpecTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindParentSpec(\spectrum\tests\Test::$temp["newSpec"]);
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindParentSpec" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindParentSpec" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -1042,7 +1042,7 @@ class SpecTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindParentSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindAllParentSpecs" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindAllParentSpecs" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -1157,7 +1157,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindChildSpec(new \spectrum\core\Spec());');
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "bindChildSpec" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::bindChildSpec" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -1245,7 +1245,7 @@ class SpecTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindChildSpec(\spectrum\tests\Test::$temp["newSpec"]);
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindChildSpec" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindChildSpec" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -1312,7 +1312,7 @@ class SpecTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindChildSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "unbindAllChildSpecs" method is deny on running', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindAllChildSpecs" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		

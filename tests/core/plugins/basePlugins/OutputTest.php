@@ -52,7 +52,7 @@ class OutputTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\Output::setInputEncoding" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame('windows-1251', $spec->output->getInputEncoding());
 	}
 	
@@ -160,7 +160,7 @@ class OutputTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\Output::setOutputEncoding" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame('windows-1251', $spec->output->getOutputEncoding());
 	}
 	

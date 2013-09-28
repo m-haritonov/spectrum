@@ -64,7 +64,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(1, $spec->errorHandling->getCatchPhpErrors());
 	}
 	
@@ -169,7 +169,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstPhpError" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstPhpError());
 	}
 	
@@ -272,7 +272,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Modify spec plugins when spec tree is running deny', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstMatcherFail" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstMatcherFail());
 	}
 	

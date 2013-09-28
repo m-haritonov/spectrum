@@ -36,7 +36,7 @@ class Reports extends \spectrum\core\plugins\Plugin
 	 */
 	public function setOutputType($type)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowReportSettingsModify())
 			throw new Exception('Reports settings modify deny in config');
@@ -58,7 +58,7 @@ class Reports extends \spectrum\core\plugins\Plugin
 	
 	public function setIndention($string)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowReportSettingsModify())
 			throw new Exception('Reports settings modify deny in config');
@@ -75,7 +75,7 @@ class Reports extends \spectrum\core\plugins\Plugin
 
 	public function setNewline($newline)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		
 		if (!config::getAllowReportSettingsModify())
 			throw new Exception('Reports settings modify deny in config');

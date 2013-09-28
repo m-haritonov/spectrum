@@ -21,7 +21,7 @@ class Matchers extends \spectrum\core\plugins\Plugin
 	
 	public function add($name, $function)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		$this->items[$name] = $function;
 	}
 
@@ -42,13 +42,13 @@ class Matchers extends \spectrum\core\plugins\Plugin
 	
 	public function remove($name)
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		unset($this->items[$name]);
 	}
 	
 	public function removeAll()
 	{
-		$this->handleModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		$this->items = array();
 	}
 }

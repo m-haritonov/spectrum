@@ -65,9 +65,9 @@ abstract class Plugin implements PluginInterface
 		$reflectionMethod->invokeArgs($this->getOwnerSpec(), array($eventName, $arguments));
 	}
 	
-	protected function handleModifyDeny()
+	protected function handleModifyDeny($functionName)
 	{
 		if ($this->getOwnerSpec()->getRootSpec()->isRunning())
-			throw new Exception('Modify spec plugins when spec tree is running deny');
+			throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
 	}
 }
