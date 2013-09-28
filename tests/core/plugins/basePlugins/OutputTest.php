@@ -106,15 +106,10 @@ class OutputTest extends \spectrum\tests\Test
 			->->Spec(endingSpec2)
 		', array('parent1' => 'endingSpec2', 'parent2' => 'endingSpec2'));
 		
-		$function1 = function(){};
-		$function2 = function(){};
-		$function3 = function(){};
-		$function4 = function(){};
-		
-		$specs[0]->output->setInputEncoding('windows-1251', $function1);
-		$specs['endingSpec1']->output->setInputEncoding('windows-1252', $function2);
-		$specs['parent1']->output->setInputEncoding('windows-1253', $function3);
-		$specs['parent2']->output->setInputEncoding('windows-1254', $function4);
+		$specs[0]->output->setInputEncoding('windows-1251');
+		$specs['endingSpec1']->output->setInputEncoding('windows-1252');
+		$specs['parent1']->output->setInputEncoding('windows-1253');
+		$specs['parent2']->output->setInputEncoding('windows-1254');
 		
 		$specs[0]->run();
 		
@@ -214,15 +209,10 @@ class OutputTest extends \spectrum\tests\Test
 			->->Spec(endingSpec2)
 		', array('parent1' => 'endingSpec2', 'parent2' => 'endingSpec2'));
 		
-		$function1 = function(){};
-		$function2 = function(){};
-		$function3 = function(){};
-		$function4 = function(){};
-		
-		$specs[0]->output->setOutputEncoding('windows-1251', $function1);
-		$specs['endingSpec1']->output->setOutputEncoding('windows-1252', $function2);
-		$specs['parent1']->output->setOutputEncoding('windows-1253', $function3);
-		$specs['parent2']->output->setOutputEncoding('windows-1254', $function4);
+		$specs[0]->output->setOutputEncoding('windows-1251');
+		$specs['endingSpec1']->output->setOutputEncoding('windows-1252');
+		$specs['parent1']->output->setOutputEncoding('windows-1253');
+		$specs['parent2']->output->setOutputEncoding('windows-1254');
 		
 		$specs[0]->run();
 		
