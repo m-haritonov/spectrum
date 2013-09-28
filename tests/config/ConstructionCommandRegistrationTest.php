@@ -41,7 +41,7 @@ class ConstructionCommandRegistrationTest extends \spectrum\tests\Test
 			'internal_getCurrentRunningSpec'               => '\spectrum\constructionCommands\commands\internal\getCurrentRunningSpec',
 			'internal_getCurrentSpec'                      => '\spectrum\constructionCommands\commands\internal\getCurrentSpec',
 			'internal_getRootSpec'                         => '\spectrum\constructionCommands\commands\internal\getRootSpec',
-			'internal_filterOutExclusionSpecs'     => '\spectrum\constructionCommands\commands\internal\filterOutExclusionSpecs',
+			'internal_filterOutExclusionSpecs'             => '\spectrum\constructionCommands\commands\internal\filterOutExclusionSpecs',
 			'internal_getExclusionSpecs'                   => '\spectrum\constructionCommands\commands\internal\getExclusionSpecs',
 			'internal_getNameForArguments'                 => '\spectrum\constructionCommands\commands\internal\getNameForArguments',
 			'internal_isRunningState'                      => '\spectrum\constructionCommands\commands\internal\isRunningState',

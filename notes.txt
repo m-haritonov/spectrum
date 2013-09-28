@@ -14,8 +14,8 @@ TODO: array context group:
 	});
 
 TODO: contexts\ContextData -> contexts\Data
-TODO: тесты для matchers
 TODO: тесты для constructionCommands
+TODO: тесты для "\spectrum\matchers\*"
 
 TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
