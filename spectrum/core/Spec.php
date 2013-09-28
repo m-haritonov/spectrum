@@ -370,6 +370,20 @@ class Spec implements SpecInterface
 		return $rootSpecs;
 	}
 	
+	public function getEndingSpecs()
+	{
+		$endingSpecs = array();
+		foreach ($this->childSpecs as $childSpec)
+		{
+			if ($childSpec->getChildSpecs())
+				$endingSpecs = array_merge($endingSpecs, $childSpec->getEndingSpecs());
+			else
+				$endingSpecs[] = $childSpec;
+		}
+		
+		return $endingSpecs;
+	}
+	
 	public function getRunningParentSpec()
 	{
 		foreach ($this->parentSpecs as $parentSpec)

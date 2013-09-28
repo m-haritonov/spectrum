@@ -8,11 +8,11 @@
 
 namespace spectrum\constructionCommands\commands\internal;
 
-function getNameForArguments(array $arguments, $argumentsNumber)
+function getNameForArguments(array $arguments, $defaultName)
 {
 	$arguments = array_values($arguments);
 	
-	if (count($arguments) == 1 && is_scalar($arguments[0]))
+	if (count($arguments) == 1 && is_scalar($arguments[0]) && $defaultName == (int) $defaultName)
 	{
 		if (mb_strlen($arguments[0]) > 100)
 			return mb_substr($arguments[0], 0, 100) . '...';
@@ -20,5 +20,5 @@ function getNameForArguments(array $arguments, $argumentsNumber)
 			return $arguments[0];
 	}
 	else
-		return 'Row ' . $argumentsNumber;
+		return $defaultName;
 }

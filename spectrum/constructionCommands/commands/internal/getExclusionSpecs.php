@@ -8,9 +8,9 @@
 
 namespace spectrum\constructionCommands\commands\internal;
 
-function getMultiplierExclusionSpecs()
+function getExclusionSpecs()
 {
-	$reflection = new \ReflectionFunction('\spectrum\constructionCommands\commands\internal\addMultiplierExclusionSpec');
+	$reflection = new \ReflectionFunction('\spectrum\constructionCommands\commands\internal\addExclusionSpec');
 	$vars = $reflection->getStaticVariables();
 	if ($vars['exclusionSpecs'])
 		return $vars['exclusionSpecs'];

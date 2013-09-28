@@ -1376,7 +1376,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[2]), $specs['aaa']->getRootSpecs());
 	}
 	
-	public function testGetRootSpecs_DoesNotReturnSelfSpecForSpecWithoutParent()
+	public function testGetRootSpecs_ReturnsEmptyArrayForSpecWithoutParent()
 	{
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getRootSpecs());
@@ -1384,6 +1384,33 @@ class SpecTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(array(), $spec->getRootSpecs());
+	}
+	
+/**/
+	
+	public function testGetEndingSpecs_ReturnsAllEndingSpecs()
+	{
+		$specs = $this->createSpecsTree('
+			Spec
+			->Spec(endingSpec1)
+			->Spec
+			->->Spec(endingSpec2)
+			->Spec
+			->->Spec
+			->->->Spec(endingSpec3)
+			->->->Spec(endingSpec4)
+		');
+		$this->assertSame(array($specs['endingSpec1'], $specs['endingSpec2'], $specs['endingSpec3'], $specs['endingSpec4']), $specs[0]->getEndingSpecs());
+	}
+	
+	public function testGetEndingSpecs_ReturnsEmptyArrayForSpecWithoutChild()
+	{
+		$spec = new Spec();
+		$this->assertSame(array(), $spec->getEndingSpecs());
+		
+		$spec = new Spec();
+		$spec->bindParentSpec(new Spec());
+		$this->assertSame(array(), $spec->getEndingSpecs());
 	}
 	
 /**/

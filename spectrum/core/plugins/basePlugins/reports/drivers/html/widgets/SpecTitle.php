@@ -14,27 +14,9 @@ class SpecTitle extends \spectrum\core\plugins\basePlugins\reports\drivers\html\
 	{
 		return
 			'<span class="g-specTitle">' .
-				'<span class="name">' . htmlspecialchars($this->getSpecName()) . '</span>' . $this->getNewline() .
+				'<span class="name">' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getName()) . '</span>' . $this->getNewline() .
 				$this->getIndention() . '<span class="separator"> &mdash; </span>' . $this->getNewline() .
 				$this->prependIndentionToEachLine($this->trimNewline($this->createWidget('totalResult\Result')->getHtml())) . $this->getNewline() .
 			'</span>';
-	}
-
-	protected function getSpecName()
-	{
-		$spec = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec();
-		$name = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getName();
-		$testFunctionArguments = $spec->getTestCallbackArgumentsThroughRunningAncestors();
-		
-		if ($name == '' && !$spec->getChildSpecs() && $testFunctionArguments)
-		{
-			$output = '';
-			foreach ($testFunctionArguments as $argument)
-				$output .= $argument . ', ';
-	
-			return mb_substr($output, 0, -2);
-		}
-		else
-			return $name;
 	}
 }

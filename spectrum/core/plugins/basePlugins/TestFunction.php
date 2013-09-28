@@ -14,7 +14,6 @@ class TestFunction extends \spectrum\core\plugins\Plugin
 	 * @var \Closure
 	 */
 	protected $function;
-	protected $functionArguments = array();
 	
 	static public function getAccessName()
 	{
@@ -45,29 +44,11 @@ class TestFunction extends \spectrum\core\plugins\Plugin
 	}
 
 /**/
-
-	public function setFunctionArguments(array $args)
-	{
-		$this->handleModifyDeny();
-		$this->functionArguments = $args;
-	}
-
-	public function getFunctionArguments()
-	{
-		return $this->functionArguments;
-	}
-	
-	public function getFunctionArgumentsThroughRunningAncestors()
-	{
-		return $this->callMethodThroughRunningAncestorSpecs('getFunctionArguments', array(), array(), null);
-	}
-	
-/**/
 	
 	protected function onEndingSpecExecute()
 	{
 		$function = $this->getFunctionThroughRunningAncestors();
 		if ($function)
-			$this->getOwnerSpec()->contexts->callFunctionInContext($function, $this->getFunctionArgumentsThroughRunningAncestors());
+			$this->getOwnerSpec()->contexts->callFunctionInContext($function);
 	}
 }

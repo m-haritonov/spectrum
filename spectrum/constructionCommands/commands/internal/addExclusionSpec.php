@@ -9,7 +9,7 @@
 namespace spectrum\constructionCommands\commands\internal;
 use spectrum\core\SpecInterface;
 
-function addMultiplierExclusionSpec(SpecInterface $spec = null)
+function addExclusionSpec(SpecInterface $spec = null)
 {
 	static $exclusionSpecs = array();
 	$exclusionSpecs[] = $spec;

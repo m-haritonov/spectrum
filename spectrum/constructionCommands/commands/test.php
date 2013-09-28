@@ -11,70 +11,49 @@ use spectrum\config;
 
 /**
  *
- * Support params variants:
- * test(scalar $name)
- * test(scalar $name, array $settings)
- * test(scalar $name, \Closure $testFunction)
- * test(scalar $name, \Closure $testFunction, array $settings)
- * test(scalar $name, \Closure $multiplier, \Closure $testFunction)
- * test(scalar $name, array $multiplier, \Closure $testFunction)
- * test(scalar $name, \Closure $multiplier, \Closure $testFunction, array $settings)
- * test(scalar $name, array $multiplier, \Closure $testFunction, array $settings)
+ * Support params variants: see "\spectrum\constructionCommands\commands\internal\getArgumentsForSpecDeclaringCommand" 
+ * function.
  *
  * @throws \spectrum\constructionCommands\Exception If called not at declaring state or if data provider is bad
- * @param  string|null $name
- * @param  array|\Closure|null $multiplier
- * @param  \Closure|null $testFunction
+ * @param  string|int|null $name
+ * @param  \Closure|array|null $contexts
+ * @param  \Closure|null $body
  * @return \spectrum\core\Spec
  */
-function test($name, $multiplier = null, $testFunction = null, $settings = null)
+function test($name = null, $contexts = null, $body = null, $settings = null)
 {
 	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at declaring state');
 
 	$resultArguments = $callBrokerClass::internal_getArgumentsForTestCommand(func_get_args());
-	if ($resultArguments === false)
+	if ($resultArguments === null)
 		throw new \spectrum\constructionCommands\Exception('Incorrect arguments list in construction command "' . __FUNCTION__ . '"');
 	else
-		list($name, $multiplier, $testFunction, $settings) = $resultArguments;
+		list($name, $contexts, $body, $settings) = $resultArguments;
 	
 	$specClass = config::getSpecClass();
-	$spec = new $specClass();
-	$spec->setName($name);
+	$testSpec = new $specClass();
 	
-	if ($testFunction)
-		$spec->testFunction->setFunction($testFunction);
+	if ($name !== null)
+		$testSpec->setName($name);
+	
+	if ($body)
+		$testSpec->testFunction->setFunction($body);
 	
 	if ($settings)
-		$callBrokerClass::internal_setSpecSettings($spec, $settings);
+		$callBrokerClass::internal_setSpecSettings($testSpec, $settings);
 		
-	$callBrokerClass::internal_getCurrentDeclaringSpec()->bindChildSpec($spec);
-	$callBrokerClass::internal_addMultiplierExclusionSpec($spec);
+	$callBrokerClass::internal_getCurrentDeclaringSpec()->bindChildSpec($testSpec);
+	$callBrokerClass::internal_addExclusionSpec($testSpec);
 	
-	if (is_array($multiplier))
+	if (is_array($contexts) && $contexts)
 	{
-		$argumentsNumber = 0;
-		foreach ($multiplier as $arguments)
-		{
-			$argumentsNumber++;
-			
-			if (!is_array($arguments))
-				$arguments = array($arguments);
-			
-			$childSpec = new $specClass();
-			$childSpec->setName($callBrokerClass::internal_getNameForArguments($arguments, $argumentsNumber));
-			$childSpec->testFunction->setFunctionArguments($arguments);
-			$spec->bindChildSpec($childSpec);
-		}
+		foreach ($callBrokerClass::internal_convertContextArrayToSpecs($contexts) as $spec);
+			$testSpec->bindChildSpec($spec);
 	}
-	else if (is_object($multiplier) && ($multiplier instanceof \Closure))
-	{
-		$oldSpec = $callBrokerClass::internal_getCurrentDeclaringSpec();
-		$callBrokerClass::internal_setCurrentDeclaringSpec($spec);
-		call_user_func($multiplier);
-		$callBrokerClass::internal_setCurrentDeclaringSpec($oldSpec);
-	}
+	else if (!is_array($contexts) && $contexts)
+		$callBrokerClass::internal_callFunctionOnDeclaringSpec($contexts, $testSpec);
 	
-	return $spec;
+	return $testSpec;
 }

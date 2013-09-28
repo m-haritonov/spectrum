@@ -1,7 +1,22 @@
-TODO: в $multiplier array в test передавать значения в ContextData (используя в качестве имени свойства ключ элемента массива) вместо аргументов функции; добавить $multiplier с типом array в группы
-TODO: remove TestFunction::$functionArguments
-TODO: multiplier vs contextSwitchers vs dataSwitchers vs generators vs combine
-TODO: создать (пока только продумать) функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (назвать её, например, combine)
+TODO: rename getDeepestRunningSpec to getRunningEndingSpec, изменить алгоритм
+TODO: getCurrentRunningSpec — возвращать null
+
+TODO: getRootSpec -> getRootSpecOrSelf ???
+TODO: улалить getRootSpec, проверя все корни в handleModifyDeny ??? но getRootSpecs не возвращает себя
+TODO: переписать getRootSpecs в итеративном стиле (важен ли порядок) ???
+
+TODO: array context group:
+	group('aaa', array(
+		'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
+		'group: Межгород' => array(
+			'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
+			'Номер МТС' => array('code' => '495', 'phone' => '35861923'),
+		),
+	), function(){
+		test('bbb', function(){});
+	});
+
+TODO: contexts\ContextData -> contexts\Data
 TODO: тесты для matchers
 TODO: тесты для constructionCommands
 
@@ -34,12 +49,12 @@ TODO: плагин "Report": добавить title к резальтату ил
 TODO: тесты для плагина "Reports"
 TODO: "Reports" test "testGeneratesValidXhtml" (проверяет валидность вёрстки)
 
+TODO: переименовать beforeEach/afterEach в before/after ???
 TODO: rename ContextData to Context/ContextScope/etc. ???
 TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
 TODO: rename setCatchPhpErrors to setPhpErrorLevel ???
 TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: rename activateMoment to activateType/activationType ???
-TODO: переименовать beforeEach/afterEach в before/after ???
 TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???
 
 TODO: put license text to each file head, remove LICENSE.txt, add to README.md note "Project is licensed under New BSD License (see license text in each file)"
@@ -54,10 +69,17 @@ test('ожидаемый результат', function(){
 }) 
 
 TODO: добавить возможность перевода??? Пример: 
-it(array(
-	'en' => 'Makes something',
-	'ru' => 'Делает что-либо',
-), function(){});
+test('Makes something', function(){}, function(){
+	// ...
+	// ...
+	// ...
+	// ...
+	// ...
+}, array(
+	'translations/langs' => array(
+		'ru' => 'Делает что-либо',
+	)
+));
 
 или:
 translate('Делает что-либо', 'ru');
@@ -66,6 +88,7 @@ it('Makes something'), function(){});
 установка используемого для отображения языка:
 $spec->output/translate->setLanguage('ru');
 
+TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generate)
 TODO: плагин "Report": добавить возможность параллельного сохранения отчёта в файл (report->setWriteToFile())
 TODO: run.php
 	сделать run.php

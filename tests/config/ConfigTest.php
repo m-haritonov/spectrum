@@ -311,6 +311,7 @@ class ConfigTest extends \spectrum\tests\Test
 				
 				public function getRootSpec(){}
 				public function getRootSpecs(){}
+				public function getEndingSpecs(){}
 				public function getRunningParentSpec(){}
 				public function getRunningAncestorSpecs(){}
 				public function getRunningChildSpec(){}
@@ -382,6 +383,7 @@ class ConfigTest extends \spectrum\tests\Test
 				
 				public function getRootSpec(){}
 				public function getRootSpecs(){}
+				public function getEndingSpecs(){}
 				public function getRunningParentSpec(){}
 				public function getRunningAncestorSpecs(){}
 				public function getRunningChildSpec(){}
