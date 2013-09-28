@@ -67,7 +67,10 @@ abstract class Plugin implements PluginInterface
 	
 	protected function handleModifyDeny($functionName)
 	{
-		if ($this->getOwnerSpec()->getRootSpec()->isRunning())
-			throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
+		foreach (array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRootSpecs()) as $spec)
+		{
+			if ($spec->isRunning())
+				throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
+		}
 	}
 }

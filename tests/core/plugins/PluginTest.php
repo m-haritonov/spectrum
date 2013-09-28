@@ -391,7 +391,49 @@ class PluginTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testHandleModifyDeny_ThrowsExceptionIfRootSpecIsRunning()
+	public function testHandleModifyDeny_SpecWithoutParentsIsRunning_ThrowsException()
+	{
+		\spectrum\tests\Test::$temp["caughtException"] = null;
+
+		$pluginClassName = $this->createClass('
+			class ... extends \spectrum\core\plugins\Plugin
+			{
+				static public function getAccessName()
+				{
+					return "testPlugin";
+				}
+				
+				static public function getEventListeners()
+				{
+					return array(
+						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
+					);
+				}
+				
+				protected function onSpecRunStart()
+				{
+					try
+					{
+						$this->getOwnerSpec()->testPlugin->handleModifyDeny("aaa");
+					}
+					catch(\Exception $e)
+					{
+						\spectrum\tests\Test::$temp["caughtException"] = $e;
+					}
+				}
+			}
+		');
+		
+		config::registerSpecPlugin($pluginClassName);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["caughtException"]);
+		$this->assertSame('Call of "' . $pluginClassName . '::aaa" method is forbidden on run', \spectrum\tests\Test::$temp["caughtException"]->getMessage());
+	}
+	
+	public function testHandleModifyDeny_RootSpecIsRunning_ThrowsException()
 	{
 		\spectrum\tests\Test::$temp["caughtException"] = null;
 

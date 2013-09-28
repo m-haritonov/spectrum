@@ -37,7 +37,6 @@ interface SpecInterface
 	public function unbindChildSpec(SpecInterface $spec);
 	public function unbindAllChildSpecs();
 	
-	public function getRootSpec();
 	public function getRootSpecs();
 	public function getEndingSpecs();
 	public function getRunningParentSpec();

@@ -1321,42 +1321,6 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 
-	public function testGetRootSpec_ReturnsRootSpec()
-	{
-		$specs = $this->createSpecsTree('
-			->Spec
-			Spec(aaa)
-		');
-		$this->assertSame($specs[0], $specs['aaa']->getRootSpec());
-		
-		$specs = $this->createSpecsTree('
-			->->Spec
-			->Spec
-			Spec(aaa)
-		');
-		$this->assertSame($specs[0], $specs['aaa']->getRootSpec());
-		
-		$specs = $this->createSpecsTree('
-			->->->Spec
-			->->Spec
-			->Spec
-			Spec(aaa)
-		');
-		$this->assertSame($specs[0], $specs['aaa']->getRootSpec());
-	}
-	
-	public function testGetRootSpec_SpecHasNoParents_ReturnsSelfSpec()
-	{
-		$spec = new Spec();
-		$this->assertSame($spec, $spec->getRootSpec());
-		
-		$spec = new Spec();
-		$spec->bindChildSpec(new Spec());
-		$this->assertSame($spec, $spec->getRootSpec());
-	}
-	
-/**/
-	
 	public function testGetRootSpecs_ReturnsAllRootSpecs()
 	{
 		$specs = $this->createSpecsTree('

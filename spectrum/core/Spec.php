@@ -335,21 +335,6 @@ class Spec implements SpecInterface
 
 /**/
 	
-	public function getRootSpec()
-	{
-		$rootSpec = $this;
-		while (true)
-		{
-			$parentSpecs = $rootSpec->parentSpecs;
-			if ($parentSpecs)
-				$rootSpec = $parentSpecs[0];
-			else
-				break;
-		}
-		
-		return $rootSpec;
-	}
-	
 	public function getRootSpecs()
 	{
 		$rootSpecs = array();
@@ -599,7 +584,10 @@ class Spec implements SpecInterface
 
 	protected function handleModifyDeny($functionName)
 	{
-		if ($this->getRootSpec()->isRunning())
-			throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
+		foreach (array_merge(array($this), $this->getRootSpecs()) as $spec)
+		{
+			if ($spec->isRunning())
+				throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
+		}
 	}
 }

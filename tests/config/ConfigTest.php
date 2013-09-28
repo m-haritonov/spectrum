@@ -309,7 +309,6 @@ class ConfigTest extends \spectrum\tests\Test
 				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
 				
-				public function getRootSpec(){}
 				public function getRootSpecs(){}
 				public function getEndingSpecs(){}
 				public function getRunningParentSpec(){}
@@ -381,7 +380,6 @@ class ConfigTest extends \spectrum\tests\Test
 				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
 				
-				public function getRootSpec(){}
 				public function getRootSpecs(){}
 				public function getEndingSpecs(){}
 				public function getRunningParentSpec(){}
