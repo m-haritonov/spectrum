@@ -12,15 +12,15 @@ use spectrum\config;
 
 function getRootSpec()
 {
-	static $initialSpec;
-	if ($initialSpec === null)
+	static $rootSpec;
+	if ($rootSpec === null)
 	{
 		$specClass = config::getSpecClass();
-		$initialSpec = new $specClass;
+		$rootSpec = new $specClass;
 		
 		$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
-		$callBrokerClass::internal_loadBaseMatchers($initialSpec);
+		$callBrokerClass::internal_loadBaseMatchers($rootSpec);
 	}
 				
-	return $initialSpec;
+	return $rootSpec;
 }
