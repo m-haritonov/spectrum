@@ -1,6 +1,3 @@
-TODO: rename getDeepestRunningSpec to getRunningEndingSpec, изменить алгоритм
-TODO: getCurrentRunningSpec — возвращать null
-
 TODO: getRootSpec -> getRootSpecOrSelf ???
 TODO: улалить getRootSpec, проверя все корни в handleModifyDeny ??? но getRootSpecs не возвращает себя
 TODO: переписать getRootSpecs в итеративном стиле (важен ли порядок) ???

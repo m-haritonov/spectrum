@@ -43,7 +43,7 @@ interface SpecInterface
 	public function getRunningParentSpec();
 	public function getRunningAncestorSpecs();
 	public function getRunningChildSpec();
-	public function getDeepestRunningSpec();
+	public function getRunningEndingSpec();
 
 	/**
 	 * @return null|ResultBuffer

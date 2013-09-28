@@ -423,21 +423,20 @@ class Spec implements SpecInterface
 		return null;
 	}
 	
-	/**
-	 * Return deepest spec from running spec stack or self (if self is running). For example, use it for get current running spec through root spec.
-	 */
-	public function getDeepestRunningSpec()
+	public function getRunningEndingSpec()
 	{
 		foreach ($this->childSpecs as $childSpec)
 		{
 			if ($childSpec->isRunning())
-				return $childSpec->getDeepestRunningSpec();
+			{
+				if ($childSpec->getChildSpecs())
+					return $childSpec->getRunningEndingSpec();
+				else
+					return $childSpec;
+			}
 		}
 		
-		if ($this->isRunning())
-			return $this;
-		else
-			return null;
+		return null;
 	}
 	
 /**/

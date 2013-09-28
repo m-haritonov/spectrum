@@ -315,7 +315,7 @@ class ConfigTest extends \spectrum\tests\Test
 				public function getRunningParentSpec(){}
 				public function getRunningAncestorSpecs(){}
 				public function getRunningChildSpec(){}
-				public function getDeepestRunningSpec(){}
+				public function getRunningEndingSpec(){}
 			
 				public function getResultBuffer(){}
 				public function isRunning(){}
@@ -387,7 +387,7 @@ class ConfigTest extends \spectrum\tests\Test
 				public function getRunningParentSpec(){}
 				public function getRunningAncestorSpecs(){}
 				public function getRunningChildSpec(){}
-				public function getDeepestRunningSpec(){}
+				public function getRunningEndingSpec(){}
 			
 				public function getResultBuffer(){}
 				public function isRunning(){}

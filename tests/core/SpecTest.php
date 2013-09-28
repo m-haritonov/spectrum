@@ -928,16 +928,6 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $parentSpec2->getChildSpecs());
 	}
 	
-	public function testUnbindParentSpec_DoesNotTriggersErrorWhenNoConnectionBetweenSpecs()
-	{
-		$spec = new Spec();
-		$parentSpec = new Spec();
-		
-		$spec->unbindParentSpec($parentSpec);
-		$this->assertSame(array(), $spec->getParentSpecs());
-		$this->assertSame(array(), $parentSpec->getChildSpecs());
-	}
-	
 	public function testUnbindParentSpec_ResetsArrayIndexes()
 	{
 		$spec = new Spec();
@@ -966,6 +956,16 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$childSpec2->unbindParentSpec($spec);
 		$this->assertSame(array($childSpec1, $childSpec3), $spec->getChildSpecs());
+	}
+	
+	public function testUnbindParentSpec_NoConnectionBetweenSpecs_DoesNotTriggersError()
+	{
+		$spec = new Spec();
+		$parentSpec = new Spec();
+		
+		$spec->unbindParentSpec($parentSpec);
+		$this->assertSame(array(), $spec->getParentSpecs());
+		$this->assertSame(array(), $parentSpec->getChildSpecs());
 	}
 	
 	public function testUnbindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec()
@@ -1079,7 +1079,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($childSpec2), $spec->getChildSpecsByName('bbb'));
 	}
 	
-	public function testGetChildSpecsByName_ReturnsEmptyArrayWhenNoProperChildren()
+	public function testGetChildSpecsByName_NoProperChildren_ReturnsEmptyArray()
 	{
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getChildSpecsByName('aaa'));
@@ -1105,7 +1105,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($childSpec3, $spec->getChildSpecByNumber(3));
 	}
 	
-	public function testGetChildSpecByNumber_ReturnsNullWhenNoChildWithProperNumber()
+	public function testGetChildSpecByNumber_NoChildWithProperNumber_ReturnsNull()
 	{
 		$spec = new Spec();
 		$this->assertSame(null, $spec->getChildSpecByNumber(1));
@@ -1198,16 +1198,6 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $childSpec2->getParentSpecs());
 	}
 	
-	public function testUnbindChildSpec_DoesNotTriggersErrorWhenNoConnectionBetweenSpecs()
-	{
-		$spec = new Spec();
-		$childSpec = new Spec();
-		
-		$spec->unbindChildSpec($childSpec);
-		$this->assertSame(array(), $spec->getChildSpecs());
-		$this->assertSame(array(), $childSpec->getParentSpecs());
-	}
-	
 	public function testUnbindChildSpec_ResetsArrayIndexes()
 	{
 		$spec = new Spec();
@@ -1236,6 +1226,16 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$parentSpec2->unbindChildSpec($spec);
 		$this->assertSame(array($parentSpec1, $parentSpec3), $spec->getParentSpecs());
+	}
+	
+	public function testUnbindChildSpec_NoConnectionBetweenSpecs_DoesNotTriggersError()
+	{
+		$spec = new Spec();
+		$childSpec = new Spec();
+		
+		$spec->unbindChildSpec($childSpec);
+		$this->assertSame(array(), $spec->getChildSpecs());
+		$this->assertSame(array(), $childSpec->getParentSpecs());
 	}
 
 	public function testUnbindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec()
@@ -1345,7 +1345,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($specs[0], $specs['aaa']->getRootSpec());
 	}
 	
-	public function testGetRootSpec_ReturnsSelfSpecForSpecWithoutParent()
+	public function testGetRootSpec_SpecHasNoParents_ReturnsSelfSpec()
 	{
 		$spec = new Spec();
 		$this->assertSame($spec, $spec->getRootSpec());
@@ -1376,7 +1376,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[2]), $specs['aaa']->getRootSpecs());
 	}
 	
-	public function testGetRootSpecs_ReturnsEmptyArrayForSpecWithoutParent()
+	public function testGetRootSpecs_SpecHasNoParents_ReturnsEmptyArray()
 	{
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getRootSpecs());
@@ -1403,7 +1403,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs['endingSpec1'], $specs['endingSpec2'], $specs['endingSpec3'], $specs['endingSpec4']), $specs[0]->getEndingSpecs());
 	}
 	
-	public function testGetEndingSpecs_ReturnsEmptyArrayForSpecWithoutChild()
+	public function testGetEndingSpecs_SpecHasNoChildren_ReturnsEmptyArray()
 	{
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getEndingSpecs());
@@ -1440,7 +1440,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[1]), \spectrum\tests\Test::$temp["specs"]);
 	}
 	
-	public function testGetRunningParentSpec_ReturnsNullWhenNoRunningParentSpec()
+	public function testGetRunningParentSpec_NoRunningParentSpec_ReturnsNull()
 	{
 		$specs = $this->createSpecsTree('
 			->Spec
@@ -1480,7 +1480,7 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["specs"]);
 	}
 	
-	public function testGetRunningAncestorSpecs_ReturnsEmptyArrayWhenNoRunningParentSpec()
+	public function testGetRunningAncestorSpecs_NoRunningParentSpec_ReturnsEmptyArray()
 	{
 		$specs = $this->createSpecsTree('
 			->Spec
@@ -1492,30 +1492,39 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 	
-	public function testGetDeepestRunningSpec_ReturnsDeepestRunningChildSpec()
+	public function testGetRunningEndingSpec_ReturnsRunningEndingSpec()
 	{
-		\spectrum\tests\Test::$temp["specs"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["specs"][] = \spectrum\tests\Test::$temp["rootSpec"]->getDeepestRunningSpec();');
+		\spectrum\tests\Test::$temp["runningEndingSpecs"] = array();
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runningEndingSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningEndingSpec();');
 		
-		$specs = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
 			Spec
 			->Spec
 			->->Spec
 		');
 		
-		\spectrum\tests\Test::$temp["rootSpec"] = $specs[0];
-		$specs[0]->run();
+		\spectrum\tests\Test::$temp["specs"][0]->run();
 		
-		$this->assertSame(array($specs[0], $specs[1], $specs[2]), \spectrum\tests\Test::$temp["specs"]);
-	}	
+		$this->assertSame(array(
+			null,
+			null,
+			\spectrum\tests\Test::$temp["specs"][2],
+		), \spectrum\tests\Test::$temp["runningEndingSpecs"]);
+	}
 	
-	public function testGetDeepestRunningSpec_ReturnsSelfWhenNoRunningChildrenAndSelfIsRunning()
+	public function testGetRunningEndingSpec_NoRunningChildren_ReturnsNull()
 	{
-		\spectrum\tests\Test::$temp["specs"] = array();
+		$spec = new Spec();
+		$this->assertSame(null, $spec->getRunningEndingSpec());
+	}
+	
+	public function testGetRunningEndingSpec_NoRunningChildrenAndSelfIsRunning_ReturnsNull()
+	{
+		\spectrum\tests\Test::$temp["runningEndingSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
 			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
-				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getDeepestRunningSpec();
+				\spectrum\tests\Test::$temp["runningEndingSpecs"][] = $this->getOwnerSpec()->getRunningEndingSpec();
 		');
 		
 		$specs = $this->createSpecsTree('
@@ -1526,14 +1535,8 @@ class SpecTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["checkpoint"] = $specs[0];
 		$specs[0]->run();
 		
-		$this->assertSame(array($specs[0]), \spectrum\tests\Test::$temp["specs"]);
+		$this->assertSame(array(null), \spectrum\tests\Test::$temp["runningEndingSpecs"]);
 	}	
-	
-	public function testGetDeepestRunningSpec_ReturnsNullWhenNoRunningChildren()
-	{
-		$spec = new Spec();
-		$this->assertSame(null, $spec->getDeepestRunningSpec());
-	}
 	
 /**/
 	
@@ -1565,7 +1568,7 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["returnSpecs"]);
 	}	
 	
-	public function testGetRunningChildSpec_ReturnsNullWhenNoRunningChildren()
+	public function testGetRunningChildSpec_NoRunningChildren_ReturnsNull()
 	{
 		$spec = new Spec();
 		$this->assertSame(null, $spec->getRunningChildSpec());
