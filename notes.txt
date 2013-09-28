@@ -1,15 +1,3 @@
-TODO: array context group:
-	group('aaa', array(
-		'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
-		'group: Межгород' => array(
-			'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
-			'Номер МТС' => array('code' => '495', 'phone' => '35861923'),
-		),
-	), function(){
-		test('bbb', function(){});
-	});
-
-TODO: contexts\ContextData -> contexts\Data
 TODO: тесты для constructionCommands
 TODO: тесты для "\spectrum\matchers\*"
 
@@ -54,6 +42,17 @@ TODO: put license text to each file head, remove LICENSE.txt, add to README.md n
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
+
+TODO: array context group:
+	group('aaa', array(
+		'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
+		'group: Межгород' => array(
+			'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
+			'Номер МТС' => array('code' => '495', 'phone' => '35861923'),
+		),
+	), function(){
+		test('bbb', function(){});
+	});
 
 TO MAN: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
 TO MAN: на главной закрепить образец использования:

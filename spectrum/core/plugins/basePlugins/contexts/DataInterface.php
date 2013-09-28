@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\contexts;
 
-interface ContextDataInterface extends \Countable, \ArrayAccess
+interface DataInterface extends \Countable, \ArrayAccess
 {
 
 }

@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\contexts;
 
-class ContextData implements ContextDataInterface
+class Data implements DataInterface
 {
 	public function count()
 	{

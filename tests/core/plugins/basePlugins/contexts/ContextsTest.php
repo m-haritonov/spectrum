@@ -732,7 +732,7 @@ class ContextsTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\ContextData', \spectrum\tests\Test::$temp["contextData"]);
+		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\Data', \spectrum\tests\Test::$temp["contextData"]);
 	}
 	
 /**/
@@ -747,12 +747,12 @@ class ContextsTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\ContextData', \spectrum\tests\Test::$temp["contextData"]);
+		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\Data', \spectrum\tests\Test::$temp["contextData"]);
 	}
 	
 	public function testContextDataInitialization_UsesConfigForContextDataClassGetting()
 	{
-		$contextDataClassName = $this->createClass('class ... extends \spectrum\core\plugins\basePlugins\contexts\ContextData {}');
+		$contextDataClassName = $this->createClass('class ... extends \spectrum\core\plugins\basePlugins\contexts\Data {}');
 		config::setContextDataClass($contextDataClassName);
 
 		\spectrum\tests\Test::$temp["contextData"] = null;
