@@ -9,9 +9,9 @@
 namespace spectrum;
 
 require_once __DIR__ . '/constructionCommands/commands/addMatcher.php';
-require_once __DIR__ . '/constructionCommands/commands/afterEach.php';
+require_once __DIR__ . '/constructionCommands/commands/after.php';
 require_once __DIR__ . '/constructionCommands/commands/be.php';
-require_once __DIR__ . '/constructionCommands/commands/beforeEach.php';
+require_once __DIR__ . '/constructionCommands/commands/before.php';
 require_once __DIR__ . '/constructionCommands/commands/fail.php';
 require_once __DIR__ . '/constructionCommands/commands/group.php';
 require_once __DIR__ . '/constructionCommands/commands/message.php';
@@ -59,9 +59,9 @@ final class config
 
 	static private $registeredConstructionCommands = array(
 		'addMatcher'                                   => '\spectrum\constructionCommands\commands\addMatcher',
-		'afterEach'                                    => '\spectrum\constructionCommands\commands\afterEach',
+		'after'                                        => '\spectrum\constructionCommands\commands\after',
 		'be'                                           => '\spectrum\constructionCommands\commands\be',
-		'beforeEach'                                   => '\spectrum\constructionCommands\commands\beforeEach',
+		'before'                                       => '\spectrum\constructionCommands\commands\before',
 		'fail'                                         => '\spectrum\constructionCommands\commands\fail',
 		'group'                                        => '\spectrum\constructionCommands\commands\group',
 		'message'                                      => '\spectrum\constructionCommands\commands\message',

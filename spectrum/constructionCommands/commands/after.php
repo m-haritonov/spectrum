@@ -13,11 +13,11 @@ use spectrum\config;
  * @throws \spectrum\constructionCommands\Exception If called not at declaring state
  * @param  callback $function
  */
-function beforeEach($function)
+function after($function)
 {
 	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at declaring state');
 
-	return $callBrokerClass::internal_getCurrentDeclaringSpec()->contexts->add($function, 'before');
+	return $callBrokerClass::internal_getCurrentDeclaringSpec()->contexts->add($function, 'after');
 }

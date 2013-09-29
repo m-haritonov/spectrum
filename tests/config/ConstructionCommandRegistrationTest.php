@@ -25,9 +25,9 @@ class ConstructionCommandRegistrationTest extends \spectrum\tests\Test
 		
 		$this->assertSame(array(
 			'addMatcher'                                   => '\spectrum\constructionCommands\commands\addMatcher',
-			'afterEach'                                    => '\spectrum\constructionCommands\commands\afterEach',
+			'after'                                        => '\spectrum\constructionCommands\commands\after',
 			'be'                                           => '\spectrum\constructionCommands\commands\be',
-			'beforeEach'                                   => '\spectrum\constructionCommands\commands\beforeEach',
+			'before'                                       => '\spectrum\constructionCommands\commands\before',
 			'fail'                                         => '\spectrum\constructionCommands\commands\fail',
 			'group'                                        => '\spectrum\constructionCommands\commands\group',
 			'message'                                      => '\spectrum\constructionCommands\commands\message',

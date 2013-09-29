@@ -30,8 +30,7 @@ TODO: плагин "Report": добавить title к резальтату ил
 TODO: тесты для плагина "Reports"
 TODO: "Reports" test "testGeneratesValidXhtml" (проверяет валидность вёрстки)
 
-TODO: переименовать beforeEach/afterEach в before/after ???
-TODO: rename ContextData to Context/ContextScope/etc. ???
+TODO: переименовать callBroker в caller ???
 TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
 TODO: rename setCatchPhpErrors to setPhpErrorLevel ???
 TODO: choose exception naming style: BreakException vs ExceptionBreak
@@ -39,6 +38,7 @@ TODO: rename activateMoment to activateType/activationType ???
 TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???
 
 TODO: put license text to each file head, remove LICENSE.txt, add to README.md note "Project is licensed under New BSD License (see license text in each file)"
+TODO: update examples in "README.md"
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
