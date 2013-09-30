@@ -18,7 +18,7 @@ function addMatcher($name, $function)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())
-		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at declaring state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "addMatcher" should be call only at declaring state');
 
 	return $callBrokerClass::internal_getCurrentDeclaringSpec()->matchers->add($name, $function);
 }

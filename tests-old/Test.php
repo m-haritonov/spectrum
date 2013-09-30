@@ -6,7 +6,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace spectrum\tests;
+namespace spectrum\testsOld;
 
 require_once __DIR__ . '/init.php';
 
