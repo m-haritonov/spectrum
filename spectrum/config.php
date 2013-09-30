@@ -20,14 +20,14 @@ require_once __DIR__ . '/constructionCommands/commands/this.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/addExclusionSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/callFunctionOnDeclaringSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/convertContextArrayToSpecs.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/filterOutExclusionSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getArgumentsForSpecDeclaringCommand.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentDeclaringSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentRunningSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentSpec.php';
-require_once __DIR__ . '/constructionCommands/commands/internal/getRootSpec.php';
-require_once __DIR__ . '/constructionCommands/commands/internal/filterOutExclusionSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getExclusionSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getNameForArguments.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getRootSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/isRunningState.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/loadBaseMatchers.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/setCurrentDeclaringSpec.php';
@@ -70,14 +70,14 @@ final class config
 		'internal_addExclusionSpec'                    => '\spectrum\constructionCommands\commands\internal\addExclusionSpec',
 		'internal_callFunctionOnDeclaringSpec'         => '\spectrum\constructionCommands\commands\internal\callFunctionOnDeclaringSpec',
 		'internal_convertContextArrayToSpecs'          => '\spectrum\constructionCommands\commands\internal\convertContextArrayToSpecs',
+		'internal_filterOutExclusionSpecs'             => '\spectrum\constructionCommands\commands\internal\filterOutExclusionSpecs',
 		'internal_getArgumentsForSpecDeclaringCommand' => '\spectrum\constructionCommands\commands\internal\getArgumentsForSpecDeclaringCommand',
 		'internal_getCurrentDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\getCurrentDeclaringSpec',
 		'internal_getCurrentRunningSpec'               => '\spectrum\constructionCommands\commands\internal\getCurrentRunningSpec',
 		'internal_getCurrentSpec'                      => '\spectrum\constructionCommands\commands\internal\getCurrentSpec',
-		'internal_getRootSpec'                         => '\spectrum\constructionCommands\commands\internal\getRootSpec',
-		'internal_filterOutExclusionSpecs'             => '\spectrum\constructionCommands\commands\internal\filterOutExclusionSpecs',
 		'internal_getExclusionSpecs'                   => '\spectrum\constructionCommands\commands\internal\getExclusionSpecs',
 		'internal_getNameForArguments'                 => '\spectrum\constructionCommands\commands\internal\getNameForArguments',
+		'internal_getRootSpec'                         => '\spectrum\constructionCommands\commands\internal\getRootSpec',
 		'internal_isRunningState'                      => '\spectrum\constructionCommands\commands\internal\isRunningState',
 		'internal_loadBaseMatchers'                    => '\spectrum\constructionCommands\commands\internal\loadBaseMatchers',
 		'internal_setCurrentDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\setCurrentDeclaringSpec',
