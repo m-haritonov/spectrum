@@ -22,20 +22,20 @@ class ConfigTest extends Test
 	
 /**/
 	
-	public function testGetConstructionCommandsCallBrokerClass_ReturnsSpectrumClassByDefault()
+	public function testGetConstructionCommandCallBrokerClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\constructionCommands\callBroker', config::getConstructionCommandsCallBrokerClass());
+		$this->assertSame('\spectrum\constructionCommands\callBroker', config::getConstructionCommandCallBrokerClass());
 	}
 	
-	public function testGetConstructionCommandsCallBrokerClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetConstructionCommandCallBrokerClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getConstructionCommandsCallBrokerClass();
+		config::getConstructionCommandCallBrokerClass();
 	}
 	
 /**/
 
-	public function testSetConstructionCommandsCallBrokerClass_SetsNewClass()
+	public function testSetConstructionCommandCallBrokerClass_SetsNewClass()
 	{
 		$className = $this->createClass('
 			final class ... implements \spectrum\constructionCommands\callBrokerInterface
@@ -45,33 +45,33 @@ class ConfigTest extends Test
 			}
 		');
 		
-		config::setConstructionCommandsCallBrokerClass($className);
-		$this->assertSame($className, config::getConstructionCommandsCallBrokerClass());
+		config::setConstructionCommandCallBrokerClass($className);
+		$this->assertSame($className, config::getConstructionCommandCallBrokerClass());
 	}
 
-	public function testSetConstructionCommandsCallBrokerClass_ClassNotExists_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetConstructionCommandCallBrokerClass_ClassNotExists_ThrowsExceptionAndDoesNotChangeValue()
 	{
-		$oldClass = config::getConstructionCommandsCallBrokerClass();
+		$oldClass = config::getConstructionCommandCallBrokerClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
-			config::setConstructionCommandsCallBrokerClass('\spectrum\tests\testware\NotExistsClass');
+			config::setConstructionCommandCallBrokerClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
-		$this->assertSame($oldClass, config::getConstructionCommandsCallBrokerClass());
+		$this->assertSame($oldClass, config::getConstructionCommandCallBrokerClass());
 	}
 
-	public function testSetConstructionCommandsCallBrokerClass_ClassNotImplementSpectrumInterface_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetConstructionCommandCallBrokerClass_ClassNotImplementSpectrumInterface_ThrowsExceptionAndDoesNotChangeValue()
 	{
-		$oldClass = config::getConstructionCommandsCallBrokerClass();
+		$oldClass = config::getConstructionCommandCallBrokerClass();
 
 		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
-			config::setConstructionCommandsCallBrokerClass('\stdClass');
+			config::setConstructionCommandCallBrokerClass('\stdClass');
 		});
 
-		$this->assertSame($oldClass, config::getConstructionCommandsCallBrokerClass());
+		$this->assertSame($oldClass, config::getConstructionCommandCallBrokerClass());
 	}
 
-	public function testSetConstructionCommandsCallBrokerClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetConstructionCommandCallBrokerClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
 			final class ... implements \spectrum\constructionCommands\callBrokerInterface
@@ -81,14 +81,14 @@ class ConfigTest extends Test
 			}
 		');
 		
-		$oldClass = config::getConstructionCommandsCallBrokerClass();
+		$oldClass = config::getConstructionCommandCallBrokerClass();
 		config::lock();
 
 		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() use($className){
-			config::setConstructionCommandsCallBrokerClass($className);
+			config::setConstructionCommandCallBrokerClass($className);
 		});
 
-		$this->assertSame($oldClass, config::getConstructionCommandsCallBrokerClass());
+		$this->assertSame($oldClass, config::getConstructionCommandCallBrokerClass());
 	}
 	
 /**/

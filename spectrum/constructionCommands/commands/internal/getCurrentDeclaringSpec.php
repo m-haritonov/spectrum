@@ -14,7 +14,7 @@ use spectrum\config;
  */
 function getCurrentDeclaringSpec()
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$reflection = new \ReflectionFunction('\spectrum\constructionCommands\commands\internal\setCurrentDeclaringSpec');
 	$vars = $reflection->getStaticVariables();
 	if ($vars['currentSpec'])

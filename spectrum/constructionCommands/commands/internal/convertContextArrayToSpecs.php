@@ -12,7 +12,7 @@ use spectrum\config;
 
 function convertContextArrayToSpecs(array $contexts)
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$specClass = config::getSpecClass();
 	$specs = array();
 	

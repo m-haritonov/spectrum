@@ -13,7 +13,7 @@ use spectrum\core\SpecInterface;
 
 function callFunctionOnDeclaringSpec($function, SpecInterface $spec)
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$specBackup = $callBrokerClass::internal_getCurrentDeclaringSpec();
 	$callBrokerClass::internal_setCurrentDeclaringSpec($spec);
 	$returnValue = call_user_func($function);

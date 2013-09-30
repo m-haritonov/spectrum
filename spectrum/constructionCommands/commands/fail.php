@@ -17,7 +17,7 @@ use spectrum\config;
  */
 function fail($message = null, $code = 0)
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if (!$callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at running state');
 	

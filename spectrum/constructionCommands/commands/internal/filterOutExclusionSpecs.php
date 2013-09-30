@@ -12,7 +12,7 @@ use spectrum\config;
 
 function filterOutExclusionSpecs(array $specs)
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$exclusionSpecs = $callBrokerClass::internal_getExclusionSpecs();
 	
 	$filteredSpecs = array();

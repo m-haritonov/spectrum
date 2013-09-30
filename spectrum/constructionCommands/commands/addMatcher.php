@@ -16,7 +16,7 @@ use spectrum\config;
  */
 function addMatcher($name, $function)
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at declaring state');
 

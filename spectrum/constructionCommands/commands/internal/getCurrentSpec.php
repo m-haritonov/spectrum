@@ -14,7 +14,7 @@ use spectrum\config;
  */
 function getCurrentSpec()
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())
 		return $callBrokerClass::internal_getCurrentRunningSpec();
 	else

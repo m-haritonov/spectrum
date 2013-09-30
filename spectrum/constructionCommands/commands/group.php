@@ -21,7 +21,7 @@ use spectrum\config;
  */
 function group($name = null, $contexts = null, $body = null, $settings = null)
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at declaring state');
 

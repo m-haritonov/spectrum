@@ -35,7 +35,7 @@ require_once __DIR__ . '/constructionCommands/commands/internal/setSpecSettings.
 
 final class config
 {
-	static private $constructionCommandsCallBrokerClass = '\spectrum\constructionCommands\callBroker';
+	static private $constructionCommandCallBrokerClass = '\spectrum\constructionCommands\callBroker';
 	static private $assertClass = '\spectrum\core\Assert';
 	static private $matcherCallDetailsClass = '\spectrum\core\MatcherCallDetails';
 	static private $specClass = '\spectrum\core\Spec';
@@ -91,8 +91,8 @@ final class config
 	
 /**/
 
-	static public function setConstructionCommandsCallBrokerClass($className){ return static::setConfigClassValue(static::$constructionCommandsCallBrokerClass, $className, '\spectrum\constructionCommands\callBrokerInterface'); }
-	static public function getConstructionCommandsCallBrokerClass(){ return static::$constructionCommandsCallBrokerClass; }
+	static public function setConstructionCommandCallBrokerClass($className){ return static::setConfigClassValue(static::$constructionCommandCallBrokerClass, $className, '\spectrum\constructionCommands\callBrokerInterface'); }
+	static public function getConstructionCommandCallBrokerClass(){ return static::$constructionCommandCallBrokerClass; }
 
 	static public function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\AssertInterface'); }
 	static public function getAssertClass(){ return static::$assertClass; }

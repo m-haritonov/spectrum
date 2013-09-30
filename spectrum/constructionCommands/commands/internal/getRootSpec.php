@@ -18,7 +18,7 @@ function getRootSpec()
 		$specClass = config::getSpecClass();
 		$rootSpec = new $specClass;
 		
-		$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+		$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 		$callBrokerClass::internal_loadBaseMatchers($rootSpec);
 	}
 				

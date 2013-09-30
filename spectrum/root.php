@@ -10,6 +10,6 @@ namespace spectrum;
 
 function root()
 {
-	$callBrokerClass = config::getConstructionCommandsCallBrokerClass();
+	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	return $callBrokerClass::internal_getRootSpec();
 }
