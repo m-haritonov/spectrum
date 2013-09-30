@@ -30,7 +30,6 @@ TODO: плагин "Report": добавить title к резальтату ил
 TODO: тесты для плагина "Reports"
 TODO: "Reports" test "testGeneratesValidXhtml" (проверяет валидность вёрстки)
 
-TODO: переименовать callBroker в caller ???
 TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
 TODO: rename setCatchPhpErrors to setPhpErrorLevel ???
 TODO: choose exception naming style: BreakException vs ExceptionBreak
