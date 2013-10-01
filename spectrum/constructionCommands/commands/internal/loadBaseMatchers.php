@@ -9,7 +9,7 @@
 namespace spectrum\constructionCommands\commands\internal;
 use spectrum\core\SpecInterface;
 
-function loadBaseMatchers(SpecInterface $spec)
+function loadBaseMatchers($storage, SpecInterface $spec)
 {
 	$matchers = array(
 		'eq',

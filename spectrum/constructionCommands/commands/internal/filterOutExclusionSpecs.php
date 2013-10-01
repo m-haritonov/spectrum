@@ -10,7 +10,7 @@ namespace spectrum\constructionCommands\commands\internal;
 
 use spectrum\config;
 
-function filterOutExclusionSpecs(array $specs)
+function filterOutExclusionSpecs($storage, array $specs)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$exclusionSpecs = $callBrokerClass::internal_getExclusionSpecs();

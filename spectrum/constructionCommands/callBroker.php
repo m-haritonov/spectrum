@@ -41,11 +41,21 @@ final class callBroker implements callBrokerInterface
 	// For abstract class imitation (using "abstract" keyword with "final" not allowed)
 	private function __construct(){}
 	
+	static private $storage = array('_self_' => null);
+	
 	static public function __callStatic($constructionCommandName, array $arguments = array())
 	{
 		if (!config::isLocked())
 			config::lock();
-	
-		return call_user_func_array(\spectrum\config::getRegisteredConstructionCommandFunction($constructionCommandName), $arguments);	
+		
+		if (!array_key_exists($constructionCommandName, self::$storage))
+			self::$storage[$constructionCommandName] = array();
+		
+		array_unshift($arguments, null);
+		$storageCopy = self::$storage;
+		$arguments[0] = &$storageCopy; // Create reference to copy for "function(&$storage)" expression support
+		$arguments[0]['_self_'] = &self::$storage[$constructionCommandName];
+		
+		return call_user_func_array(\spectrum\config::getRegisteredConstructionCommandFunction($constructionCommandName), $arguments);
 	}
 }

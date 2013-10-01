@@ -8,12 +8,10 @@
 
 namespace spectrum\constructionCommands\commands\internal;
 
-function getExclusionSpecs()
+function getExclusionSpecs($storage)
 {
-	$reflection = new \ReflectionFunction('\spectrum\constructionCommands\commands\internal\addExclusionSpec');
-	$vars = $reflection->getStaticVariables();
-	if ($vars['exclusionSpecs'])
-		return $vars['exclusionSpecs'];
+	if (@$storage['internal_addExclusionSpec']['exclusionSpecs'])
+		return $storage['internal_addExclusionSpec']['exclusionSpecs'];
 	else
 		return array();
 }

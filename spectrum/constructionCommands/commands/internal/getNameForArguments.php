@@ -8,7 +8,7 @@
 
 namespace spectrum\constructionCommands\commands\internal;
 
-function getNameForArguments(array $arguments, $defaultName)
+function getNameForArguments($storage, array $arguments, $defaultName)
 {
 	$arguments = array_values($arguments);
 	

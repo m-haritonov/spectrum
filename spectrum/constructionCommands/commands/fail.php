@@ -13,13 +13,12 @@ use spectrum\config;
  * Add to ResultBuffer of running SpecItem false result wits exception as details.
  * @throws \spectrum\constructionCommands\Exception If called not at running state
  * @param string|null $message
- * @param int $code
  */
-function fail($message = null, $code = 0)
+function fail($storage, $message = null)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if (!$callBrokerClass::internal_isRunningState())
-		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "fail" should be call only at running state');
 	
-	$callBrokerClass::internal_getCurrentRunningSpec()->getResultBuffer()->addResult(false, new \spectrum\constructionCommands\FailException($message, $code));
+	$callBrokerClass::internal_getCurrentRunningSpec()->getResultBuffer()->addResult(false, new \spectrum\constructionCommands\FailException($message));
 }

@@ -11,7 +11,7 @@ namespace spectrum\constructionCommands\commands\internal;
 use spectrum\config;
 use spectrum\core\SpecInterface;
 
-function callFunctionOnDeclaringSpec($function, SpecInterface $spec)
+function callFunctionOnDeclaringSpec($storage, $function, SpecInterface $spec)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$specBackup = $callBrokerClass::internal_getCurrentDeclaringSpec();

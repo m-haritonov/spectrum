@@ -21,6 +21,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		parent::setUp();
 		
 		$this->backupStaticProperties('\spectrum\config');
+		$this->backupStaticProperties('\spectrum\constructionCommands\callBroker');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\Output');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
 
@@ -31,6 +32,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	{
 		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
 		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\Output');
+		$this->restoreStaticProperties('\spectrum\constructionCommands\callBroker');
 		$this->restoreStaticProperties('\spectrum\config');
 
 		parent::tearDown();

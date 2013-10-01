@@ -19,7 +19,7 @@ use spectrum\config;
  * @param  \Closure|null $body
  * @return \spectrum\core\Spec
  */
-function group($name = null, $contexts = null, $body = null, $settings = null)
+function group($storage, $name = null, $contexts = null, $body = null, $settings = null)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())

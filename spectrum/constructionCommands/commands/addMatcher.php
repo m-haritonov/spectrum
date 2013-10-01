@@ -14,7 +14,7 @@ use spectrum\config;
  * @param  string $name
  * @param  callback $function
  */
-function addMatcher($name, $function)
+function addMatcher($storage, $name, $function)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())

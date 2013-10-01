@@ -14,33 +14,38 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class AddMatcherTest extends \spectrum\tests\Test
+class BeforeTest extends \spectrum\tests\Test
 {
-	public function testCallsAtDeclaringState_AddsMatcherFunctionToCurrentDeclaringSpec()
+	public function testCallsAtDeclaringState_AddsContextFunctionWithBeforeTypeToCurrentDeclaringSpec()
 	{
 		$spec = new Spec();
 		callBroker::internal_setCurrentDeclaringSpec($spec);
 		
-		$function = function(){};
-		callBroker::addMatcher('aaa', $function);
+		$function1 = function(){};
+		$function2 = function(){};
+		callBroker::before($function1);
+		callBroker::before($function2);
 
-		$this->assertSame($function, $spec->matchers->get('aaa'));
+		$this->assertSame(array(
+			array('function' => $function1, 'type' => 'before'),
+			array('function' => $function2, 'type' => 'before'),
+		), $spec->contexts->getAll());
 	}
 
-	public function testCallsAtDeclaringState_ReturnsReturnValueOfMatcherAddFunction()
+	public function testCallsAtDeclaringState_ReturnsReturnValueOfContextAddFunction()
 	{
-		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\Matchers');
+		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\contexts\Contexts');
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\basePlugins\Matchers
+			class ... extends \spectrum\core\plugins\basePlugins\contexts\Contexts
 			{
-				public function add($name, $function)
+				public function add($function, $type = "before")
 				{
 					return "some text";
 				}
 			}
 		'));
 		
-		$this->assertSame('some text', callBroker::addMatcher('aaa', function(){}));
+		$this->assertSame('some text', callBroker::before(function(){}));
 	}
 	
 	public function testCallsAtRunningState_ThrowsException()
@@ -50,7 +55,7 @@ class AddMatcherTest extends \spectrum\tests\Test
 		$this->registerPluginWithCodeInEvent('
 			try
 			{
-				\spectrum\constructionCommands\callBroker::addMatcher("aaa", function(){});
+				\spectrum\constructionCommands\callBroker::before(function(){});
 			}
 			catch (\Exception $e)
 			{
@@ -61,6 +66,6 @@ class AddMatcherTest extends \spectrum\tests\Test
 		callBroker::internal_getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\constructionCommands\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Construction command "addMatcher" should be call only at declaring state', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Construction command "before" should be call only at declaring state', \spectrum\tests\Test::$temp["exception"]->getMessage());
 	}
 }

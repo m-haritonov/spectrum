@@ -28,7 +28,7 @@ namespace spectrum\constructionCommands\commands\internal;
  *
  * @param mixed $settings
  */
-function setSpecSettings(\spectrum\core\SpecInterface $spec, $settings)
+function setSpecSettings($storage, \spectrum\core\SpecInterface $spec, $settings)
 {
 	if (is_string($settings)) // it('foo', function(){}, 'windows-1251')
 		$spec->output->setInputEncoding($settings);

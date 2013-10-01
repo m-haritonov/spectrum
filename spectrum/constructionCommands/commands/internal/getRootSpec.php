@@ -10,17 +10,16 @@ namespace spectrum\constructionCommands\commands\internal;
 
 use spectrum\config;
 
-function getRootSpec()
+function getRootSpec($storage)
 {
-	static $rootSpec;
-	if ($rootSpec === null)
+	if (!@$storage['_self_']['rootSpec'])
 	{
 		$specClass = config::getSpecClass();
-		$rootSpec = new $specClass;
+		$storage['_self_']['rootSpec'] = new $specClass;
 		
 		$callBrokerClass = config::getConstructionCommandCallBrokerClass();
-		$callBrokerClass::internal_loadBaseMatchers($rootSpec);
+		$callBrokerClass::internal_loadBaseMatchers($storage['_self_']['rootSpec']);
 	}
 				
-	return $rootSpec;
+	return $storage['_self_']['rootSpec'];
 }

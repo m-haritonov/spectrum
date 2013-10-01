@@ -41,11 +41,11 @@ class CallBrokerTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa', 'ccc', 'bbb', 'aaa'), $calls);
 	}
 	
-	public function testPassesArgumentsToCalledRegisteredCommandFunction()
+	public function testPassesPassedArgumentsToCalledRegisteredCommandFunctionStartingFromSecondArgument()
 	{
 		$passedArguments = array();
 		config::registerConstructionCommand('aaa', function() use(&$passedArguments){
-			$passedArguments[] = func_get_args();
+			$passedArguments[] = array_slice(func_get_args(), 1);
 		});
 		
 		callBroker::aaa('aaa', 'bbb', 'ccc');
@@ -76,5 +76,121 @@ class CallBrokerTest extends \spectrum\tests\Test
 		$this->assertSame(false, config::isLocked());
 		callBroker::aaa();
 		$this->assertSame(true, config::isLocked());
+	}
+	
+	public function testStorage_PassesCopyOfStorageToCalledRegisteredCommandFunctionAtFirstArguments()
+	{
+		$passedStorage1 = null;
+		config::registerConstructionCommand('aaa', function($storage) use(&$passedStorage1){ $passedStorage1 = $storage; });
+		
+		$passedStorage2 = null;
+		config::registerConstructionCommand('bbb', function($storage) use(&$passedStorage2){ $passedStorage2 = $storage; });
+		
+		callBroker::aaa();
+		$this->assertSame(array(
+			'_self_' => array(),
+			'aaa' => array(),
+		), $passedStorage1);
+		
+		callBroker::bbb();
+		$this->assertSame(array(
+			'_self_' => array(),
+			'aaa' => array(),
+			'bbb' => array(),
+		), $passedStorage2);
+		
+		$this->assertNotSame($passedStorage1, $passedStorage2);
+	}
+	
+	public function testStorage_SavesChangesInSelfElementToSectionWithConstructionCommandNameAsKey()
+	{
+		config::registerConstructionCommand('aaa', function($storage){
+			$storage['_self_']['someKey1'] = 'someValue1';
+			$storage['_self_']['someKey2'] = 'someValue2';
+		});
+		
+		config::registerConstructionCommand('bbb', function($storage){
+			$storage['_self_']['someKey1'] = 'someValue3';
+		});
+		
+		$passedStorage = null;
+		config::registerConstructionCommand('ccc', function($storage) use(&$passedStorage){
+			$passedStorage = $storage;
+		});
+		
+		callBroker::aaa();
+		callBroker::bbb();
+		callBroker::ccc();
+		
+		$this->assertSame(array(
+			'_self_' => array(),
+			'aaa' => array(
+				'someKey1' => 'someValue1',
+				'someKey2' => 'someValue2',
+			),
+			'bbb' => array(
+				'someKey1' => 'someValue3',
+			),
+			'ccc' => array(),
+		), $passedStorage);
+	}
+	
+	public function testStorage_DoesNotSaveChangesInNamedElements()
+	{
+		config::registerConstructionCommand('aaa', function($storage){
+			$storage['_self_']['someKey'] = 'someValue1';
+		});
+		
+		config::registerConstructionCommand('bbb', function(&$storage){
+			$storage['aaa']['someKey'] = 'someValue2';
+		});
+		
+		$passedStorage = null;
+		config::registerConstructionCommand('ccc', function($storage) use(&$passedStorage){
+			$passedStorage = $storage;
+		});
+		
+		callBroker::aaa();
+		callBroker::bbb();
+		callBroker::ccc();
+		
+		$this->assertSame(array(
+			'_self_' => array(),
+			'aaa' => array(
+				'someKey' => 'someValue1',
+			),
+			'bbb' => array(),
+			'ccc' => array(),
+		), $passedStorage);
+	}
+	
+	public function testStorage_CreatesEmptyArrayOnlyOnFirstConstructionCommandCall()
+	{
+		config::registerConstructionCommand('aaa', function($storage){
+			$storage['_self_'][] = 'someValue';
+		});
+		
+		$passedStorage = null;
+		config::registerConstructionCommand('bbb', function($storage) use(&$passedStorage){
+			$passedStorage = $storage;
+		});
+		
+		callBroker::aaa();
+		callBroker::bbb();
+		
+		$this->assertSame(array(
+			'_self_' => array(),
+			'aaa' => array('someValue'),
+			'bbb' => array(),
+		), $passedStorage);
+		
+		callBroker::aaa();
+		callBroker::bbb();
+		
+		$this->assertSame(array(
+			'_self_' => array(),
+			'aaa' => array('someValue', 'someValue'),
+			'bbb' => array(),
+		), $passedStorage);
 	}
 }

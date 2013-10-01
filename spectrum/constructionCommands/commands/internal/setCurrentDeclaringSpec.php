@@ -12,8 +12,7 @@ use spectrum\core\SpecInterface;
 /**
  * @see getCurrentDeclaringSpec()
  */
-function setCurrentDeclaringSpec(SpecInterface $spec = null)
+function setCurrentDeclaringSpec($storage, SpecInterface $spec = null)
 {
-	static $currentSpec;
-	$currentSpec = $spec;
+	$storage['_self_']['currentSpec'] = $spec;
 }

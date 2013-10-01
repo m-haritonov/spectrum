@@ -16,7 +16,7 @@ require_once __DIR__ . '/../init.php';
 
 class AssertTest extends \spectrum\tests\Test
 {
-	public function testMatcherCall_UsesConfigForMatcherCallDetailsGetting()
+	public function testMatcherCall_UsesConfigForMatcherCallDetailsClassGetting()
 	{
 		$matcherCallDetailsClassName = $this->createClass('class ... extends \spectrum\core\MatcherCallDetails {}');
 		config::setMatcherCallDetailsClass($matcherCallDetailsClassName);

@@ -13,11 +13,11 @@ use spectrum\config;
  * Add message to Messages plugin.
  * @throws \spectrum\constructionCommands\Exception If called not at running state
  */
-function message($message)
+function message($storage, $message)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if (!$callBrokerClass::internal_isRunningState())
-		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "message" should be call only at running state');
 	
 	$callBrokerClass::internal_getCurrentRunningSpec()->messages->add($message);
 }

@@ -8,7 +8,7 @@
 
 namespace spectrum\constructionCommands\commands\internal;
 
-function getArgumentsForSpecDeclaringCommand(array $arguments)
+function getArgumentsForSpecDeclaringCommand($storage, array $arguments)
 {
 	$isClosure = function($variable){
 		return is_object($variable) && ($variable instanceof \Closure);

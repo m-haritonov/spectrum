@@ -14,11 +14,11 @@ use spectrum\config;
  * @param  mixed $testedValue
  * @return \spectrum\core\Assert
  */
-function be($testedValue)
+function be($storage, $testedValue)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if (!$callBrokerClass::internal_isRunningState())
-		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at running state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "be" should be call only at running state');
 
 	$assertClass = config::getAssertClass();
 	return new $assertClass($callBrokerClass::internal_getCurrentRunningSpec(), $testedValue);
