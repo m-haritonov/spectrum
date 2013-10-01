@@ -12,7 +12,7 @@ use spectrum\core\plugins\Exception;
 
 class Contexts extends \spectrum\core\plugins\Plugin
 {
-	/** @var ContextDataInterface */
+	/** @var DataInterface */
 	protected $contextData;
 	protected $items = array();
 	
