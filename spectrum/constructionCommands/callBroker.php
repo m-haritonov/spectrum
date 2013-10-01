@@ -25,14 +25,14 @@ use spectrum\config;
  * @method internal_convertContextArrayToSpecs(array $contexts)
  * @method internal_filterOutExclusionSpecs(array $specs)
  * @method internal_getArgumentsForSpecDeclaringCommand(array $arguments)
- * @method internal_getCurrentDeclaringSpec()
+ * @method internal_getDeclaringSpec()
  * @method internal_getRunningEndingSpec()
  * @method internal_getExclusionSpecs()
  * @method internal_getNameForArguments(array $arguments, $defaultName)
  * @method internal_getRootSpec()
  * @method internal_isRunningState()
  * @method internal_loadBaseMatchers(\spectrum\core\SpecInterface $spec)
- * @method internal_setCurrentDeclaringSpec(\spectrum\core\SpecInterface $spec = null)
+ * @method internal_setDeclaringSpec(\spectrum\core\SpecInterface $spec = null)
  * @method internal_setSpecSettings(\spectrum\core\SpecInterface $spec, $settings)
  */
 final class callBroker implements callBrokerInterface

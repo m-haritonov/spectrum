@@ -44,7 +44,7 @@ function test($storage, $name = null, $contexts = null, $body = null, $settings 
 	if ($settings)
 		$callBrokerClass::internal_setSpecSettings($testSpec, $settings);
 		
-	$callBrokerClass::internal_getCurrentDeclaringSpec()->bindChildSpec($testSpec);
+	$callBrokerClass::internal_getDeclaringSpec()->bindChildSpec($testSpec);
 	$callBrokerClass::internal_addExclusionSpec($testSpec);
 	
 	if (is_array($contexts) && $contexts)

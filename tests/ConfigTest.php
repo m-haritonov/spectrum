@@ -1735,14 +1735,14 @@ class ConfigTest extends Test
 			'internal_convertContextArrayToSpecs'          => '\spectrum\constructionCommands\commands\internal\convertContextArrayToSpecs',
 			'internal_filterOutExclusionSpecs'             => '\spectrum\constructionCommands\commands\internal\filterOutExclusionSpecs',
 			'internal_getArgumentsForSpecDeclaringCommand' => '\spectrum\constructionCommands\commands\internal\getArgumentsForSpecDeclaringCommand',
-			'internal_getCurrentDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\getCurrentDeclaringSpec',
+			'internal_getDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\getDeclaringSpec',
 			'internal_getRunningEndingSpec'               => '\spectrum\constructionCommands\commands\internal\getRunningEndingSpec',
 			'internal_getExclusionSpecs'                   => '\spectrum\constructionCommands\commands\internal\getExclusionSpecs',
 			'internal_getNameForArguments'                 => '\spectrum\constructionCommands\commands\internal\getNameForArguments',
 			'internal_getRootSpec'                         => '\spectrum\constructionCommands\commands\internal\getRootSpec',
 			'internal_isRunningState'                      => '\spectrum\constructionCommands\commands\internal\isRunningState',
 			'internal_loadBaseMatchers'                    => '\spectrum\constructionCommands\commands\internal\loadBaseMatchers',
-			'internal_setCurrentDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\setCurrentDeclaringSpec',
+			'internal_setDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\setDeclaringSpec',
 			'internal_setSpecSettings'                     => '\spectrum\constructionCommands\commands\internal\setSpecSettings',
 		), config::getRegisteredConstructionCommands());
 	}

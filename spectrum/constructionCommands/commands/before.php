@@ -19,5 +19,5 @@ function before($storage, $function)
 	if ($callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "before" should be call only at declaring state');
 
-	return $callBrokerClass::internal_getCurrentDeclaringSpec()->contexts->add($function, 'before');
+	return $callBrokerClass::internal_getDeclaringSpec()->contexts->add($function, 'before');
 }

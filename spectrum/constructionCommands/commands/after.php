@@ -19,5 +19,5 @@ function after($storage, $function)
 	if ($callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "after" should be call only at declaring state');
 
-	return $callBrokerClass::internal_getCurrentDeclaringSpec()->contexts->add($function, 'after');
+	return $callBrokerClass::internal_getDeclaringSpec()->contexts->add($function, 'after');
 }

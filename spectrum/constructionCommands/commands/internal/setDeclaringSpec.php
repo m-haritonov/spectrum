@@ -10,9 +10,9 @@ namespace spectrum\constructionCommands\commands\internal;
 use spectrum\core\SpecInterface;
 
 /**
- * @see getCurrentDeclaringSpec()
+ * @see getDeclaringSpec()
  */
-function setCurrentDeclaringSpec($storage, SpecInterface $spec = null)
+function setDeclaringSpec($storage, SpecInterface $spec = null)
 {
 	$storage['_self_']['currentSpec'] = $spec;
 }

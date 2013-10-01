@@ -19,7 +19,7 @@ class AfterTest extends \spectrum\tests\Test
 	public function testCallsAtDeclaringState_AddsContextFunctionWithAfterTypeToCurrentDeclaringSpec()
 	{
 		$spec = new Spec();
-		callBroker::internal_setCurrentDeclaringSpec($spec);
+		callBroker::internal_setDeclaringSpec($spec);
 		
 		$function1 = function(){};
 		$function2 = function(){};

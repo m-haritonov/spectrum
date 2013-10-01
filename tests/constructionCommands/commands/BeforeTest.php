@@ -19,7 +19,7 @@ class BeforeTest extends \spectrum\tests\Test
 	public function testCallsAtDeclaringState_AddsContextFunctionWithBeforeTypeToCurrentDeclaringSpec()
 	{
 		$spec = new Spec();
-		callBroker::internal_setCurrentDeclaringSpec($spec);
+		callBroker::internal_setDeclaringSpec($spec);
 		
 		$function1 = function(){};
 		$function2 = function(){};

@@ -40,7 +40,7 @@ function group($storage, $name = null, $contexts = null, $body = null, $settings
 	if ($settings)
 		$callBrokerClass::internal_setSpecSettings($groupSpec, $settings);
 
-	$callBrokerClass::internal_getCurrentDeclaringSpec()->bindChildSpec($groupSpec);
+	$callBrokerClass::internal_getDeclaringSpec()->bindChildSpec($groupSpec);
 
 	if (is_array($contexts) && $contexts)
 	{

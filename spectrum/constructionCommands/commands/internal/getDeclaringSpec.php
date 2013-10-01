@@ -12,11 +12,11 @@ use spectrum\config;
 /**
  * @return \spectrum\core\SpecInterface|null
  */
-function getCurrentDeclaringSpec($storage)
+function getDeclaringSpec($storage)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
-	if (@$storage['internal_setCurrentDeclaringSpec']['currentSpec'])
-		return $storage['internal_setCurrentDeclaringSpec']['currentSpec'];
+	if (@$storage['internal_setDeclaringSpec']['currentSpec'])
+		return $storage['internal_setDeclaringSpec']['currentSpec'];
 	else
 		return $callBrokerClass::internal_getRootSpec();
 }

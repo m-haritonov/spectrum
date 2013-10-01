@@ -19,7 +19,7 @@ class AddMatcherTest extends \spectrum\tests\Test
 	public function testCallsAtDeclaringState_AddsMatcherFunctionToCurrentDeclaringSpec()
 	{
 		$spec = new Spec();
-		callBroker::internal_setCurrentDeclaringSpec($spec);
+		callBroker::internal_setDeclaringSpec($spec);
 		
 		$function = function(){};
 		callBroker::addMatcher('aaa', $function);
