@@ -24,7 +24,6 @@ require_once __DIR__ . '/constructionCommands/commands/internal/filterOutExclusi
 require_once __DIR__ . '/constructionCommands/commands/internal/getArgumentsForSpecDeclaringCommand.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentDeclaringSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentRunningSpec.php';
-require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getExclusionSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getNameForArguments.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getRootSpec.php';
@@ -74,7 +73,6 @@ final class config
 		'internal_getArgumentsForSpecDeclaringCommand' => '\spectrum\constructionCommands\commands\internal\getArgumentsForSpecDeclaringCommand',
 		'internal_getCurrentDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\getCurrentDeclaringSpec',
 		'internal_getCurrentRunningSpec'               => '\spectrum\constructionCommands\commands\internal\getCurrentRunningSpec',
-		'internal_getCurrentSpec'                      => '\spectrum\constructionCommands\commands\internal\getCurrentSpec',
 		'internal_getExclusionSpecs'                   => '\spectrum\constructionCommands\commands\internal\getExclusionSpecs',
 		'internal_getNameForArguments'                 => '\spectrum\constructionCommands\commands\internal\getNameForArguments',
 		'internal_getRootSpec'                         => '\spectrum\constructionCommands\commands\internal\getRootSpec',
