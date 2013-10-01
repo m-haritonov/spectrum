@@ -23,7 +23,7 @@ require_once __DIR__ . '/constructionCommands/commands/internal/convertContextAr
 require_once __DIR__ . '/constructionCommands/commands/internal/filterOutExclusionSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getArgumentsForSpecDeclaringCommand.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentDeclaringSpec.php';
-require_once __DIR__ . '/constructionCommands/commands/internal/getCurrentRunningSpec.php';
+require_once __DIR__ . '/constructionCommands/commands/internal/getRunningEndingSpec.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getExclusionSpecs.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getNameForArguments.php';
 require_once __DIR__ . '/constructionCommands/commands/internal/getRootSpec.php';
@@ -72,7 +72,7 @@ final class config
 		'internal_filterOutExclusionSpecs'             => '\spectrum\constructionCommands\commands\internal\filterOutExclusionSpecs',
 		'internal_getArgumentsForSpecDeclaringCommand' => '\spectrum\constructionCommands\commands\internal\getArgumentsForSpecDeclaringCommand',
 		'internal_getCurrentDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\getCurrentDeclaringSpec',
-		'internal_getCurrentRunningSpec'               => '\spectrum\constructionCommands\commands\internal\getCurrentRunningSpec',
+		'internal_getRunningEndingSpec'               => '\spectrum\constructionCommands\commands\internal\getRunningEndingSpec',
 		'internal_getExclusionSpecs'                   => '\spectrum\constructionCommands\commands\internal\getExclusionSpecs',
 		'internal_getNameForArguments'                 => '\spectrum\constructionCommands\commands\internal\getNameForArguments',
 		'internal_getRootSpec'                         => '\spectrum\constructionCommands\commands\internal\getRootSpec',

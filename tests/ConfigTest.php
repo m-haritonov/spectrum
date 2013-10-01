@@ -1736,7 +1736,7 @@ class ConfigTest extends Test
 			'internal_filterOutExclusionSpecs'             => '\spectrum\constructionCommands\commands\internal\filterOutExclusionSpecs',
 			'internal_getArgumentsForSpecDeclaringCommand' => '\spectrum\constructionCommands\commands\internal\getArgumentsForSpecDeclaringCommand',
 			'internal_getCurrentDeclaringSpec'             => '\spectrum\constructionCommands\commands\internal\getCurrentDeclaringSpec',
-			'internal_getCurrentRunningSpec'               => '\spectrum\constructionCommands\commands\internal\getCurrentRunningSpec',
+			'internal_getRunningEndingSpec'               => '\spectrum\constructionCommands\commands\internal\getRunningEndingSpec',
 			'internal_getExclusionSpecs'                   => '\spectrum\constructionCommands\commands\internal\getExclusionSpecs',
 			'internal_getNameForArguments'                 => '\spectrum\constructionCommands\commands\internal\getNameForArguments',
 			'internal_getRootSpec'                         => '\spectrum\constructionCommands\commands\internal\getRootSpec',

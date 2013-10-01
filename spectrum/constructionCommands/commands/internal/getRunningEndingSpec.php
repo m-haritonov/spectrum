@@ -12,7 +12,7 @@ use spectrum\config;
 /**
  * @return \spectrum\core\SpecInterface|null
  */
-function getCurrentRunningSpec()
+function getRunningEndingSpec()
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$rootSpec = $callBrokerClass::internal_getRootSpec();

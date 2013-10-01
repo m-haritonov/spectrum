@@ -26,7 +26,7 @@ use spectrum\config;
  * @method internal_filterOutExclusionSpecs(array $specs)
  * @method internal_getArgumentsForSpecDeclaringCommand(array $arguments)
  * @method internal_getCurrentDeclaringSpec()
- * @method internal_getCurrentRunningSpec()
+ * @method internal_getRunningEndingSpec()
  * @method internal_getExclusionSpecs()
  * @method internal_getNameForArguments(array $arguments, $defaultName)
  * @method internal_getRootSpec()

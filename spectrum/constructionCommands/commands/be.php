@@ -21,5 +21,5 @@ function be($storage, $testedValue)
 		throw new \spectrum\constructionCommands\Exception('Construction command "be" should be call only at running state');
 
 	$assertClass = config::getAssertClass();
-	return new $assertClass($callBrokerClass::internal_getCurrentRunningSpec(), $testedValue);
+	return new $assertClass($callBrokerClass::internal_getRunningEndingSpec(), $testedValue);
 }

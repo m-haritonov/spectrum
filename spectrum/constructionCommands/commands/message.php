@@ -19,5 +19,5 @@ function message($storage, $message)
 	if (!$callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "message" should be call only at running state');
 	
-	$callBrokerClass::internal_getCurrentRunningSpec()->messages->add($message);
+	$callBrokerClass::internal_getRunningEndingSpec()->messages->add($message);
 }
