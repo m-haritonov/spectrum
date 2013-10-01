@@ -49,7 +49,7 @@ function test($storage, $name = null, $contexts = null, $body = null, $settings 
 	
 	if (is_array($contexts) && $contexts)
 	{
-		foreach ($callBrokerClass::internal_convertContextArrayToSpecs($contexts) as $spec);
+		foreach ($callBrokerClass::internal_convertArrayContextsToSpecContexts($contexts) as $spec);
 			$testSpec->bindChildSpec($spec);
 	}
 	else if (!is_array($contexts) && $contexts)

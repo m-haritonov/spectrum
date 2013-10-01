@@ -22,7 +22,7 @@ use spectrum\config;
  * @method this()
  * @method internal_addExclusionSpec(\spectrum\core\SpecInterface $spec = null)
  * @method internal_callFunctionOnDeclaringSpec($function, \spectrum\core\SpecInterface $spec)
- * @method internal_convertContextArrayToSpecs(array $contexts)
+ * @method internal_convertArrayContextsToSpecContexts(array $contexts)
  * @method internal_filterOutExclusionSpecs(array $specs)
  * @method internal_getArgumentsForSpecDeclaringCommand(array $arguments)
  * @method internal_getDeclaringSpec()

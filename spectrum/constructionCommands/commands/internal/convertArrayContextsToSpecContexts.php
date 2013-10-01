@@ -10,7 +10,7 @@ namespace spectrum\constructionCommands\commands\internal;
 
 use spectrum\config;
 
-function convertContextArrayToSpecs($storage, array $contexts)
+function convertArrayContextsToSpecContexts($storage, array $contexts)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	$specClass = config::getSpecClass();

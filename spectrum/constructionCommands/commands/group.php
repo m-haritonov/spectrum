@@ -45,7 +45,7 @@ function group($storage, $name = null, $contexts = null, $body = null, $settings
 	if (is_array($contexts) && $contexts)
 	{
 		$unionEndingSpec = new $specClass();
-		foreach ($callBrokerClass::internal_convertContextArrayToSpecs($contexts) as $spec);
+		foreach ($callBrokerClass::internal_convertArrayContextsToSpecContexts($contexts) as $spec);
 		{
 			$groupSpec->bindChildSpec($spec);
 			$spec->bindChildSpec($unionEndingSpec);
