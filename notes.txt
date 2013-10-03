@@ -1,3 +1,6 @@
+TODO: test, group — remove $resultArguments exception
+TODO: callBroker — throw exception if construction command is not registered (by hasRegisteredConstructionCommand)
+TODO: callBroker — throw exception if construction command is not callable
 TODO: тесты для constructionCommands
 TODO: тесты для "\spectrum\matchers\*"
 
@@ -41,6 +44,7 @@ TODO: update examples in "README.md"
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
+TODO: change "$spec->getName()" to "$spec->output->convertToOutputEncoding($spec->getName())" in exception messages
 
 TODO: array context group:
 	group('aaa', array(

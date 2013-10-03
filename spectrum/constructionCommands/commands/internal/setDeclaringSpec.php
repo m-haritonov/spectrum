@@ -7,6 +7,7 @@
  */
 
 namespace spectrum\constructionCommands\commands\internal;
+
 use spectrum\core\SpecInterface;
 
 /**
@@ -14,5 +15,5 @@ use spectrum\core\SpecInterface;
  */
 function setDeclaringSpec($storage, SpecInterface $spec = null)
 {
-	$storage['_self_']['currentSpec'] = $spec;
+	$storage['_self_']['declaringSpec'] = $spec;
 }

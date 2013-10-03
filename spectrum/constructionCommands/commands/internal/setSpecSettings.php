@@ -9,18 +9,16 @@
 namespace spectrum\constructionCommands\commands\internal;
 
 /**
- * Function with base functional for construction commands describe() and context().
- *
  * @example
  * manager::setSettings($spec, array(
  *     'catchPhpErrors' => -1,            // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors()
  *     'breakOnFirstPhpError' => true,    // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstPhpError()
  *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstMatcherFail()
- *     'inputEncoding' => 'windows-1251', // see core\plugins\basePlugins\Output::setInputEncoding()
+ *     'inputEncoding' => 'windows-1251', // see \core\plugins\basePlugins\Output::setInputEncoding()
  * ));
  *
  * @example
- * manager::setSettings($spec, 'windows-1251'); // see core\plugins\basePlugins\Output::setInputEncoding()
+ * manager::setSettings($spec, 'windows-1251'); // see \core\plugins\basePlugins\Output::setInputEncoding()
  *
  * @example
  * manager::setSettings($spec, E_ALL); // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors()
@@ -30,8 +28,10 @@ namespace spectrum\constructionCommands\commands\internal;
  */
 function setSpecSettings($storage, \spectrum\core\SpecInterface $spec, $settings)
 {
-	if (is_string($settings)) // it('foo', function(){}, 'windows-1251')
+	if (is_string($settings))
 		$spec->output->setInputEncoding($settings);
+	else if (is_int($settings) || is_bool($settings))
+		$spec->errorHandling->setCatchPhpErrors($settings);
 	else if (is_array($settings))
 	{
 		foreach ($settings as $settingName => $settingValue)

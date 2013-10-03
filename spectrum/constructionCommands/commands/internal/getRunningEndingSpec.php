@@ -7,6 +7,7 @@
  */
 
 namespace spectrum\constructionCommands\commands\internal;
+
 use spectrum\config;
 
 /**

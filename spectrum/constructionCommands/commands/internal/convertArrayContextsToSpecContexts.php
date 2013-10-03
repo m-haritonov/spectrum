@@ -24,8 +24,9 @@ function convertArrayContextsToSpecContexts($storage, array $contexts)
 		$spec = new $specClass();
 		$spec->setName($callBrokerClass::internal_getNameForArguments($dataRow, $specName));
 		$spec->contexts->add(function() use($dataRow){
+			$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 			foreach ($dataRow as $propertyName => $value)
-				this()->$propertyName = $value;
+				$callBrokerClass::this()->$propertyName = $value;
 		}, 'before');
 		
 		$specs[] = $spec;

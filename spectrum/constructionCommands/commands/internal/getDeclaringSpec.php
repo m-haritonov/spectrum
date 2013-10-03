@@ -7,6 +7,7 @@
  */
 
 namespace spectrum\constructionCommands\commands\internal;
+
 use spectrum\config;
 
 /**
@@ -15,8 +16,8 @@ use spectrum\config;
 function getDeclaringSpec($storage)
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
-	if (@$storage['internal_setDeclaringSpec']['currentSpec'])
-		return $storage['internal_setDeclaringSpec']['currentSpec'];
+	if (@$storage['internal_setDeclaringSpec']['declaringSpec'])
+		return $storage['internal_setDeclaringSpec']['declaringSpec'];
 	else
 		return $callBrokerClass::internal_getRootSpec();
 }

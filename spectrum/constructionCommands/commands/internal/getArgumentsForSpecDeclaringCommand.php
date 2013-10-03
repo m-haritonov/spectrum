@@ -10,156 +10,53 @@ namespace spectrum\constructionCommands\commands\internal;
 
 function getArgumentsForSpecDeclaringCommand($storage, array $arguments)
 {
-	$isClosure = function($variable){
-		return is_object($variable) && ($variable instanceof \Closure);
-	};
-	
+	$receiveArguments = array(
+		array('scalar:name'),                                        // function(scalar $name)
+		array('closure:body'),                                       // function(\Closure $body)
+		array('array:settings'),                                     // function(array $settings)
+		array('scalar:name', 'closure:body'),                        // function(scalar $name, \Closure $body)
+		array('scalar:name', 'array:settings'),                      // function(scalar $name, array $settings)
+		array('closure:contexts', 'closure:body'),                   // function(\Closure $contexts, \Closure $body)
+		array('array:contexts', 'closure:body'),                     // function(array $contexts, \Closure $body)
+		array('closure:body', 'array:settings'),                     // function(\Closure $body, array $settings)
+		array('scalar:name', 'closure:contexts', 'closure:body'),    // function(scalar $name, \Closure $contexts, \Closure $body)
+		array('scalar:name', 'array:contexts', 'closure:body'),      // function(scalar $name, array $contexts, \Closure $body)
+		array('scalar:name', 'closure:body', 'array:settings'),      // function(scalar $name, \Closure $body, array $settings)
+		array('closure:contexts', 'closure:body', 'array:settings'), // function(\Closure $contexts, \Closure $body, array $settings)
+		array('array:contexts', 'closure:body', 'array:settings'),   // function(array $contexts, \Closure $body, array $settings)
+	);
+			
+	$arguments = array_values($arguments);
 	$argumentCount = count($arguments);
+	foreach ($receiveArguments as $receiveArgumentRow)
+	{
+		if ($argumentCount == count($receiveArgumentRow))
+		{
+			$result = array(
+				'name' => null,
+				'contexts' => null,
+				'body' => null,
+				'settings' => null,
+			);
+			
+			foreach ($receiveArgumentRow as $num => $receiveArgument)
+			{
+				list($type, $name) = explode(':', $receiveArgument);
+				
+				if ($type == 'scalar' && is_scalar($arguments[$num]) || $type == 'array' && is_array($arguments[$num]) || $type == 'closure' && is_object($arguments[$num]) && $arguments[$num] instanceof \Closure)
+					$result[$name] = $arguments[$num];
+				else
+					continue(2);
+			}
+			
+			return $result;
+		}
+	}
 	
-	if ($argumentCount == 0) // function()
-	{
-		return array(
-			'name' => null,
-			'contexts' => null,
-			'body' => null,
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 1 && is_scalar($arguments[0])) // function(scalar $name)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => null,
-			'body' => null,
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 1 && $isClosure($arguments[0])) // function(\Closure $body)
-	{
-		return array(
-			'name' => null,
-			'contexts' => null,
-			'body' => $arguments[0],
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 1 && is_array($arguments[0])) // function(array $settings)
-	{
-		return array(
-			'name' => null,
-			'contexts' => null,
-			'body' => null,
-			'settings' => $arguments[0],
-		);
-	}
-	else if ($argumentCount == 2 && is_scalar($arguments[0]) && $isClosure($arguments[1])) // function(scalar $name, \Closure $body)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => null,
-			'body' => $arguments[1],
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 2 && is_scalar($arguments[0]) && is_array($arguments[1])) // function(scalar $name, array $settings)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => null,
-			'body' => null,
-			'settings' => $arguments[1],
-		);
-	}
-	else if ($argumentCount == 2 && $isClosure($arguments[0]) && $isClosure($arguments[1])) // function(\Closure $contexts, \Closure $body)
-	{
-		return array(
-			'name' => null,
-			'contexts' => $arguments[0],
-			'body' => $arguments[1],
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 2 && is_array($arguments[0]) && $isClosure($arguments[1])) // function(array $contexts, \Closure $body)
-	{
-		return array(
-			'name' => null,
-			'contexts' => $arguments[0],
-			'body' => $arguments[1],
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 2 && $isClosure($arguments[0]) && is_array($arguments[1])) // function(\Closure $body, array $settings)
-	{
-		return array(
-			'name' => null,
-			'contexts' => null,
-			'body' => $arguments[0],
-			'settings' => $arguments[1],
-		);
-	}
-	else if ($argumentCount == 3 && is_scalar($arguments[0]) && $isClosure($arguments[1]) && $isClosure($arguments[2])) // function(scalar $name, \Closure $contexts, \Closure $body)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => $arguments[1],
-			'body' => $arguments[2],
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 3 && is_scalar($arguments[0]) && is_array($arguments[1]) && $isClosure($arguments[2])) // function(scalar $name, array $contexts, \Closure $body)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => $arguments[1],
-			'body' => $arguments[2],
-			'settings' => null,
-		);
-	}
-	else if ($argumentCount == 3 && is_scalar($arguments[0]) && $isClosure($arguments[1]) && is_array($arguments[2])) // function(scalar $name, \Closure $body, array $settings)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => null,
-			'body' => $arguments[1],
-			'settings' => $arguments[2],
-		);
-	}
-	else if ($argumentCount == 3 && $isClosure($arguments[0]) && $isClosure($arguments[1]) && is_array($arguments[2])) // function(\Closure $contexts, \Closure $body, array $settings)
-	{
-		return array(
-			'name' => null,
-			'contexts' => $arguments[0],
-			'body' => $arguments[1],
-			'settings' => $arguments[2],
-		);
-	}
-	else if ($argumentCount == 3 && is_array($arguments[0]) && $isClosure($arguments[1]) && is_array($arguments[2])) // function(array $contexts, \Closure $body, array $settings)
-	{
-		return array(
-			'name' => null,
-			'contexts' => $arguments[0],
-			'body' => $arguments[1],
-			'settings' => $arguments[2],
-		);
-	}
-	else if ($argumentCount == 4 && is_scalar($arguments[0]) && $isClosure($arguments[1]) && $isClosure($arguments[2]) && is_array($arguments[3])) // function(scalar $name, \Closure $contexts, \Closure $body, array $settings)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => $arguments[1],
-			'body' => $arguments[2],
-			'settings' => $arguments[3],
-		);
-	}
-	else if ($argumentCount == 4 && is_scalar($arguments[0]) && is_array($arguments[1]) && $isClosure($arguments[2]) && is_array($arguments[3])) // function(scalar $name, array $contexts, \Closure $body, array $settings)
-	{
-		return array(
-			'name' => $arguments[0],
-			'contexts' => $arguments[1],
-			'body' => $arguments[2],
-			'settings' => $arguments[3],
-		);
-	}
-	else
-		return null;
+	return array(
+		'name' => @$arguments[0],
+		'contexts' => @$arguments[1],
+		'body' => @$arguments[2],
+		'settings' => @$arguments[3],
+	);
 }

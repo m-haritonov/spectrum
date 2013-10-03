@@ -12,7 +12,7 @@ function getNameForArguments($storage, array $arguments, $defaultName)
 {
 	$arguments = array_values($arguments);
 	
-	if (count($arguments) == 1 && is_scalar($arguments[0]) && $defaultName == (int) $defaultName)
+	if (count($arguments) >= 1 && is_scalar($arguments[0]) && !is_string($defaultName))
 	{
 		if (mb_strlen($arguments[0]) > 100)
 			return mb_substr($arguments[0], 0, 100) . '...';

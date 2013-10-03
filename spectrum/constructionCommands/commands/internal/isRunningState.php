@@ -8,6 +8,8 @@
 
 namespace spectrum\constructionCommands\commands\internal;
 
+use spectrum\core\SpecInterface;
+
 /**
  * Available at declaring and running state.
  * @return bool
@@ -16,10 +18,7 @@ function isRunningState()
 {
 	foreach (debug_backtrace() as $trace)
 	{
-		if (!is_object(@$trace['object']))
-			continue;
-
-		if ($trace['object'] instanceof \spectrum\core\SpecInterface)
+		if (is_object(@$trace['object']) && $trace['object'] instanceof SpecInterface)
 			return true;
 	}
 

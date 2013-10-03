@@ -7,6 +7,7 @@
  */
 
 namespace spectrum\constructionCommands\commands\internal;
+
 use spectrum\core\SpecInterface;
 
 function loadBaseMatchers($storage, SpecInterface $spec)
@@ -28,15 +29,16 @@ function loadBaseMatchers($storage, SpecInterface $spec)
 	foreach ($matchers as $matcherName)
 	{
 		$matcherFileName = __DIR__ . '/../../../matchers/' . $matcherName . '.php';
-		$matcherClassName = '\spectrum\matchers\\' .$matcherName;
+		$matcherFunctionName = '\spectrum\matchers\\' .$matcherName;
 		
+		// "instanceof" is reserved word and forbidden to use as function name (but allowed to use as property name)
 		if ($matcherName == 'instanceof')
 		{
 			$matcherFileName = __DIR__ . '/../../../matchers/instanceofMatcher.php';
-			$matcherClassName = '\spectrum\matchers\instanceofMatcher';
+			$matcherFunctionName = '\spectrum\matchers\instanceofMatcher';
 		}
 		
 		require_once $matcherFileName;
-		$spec->matchers->add($matcherName, $matcherClassName);
+		$spec->matchers->add($matcherName, $matcherFunctionName);
 	}
 }
