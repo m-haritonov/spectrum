@@ -10,7 +10,7 @@ namespace spectrum\constructionCommands\commands\internal;
 
 use spectrum\core\SpecInterface;
 
-function addExclusionSpec($storage, SpecInterface $spec = null)
+function addExclusionSpec($storage, SpecInterface $spec)
 {
 	if (!@$storage['_self_']['exclusionSpecs'])
 		$storage['_self_']['exclusionSpecs'] = array();
