@@ -21,7 +21,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		config::unregisterConstructionCommands();
 	}
 	
-	public function testCallsRegisteredCommandFunction()
+	public function testCommandCall_CallsRegisteredCommandFunction()
 	{
 		$calls = array();
 		config::registerConstructionCommand('aaa', function() use(&$calls){ $calls[] = 'aaa'; });
@@ -41,7 +41,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa', 'ccc', 'bbb', 'aaa'), $calls);
 	}
 	
-	public function testPassesPassedArgumentsToCalledRegisteredCommandFunctionStartingFromSecondArgument()
+	public function testCommandCall_PassesPassedArgumentsToCalledRegisteredCommandFunctionStartingFromSecondArgument()
 	{
 		$passedArguments = array();
 		config::registerConstructionCommand('aaa', function() use(&$passedArguments){
@@ -60,7 +60,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		), $passedArguments);
 	}
 
-	public function testReturnsReturnValueOfCalledRegisteredCommandFunction()
+	public function testCommandCall_ReturnsReturnValueOfCalledRegisteredCommandFunction()
 	{
 		config::registerConstructionCommand('aaa', function(){ return 152; });
 		config::registerConstructionCommand('bbb', function(){ return 'some text'; });
@@ -69,7 +69,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		$this->assertSame('some text', callBroker::bbb());
 	}
 	
-	public function testLocksConfigOnRegisteredCommandFunctionCall()
+	public function testCommandCall_LocksConfigOnRegisteredCommandFunctionCall()
 	{
 		config::registerConstructionCommand('aaa', function(){});
 		
@@ -78,7 +78,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		$this->assertSame(true, config::isLocked());
 	}
 	
-	public function testStorage_PassesCopyOfStorageToCalledRegisteredCommandFunctionAtFirstArguments()
+	public function testCommandCall_Storage_PassesCopyOfStorageToCalledRegisteredCommandFunctionAtFirstArguments()
 	{
 		$passedStorage1 = null;
 		config::registerConstructionCommand('aaa', function($storage) use(&$passedStorage1){ $passedStorage1 = $storage; });
@@ -102,7 +102,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		$this->assertNotSame($passedStorage1, $passedStorage2);
 	}
 	
-	public function testStorage_SavesChangesInSelfElementToSectionWithConstructionCommandNameAsKey()
+	public function testCommandCall_Storage_SavesChangesInSelfElementToSectionWithConstructionCommandNameAsKey()
 	{
 		config::registerConstructionCommand('aaa', function($storage){
 			$storage['_self_']['someKey1'] = 'someValue1';
@@ -135,7 +135,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		), $passedStorage);
 	}
 	
-	public function testStorage_DoesNotSaveChangesInNamedElements()
+	public function testCommandCall_Storage_DoesNotSaveChangesInNamedElements()
 	{
 		config::registerConstructionCommand('aaa', function($storage){
 			$storage['_self_']['someKey'] = 'someValue1';
@@ -164,7 +164,7 @@ class CallBrokerTest extends \spectrum\tests\Test
 		), $passedStorage);
 	}
 	
-	public function testStorage_CreatesEmptyArrayOnlyOnFirstConstructionCommandCall()
+	public function testCommandCall_Storage_CreatesEmptyArrayOnlyOnFirstConstructionCommandCall()
 	{
 		config::registerConstructionCommand('aaa', function($storage){
 			$storage['_self_'][] = 'someValue';
@@ -192,5 +192,21 @@ class CallBrokerTest extends \spectrum\tests\Test
 			'aaa' => array('someValue', 'someValue'),
 			'bbb' => array(),
 		), $passedStorage);
+	}
+	
+	public function testCommandCall_ConstructionCommandIsNotRegistered_ThrowsException()
+	{
+		config::unregisterConstructionCommands('aaa');
+		$this->assertThrowsException('\spectrum\constructionCommands\Exception', 'Construction command "aaa" is not registered', function(){
+			callBroker::aaa();
+		});
+	}
+	
+	public function testCommandCall_ConstructionCommandFunctionIsNotCallable_ThrowsException()
+	{
+		config::registerConstructionCommand('aaa', 'notCallableFunctionName');
+		$this->assertThrowsException('\spectrum\constructionCommands\Exception', 'Function of construction command "aaa" is not callable', function(){
+			callBroker::aaa();
+		});
 	}
 }

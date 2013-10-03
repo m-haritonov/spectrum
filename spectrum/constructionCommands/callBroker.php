@@ -15,12 +15,12 @@ use spectrum\config;
  * @method after($function)
  * @method be($testedValue)
  * @method before($function)
- * @method fail($message = null, $code = 0)
+ * @method fail($message = null)
  * @method group($name = null, $contexts = null, $body = null, $settings = null)
  * @method message($message)
  * @method test($name = null, $contexts = null, $body = null, $settings = null)
  * @method this()
- * @method internal_addExclusionSpec(\spectrum\core\SpecInterface $spec = null)
+ * @method internal_addExclusionSpec(\spectrum\core\SpecInterface $spec)
  * @method internal_callFunctionOnDeclaringSpec($function, \spectrum\core\SpecInterface $spec)
  * @method internal_convertArrayContextsToSpecContexts(array $contexts)
  * @method internal_filterOutExclusionSpecs(array $specs)
@@ -55,6 +55,13 @@ final class callBroker implements callBrokerInterface
 		$arguments[0] = &$storageCopy; // Create reference to copy for "function(&$storage)" expression support
 		$arguments[0]['_self_'] = &self::$storage[$constructionCommandName];
 		
-		return call_user_func_array(\spectrum\config::getRegisteredConstructionCommandFunction($constructionCommandName), $arguments);
+		if (!config::hasRegisteredConstructionCommand($constructionCommandName))
+			throw new Exception('Construction command "' . $constructionCommandName . '" is not registered');
+		
+		$constructionCommandFunction = \spectrum\config::getRegisteredConstructionCommandFunction($constructionCommandName);
+		if (!is_callable($constructionCommandFunction))
+			throw new Exception('Function of construction command "' . $constructionCommandName . '" is not callable');
+		
+		return call_user_func_array($constructionCommandFunction, $arguments);
 	}
 }
