@@ -1,4 +1,3 @@
-TODO: test, group — remove $resultArguments exception
 TODO: callBroker — throw exception if construction command is not registered (by hasRegisteredConstructionCommand)
 TODO: callBroker — throw exception if construction command is not callable
 TODO: тесты для constructionCommands

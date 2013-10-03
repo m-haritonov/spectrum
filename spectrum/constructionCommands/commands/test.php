@@ -26,11 +26,7 @@ function test($storage, $name = null, $contexts = null, $body = null, $settings 
 	if ($callBrokerClass::internal_isRunningState())
 		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at declaring state');
 
-	$resultArguments = $callBrokerClass::internal_getArgumentsForTestCommand(func_get_args());
-	if ($resultArguments === null)
-		throw new \spectrum\constructionCommands\Exception('Incorrect arguments list in construction command "' . __FUNCTION__ . '"');
-	else
-		list($name, $contexts, $body, $settings) = $resultArguments;
+	list($name, $contexts, $body, $settings) = $callBrokerClass::internal_getArgumentsForSpecDeclaringCommand(func_get_args());
 	
 	$specClass = config::getSpecClass();
 	$testSpec = new $specClass();
