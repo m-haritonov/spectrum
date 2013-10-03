@@ -737,7 +737,7 @@ class ContextsTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testContextDataInitialization_CreateContextDataBeforeEndingSpecExecute()
+	public function testContextDataInitialization_CreatesContextDataBeforeEndingSpecExecute()
 	{
 		\spectrum\tests\Test::$temp["contextData"] = null;
 		$this->registerPluginWithCodeInEvent('
