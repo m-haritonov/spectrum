@@ -14,168 +14,289 @@ require_once __DIR__ . '/../../../init.php';
 
 class GetArgumentsForSpecDeclaringCommandTest extends \spectrum\tests\Test
 {
-	public function provider()
+	public function providerCorrectArguments()
 	{
 		$function1 = function(){};
 		$function2 = function(){};
 		
 		return array(
-			// function()
-			array(
-				array('name' => null, 'contexts' => null, 'body' => null, 'settings' => null), 
-				array(),
-			),
-			
-			// function(null)
-			array(
-				array('name' => null, 'contexts' => null, 'body' => null, 'settings' => null), 
-				array(null),
-			),
-			
-			// function(null, null)
-			array(
-				array('name' => null, 'contexts' => null, 'body' => null, 'settings' => null), 
-				array(null, null),
-			),
-			
-			// function(null, null, null)
-			array(
-				array('name' => null, 'contexts' => null, 'body' => null, 'settings' => null), 
-				array(null, null, null),
-			),
-			
-			// function(null, null, null, null)
-			array(
-				array('name' => null, 'contexts' => null, 'body' => null, 'settings' => null), 
-				array(null, null, null, null),
-			),
-			
-		/**/
-			
-			// function(null, \Closure $contexts, \Closure $body, array $settings)
-			array(
-				array('name' => null, 'contexts' => $function1, 'body' => $function2, 'settings' => array('bbb' => 'ccc')), 
-				array(null, $function1, $function2, array('bbb' => 'ccc')),
-			),
-			
-			// function(null, null, \Closure $body, array $settings)
-			array(
-				array('name' => null, 'contexts' => null, 'body' => $function2, 'settings' => array('bbb' => 'ccc')), 
-				array(null, null, $function2, array('bbb' => 'ccc')),
-			),
-			
-			// function(null, null, null, array $settings)
-			array(
-				array('name' => null, 'contexts' => null, 'body' => null, 'settings' => array('bbb' => 'ccc')), 
-				array(null, null, null, array('bbb' => 'ccc')),
-			),
-			
-		/**/
-			
-			// function(scalar $name)
-			array(
-				array('name' => 'aaa', 'contexts' => null, 'body' => null, 'settings' => null), 
-				array('aaa'),
-			),
 			
 			// function(\Closure $body)
+			
 			array(
-				array('name' => null, 'contexts' => null, 'body' => $function1, 'settings' => null), 
+				array(null, null, $function1, null), 
 				array($function1),
 			),
 			
-			// function(array $settings)
+			// function(\Closure $body, null|scalar|array $settings)
+			
 			array(
-				array('name' => null, 'contexts' => null, 'body' => null, 'settings' => array('aaa' => 'bbb')), 
-				array(array('aaa' => 'bbb')),
+				array(null, null, $function1, null),
+				array($function1, null),
 			),
 			
-			// function(scalar $name, \Closure $body)
 			array(
-				array('name' => 'aaa', 'contexts' => null, 'body' => $function1, 'settings' => null), 
-				array('aaa', $function1),
+				array(null, null, $function1, 'aaa'),
+				array($function1, 'aaa'),
 			),
 			
-			// function(scalar $name, array $settings)
 			array(
-				array('name' => 'aaa', 'contexts' => null, 'body' => null, 'settings' => array('bbb' => 'ccc')), 
-				array('aaa', array('bbb' => 'ccc')),
+				array(null, null, $function1, array('aaa' => '111', 'bbb' => '222')),
+				array($function1, array('aaa' => '111', 'bbb' => '222')),
 			),
 			
-			// function(\Closure $contexts, \Closure $body)
+			// function(array|\Closure $contexts, \Closure $body)
+			
 			array(
-				array('name' => null, 'contexts' => $function1, 'body' => $function2, 'settings' => null), 
+				array(null, array('aaa', 'bbb'), $function2, null),
+				array(array('aaa', 'bbb'), $function2),
+			),
+			
+			array(
+				array(null, $function1, $function2, null),
 				array($function1, $function2),
 			),
 			
-			// function(array $contexts, \Closure $body)
+			// function(array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
+			
 			array(
-				array('name' => null, 'contexts' => array('aaa', 'bbb'), 'body' => $function1, 'settings' => null), 
-				array(array('aaa', 'bbb'), $function1),
+				array(null, array('aaa', 'bbb'), $function1, null),
+				array(array('aaa', 'bbb'), $function1, null),
 			),
 			
-			// function(\Closure $body, array $settings)
 			array(
-				array('name' => null, 'contexts' => null, 'body' => $function1, 'settings' => array('aaa' => 'bbb')), 
-				array($function1, array('aaa' => 'bbb')),
+				array(null, array('aaa', 'bbb'), $function1, 'aaa'),
+				array(array('aaa', 'bbb'), $function1, 'aaa'),
 			),
 			
-			// function(scalar $name, \Closure $contexts, \Closure $body)
 			array(
-				array('name' => 'aaa', 'contexts' => $function1, 'body' => $function2, 'settings' => null), 
-				array('aaa', $function1, $function2),
+				array(null, array('aaa', 'bbb'), $function1, array('ccc' => '111', 'ddd' => '222')),
+				array(array('aaa', 'bbb'), $function1, array('ccc' => '111', 'ddd' => '222')),
 			),
 			
-			// function(scalar $name, array $contexts, \Closure $body)
+			//
+			
 			array(
-				array('name' => 'aaa', 'contexts' => array('bbb', 'ccc'), 'body' => $function1, 'settings' => null), 
-				array('aaa', array('bbb', 'ccc'), $function1),
+				array(null, $function1, $function2, null),
+				array($function1, $function2, null),
 			),
 			
-			// function(scalar $name, \Closure $body, array $settings)
 			array(
-				array('name' => 'aaa', 'contexts' => null, 'body' => $function1, 'settings' => array('bbb' => 'ccc')), 
-				array('aaa', $function1, array('bbb' => 'ccc')),
+				array(null, $function1, $function2, 'aaa'),
+				array($function1, $function2, 'aaa'),
 			),
 			
-			// function(\Closure $contexts, \Closure $body, array $settings)
 			array(
-				array('name' => null, 'contexts' => $function1, 'body' => $function2, 'settings' => array('aaa' => 'bbb')), 
-				array($function1, $function2, array('aaa' => 'bbb')),
+				array(null, $function1, $function2, array('ccc' => '111', 'ddd' => '222')),
+				array($function1, $function2, array('ccc' => '111', 'ddd' => '222')),
 			),
 			
-			// function(array $contexts, \Closure $body, array $settings)
+			// function(null|scalar $name, \Closure $body)
+			
 			array(
-				array('name' => null, 'contexts' => array('aaa', 'bbb'), 'body' => $function1, 'settings' => array('ccc' => 'ddd')), 
-				array(array('aaa', 'bbb'), $function1, array('ccc' => 'ddd')),
+				array(null, null, $function1, null),
+				array(null, $function1),
 			),
 			
-			// function(scalar $name, \Closure $contexts, \Closure $body, array $settings)
 			array(
-				array('name' => 'aaa', 'contexts' => $function1, 'body' => $function2, 'settings' => array('bbb' => 'ccc')), 
-				array('aaa', $function1, $function2, array('bbb' => 'ccc')),
+				array('aaa', null, $function1, null),
+				array('aaa', $function1),
 			),
 			
-			// function(scalar $name, array $contexts, \Closure $body, array $settings)
+			// function(null|scalar $name, \Closure $body, null|scalar|array $settings)
+			
 			array(
-				array('name' => 'aaa', 'contexts' => array('bbb', 'ccc'), 'body' => $function1, 'settings' => array('ddd' => 'eee')), 
-				array('aaa', array('bbb', 'ccc'), $function1, array('ddd' => 'eee')),
+				array(null, null, $function1, null),
+				array(null, $function1, null),
 			),
 			
-		/**/
+			array(
+				array(null, null, $function1, 'aaa'),
+				array(null, $function1, 'aaa'),
+			),
 			
 			array(
-				array('name' => 'aaa', 'contexts' => 'aaa', 'body' => 'aaa', 'settings' => 'aaa'), 
-				array('aaa', 'aaa', 'aaa', 'aaa'),
+				array(null, null, $function1, array('ccc' => '111', 'ddd' => '222')),
+				array(null, $function1, array('ccc' => '111', 'ddd' => '222')),
+			),
+			
+			//
+			
+			array(
+				array('some name', null, $function1, null),
+				array('some name', $function1, null),
+			),
+			
+			array(
+				array('some name', null, $function1, 'aaa'),
+				array('some name', $function1, 'aaa'),
+			),
+			
+			array(
+				array('some name', null, $function1, array('ccc' => '111', 'ddd' => '222')),
+				array('some name', $function1, array('ccc' => '111', 'ddd' => '222')),
+			),
+			
+			// function(null|scalar $name, null|array|\Closure $contexts, \Closure $body)
+			
+			array(
+				array(null, null, $function1, null),
+				array(null, null, $function1),
+			),
+			
+			array(
+				array(null, array('aaa', 'bbb'), $function1, null),
+				array(null, array('aaa', 'bbb'), $function1),
+			),
+			
+			array(
+				array(null, $function1, $function2, null),
+				array(null, $function1, $function2),
+			),
+			
+			//
+			
+			array(
+				array('some name', null, $function1, null),
+				array('some name', null, $function1),
+			),
+			
+			array(
+				array('some name', array('aaa', 'bbb'), $function1, null),
+				array('some name', array('aaa', 'bbb'), $function1),
+			),
+			
+			array(
+				array('some name', $function1, $function2, null),
+				array('some name', $function1, $function2),
+			),
+			
+			// function(null|scalar $name, null|array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
+			
+			array(
+				array(null, null, $function1, null),
+				array(null, null, $function1, null),
+			),
+			
+			array(
+				array(null, null, $function1, 'ccc'),
+				array(null, null, $function1, 'ccc'),
+			),
+			
+			array(
+				array(null, null, $function1, array('ddd' => '111', 'eee' => '222')),
+				array(null, null, $function1, array('ddd' => '111', 'eee' => '222')),
+			),
+			
+			//
+			
+			array(
+				array(null, array('aaa', 'bbb'), $function1, null),
+				array(null, array('aaa', 'bbb'), $function1, null),
+			),
+			
+			array(
+				array(null, array('aaa', 'bbb'), $function1, 'ccc'),
+				array(null, array('aaa', 'bbb'), $function1, 'ccc'),
+			),
+			
+			array(
+				array(null, array('aaa', 'bbb'), $function1, array('ddd' => '111', 'eee' => '222')),
+				array(null, array('aaa', 'bbb'), $function1, array('ddd' => '111', 'eee' => '222')),
+			),
+			
+			//
+			
+			array(
+				array(null, $function1, $function2, null),
+				array(null, $function1, $function2, null),
+			),
+			
+			array(
+				array(null, $function1, $function2, 'ccc'),
+				array(null, $function1, $function2, 'ccc'),
+			),
+			
+			array(
+				array(null, $function1, $function2, array('ddd' => '111', 'eee' => '222')),
+				array(null, $function1, $function2, array('ddd' => '111', 'eee' => '222')),
+			),
+			
+			//
+			
+			array(
+				array('some name', null, $function1, null),
+				array('some name', null, $function1, null),
+			),
+			
+			array(
+				array('some name', null, $function1, 'ccc'),
+				array('some name', null, $function1, 'ccc'),
+			),
+			
+			array(
+				array('some name', null, $function1, array('ddd' => '111', 'eee' => '222')),
+				array('some name', null, $function1, array('ddd' => '111', 'eee' => '222')),
+			),
+			
+			//
+			
+			array(
+				array('some name', array('aaa', 'bbb'), $function1, null),
+				array('some name', array('aaa', 'bbb'), $function1, null),
+			),
+			
+			array(
+				array('some name', array('aaa', 'bbb'), $function1, 'ccc'),
+				array('some name', array('aaa', 'bbb'), $function1, 'ccc'),
+			),
+			
+			array(
+				array('some name', array('aaa', 'bbb'), $function1, array('ddd' => '111', 'eee' => '222')),
+				array('some name', array('aaa', 'bbb'), $function1, array('ddd' => '111', 'eee' => '222')),
+			),
+			
+			//
+			
+			array(
+				array('some name', $function1, $function2, null),
+				array('some name', $function1, $function2, null),
+			),
+			
+			array(
+				array('some name', $function1, $function2, 'ccc'),
+				array('some name', $function1, $function2, 'ccc'),
+			),
+			
+			array(
+				array('some name', $function1, $function2, array('ddd' => '111', 'eee' => '222')),
+				array('some name', $function1, $function2, array('ddd' => '111', 'eee' => '222')),
 			),
 		);
 	}
 
 	/**
-	 * @dataProvider provider
+	 * @dataProvider providerCorrectArguments
 	 */
-	public function testCallsAtDeclaringState_ReturnsArrayWith4Elements($exceptedArguments, $passedArguments)
+	public function testCallsAtDeclaringState_PassedArgumentsIsCorrect_ReturnsArrayWith4Elements($exceptedArguments, $passedArguments)
 	{
 		$this->assertSame($exceptedArguments, callBroker::internal_getArgumentsForSpecDeclaringCommand($passedArguments));
+	}
+	
+	public function providerWrongArguments()
+	{
+		return array(
+			array(array(null, null, null)),
+			array(array(null, null, null, null)),
+			array(array('aaa', 'aaa', 'aaa', 'aaa')),
+		);
+	}
+
+	/**
+	 * @dataProvider providerWrongArguments
+	 */
+	public function testCallsAtDeclaringState_PassedArgumentsIsWrong_ReturnsNull($arguments)
+	{
+		$this->assertSame(null, callBroker::internal_getArgumentsForSpecDeclaringCommand($arguments));
 	}
 }

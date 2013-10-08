@@ -24,9 +24,13 @@ function test($storage, $name = null, $contexts = null, $body = null, $settings 
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
 	if ($callBrokerClass::internal_isRunningState())
-		throw new \spectrum\constructionCommands\Exception('Construction command "' . __FUNCTION__ . '" should be call only at declaring state');
+		throw new \spectrum\constructionCommands\Exception('Construction command "test" should be call only at declaring state');
 
-	list($name, $contexts, $body, $settings) = $callBrokerClass::internal_getArgumentsForSpecDeclaringCommand(func_get_args());
+	$arguments = $callBrokerClass::internal_getArgumentsForSpecDeclaringCommand(array_slice(func_get_args(), 1));
+	if ($arguments === null)
+		throw new \spectrum\constructionCommands\Exception('Incorrect arguments in "test" command');
+	else
+		list($name, $contexts, $body, $settings) = $arguments;
 	
 	$specClass = config::getSpecClass();
 	$testSpec = new $specClass();
@@ -37,19 +41,22 @@ function test($storage, $name = null, $contexts = null, $body = null, $settings 
 	if ($body)
 		$testSpec->testFunction->setFunction($body);
 	
-	if ($settings)
+	if ($settings !== null)
 		$callBrokerClass::internal_setSpecSettings($testSpec, $settings);
-		
-	$callBrokerClass::internal_getDeclaringSpec()->bindChildSpec($testSpec);
+
 	$callBrokerClass::internal_addExclusionSpec($testSpec);
+	$callBrokerClass::internal_getDeclaringSpec()->bindChildSpec($testSpec);
 	
-	if (is_array($contexts) && $contexts)
+	if ($contexts)
 	{
-		foreach ($callBrokerClass::internal_convertArrayContextsToSpecContexts($contexts) as $spec);
-			$testSpec->bindChildSpec($spec);
+		if (is_array($contexts))
+		{
+			foreach ($callBrokerClass::internal_convertArrayContextsToSpecContexts($contexts) as $spec)
+				$testSpec->bindChildSpec($spec);
+		}
+		else
+			$callBrokerClass::internal_callFunctionOnDeclaringSpec($contexts, $testSpec);	
 	}
-	else if (!is_array($contexts) && $contexts)
-		$callBrokerClass::internal_callFunctionOnDeclaringSpec($contexts, $testSpec);
 	
 	return $testSpec;
 }

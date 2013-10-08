@@ -1,4 +1,3 @@
-TODO: тесты для constructionCommands
 TODO: тесты для "\spectrum\matchers\*"
 
 TODO: Spec::setName() — приводиль ли имя к строковому типу?
@@ -31,7 +30,7 @@ TODO: тесты для плагина "Reports"
 TODO: "Reports" test "testGeneratesValidXhtml" (проверяет валидность вёрстки)
 
 TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
-TODO: rename setCatchPhpErrors to setPhpErrorLevel ???
+TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
 TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: rename activateMoment to activateType/activationType ???
 TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???

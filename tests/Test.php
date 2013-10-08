@@ -38,13 +38,13 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		parent::tearDown();
 	}
 
-	protected function backupStaticProperties($className)
+	final protected function backupStaticProperties($className)
 	{
 		$reflection = new \ReflectionClass($className);
 		$this->staticPropertiesBackups[$className] = $reflection->getStaticProperties();
 	}
 
-	protected function restoreStaticProperties($className)
+	final protected function restoreStaticProperties($className)
 	{
 		foreach ($this->staticPropertiesBackups[$className] as $name => $value)
 		{
@@ -54,7 +54,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		}
 	}
 	
-	protected function createClass($classCode)
+	final protected function createClass($classCode)
 	{
 		$namespace = 'spectrum\tests\testware\_dynamicClasses_';
 		$className = 'DynamicClass' . self::$classNumber;
@@ -70,7 +70,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		return '\\' . $namespace . '\\' . $className;
 	}
 	
-	protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart')
+	final protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart')
 	{
 		$pluginClassName = $this->createClass('
 			class ... extends \spectrum\core\plugins\Plugin
@@ -93,7 +93,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		return $pluginClassName;
 	}
 	
-	protected function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null)
+	final protected function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null)
 	{
 		if ($callback === null)
 		{
@@ -121,7 +121,120 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 		$this->fail('Exception "' . $expectedClass . '" not thrown');
 	}
-
+	
+	final protected function getProviderWithCorrectArgumentCombinationsForSpecDeclaringConstructionCommand($name = null, $contexts = null, $body = null, $settings = null)
+	{
+		$values = array(
+			'name' => array('some name text', 123),
+			'contexts' => array(array(), array('aaa' => array('bbb', 'ccc')), function(){}, function(){
+				\spectrum\constructionCommands\callBroker::group(null, null, function(){}, null);
+				\spectrum\constructionCommands\callBroker::test(null, null, function(){}, null);
+			}),
+			'body' => array(function(){}, function(){
+				\spectrum\constructionCommands\callBroker::group(null, null, function(){}, null);
+				\spectrum\constructionCommands\callBroker::test(null, null, function(){}, null);
+			}),
+			'settings' => array(true, false, 8, 'koi8-r', array(), array('inputEncoding' => 'koi8-r')),
+		);
+		
+		$patterns = array(
+			array('body'),
+			array('body', 'settings'),
+			
+			array('contexts', 'body'),
+			array('contexts', 'body', 'settings'),
+			
+			array('name', 'body'),
+			array('name', 'body', 'settings'),
+			
+			array('name', 'contexts', 'body'),
+			array('name', 'contexts', 'body', 'settings'),
+			
+			array(null, 'body', null),
+			array(null, 'body', 'settings'),
+			
+			array(null, null, 'body', null),
+			array(null, null, 'body', 'settings'),
+			array(null, 'contexts', 'body', null),
+			array(null, 'contexts', 'body', 'settings'),
+			array('name', null, 'body', null),
+			array('name', null, 'body', 'settings'),
+			array('name', 'contexts', 'body', null),
+		);
+		
+		$rows = array();
+		foreach ($values['name'] as $valueOfName)
+		{
+			foreach ($values['contexts'] as $valueOfContexts)
+			{
+				foreach ($values['body'] as $valueOfBody)
+				{
+					foreach ($values['settings'] as $valueOfSettings)
+					{
+						foreach ($patterns as $pattern)
+						{
+							if ($name !== null)
+							{
+								if (in_array('name', $pattern))
+									$valueOfName = $name;
+								else
+									continue;
+							}
+							
+							if ($contexts !== null)
+							{
+								if (in_array('contexts', $pattern))
+									$valueOfContexts = $contexts;
+								else
+									continue;
+							}
+							
+							if ($body !== null)
+							{
+								if (in_array('body', $pattern))
+									$valueOfBody = $body;
+								else
+									continue;
+							}
+							
+							if ($settings !== null)
+							{
+								if (in_array('settings', $pattern))
+									$valueOfSettings = $settings;
+								else
+									continue;
+							}
+							
+							$row = $pattern;
+							
+							$key = array_search('name', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfName;
+								
+							$key = array_search('contexts', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfContexts;
+								
+							$key = array_search('body', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfBody;
+								
+							$key = array_search('settings', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfSettings;
+							
+							$row = array($row);
+							if (!in_array($row, $rows, true))
+								$rows[] = $row;
+						}
+					}
+				}
+			}
+		}
+		
+		return $rows;
+	}
+	
 /**/
 
 	/**

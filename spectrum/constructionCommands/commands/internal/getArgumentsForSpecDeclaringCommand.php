@@ -11,21 +11,16 @@ namespace spectrum\constructionCommands\commands\internal;
 function getArgumentsForSpecDeclaringCommand($storage, array $arguments)
 {
 	$receiveArguments = array(
-		array('scalar:name'),                                        // function(scalar $name)
-		array('closure:body'),                                       // function(\Closure $body)
-		array('array:settings'),                                     // function(array $settings)
-		array('scalar:name', 'closure:body'),                        // function(scalar $name, \Closure $body)
-		array('scalar:name', 'array:settings'),                      // function(scalar $name, array $settings)
-		array('closure:contexts', 'closure:body'),                   // function(\Closure $contexts, \Closure $body)
-		array('array:contexts', 'closure:body'),                     // function(array $contexts, \Closure $body)
-		array('closure:body', 'array:settings'),                     // function(\Closure $body, array $settings)
-		array('scalar:name', 'closure:contexts', 'closure:body'),    // function(scalar $name, \Closure $contexts, \Closure $body)
-		array('scalar:name', 'array:contexts', 'closure:body'),      // function(scalar $name, array $contexts, \Closure $body)
-		array('scalar:name', 'closure:body', 'array:settings'),      // function(scalar $name, \Closure $body, array $settings)
-		array('closure:contexts', 'closure:body', 'array:settings'), // function(\Closure $contexts, \Closure $body, array $settings)
-		array('array:contexts', 'closure:body', 'array:settings'),   // function(array $contexts, \Closure $body, array $settings)
+		array('closure:body'),                                                                                  // function(\Closure $body)
+		array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
+		array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
+		array('array|closure:contexts', 'closure:body', 'null|scalar|array:settings'),                          // function(array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
+		array('null|scalar:name', 'closure:body'),                                                              // function(null|scalar $name, \Closure $body)
+		array('null|scalar:name', 'closure:body', 'null|scalar|array:settings'),                                // function(null|scalar $name, \Closure $body, null|scalar|array $settings)
+		array('null|scalar:name', 'null|array|closure:contexts', 'closure:body'),                               // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body)
+		array('null|scalar:name', 'null|array|closure:contexts', 'closure:body', 'null|scalar|array:settings'), // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
 	);
-			
+	
 	$arguments = array_values($arguments);
 	$argumentCount = count($arguments);
 	foreach ($receiveArguments as $receiveArgumentRow)
@@ -41,22 +36,23 @@ function getArgumentsForSpecDeclaringCommand($storage, array $arguments)
 			
 			foreach ($receiveArgumentRow as $num => $receiveArgument)
 			{
-				list($type, $name) = explode(':', $receiveArgument);
+				list($types, $name) = explode(':', $receiveArgument);
+				$types = explode('|', $types);
 				
-				if ($type == 'scalar' && is_scalar($arguments[$num]) || $type == 'array' && is_array($arguments[$num]) || $type == 'closure' && is_object($arguments[$num]) && $arguments[$num] instanceof \Closure)
+				$isNull = (in_array('null', $types) && is_null($arguments[$num]));
+				$isScalar = (in_array('scalar', $types) && is_scalar($arguments[$num]));
+				$isArray = (in_array('array', $types) && is_array($arguments[$num]));
+				$isClosure = (in_array('closure', $types) && is_object($arguments[$num]) && $arguments[$num] instanceof \Closure);
+				
+				if ($isNull || $isScalar || $isArray || $isClosure)
 					$result[$name] = $arguments[$num];
 				else
 					continue(2);
 			}
 			
-			return $result;
+			return array_values($result);
 		}
 	}
 	
-	return array(
-		'name' => @$arguments[0],
-		'contexts' => @$arguments[1],
-		'body' => @$arguments[2],
-		'settings' => @$arguments[3],
-	);
+	return null;
 }
