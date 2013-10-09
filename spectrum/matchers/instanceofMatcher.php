@@ -13,6 +13,13 @@ namespace spectrum\matchers;
  */
 function instanceofMatcher($actual, $expected)
 {
-	// TODO add class name support
-	return ($actual instanceof $expected);
+	if (is_string($actual))
+	{
+		if (is_object($expected))
+			$expected = get_class($expected);
+		
+		return is_a($actual, $expected, true);
+	}
+	else
+		return ($actual instanceof $expected);
 }

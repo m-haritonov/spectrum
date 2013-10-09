@@ -1,5 +1,3 @@
-TODO: тесты для "\spectrum\matchers\*"
-
 TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 
@@ -41,6 +39,8 @@ TODO: проверить методы интерфейсов на соответ
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
 TODO: change "$spec->getName()" to "$spec->output->convertToOutputEncoding($spec->getName())" in exception messages
+
+TODO: MOVE PROJECT TO GITHUB.COM
 
 TODO: array context group:
 	group('aaa', array(

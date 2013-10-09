@@ -54,19 +54,35 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		}
 	}
 	
-	final protected function createClass($classCode)
+	final protected function createClass($code)
 	{
 		$namespace = 'spectrum\tests\testware\_dynamicClasses_';
 		$className = 'DynamicClass' . self::$classNumber;
 		self::$classNumber++;
 		
-		$classCode = preg_replace(
-			'/^(\s*abstract|\s*final)*\s*class\s*\.\.\./is',
-			'namespace ' . $namespace . '; class ' . $className . ' ',
-			$classCode
+		$code = preg_replace(
+			'/^((\s*abstract|\s*final)+)*\s*class\s*\.\.\./is',
+			'namespace ' . $namespace . '; $1 class ' . $className . ' ',
+			$code
 		);
 		
-		eval($classCode);
+		eval($code);
+		return '\\' . $namespace . '\\' . $className;
+	}
+	
+	final protected function createInterface($code)
+	{
+		$namespace = 'spectrum\tests\testware\_dynamicClasses_';
+		$className = 'DynamicClass' . self::$classNumber;
+		self::$classNumber++;
+		
+		$code = preg_replace(
+			'/^\s*interface\s*\.\.\./is',
+			'namespace ' . $namespace . '; interface ' . $className . ' ',
+			$code
+		);
+		
+		eval($code);
 		return '\\' . $namespace . '\\' . $className;
 	}
 	

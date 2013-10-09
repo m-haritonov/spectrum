@@ -9,39 +9,53 @@
 namespace spectrum\matchers;
 
 /**
- * Return true, if code in $testedValue throws exception instance of $expectedClass with
+ * Returns true when code in $functionWithTestCode throws exception instance of $expectedClass (if not null) with
  * $expectedStringInMessage (if not null) and $expectedCode (if not null)
  * @return bool
  */
-function throwsException($functionWithTestedCode, $expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
+function throwsException($functionWithTestCode, $expectedClass = null, $expectedStringInMessage = null, $expectedCode = null)
 {
-	if ($expectedClass == null)
-		$expectedClass = '\Exception';
+	if (!is_callable($functionWithTestCode))
+		throw new \spectrum\core\Exception('Function with test code is not callable');
+	
+	if ($expectedClass !== null && (!is_string($expectedClass) || $expectedClass === ''))
+		throw new \spectrum\core\Exception('Excepted class should be not empty string');
+	
+	if ($expectedStringInMessage !== null && !is_string($expectedStringInMessage))
+		throw new \spectrum\core\Exception('Excepted string in message should be a string');
+	
+	if ($expectedCode !== null && !is_int($expectedCode))
+		throw new \spectrum\core\Exception('Excepted code should be a integer');
+	
+	if ($expectedClass !== null && mb_substr($expectedClass, 0, 1) != '\\')
+		$expectedClass = '\\' . $expectedClass;
 
-	if (!is_subclass_of($expectedClass, '\Exception') && $expectedClass != '\Exception')
-		throw new \spectrum\core\Exception('Excepted class "' . $expectedClass . '" should be subclass of "\Exception" in "' . __FUNCTION__ . '" matcher');
+	if ($expectedClass !== null && mb_strtolower($expectedClass) !== mb_strtolower('\Exception') && !is_subclass_of($expectedClass, '\Exception'))
+		throw new \spectrum\core\Exception('Excepted class should be subclass of "\Exception" class (now "' . $expectedClass . '" is not subclass of "\Exception" class)');
 
 	try
 	{
-		call_user_func($functionWithTestedCode);
+		call_user_func($functionWithTestCode);
 	}
 	catch (\Exception $e)
 	{
-		$actualClass = '\\' . get_class($e);
+		$class = '\\' . get_class($e);
 
-		if ($actualClass == $expectedClass || is_subclass_of($actualClass, $expectedClass))
+		if ($expectedClass !== null && mb_strtolower($class) !== mb_strtolower($expectedClass) && !is_subclass_of($class, $expectedClass))
+			return false;
+		
+		if ($expectedStringInMessage !== null)
 		{
-			$actualMessage = $e->getMessage();
-			$actualCode = $e->getCode();
-
-			if ($expectedStringInMessage !== null && mb_stripos($actualMessage, $expectedStringInMessage) === false)
+			if ($expectedStringInMessage === '' && $e->getMessage() !== '')
 				return false;
-
-			if ($expectedCode !== null && $actualCode != $expectedCode)
+			else if ($expectedStringInMessage !== '' && mb_stripos($e->getMessage(), $expectedStringInMessage) === false)
 				return false;
-
-			return true;
 		}
+
+		if ($expectedCode !== null && $e->getCode() !== $expectedCode)
+			return false;
+
+		return true;
 	}
 
 	return false;
