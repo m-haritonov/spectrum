@@ -52,6 +52,7 @@ class ThrowsExceptionTest extends \spectrum\tests\Test
 			array(array(function(){ throw new \Exception('', 10); }, null, null, 10)),
 			array(array(function(){ throw new \Exception('', 20); }, null, null, 20)),
 			
+			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception', 'bbb', 20)),
 			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception', 'bbb')),
 			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception')),
 			array(array(function(){ throw new \Exception('aaa bbb', 20); })),
