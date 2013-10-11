@@ -258,10 +258,10 @@ class ThrowsExceptionTest extends \spectrum\tests\Test
 		});
 	}
 	
-	public function testExceptedClassIsNotSubclassOfExceptionClass_ThrowsExceptionAndDoesNotCallFunctionWithTestCode()
+	public function testExpectedClassIsNotSubclassOfExceptionClass_ThrowsExceptionAndDoesNotCallFunctionWithTestCode()
 	{
 		$isCalled = false;
-		$this->assertThrowsException('\spectrum\core\Exception', 'Excepted class should be subclass of "\Exception" class (now "\stdClass" is not subclass of "\Exception" class)', function() use(&$isCalled){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Expected class should be subclass of "\Exception" class (now "\stdClass" is not subclass of "\Exception" class)', function() use(&$isCalled){
 			\spectrum\matchers\throwsException(function() use(&$isCalled){ $isCalled = true; }, '\stdClass');
 		});
 		
@@ -283,20 +283,20 @@ class ThrowsExceptionTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerNotStrings
 	 */
-	public function testExceptedClassIsNotString_ThrowsExceptionAndDoesNotCallFunctionWithTestCode($value)
+	public function testExpectedClassIsNotString_ThrowsExceptionAndDoesNotCallFunctionWithTestCode($value)
 	{
 		$isCalled = false;
-		$this->assertThrowsException('\spectrum\core\Exception', 'Excepted class should be not empty string', function() use(&$isCalled, $value){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Expected class should be not empty string', function() use(&$isCalled, $value){
 			\spectrum\matchers\throwsException(function() use(&$isCalled){ $isCalled = true; }, $value);
 		});
 		
 		$this->assertSame(false, $isCalled);
 	}
 	
-	public function testExceptedClassIsEmptyString_ThrowsExceptionAndDoesNotCallFunctionWithTestCode()
+	public function testExpectedClassIsEmptyString_ThrowsExceptionAndDoesNotCallFunctionWithTestCode()
 	{
 		$isCalled = false;
-		$this->assertThrowsException('\spectrum\core\Exception', 'Excepted class should be not empty string', function() use(&$isCalled){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Expected class should be not empty string', function() use(&$isCalled){
 			\spectrum\matchers\throwsException(function() use(&$isCalled){ $isCalled = true; }, '');
 		});
 		
@@ -309,7 +309,7 @@ class ThrowsExceptionTest extends \spectrum\tests\Test
 	public function testExpectedStringInMessageIsNotString_ThrowsExceptionAndDoesNotCallFunctionWithTestCode($value)
 	{
 		$isCalled = false;
-		$this->assertThrowsException('\spectrum\core\Exception', 'Excepted string in message should be a string', function() use(&$isCalled, $value){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Expected string in message should be a string', function() use(&$isCalled, $value){
 			\spectrum\matchers\throwsException(function() use(&$isCalled){ $isCalled = true; }, null, $value);
 		});
 		
@@ -331,10 +331,10 @@ class ThrowsExceptionTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerNotInteger
 	 */
-	public function testExceptedCodeIsNotInteger_ThrowsExceptionAndDoesNotCallFunctionWithTestCode($value)
+	public function testExpectedCodeIsNotInteger_ThrowsExceptionAndDoesNotCallFunctionWithTestCode($value)
 	{
 		$isCalled = false;
-		$this->assertThrowsException('\spectrum\core\Exception', 'Excepted code should be a integer', function() use(&$isCalled, $value){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Expected code should be a integer', function() use(&$isCalled, $value){
 			\spectrum\matchers\throwsException(function() use(&$isCalled){ $isCalled = true; }, null, null, $value);
 		});
 		

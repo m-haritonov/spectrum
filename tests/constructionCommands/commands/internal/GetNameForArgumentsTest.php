@@ -39,8 +39,8 @@ class GetNameForArgumentsTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider provider
 	 */
-	public function testCallsAtDeclaringState_ReturnsProperName($exceptedName, $arguments, $defaultName)
+	public function testCallsAtDeclaringState_ReturnsProperName($expectedName, $arguments, $defaultName)
 	{
-		$this->assertSame($exceptedName, callBroker::internal_getNameForArguments($arguments, $defaultName));
+		$this->assertSame($expectedName, callBroker::internal_getNameForArguments($arguments, $defaultName));
 	}
 }

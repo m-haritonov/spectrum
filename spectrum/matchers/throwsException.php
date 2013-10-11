@@ -19,19 +19,19 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 		throw new \spectrum\core\Exception('Function with test code is not callable');
 	
 	if ($expectedClass !== null && (!is_string($expectedClass) || $expectedClass === ''))
-		throw new \spectrum\core\Exception('Excepted class should be not empty string');
+		throw new \spectrum\core\Exception('Expected class should be not empty string');
 	
 	if ($expectedStringInMessage !== null && !is_string($expectedStringInMessage))
-		throw new \spectrum\core\Exception('Excepted string in message should be a string');
+		throw new \spectrum\core\Exception('Expected string in message should be a string');
 	
 	if ($expectedCode !== null && !is_int($expectedCode))
-		throw new \spectrum\core\Exception('Excepted code should be a integer');
+		throw new \spectrum\core\Exception('Expected code should be a integer');
 	
 	if ($expectedClass !== null && mb_substr($expectedClass, 0, 1) != '\\')
 		$expectedClass = '\\' . $expectedClass;
 
 	if ($expectedClass !== null && mb_strtolower($expectedClass) !== mb_strtolower('\Exception') && !is_subclass_of($expectedClass, '\Exception'))
-		throw new \spectrum\core\Exception('Excepted class should be subclass of "\Exception" class (now "' . $expectedClass . '" is not subclass of "\Exception" class)');
+		throw new \spectrum\core\Exception('Expected class should be subclass of "\Exception" class (now "' . $expectedClass . '" is not subclass of "\Exception" class)');
 
 	try
 	{

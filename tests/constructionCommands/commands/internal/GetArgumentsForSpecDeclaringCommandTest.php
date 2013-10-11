@@ -278,9 +278,9 @@ class GetArgumentsForSpecDeclaringCommandTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerCorrectArguments
 	 */
-	public function testCallsAtDeclaringState_PassedArgumentsIsCorrect_ReturnsArrayWith4Elements($exceptedArguments, $passedArguments)
+	public function testCallsAtDeclaringState_PassedArgumentsIsCorrect_ReturnsArrayWith4Elements($expectedArguments, $passedArguments)
 	{
-		$this->assertSame($exceptedArguments, callBroker::internal_getArgumentsForSpecDeclaringCommand($passedArguments));
+		$this->assertSame($expectedArguments, callBroker::internal_getArgumentsForSpecDeclaringCommand($passedArguments));
 	}
 	
 	public function providerWrongArguments()
