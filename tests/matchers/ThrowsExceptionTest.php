@@ -13,101 +13,242 @@ require_once __DIR__ . '/../../spectrum/matchers/throwsException.php';
 
 class ThrowsExceptionTest extends \spectrum\tests\Test
 {
-	public function providerReturnsTrue()
+	public function providerMatcherCall()
 	{
-		$childException = $this->createClass('class ... extends \Exception {}');
-		$descendantException = $this->createClass('class ... extends ' . $childException . ' {}');
+		$level2Exception = $this->createClass('class ... extends \Exception {}');
+		$level3Exception = $this->createClass('class ... extends ' . $level2Exception . ' {}');
 		
 		return array(
-			array(array(function(){ throw new \Exception(); })),
-			array(array(function(){ throw new \Exception(); }, null)),
-			array(array(function(){ throw new \Exception(); }, null, null)),
-			array(array(function(){ throw new \Exception(); }, null, null, null)),
-			
-			array(array(function(){ throw new \Exception(); }, '\Exception', null, null)),
-			array(array(function(){ throw new \Exception(); }, '\exception', null, null)),
-			array(array(function(){ throw new \Exception(); }, 'Exception', null, null)),
-			array(array(function(){ throw new \Exception(); }, 'exception', null, null)),
-			
-			array(array(function(){ throw new \exception(); }, '\Exception', null, null)),
-			array(array(function(){ throw new \exception(); }, '\exception', null, null)),
-			array(array(function(){ throw new \exception(); }, 'Exception', null, null)),
-			array(array(function(){ throw new \exception(); }, 'exception', null, null)),
-			
-			array(array(function() use($childException){ throw new $childException(); }, '\Exception', null, null)),
-			array(array(function() use($childException){ throw new $childException(); }, $childException, null, null)),
-			array(array(function() use($descendantException){ throw new $descendantException(); }, '\Exception', null, null)),
-			array(array(function() use($descendantException){ throw new $descendantException(); }, $childException, null, null)),
-			
-			array(array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'AAA BBB CCC', null)),
-			array(array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'AAA bbb CCC', null)),
-			array(array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'AAA BBB CCC', null)),
-			array(array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'AAA', null)),
-			array(array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'BBB', null)),
-			array(array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'CCC', null)),
-			array(array(function(){ throw new \Exception(); }, null, '')),
-			array(array(function(){ throw new \Exception(''); }, null, '')),
-			
-			array(array(function(){ throw new \Exception(); }, null, null, 0)),
-			array(array(function(){ throw new \Exception('', 10); }, null, null, 10)),
-			array(array(function(){ throw new \Exception('', 20); }, null, null, 20)),
-			
-			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception', 'bbb', 20)),
-			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception', 'bbb')),
-			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception')),
-			array(array(function(){ throw new \Exception('aaa bbb', 20); })),
-		);
-	}
-	
-	/**
-	 * @dataProvider providerReturnsTrue
-	 */
-	public function testExceptionValuesIsCorrespondToArguments_ReturnsTrue($arguments)
-	{
-		$this->assertSame(true, call_user_func_array('\spectrum\matchers\throwsException', $arguments));
-	}
-	
-	public function providerReturnsFalse()
-	{
-		$childException = $this->createClass('class ... extends \Exception {}');
-		$descendantException = $this->createClass('class ... extends ' . $childException . ' {}');
-		
-		return array(
-			array(array(function(){})),
-			array(array(function(){}, null)),
-			array(array(function(){}, null, null)),
-			array(array(function(){}, null, null, null)),
-			
-			array(array(function(){ throw new \Exception(); }, $childException, null, null)),
-			array(array(function(){ throw new \Exception(); }, $descendantException, null, null)),
-			array(array(function(){ throw new \Exception('aaa'); }, null, 'bbb', null)),
-			array(array(function(){ throw new \Exception(10); }, null, null, 10)),
-			array(array(function(){ throw new \Exception('', 10); }, null, null, 0)),
-			
-			array(array(function(){ throw new \Exception('aaa bbb', 20); }, $childException, 'bbb', 20)),
-			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception', 'ccc', 20)),
-			array(array(function(){ throw new \Exception('aaa bbb', 20); }, '\Exception', 'bbb', 30)),
-			
-			array(array(function(){ throw new \Exception('aaa bbb'); }, null, null, 20)),
-			array(array(function(){ throw new \Exception(); }, '\Exception', 'ccc')),
+			array(true, array(function(){ throw new \Exception(); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception(); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception(); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception(); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception(); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception(); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception(); }, $level3Exception, null, null)),
+			array(true, array(function(){ throw new \Exception(); }, null, '')),
+			array(false, array(function(){ throw new \Exception(); }, null, ' ')),
+			array(false, array(function(){ throw new \Exception(); }, null, 'AAA BBB CCC', null)),
+			array(true, array(function(){ throw new \Exception(); }, null, null, 0)),
+			array(false, array(function(){ throw new \Exception(); }, null, null, 20)),
+			array(true, array(function(){ throw new \Exception(); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception(); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception(); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception(); }, '\Exception', 'AAA BBB CCC', 20)),
 
-			array(array(function(){ throw new \Exception(' '); }, null, '')),
-			array(array(function(){ throw new \Exception(''); }, null, ' ')),
-			array(array(function(){ throw new \Exception('aaa'); }, null, '')),
+			array(true, array(function(){ throw new \Exception(''); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception(''); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception(''); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception(''); }, '\Exception', 'AAA BBB CCC', 20)),
+
+			array(true, array(function(){ throw new \Exception('', 0); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception('', 0); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception('', 0); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception('', 0); }, '\Exception', 'AAA BBB CCC', 20)),
+			
+			array(true, array(function(){ throw new \Exception('', 20); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception('', 20); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('', 20); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception('', 20); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('', 20); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception('', 20); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('', 20); }, $level3Exception, null, null)),
+			array(true, array(function(){ throw new \Exception('', 20); }, null, '')),
+			array(false, array(function(){ throw new \Exception('', 20); }, null, ' ')),
+			array(false, array(function(){ throw new \Exception('', 20); }, null, 'AAA BBB CCC', null)),
+			array(false, array(function(){ throw new \Exception('', 20); }, null, null, 0)),
+			array(true, array(function(){ throw new \Exception('', 20); }, null, null, 20)),
+			array(false, array(function(){ throw new \Exception('', 20); }, '\Exception', '', 0)),
+			array(true, array(function(){ throw new \Exception('', 20); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception('', 20); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception('', 20); }, '\Exception', 'AAA BBB CCC', 20)),
+
+			array(true, array(function(){ throw new \Exception(' '); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception(' '); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception(' '); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception(' '); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception(' '); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception(' '); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception(' '); }, $level3Exception, null, null)),
+			array(false, array(function(){ throw new \Exception(' '); }, null, '')),
+			array(true, array(function(){ throw new \Exception(' '); }, null, ' ')),
+			array(false, array(function(){ throw new \Exception(' '); }, null, 'AAA BBB CCC', null)),
+			array(true, array(function(){ throw new \Exception(' '); }, null, null, 0)),
+			array(false, array(function(){ throw new \Exception(' '); }, null, null, 20)),
+			array(false, array(function(){ throw new \Exception(' '); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception(' '); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception(' '); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception(' '); }, '\Exception', 'AAA BBB CCC', 20)),
+
+			array(true, array(function(){ throw new \Exception(20); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception(20); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception(20); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception(20); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception(20); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception(20); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception(20); }, $level3Exception, null, null)),
+			array(false, array(function(){ throw new \Exception(20); }, null, '')),
+			array(false, array(function(){ throw new \Exception(20); }, null, ' ')),
+			array(false, array(function(){ throw new \Exception(20); }, null, 'AAA BBB CCC', null)),
+			array(true, array(function(){ throw new \Exception(20); }, null, null, 0)),
+			array(false, array(function(){ throw new \Exception(20); }, null, null, 20)),
+			array(false, array(function(){ throw new \Exception(20); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception(20); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception(20); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception(20); }, '\Exception', 'AAA BBB CCC', 20)),
+			
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, $level3Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, '')),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, ' ')),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'AAA BBB CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'AAA bbb CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'AAA', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'BBB', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'aaa', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'bbb', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'ccc', null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'AAA ZZZ CCC', null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'ZZZ AAA BBB CCC ZZZ', null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, 'zzz', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, null, 0)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, null, null, 20)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, '\Exception', '', 20)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC'); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC'); }, '\Exception', 'AAA BBB CCC', 20)),
+
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 0); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 0); }, '\Exception', '', 20)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 0); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 0); }, '\Exception', 'AAA BBB CCC', 20)),
+			
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, $level3Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, '')),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, ' ')),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'AAA BBB CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'AAA bbb CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'AAA', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'BBB', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'aaa', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'bbb', null)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'ccc', null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'AAA ZZZ CCC', null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'ZZZ AAA BBB CCC ZZZ', null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, 'zzz', null)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, null, 0)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, null, null, 20)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(true, array(function(){ throw new \Exception('AAA BBB CCC', 20); }, '\Exception', 'AAA BBB CCC', 20)),
+			
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, $level3Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, '')),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, ' ')),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'AAA BBB CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'AAA bbb CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'AAA', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'BBB', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'aaa', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'bbb', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'ccc', null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'AAA ZZZ CCC', null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'ZZZ AAA BBB CCC ZZZ', null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, 'zzz', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, null, 0)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, null, null, 20)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, '\Exception', '', 20)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC'); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC'); }, '\Exception', 'AAA BBB CCC', 20)),
+
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 0); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 0); }, '\Exception', '', 20)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 0); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 0); }, '\Exception', 'AAA BBB CCC', 20)),
+			
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, $level3Exception, null, null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, '')),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, ' ')),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'AAA BBB CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'AAA bbb CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'AAA', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'BBB', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'CCC', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'aaa', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'bbb', null)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'ccc', null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'AAA ZZZ CCC', null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'ZZZ AAA BBB CCC ZZZ', null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, 'zzz', null)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, null, 0)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, null, null, 20)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, '\Exception', '', 0)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, '\Exception', '', 20)),
+			array(false, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, '\Exception', 'AAA BBB CCC', 0)),
+			array(true, array(function(){ throw new \Exception('AAA bbb CCC', 20); }, '\Exception', 'AAA BBB CCC', 20)),
+			
+			//
+			
+			array(true, array(function(){ throw new \exception(); }, null, null, null)),
+			array(true, array(function(){ throw new \exception(); }, '\Exception', null, null)),
+			array(true, array(function(){ throw new \exception(); }, '\exception', null, null)),
+			array(true, array(function(){ throw new \exception(); }, 'Exception', null, null)),
+			array(true, array(function(){ throw new \exception(); }, 'exception', null, null)),
+			array(false, array(function(){ throw new \exception(); }, $level2Exception, null, null)),
+			array(false, array(function(){ throw new \exception(); }, $level3Exception, null, null)),
+			
+			array(true, array(function() use($level2Exception){ throw new $level2Exception(); }, null, null, null)),
+			array(true, array(function() use($level2Exception){ throw new $level2Exception(); }, '\Exception', null, null)),
+			array(true, array(function() use($level2Exception){ throw new $level2Exception(); }, 'exception', null, null)),
+			array(true, array(function() use($level2Exception){ throw new $level2Exception(); }, $level2Exception, null, null)),
+			array(false, array(function() use($level2Exception){ throw new $level2Exception(); }, $level3Exception, null, null)),
+			
+			array(true, array(function() use($level3Exception){ throw new $level3Exception(); }, null, null, null)),
+			array(true, array(function() use($level3Exception){ throw new $level3Exception(); }, '\Exception', null, null)),
+			array(true, array(function() use($level3Exception){ throw new $level3Exception(); }, 'exception', null, null)),
+			array(true, array(function() use($level3Exception){ throw new $level3Exception(); }, $level2Exception, null, null)),
+			array(true, array(function() use($level3Exception){ throw new $level3Exception(); }, $level3Exception, null, null)),
+			
+			//
+		
+			array(false, array(function(){}, null, null, null)),
 		);
 	}
 	
 	/**
-	 * @dataProvider providerReturnsFalse
+	 * @dataProvider providerMatcherCall
 	 */
-	public function testExceptionValuesIsNotCorrespondToArguments_ReturnsFalse($arguments)
+	public function testMatcherCall($expectedResult, $arguments)
 	{
-		$this->assertSame(false, call_user_func_array('\spectrum\matchers\throwsException', $arguments));
-	}
-	
-	public function testExceptionIsNotThrown_ReturnsFalse()
-	{
-		$this->assertSame(false, \spectrum\matchers\throwsException(function(){}));
+		$this->assertSame($expectedResult, call_user_func_array('\spectrum\matchers\throwsException', $arguments));
 	}
 	
 	public function testFunctionWithTestCodeIsNotCallable_ThrowsException()
