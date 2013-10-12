@@ -687,6 +687,28 @@ class ContextsTest extends \spectrum\tests\Test
 		$this->assertSame(array("aaa"), \spectrum\tests\Test::$temp["callResults"]);
 	}
 	
+	public function testCallFunctionInContext_PhpIsGreaterThanOrEqualTo54_BindContextDataToThisVariable()
+	{
+		if (version_compare(PHP_VERSION, '5.4', '<'))
+			return;
+		
+		\spectrum\tests\Test::$temp["contextData"] = null;
+		\spectrum\tests\Test::$temp["thisValue"] = null;
+		
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["contextData"] = $this->getOwnerSpec()->contexts->getContextData();
+			$this->getOwnerSpec()->contexts->callFunctionInContext(function(){
+				\spectrum\tests\Test::$temp["thisValue"] = $this;
+			});
+		', 'onEndingSpecExecute');
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\Data', \spectrum\tests\Test::$temp["this"]);
+		$this->assertSame(\spectrum\tests\Test::$temp["contextData"], \spectrum\tests\Test::$temp["this"]);
+	}
+	
 	public function testCallFunctionInContext_CallBeforeContextDataInitialization_ThrowsExceptionAndDoesNotCallFunction()
 	{
 		\spectrum\tests\Test::$temp["exception"] = null;
@@ -733,6 +755,29 @@ class ContextsTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\Data', \spectrum\tests\Test::$temp["contextData"]);
+	}
+	
+	public function testGetContextData_ContextDataIsInitialized_ReturnsNewInstanceOnEveryRun()
+	{
+		\spectrum\tests\Test::$temp["contextData"] = array();
+		
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["contextData"][] = $this->getOwnerSpec()->contexts->getContextData();
+		', 'onEndingSpecExecute');
+		
+		$spec = new Spec();
+		$spec->run();
+		$spec->run();
+		$spec->run();
+		
+		$this->assertSame(3, count(\spectrum\tests\Test::$temp["contextData"]));
+		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\Data', \spectrum\tests\Test::$temp["contextData"][0]);
+		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\Data', \spectrum\tests\Test::$temp["contextData"][1]);
+		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\contexts\Data', \spectrum\tests\Test::$temp["contextData"][2]);
+		
+		$this->assertNotSame(\spectrum\tests\Test::$temp["contextData"][0], \spectrum\tests\Test::$temp["contextData"][1]);
+		$this->assertNotSame(\spectrum\tests\Test::$temp["contextData"][1], \spectrum\tests\Test::$temp["contextData"][2]);
+		$this->assertNotSame(\spectrum\tests\Test::$temp["contextData"][2], \spectrum\tests\Test::$temp["contextData"][0]);
 	}
 	
 /**/

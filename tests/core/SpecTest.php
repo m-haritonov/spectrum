@@ -20,7 +20,33 @@ class SpecTest extends \spectrum\tests\Test
 		config::unregisterSpecPlugins();
 	}
 	
-	public function testPlugins_ThrowsExceptionOnAccessToNotExistingPlugin()
+	public function testPlugins_SupportsAccessToPluginsThroughMagicProperties()
+	{
+		$pluginClassName1 = $this->createClass('
+			class ... extends \spectrum\core\plugins\Plugin
+			{
+				static public function getAccessName(){ return "aaa"; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+			}
+		');
+		
+		$pluginClassName2 = $this->createClass('
+			class ... extends \spectrum\core\plugins\Plugin
+			{
+				static public function getAccessName(){ return "bbb"; }
+				static public function getActivateMoment(){ return "everyAccess"; }
+			}
+		');
+		
+		config::registerSpecPlugin($pluginClassName1);
+		config::registerSpecPlugin($pluginClassName2);
+		
+		$spec = new Spec();
+		$this->assertInstanceOf($pluginClassName1, $spec->aaa);
+		$this->assertInstanceOf($pluginClassName2, $spec->bbb);
+	}
+	
+	public function testPlugins_AccessToNotExistingPlugin_ThrowsException()
 	{
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\core\Exception', 'Undefined plugin with access name "asdfgscvsadf" in "spectrum\core\Spec" class', function() use($spec){
@@ -28,7 +54,7 @@ class SpecTest extends \spectrum\tests\Test
 		});
 	}
 	
-	public function testPlugins_ThrowsExceptionOnAccessToPluginWithEmptyAccessName()
+	public function testPlugins_AccessToPluginWithEmptyAccessName_ThrowsException()
 	{
 		$pluginClassName1 = $this->createClass('
 			class ... implements \spectrum\core\plugins\PluginInterface
@@ -99,7 +125,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($spec->aaa, \spectrum\tests\Test::$temp["pluginInstanceOnActivate"]);
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesAllPluginsWithCorrectClasses()
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesAllPluginsWithRespectiveClasses()
 	{
 		\spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = null;
 		\spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = null;
@@ -174,6 +200,36 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertNotSame(\spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"], \spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"]);
 		$this->assertNotSame(\spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"], \spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"]);
 		$this->assertNotSame(\spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"], \spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
+	}
+	
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_PassesRespectiveOwnerSpecToPluginInstance()
+	{
+		\spectrum\tests\Test::$temp["passedOwnerSpec"] = null;
+		
+		config::registerSpecPlugin($this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return "aaa"; }
+				static public function getActivateMoment(){ return "firstAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
+				{
+					\spectrum\tests\Test::$temp["passedOwnerSpec"] = $ownerSpec;
+				}
+				
+				public function getOwnerSpec(){}
+			}
+		'));
+		
+		$spec1 = new Spec();
+		$spec2 = new Spec();
+		
+		$spec1->aaa;
+		$this->assertSame($spec1, \spectrum\tests\Test::$temp["passedOwnerSpec"]);
+		
+		$spec2->aaa;
+		$this->assertSame($spec2, \spectrum\tests\Test::$temp["passedOwnerSpec"]);
 	}
 	
 	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotActivatePluginOnSpecInstanceCreation()
@@ -315,7 +371,37 @@ class SpecTest extends \spectrum\tests\Test
 		$instances[] = \spectrum\tests\Test::$temp["pluginInstanceOnActivate"];
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesAllPluginsWithCorrectClasses()
+	public function testPlugins_Activation_ActivateMomentIsEveryAccess_PassesRespectiveOwnerSpecToPluginInstance()
+	{
+		\spectrum\tests\Test::$temp["passedOwnerSpec"] = null;
+		
+		config::registerSpecPlugin($this->createClass('
+			class ... implements \spectrum\core\plugins\PluginInterface
+			{
+				static public function getAccessName(){ return "aaa"; }
+				static public function getActivateMoment(){ return "everyAccess"; }
+				static public function getEventListeners(){}
+				
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
+				{
+					\spectrum\tests\Test::$temp["passedOwnerSpec"] = $ownerSpec;
+				}
+				
+				public function getOwnerSpec(){}
+			}
+		'));
+		
+		$spec1 = new Spec();
+		$spec2 = new Spec();
+		
+		$spec1->aaa;
+		$this->assertSame($spec1, \spectrum\tests\Test::$temp["passedOwnerSpec"]);
+		
+		$spec2->aaa;
+		$this->assertSame($spec2, \spectrum\tests\Test::$temp["passedOwnerSpec"]);
+	}
+
+	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesAllPluginsWithRespectiveClasses()
 	{
 		\spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = null;
 		\spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = null;
