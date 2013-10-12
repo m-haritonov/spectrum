@@ -1,4 +1,3 @@
-TODO: Spec::setName() — приводиль ли имя к строковому типу?
 TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 
 TODO: в config::lock() и в ResultBuffer::lock записывать в static переменную метода свойства класса, а затем, в __destruct методе проверять, отличаются ли текущие свойства объекта от свойств в lock()::static (выбрасывая исключения в случае отличия) ???
@@ -39,7 +38,7 @@ TODO: проверить методы интерфейсов на соответ
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
 TODO: change "$spec->getName()" to "$spec->output->convertToOutputEncoding($spec->getName())" in exception messages
-
+TODO: remove old tests
 TODO: MOVE PROJECT TO GITHUB.COM
 
 TODO: array context group:

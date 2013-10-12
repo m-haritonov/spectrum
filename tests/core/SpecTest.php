@@ -918,6 +918,15 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
+	public function testIsAnonymous_UsesStrictComparison()
+	{
+		$spec = new Spec();
+		$spec->setName(0);
+		$spec->bindChildSpec(new Spec());
+		
+		$this->assertSame(false, $spec->isAnonymous());
+	}
+	
 /**/
 	
 	public function testGetParentSpecs_ReturnsEmptyArrayByDefault()
@@ -1163,6 +1172,21 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->assertSame(array($childSpec1, $childSpec3), $spec->getChildSpecsByName('aaa'));
 		$this->assertSame(array($childSpec2), $spec->getChildSpecsByName('bbb'));
+	}
+	
+	public function testGetChildSpecsByName_UsesStrictComparison()
+	{
+		$spec = new Spec();
+		
+		$childSpec1 = new Spec();
+		$childSpec1->setName('01');
+		$spec->bindChildSpec($childSpec1);
+		
+		$childSpec2 = new Spec();
+		$childSpec2->setName('1');
+		$spec->bindChildSpec($childSpec2);
+		
+		$this->assertSame(array($childSpec2), $spec->getChildSpecsByName(1));
 	}
 	
 	public function testGetChildSpecsByName_NoProperChildren_ReturnsEmptyArray()

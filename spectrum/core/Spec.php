@@ -140,7 +140,7 @@ class Spec implements SpecInterface
 
 	public function isAnonymous()
 	{
-		return ($this->getName() == '' && $this->childSpecs);
+		return ((string) $this->getName() === '' && $this->childSpecs);
 	}
 
 /**/
