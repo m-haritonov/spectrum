@@ -8,13 +8,12 @@
 
 spl_autoload_register(function($class)
 {
-	$rootNamespace = 'spectrum\\';
-	if (mb_strpos($class, $rootNamespace) === 0)
+	$baseNamespace = 'spectrum\\tests\\';
+	if (mb_stripos($class, $baseNamespace) === 0)
 	{
-		$file = $class;
-		$file = str_replace($rootNamespace, '', $file);
+		$file = mb_substr($class, mb_strlen($baseNamespace));
 		$file = str_replace('\\', '/', $file);
-		$file = __DIR__ . '/../' . $file . '.php';
+		$file = __DIR__ . '/' . $file . '.php';
 
 		if (file_exists($file))
 			require_once $file;
