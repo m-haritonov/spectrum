@@ -109,8 +109,6 @@ class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\ht
 	{
 		if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
 			$widget = $this->createWidget('resultBuffer\details\MatcherCall');
-		else if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
-			$widget = $this->createWidget('resultBuffer\details\VerifyCall');
 		else
 			$widget = $this->createWidget('resultBuffer\details\Unknown');
 

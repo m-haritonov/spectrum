@@ -15,7 +15,7 @@ class Unknown extends Details
 		return
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . '.g-resultBuffer-details-unknown {  }' . $this->getNewline() .
+				$this->getIndention() . '.g-resultBuffer-details-unknown {}' . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
@@ -23,7 +23,7 @@ class Unknown extends Details
 	{
 		return
 			'<div class="g-resultBuffer-details-unknown g-resultBuffer-details">' .
-			$this->createWidget('code\Variable')->getHtml($details) .
+				$this->createWidget('code\Variable')->getHtml($details) .
 			'</div>';
 	}
 }

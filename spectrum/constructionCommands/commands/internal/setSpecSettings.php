@@ -14,11 +14,11 @@ namespace spectrum\constructionCommands\commands\internal;
  *     'catchPhpErrors' => -1,            // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors()
  *     'breakOnFirstPhpError' => true,    // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstPhpError()
  *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstMatcherFail()
- *     'inputEncoding' => 'windows-1251', // see \core\plugins\basePlugins\Output::setInputEncoding()
+ *     'inputCharset' => 'windows-1251', // see \core\plugins\basePlugins\Charset::setInputCharset()
  * ));
  *
  * @example
- * manager::setSettings($spec, 'windows-1251'); // see \core\plugins\basePlugins\Output::setInputEncoding()
+ * manager::setSettings($spec, 'windows-1251'); // see \core\plugins\basePlugins\Charset::setInputCharset()
  *
  * @example
  * manager::setSettings($spec, E_ALL); // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors()
@@ -29,7 +29,7 @@ namespace spectrum\constructionCommands\commands\internal;
 function setSpecSettings($storage, \spectrum\core\SpecInterface $spec, $settings)
 {
 	if (is_string($settings))
-		$spec->output->setInputEncoding($settings);
+		$spec->charset->setInputCharset($settings);
 	else if (is_int($settings) || is_bool($settings))
 		$spec->errorHandling->setCatchPhpErrors($settings);
 	else if (is_array($settings))
@@ -42,12 +42,12 @@ function setSpecSettings($storage, \spectrum\core\SpecInterface $spec, $settings
 				$spec->errorHandling->setBreakOnFirstPhpError($settingValue);
 			else if ($settingName == 'breakOnFirstMatcherFail')
 				$spec->errorHandling->setBreakOnFirstMatcherFail($settingValue);
-			else if ($settingName == 'inputEncoding')
-				$spec->output->setInputEncoding($settingValue);
+			else if ($settingName == 'inputCharset')
+				$spec->charset->setInputCharset($settingValue);
 			else
-				throw new \spectrum\constructionCommands\Exception('Invalid setting "' . $settingName . '" in spec with name "' . $spec->output->convertToOutputEncoding($spec->getName()) . '"');
+				throw new \spectrum\constructionCommands\Exception('Invalid setting "' . $settingName . '" in spec with name "' . $spec->output->convertToOutputCharset($spec->getName()) . '"');
 		}
 	}
 	else
-		throw new \spectrum\constructionCommands\Exception('Invalid settings variable type ("' . gettype($settings) . '") in spec with name "' . $spec->output->convertToOutputEncoding($spec->getName()) . '"');
+		throw new \spectrum\constructionCommands\Exception('Invalid settings variable type ("' . gettype($settings) . '") in spec with name "' . $spec->output->convertToOutputCharset($spec->getName()) . '"');
 }

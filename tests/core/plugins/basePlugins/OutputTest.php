@@ -17,221 +17,14 @@ class OutputTest extends \spectrum\tests\Test
 	public function setUp()
 	{
 		parent::setUp();
-		config::setAllowInputEncodingModify(true);
-		config::setAllowOutputEncodingModify(true);
+		config::setAllowInputCharsetModify(true);
 	}
 	
-	public function testSetInputEncoding_SetsNewEncoding()
+	public function testPut_InputCharsetArgumentIsNull_PrintsStringInCorrectCharset()
 	{
+		config::setOutputCharset('windows-1251');
 		$spec = new Spec();
-		$spec->output->setInputEncoding('windows-1251');
-		$this->assertSame('windows-1251', $spec->output->getInputEncoding());
-		
-		$spec->output->setInputEncoding('koi8-r');
-		$this->assertSame('koi8-r', $spec->output->getInputEncoding());
-	}
-	
-	public function testSetInputEncoding_CallOnRun_ThrowsExceptionAndDoesNotChangeEncoding()
-	{
-		\spectrum\tests\Test::$temp["exception"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			try
-			{
-				$this->getOwnerSpec()->output->setInputEncoding("koi8-r");
-			}
-			catch (\Exception $e)
-			{
-				\spectrum\tests\Test::$temp["exception"] = $e;
-			}
-		');
-		
-
-		$spec = new Spec();
-		$spec->output->setInputEncoding('windows-1251');
-		$spec->run();
-		
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\Output::setInputEncoding" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
-		$this->assertSame('windows-1251', $spec->output->getInputEncoding());
-	}
-	
-	public function testSetInputEncoding_InputEncodingModifyDenyInConfig_ThrowsExceptionAndDoesNotChangeEncoding()
-	{
-		$spec = new Spec();
-		$spec->output->setInputEncoding('windows-1251');
-		
-		config::setAllowInputEncodingModify(false);
-		$this->assertThrowsException('\spectrum\core\plugins\Exception', 'Input encoding modify deny in config', function() use($spec){
-			$spec->output->setInputEncoding('koi8-r');
-		});
-		
-		$this->assertSame('windows-1251', $spec->output->getInputEncoding());
-	}
-	
-/**/
-	
-	public function testGetInputEncoding_ReturnsSetEncoding()
-	{
-		$spec = new Spec();
-		$spec->output->setInputEncoding('windows-1251');
-		$this->assertSame('windows-1251', $spec->output->getInputEncoding());
-		
-		$spec->output->setInputEncoding('koi8-r');
-		$this->assertSame('koi8-r', $spec->output->getInputEncoding());
-	}
-	
-	public function testGetInputEncoding_ReturnsNullByDefault()
-	{
-		$spec = new Spec();
-		$this->assertSame(null, $spec->output->getInputEncoding());
-	}
-
-/**/
-	
-	public function testGetInputEncodingThroughRunningAncestors_ReturnsEncodingFromRunningAncestorOrFromSelf()
-	{
-		\spectrum\tests\Test::$temp["returnValues"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->output->getInputEncodingThroughRunningAncestors();
-		', 'onEndingSpecExecute');
-		
-		$specs = $this->createSpecsTree('
-			Spec
-			->Spec(endingSpec1)
-			->Spec(parent1)
-			->Spec(parent2)
-			->Spec(parent3)
-			->->Spec(endingSpec2)
-		', array('parent1' => 'endingSpec2', 'parent2' => 'endingSpec2'));
-		
-		$specs[0]->output->setInputEncoding('windows-1251');
-		$specs['endingSpec1']->output->setInputEncoding('windows-1252');
-		$specs['parent1']->output->setInputEncoding('windows-1253');
-		$specs['parent2']->output->setInputEncoding('windows-1254');
-		
-		$specs[0]->run();
-		
-		$this->assertSame(array('windows-1252', 'windows-1253', 'windows-1254', 'windows-1251'), \spectrum\tests\Test::$temp["returnValues"]);
-	}
-	
-	public function testGetInputEncodingThroughRunningAncestors_ReturnsUtf8ByDefault()
-	{
-		$spec = new Spec();
-		$this->assertSame('utf-8', $spec->output->getInputEncodingThroughRunningAncestors());
-	}
-	
-/**/
-
-	public function testSetOutputEncoding_SetsNewEncoding()
-	{
-		$spec = new Spec();
-		$spec->output->setOutputEncoding('windows-1251');
-		$this->assertSame('windows-1251', $spec->output->getOutputEncoding());
-		
-		$spec->output->setOutputEncoding('koi8-r');
-		$this->assertSame('koi8-r', $spec->output->getOutputEncoding());
-	}
-	
-	public function testSetOutputEncoding_CallOnRun_ThrowsExceptionAndDoesNotChangeEncoding()
-	{
-		\spectrum\tests\Test::$temp["exception"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			try
-			{
-				$this->getOwnerSpec()->output->setOutputEncoding("koi8-r");
-			}
-			catch (\Exception $e)
-			{
-				\spectrum\tests\Test::$temp["exception"] = $e;
-			}
-		');
-		
-
-		$spec = new Spec();
-		$spec->output->setOutputEncoding('windows-1251');
-		$spec->run();
-		
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\Output::setOutputEncoding" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
-		$this->assertSame('windows-1251', $spec->output->getOutputEncoding());
-	}
-	
-	public function testSetOutputEncoding_OutputEncodingModifyDenyInConfig_ThrowsExceptionAndDoesNotChangeEncoding()
-	{
-		$spec = new Spec();
-		$spec->output->setOutputEncoding('windows-1251');
-		
-		config::setAllowOutputEncodingModify(false);
-		$this->assertThrowsException('\spectrum\core\plugins\Exception', 'Output encoding modify deny in config', function() use($spec){
-			$spec->output->setOutputEncoding('koi8-r');
-		});
-		
-		$this->assertSame('windows-1251', $spec->output->getOutputEncoding());
-	}
-	
-/**/
-	
-	public function testGetOutputEncoding_ReturnsSetEncoding()
-	{
-		$spec = new Spec();
-		$spec->output->setOutputEncoding('windows-1251');
-		$this->assertSame('windows-1251', $spec->output->getOutputEncoding());
-		
-		$spec->output->setOutputEncoding('koi8-r');
-		$this->assertSame('koi8-r', $spec->output->getOutputEncoding());
-	}
-	
-	public function testGetOutputEncoding_ReturnsNullByDefault()
-	{
-		$spec = new Spec();
-		$this->assertSame(null, $spec->output->getOutputEncoding());
-	}
-
-/**/
-	
-	public function testGetOutputEncodingThroughRunningAncestors_ReturnsEncodingFromRunningAncestorOrFromSelf()
-	{
-		\spectrum\tests\Test::$temp["returnValues"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->output->getOutputEncodingThroughRunningAncestors();
-		', 'onEndingSpecExecute');
-		
-		$specs = $this->createSpecsTree('
-			Spec
-			->Spec(endingSpec1)
-			->Spec(parent1)
-			->Spec(parent2)
-			->Spec(parent3)
-			->->Spec(endingSpec2)
-		', array('parent1' => 'endingSpec2', 'parent2' => 'endingSpec2'));
-		
-		$specs[0]->output->setOutputEncoding('windows-1251');
-		$specs['endingSpec1']->output->setOutputEncoding('windows-1252');
-		$specs['parent1']->output->setOutputEncoding('windows-1253');
-		$specs['parent2']->output->setOutputEncoding('windows-1254');
-		
-		$specs[0]->run();
-		
-		$this->assertSame(array('windows-1252', 'windows-1253', 'windows-1254', 'windows-1251'), \spectrum\tests\Test::$temp["returnValues"]);
-	}
-	
-	public function testGetOutputEncodingThroughRunningAncestors_ReturnsUtf8ByDefault()
-	{
-		$spec = new Spec();
-		$this->assertSame('utf-8', $spec->output->getOutputEncodingThroughRunningAncestors());
-	}
-
-/**/
-	
-	public function testPut_PrintsStringInCorrectEncoding()
-	{
-		$spec = new Spec();
-		$spec->output->setInputEncoding('utf-8');
-		$spec->output->setOutputEncoding('windows-1251');
+		$spec->charset->setInputCharset('utf-8');
 		
 		ob_start();
 		$spec->output->put($this->toUtf8('тестовая строка'));
@@ -241,9 +34,23 @@ class OutputTest extends \spectrum\tests\Test
 		$this->assertSame($this->toWindows1251('тестовая строка'), $output);
 	}
 	
+	public function testPut_InputCharsetArgumentIsSet_PrintsStringInCorrectCharset()
+	{
+		config::setOutputCharset('windows-1251');
+		$spec = new Spec();
+		$spec->charset->setInputCharset('koi8-r');
+		
+		ob_start();
+		$spec->output->put($this->toUtf8('тестовая строка'), 'utf-8');
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		$this->assertSame($this->toWindows1251('тестовая строка'), $output);
+	}
+	
 /**/
 	
-	public function dataProviderConvertToOutputEncoding()
+	public function dataProviderConvertToOutputCharset()
 	{
 		return array(
 			array('utf-8',        'utf-8',        $this->toUtf8('тестовая строка'),        $this->toUtf8('тестовая строка')),
@@ -254,31 +61,32 @@ class OutputTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider dataProviderConvertToOutputEncoding
+	 * @dataProvider dataProviderConvertToOutputCharset
 	 */
-	public function testConvertToOutputEncoding_ReturnsStringConvertedFromInputEncodingToOutputEncoding($inputEncoding, $outputEncoding, $actualString, $expectedString)
+	public function testConvertToOutputCharset_InputCharsetArgumentIsNull_ReturnsStringConvertedFromInputCharsetToOutputCharset($inputCharset, $outputCharset, $actualString, $expectedString)
 	{
+		config::setOutputCharset($outputCharset);
 		$spec = new Spec();
-		$spec->output->setInputEncoding($inputEncoding);
-		$spec->output->setOutputEncoding($outputEncoding);
-		$this->assertSame($expectedString, $spec->output->convertToOutputEncoding($actualString));
+		$spec->charset->setInputCharset($inputCharset);
+		$this->assertSame($expectedString, $spec->output->convertToOutputCharset($actualString));
 	}
 	
-	public function testConvertToOutputEncoding_IgnoresEncodingNameCase()
+	public function testConvertToOutputCharset_InputCharsetArgumentIsNull_IgnoresCharsetNameCase()
 	{
+		config::setOutputCharset('windows-1251');
 		$spec = new Spec();
-		$spec->output->setInputEncoding('WINDOWS-1251');
-		$spec->output->setOutputEncoding('windows-1251');
-		$this->assertSame($this->toWindows1251('тестовая строка'), $spec->output->convertToOutputEncoding($this->toWindows1251('тестовая строка')));
+		$spec->charset->setInputCharset('WINDOWS-1251');
+		$this->assertSame($this->toWindows1251('тестовая строка'), $spec->output->convertToOutputCharset($this->toWindows1251('тестовая строка')));
 	}
 
-	public function testConvertToOutputEncoding_UsesUtf8AsDefaultInputEncodingAndDefaultOutputEncoding()
+	public function testConvertToOutputCharset_InputCharsetArgumentIsNull_UsesUtf8AsDefaultInputCharset()
 	{
+		config::setOutputCharset('utf-8');
 		$spec = new Spec();
-		$this->assertSame($this->toUtf8('тестовая строка'), $spec->output->convertToOutputEncoding($this->toUtf8('тестовая строка')));
+		$this->assertSame($this->toUtf8('тестовая строка'), $spec->output->convertToOutputCharset($this->toUtf8('тестовая строка')));
 	}
 
-	public function testConvertToOutputEncoding_GetsInputEncodingFromRunningAncestorOrFromSelf()
+	public function testConvertToOutputCharset_InputCharsetArgumentIsNull_GetsInputCharsetFromRunningAncestorOrFromSelf()
 	{
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
@@ -296,7 +104,7 @@ class OutputTest extends \spectrum\tests\Test
 			else
 				$string = null;
 				
-			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->output->convertToOutputEncoding($string);
+			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->output->convertToOutputCharset($string);
 		', 'onEndingSpecExecute');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
@@ -308,12 +116,12 @@ class OutputTest extends \spectrum\tests\Test
 			->->Spec(endingSpec2)
 		', array('parent1' => 'endingSpec2', 'parent2' => 'endingSpec2'));
 		
-		\spectrum\tests\Test::$temp["specs"][0]->output->setOutputEncoding('utf-8');
+		config::setOutputCharset('utf-8');
 		
-		\spectrum\tests\Test::$temp["specs"][0]->output->setInputEncoding('utf-8');
-		\spectrum\tests\Test::$temp["specs"]['endingSpec1']->output->setInputEncoding('windows-1251');
-		\spectrum\tests\Test::$temp["specs"]['parent1']->output->setInputEncoding('koi8-r');
-		\spectrum\tests\Test::$temp["specs"]['parent2']->output->setInputEncoding('iso-8859-5');
+		\spectrum\tests\Test::$temp["specs"][0]->charset->setInputCharset('utf-8');
+		\spectrum\tests\Test::$temp["specs"]['endingSpec1']->charset->setInputCharset('windows-1251');
+		\spectrum\tests\Test::$temp["specs"]['parent1']->charset->setInputCharset('koi8-r');
+		\spectrum\tests\Test::$temp["specs"]['parent2']->charset->setInputCharset('iso-8859-5');
 		
 		\spectrum\tests\Test::$temp["specs"][0]->run();
 		
@@ -324,43 +132,28 @@ class OutputTest extends \spectrum\tests\Test
 			$this->toUtf8('тестовая строка'),
 		), \spectrum\tests\Test::$temp["returnValues"]);
 	}
-
-	public function testConvertToOutputEncoding_GetsOutputEncodingFromRunningAncestorOrFromSelf()
+	
+	/**
+	 * @dataProvider dataProviderConvertToOutputCharset
+	 */
+	public function testConvertToOutputCharset_InputCharsetArgumentIsSet_ReturnsStringConvertedFromPassedInputCharsetToOutputCharset($inputCharset, $outputCharset, $actualString, $expectedString)
 	{
-		\spectrum\tests\Test::$temp["returnValues"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->output->convertToOutputEncoding("' . $this->toUtf8('тестовая строка') . '");
-		', 'onEndingSpecExecute');
-		
-		$specs = $this->createSpecsTree('
-			Spec
-			->Spec(endingSpec1)
-			->Spec(parent1)
-			->Spec(parent2)
-			->Spec(parent3)
-			->->Spec(endingSpec2)
-		', array('parent1' => 'endingSpec2', 'parent2' => 'endingSpec2'));
-		
-		$specs[0]->output->setInputEncoding('utf-8');
-		
-		$specs[0]->output->setOutputEncoding('utf-8');
-		$specs['endingSpec1']->output->setOutputEncoding('windows-1251');
-		$specs['parent1']->output->setOutputEncoding('koi8-r');
-		$specs['parent2']->output->setOutputEncoding('iso-8859-5');
-		
-		$specs[0]->run();
-		
-		$this->assertSame(array(
-			iconv('utf-8', 'windows-1251', 'тестовая строка'),
-			iconv('utf-8', 'koi8-r', 'тестовая строка'),
-			iconv('utf-8', 'iso-8859-5', 'тестовая строка'),
-			iconv('utf-8', 'utf-8', 'тестовая строка'),
-		), \spectrum\tests\Test::$temp["returnValues"]);
+		config::setOutputCharset($outputCharset);
+		$spec = new Spec();
+		$spec->charset->setInputCharset('koi8-r');
+		$this->assertSame($expectedString, $spec->output->convertToOutputCharset($actualString, $inputCharset));
+	}
+	
+	public function testConvertToOutputCharset_InputCharsetArgumentIsSet_IgnoresCharsetNameCase()
+	{
+		config::setOutputCharset('windows-1251');
+		$spec = new Spec();
+		$spec->charset->setInputCharset('koi8-r');
+		$this->assertSame($this->toWindows1251('тестовая строка'), $spec->output->convertToOutputCharset($this->toWindows1251('тестовая строка'), 'WINDOWS-1251'));
 	}
 
 /**/
-
+	
 	private function toWindows1251($string)
 	{
 		return iconv('utf-8', 'windows-1251', $string);

@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets;
 
-class SpecTitle extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
+class SpecTitle extends Widget
 {
 	public function getHtml()
 	{

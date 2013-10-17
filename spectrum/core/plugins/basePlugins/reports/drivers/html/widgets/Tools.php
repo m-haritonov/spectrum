@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets;
 
-class Tools extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
+class Tools extends Widget
 {
 	public function getScripts()
 	{

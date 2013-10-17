@@ -23,7 +23,6 @@ class Html extends Driver
 		'Messages' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Messages',
 		'resultBuffer\ResultBuffer' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\ResultBuffer',
 		'resultBuffer\details\MatcherCall' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\details\MatcherCall',
-		'resultBuffer\details\VerifyCall' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\details\VerifyCall',
 		'resultBuffer\details\Unknown' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\details\Unknown',
 		'SpecList' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList',
 		'SpecTitle' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecTitle',
@@ -78,6 +77,25 @@ class Html extends Driver
 		return $output;
 	}
 	
+	public function createWidget($name/*, ... */)
+	{
+		$reflection = new \ReflectionClass($this->widgets[$name]);
+		$args = func_get_args();
+		array_shift($args);
+		array_unshift($args, $this);
+
+		return $reflection->newInstanceArgs($args);
+	}
+	
+	protected function createAllWidgets()
+	{
+		$result = array();
+		foreach ($this->widgets as $name => $class)
+			$result[$name] = $this->createWidget($name);
+
+		return $result;
+	}
+	
 	protected function getHeader()
 	{
 		return
@@ -117,13 +135,13 @@ class Html extends Driver
 	{
 		return
 			'<style type="text/css">' . $this->getNewline() .
+				$this->getIndention() . 'html { background: #fff; }' . $this->getNewline() .
 				$this->getIndention() . 'body { padding: 10px; font-family: Verdana, sans-serif; font-size: 0.75em; background: #fff; color: #000; }' . $this->getNewline() .
 				$this->getIndention() . '* { margin: 0; padding: 0; }' . $this->getNewline() .
 				$this->getIndention() . '*[title] { cursor: help; }' . $this->getNewline() .
 				$this->getIndention() . 'a[title] { cursor: pointer; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
-
 
 	protected function getScripts()
 	{
@@ -144,26 +162,5 @@ class Html extends Driver
 	protected function getFooter()
 	{
 		return '</body>' . $this->getNewline() . '</html>';
-	}
-
-/**/
-
-	protected function createWidget($name/*, ... */)
-	{
-		$reflection = new \ReflectionClass($this->widgets[$name]);
-		$args = func_get_args();
-		array_shift($args);
-		array_unshift($args, $this);
-
-		return $reflection->newInstanceArgs($args);
-	}
-	
-	protected function createAllWidgets()
-	{
-		$result = array();
-		foreach ($this->widgets as $name => $class)
-			$result[$name] = $this->createWidget($name);
-
-		return $result;
 	}
 }

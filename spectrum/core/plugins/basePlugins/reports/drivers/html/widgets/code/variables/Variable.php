@@ -8,6 +8,8 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables;
 
+use spectrum\core\plugins\basePlugins\reports\drivers\DriverInterface;
+
 abstract class Variable extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
 {
 	protected $type;
@@ -17,9 +19,9 @@ abstract class Variable extends \spectrum\core\plugins\basePlugins\reports\drive
 
 	protected $depth;
 
-	public function __construct(\spectrum\core\plugins\basePlugins\reports\Reports $ownerPlugin, $depth = 0)
+	public function __construct(DriverInterface $ownerDriver, $depth = 0)
 	{
-		parent::__construct($ownerPlugin);
+		parent::__construct($ownerDriver);
 		$this->depth = $depth;
 	}
 

@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets;
 
-class ClearFix extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
+class ClearFix extends Widget
 {
 	public function getStyles()
 	{

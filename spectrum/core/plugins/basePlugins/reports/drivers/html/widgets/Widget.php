@@ -8,11 +8,13 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets;
 
+use spectrum\core\plugins\basePlugins\reports\drivers\DriverInterface;
+
 class Widget
 {
 	protected $ownerDriver;
 
-	public function __construct(\spectrum\core\plugins\basePlugins\reports\drivers\html\Html $ownerDriver)
+	public function __construct(DriverInterface $ownerDriver)
 	{
 		$this->ownerDriver = $ownerDriver;
 	}
@@ -31,8 +33,8 @@ class Widget
 	{
 		return $this->ownerDriver;
 	}
-	
-	protected function createWidget($name/*, ... */)
+
+	protected function createWidget()
 	{
 		return call_user_func_array(array($this->ownerDriver, 'createWidget'), func_get_args());
 	}
@@ -59,7 +61,6 @@ class Widget
 	
 	protected function translate($string, array $replacement = array())
 	{
-		$string = $this->ownerDriver->translate($string, $replacement);
-		return htmlspecialchars($string);
+		return htmlspecialchars($this->ownerDriver->translate($string, $replacement));
 	}
 }

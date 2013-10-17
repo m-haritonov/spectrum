@@ -411,7 +411,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerSettingsIsString
 	 */
-	public function testCallsAtDeclaringState_SettingsIsString_SetsInputEncodingToGroupSpec($arguments)
+	public function testCallsAtDeclaringState_SettingsIsString_SetsInputCharsetToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\constructionCommands\callBroker::internal_setDeclaringSpec($parentSpec);
@@ -419,10 +419,10 @@ class GroupTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\constructionCommands\callBroker::group', $arguments);
 
-		$this->assertSame('koi8-r', mb_strtolower($groupSpec->output->getInputEncoding()));
-		$this->assertNotSame('koi8-r', mb_strtolower($parentSpec->output->getInputEncoding()));
-		$this->assertNotSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[0]->output->getInputEncoding()));
-		$this->assertNotSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[1]->output->getInputEncoding()));
+		$this->assertSame('koi8-r', mb_strtolower($groupSpec->charset->getInputCharset()));
+		$this->assertNotSame('koi8-r', mb_strtolower($parentSpec->charset->getInputCharset()));
+		$this->assertNotSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[0]->charset->getInputCharset()));
+		$this->assertNotSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[1]->charset->getInputCharset()));
 	}
 	
 	public function providerSettingsIsInteger()
@@ -509,7 +509,7 @@ class GroupTest extends \spectrum\tests\Test
 			'catchPhpErrors' => 8,
 			'breakOnFirstPhpError' => true,
 			'breakOnFirstMatcherFail' => true,
-			'inputEncoding' => 'koi8-r',
+			'inputCharset' => 'koi8-r',
 		));
 	}
 
@@ -527,22 +527,22 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(8, $groupSpec->errorHandling->getCatchPhpErrors());
 		$this->assertSame(true, $groupSpec->errorHandling->getBreakOnFirstPhpError());
 		$this->assertSame(true, $groupSpec->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertSame('koi8-r', $groupSpec->output->getInputEncoding());
+		$this->assertSame('koi8-r', $groupSpec->charset->getInputCharset());
 		
 		$this->assertNotSame(8, $parentSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(true, $parentSpec->errorHandling->getBreakOnFirstPhpError());
 		$this->assertNotSame(true, $parentSpec->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertNotSame('koi8-r', $parentSpec->output->getInputEncoding());
+		$this->assertNotSame('koi8-r', $parentSpec->charset->getInputCharset());
 		
 		$this->assertNotSame(8, \spectrum\tests\Test::$temp[0]->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[0]->errorHandling->getBreakOnFirstPhpError());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[0]->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertNotSame('koi8-r', \spectrum\tests\Test::$temp[0]->output->getInputEncoding());
+		$this->assertNotSame('koi8-r', \spectrum\tests\Test::$temp[0]->charset->getInputCharset());
 		
 		$this->assertNotSame(8, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[1]->errorHandling->getBreakOnFirstPhpError());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[1]->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertNotSame('koi8-r', \spectrum\tests\Test::$temp[1]->output->getInputEncoding());
+		$this->assertNotSame('koi8-r', \spectrum\tests\Test::$temp[1]->charset->getInputCharset());
 	}
 	
 /**/
@@ -559,9 +559,9 @@ class GroupTest extends \spectrum\tests\Test
 		
 		$function1 = function(){};
 		$function2 = function(){};
-		\spectrum\constructionCommands\callBroker::group('aaa', $function1, $function2, array('inputEncoding' => 'koi8-r'));
+		\spectrum\constructionCommands\callBroker::group('aaa', $function1, $function2, array('inputCharset' => 'koi8-r'));
 		
-		$this->assertSame(array(array('aaa', $function1, $function2, array('inputEncoding' => 'koi8-r'))), $passedArguments);
+		$this->assertSame(array(array('aaa', $function1, $function2, array('inputCharset' => 'koi8-r'))), $passedArguments);
 	}
 	
 	public function testCallsAtDeclaringState_UsingOfGetArgumentsForSpecDeclaringCommandConstructionCommand_UsesReturnOfCommandValues()
@@ -574,7 +574,7 @@ class GroupTest extends \spectrum\tests\Test
 				'bbb', 
 				function() use(&$calledFunctions){ $calledFunctions[] = 'contexts'; }, 
 				function() use(&$calledFunctions){ $calledFunctions[] = 'body'; }, 
-				array('inputEncoding' => 'koi8-r'),
+				array('inputCharset' => 'koi8-r'),
 			);
 		});
 		
@@ -589,7 +589,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame('bbb', $groupSpec->getName());
 		$this->assertSame(false, $isCalled);
 		$this->assertSame(array('contexts', 'body'), $calledFunctions);
-		$this->assertSame('koi8-r', $groupSpec->output->getInputEncoding());
+		$this->assertSame('koi8-r', $groupSpec->charset->getInputCharset());
 	}
 	
 	public function testCallsAtDeclaringState_UsingOfGetArgumentsForSpecDeclaringCommandConstructionCommand_CommandReturnsNull_ThrowsException()

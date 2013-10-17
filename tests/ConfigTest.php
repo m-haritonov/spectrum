@@ -19,7 +19,229 @@ class ConfigTest extends Test
 		config::unregisterConstructionCommands();
 		config::unregisterSpecPlugins();
 	}
+
+	public function testGetOutputFormat_ReturnsHtmlByDefault()
+	{
+		$this->assertSame('html', config::getOutputFormat());
+	}
 	
+	public function testGetOutputFormat_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getOutputFormat();
+	}
+
+/**/
+
+	public function testSetOutputFormat_SetsNewValue()
+	{
+		config::setOutputFormat('text');
+		$this->assertSame('text', config::getOutputFormat());
+		
+		config::setOutputFormat('html');
+		$this->assertSame('html', config::getOutputFormat());
+	}
+	
+	public function testSetOutputFormat_FormatIsNotSupported_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputFormat('text');
+		
+		$this->assertThrowsException('\spectrum\Exception', 'Output format "aaa" is not supported', function(){
+			config::setOutputFormat('aaa');
+		});
+
+		$this->assertSame('text', config::getOutputFormat());
+	}
+
+	public function testSetOutputFormat_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputFormat('html');
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setOutputFormat('text');
+		});
+
+		$this->assertSame('html', config::getOutputFormat());
+	}
+
+/**/
+
+	public function testGetOutputIndention_ReturnsTabByDefault()
+	{
+		$this->assertSame("\t", config::getOutputIndention());
+	}
+	
+	public function testGetOutputIndention_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getOutputIndention();
+	}
+
+/**/
+
+	public function testSetOutputIndention_SetsNewValue()
+	{
+		config::setOutputIndention('    ');
+		$this->assertSame('    ', config::getOutputIndention());
+		
+		config::setOutputIndention("\t");
+		$this->assertSame("\t", config::getOutputIndention());
+	}
+
+	public function testSetOutputIndention_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputIndention("\t");
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setOutputIndention('    ');
+		});
+
+		$this->assertSame("\t", config::getOutputIndention());
+	}
+
+/**/
+
+	public function testGetOutputNewline_ReturnsCrLfByDefault()
+	{
+		$this->assertSame("\r\n", config::getOutputNewline());
+	}
+	
+	public function testGetOutputNewline_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getOutputNewline();
+	}
+
+/**/
+
+	public function testSetOutputNewline_SetsNewValue()
+	{
+		config::setOutputNewline("\n");
+		$this->assertSame("\n", config::getOutputNewline());
+		
+		config::setOutputNewline("\r\n\r\n");
+		$this->assertSame("\r\n\r\n", config::getOutputNewline());
+		
+		config::setOutputNewline("\r\n");
+		$this->assertSame("\r\n", config::getOutputNewline());
+	}
+
+	public function testSetOutputNewline_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputNewline("\r\n");
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setOutputNewline("\n");
+		});
+
+		$this->assertSame("\r\n", config::getOutputNewline());
+	}
+
+/**/
+
+	public function testGetOutputCharset_ReturnsUtf8ByDefault()
+	{
+		$this->assertSame('utf-8', config::getOutputCharset());
+	}
+	
+	public function testGetOutputCharset_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getOutputCharset();
+	}
+
+/**/
+
+	public function testSetOutputCharset_SetsNewValue()
+	{
+		config::setOutputCharset('windows-1251');
+		$this->assertSame('windows-1251', config::getOutputCharset());
+		
+		config::setOutputCharset('utf-8');
+		$this->assertSame('utf-8', config::getOutputCharset());
+	}
+
+	public function testSetOutputCharset_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputCharset('utf-8');
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setOutputCharset('windows-1251');
+		});
+
+		$this->assertSame('utf-8', config::getOutputCharset());
+	}
+	
+/**/
+
+	public function testGetAllowInputCharsetModify_ReturnsTrueByDefault()
+	{
+		$this->assertTrue(config::getAllowInputCharsetModify());
+	}
+	
+	public function testGetAllowInputCharsetModify_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getAllowInputCharsetModify();
+	}
+
+/**/
+
+	public function testSetAllowInputCharsetModify_SetsNewValue()
+	{
+		config::setAllowInputCharsetModify(false);
+		$this->assertFalse(config::getAllowInputCharsetModify());
+	}
+
+	public function testSetAllowInputCharsetModify_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setAllowInputCharsetModify(true);
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setAllowInputCharsetModify(false);
+		});
+
+		$this->assertTrue(config::getAllowInputCharsetModify());
+	}
+
+/**/
+	
+	public function testGetAllowErrorHandlingModify_ReturnsTrueByDefault()
+	{
+		$this->assertTrue(config::getAllowErrorHandlingModify());
+	}
+	
+	public function testGetAllowErrorHandlingModify_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getAllowErrorHandlingModify();
+	}
+
+/**/
+
+	public function testSetAllowErrorHandlingModify_SetsNewValue()
+	{
+		config::setAllowErrorHandlingModify(false);
+		$this->assertFalse(config::getAllowErrorHandlingModify());
+	}
+
+	public function testSetAllowErrorHandlingModify_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setAllowErrorHandlingModify(true);
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setAllowErrorHandlingModify(false);
+		});
+
+		$this->assertTrue(config::getAllowErrorHandlingModify());
+	}
+
 /**/
 	
 	public function testGetConstructionCommandCallBrokerClass_ReturnsSpectrumClassByDefault()
@@ -576,134 +798,6 @@ class ConfigTest extends Test
 
 /**/
 
-	public function testGetAllowErrorHandlingModify_ReturnsTrueByDefault()
-	{
-		$this->assertTrue(config::getAllowErrorHandlingModify());
-	}
-	
-	public function testGetAllowErrorHandlingModify_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getAllowErrorHandlingModify();
-	}
-
-/**/
-
-	public function testSetAllowErrorHandlingModify_SetsNewValue()
-	{
-		config::setAllowErrorHandlingModify(false);
-		$this->assertFalse(config::getAllowErrorHandlingModify());
-	}
-
-	public function testSetAllowErrorHandlingModify_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::lock();
-
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setAllowErrorHandlingModify(false);
-		});
-
-		$this->assertTrue(config::getAllowErrorHandlingModify());
-	}
-
-/**/
-
-	public function testGetAllowInputEncodingModify_ReturnsTrueByDefault()
-	{
-		$this->assertTrue(config::getAllowInputEncodingModify());
-	}
-	
-	public function testGetAllowInputEncodingModify_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getAllowInputEncodingModify();
-	}
-
-/**/
-
-	public function testSetAllowInputEncodingModify_SetsNewValue()
-	{
-		config::setAllowInputEncodingModify(false);
-		$this->assertFalse(config::getAllowInputEncodingModify());
-	}
-
-	public function testSetAllowInputEncodingModify_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::lock();
-
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setAllowInputEncodingModify(false);
-		});
-
-		$this->assertTrue(config::getAllowInputEncodingModify());
-	}
-
-/**/
-
-	public function testGetAllowOutputEncodingModify_ReturnsTrueByDefault()
-	{
-		$this->assertTrue(config::getAllowOutputEncodingModify());
-	}
-	
-	public function testGetAllowOutputEncodingModify_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getAllowOutputEncodingModify();
-	}
-
-/**/
-
-	public function testSetAllowOutputEncodingModify_SetsNewValue()
-	{
-		config::setAllowOutputEncodingModify(false);
-		$this->assertFalse(config::getAllowOutputEncodingModify());
-	}
-
-	public function testSetAllowOutputEncodingModify_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::lock();
-
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setAllowOutputEncodingModify(false);
-		});
-
-		$this->assertTrue(config::getAllowOutputEncodingModify());
-	}
-	
-/**/
-	
-	public function testGetAllowReportSettingsModify_ReturnsTrueByDefault()
-	{
-		$this->assertTrue(config::getAllowReportSettingsModify());
-	}
-	
-	public function testGetAllowReportSettingsModify_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getAllowReportSettingsModify();
-	}
-
-/**/
-
-	public function testSetAllowReportSettingsModify_SetsNewValue()
-	{
-		config::setAllowReportSettingsModify(false);
-		$this->assertFalse(config::getAllowReportSettingsModify());
-	}
-
-	public function testSetAllowReportSettingsModify_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::lock();
-
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setAllowReportSettingsModify(false);
-		});
-
-		$this->assertTrue(config::getAllowReportSettingsModify());
-	}
-	
-/**/
-	
 	public function testRegisterSpecPlugin_AddsPluginClassToRegisteredPlugins()
 	{
 		$className1 = $this->createClass('
@@ -1397,13 +1491,14 @@ class ConfigTest extends Test
 		$this->restoreStaticProperties('\spectrum\config');
 		
 		$this->assertSame(array(
-			'\spectrum\core\plugins\basePlugins\reports\Reports',
 			'\spectrum\core\plugins\basePlugins\contexts\Contexts',
 			'\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling',
-			'\spectrum\core\plugins\basePlugins\TestFunction',
+			'\spectrum\core\plugins\basePlugins\reports\Reports',
+			'\spectrum\core\plugins\basePlugins\Charset',
 			'\spectrum\core\plugins\basePlugins\Matchers',
 			'\spectrum\core\plugins\basePlugins\Messages',
 			'\spectrum\core\plugins\basePlugins\Output',
+			'\spectrum\core\plugins\basePlugins\TestFunction',
 		), config::getRegisteredSpecPlugins());
 	}
 	

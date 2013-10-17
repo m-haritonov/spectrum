@@ -15,15 +15,15 @@ require_once __DIR__ . '/../../../init.php';
 
 class SetSpecSettingsTest extends \spectrum\tests\Test
 {
-	public function testCallsAtDeclaringState_SettingValueIsString_SetsValueToSpecAsInputEncoding()
+	public function testCallsAtDeclaringState_SettingValueIsString_SetsValueToSpecAsInputCharset()
 	{
 		$spec = new Spec();
 		
 		callBroker::internal_setSpecSettings($spec, 'windows-1251');
-		$this->assertSame('windows-1251', $spec->output->getInputEncoding());
+		$this->assertSame('windows-1251', $spec->charset->getInputCharset());
 		
 		callBroker::internal_setSpecSettings($spec, 'koi8-r');
-		$this->assertSame('koi8-r', $spec->output->getInputEncoding());
+		$this->assertSame('koi8-r', $spec->charset->getInputCharset());
 	}
 	
 	public function testCallsAtDeclaringState_SettingValueIsInteger_SetsValueToSpecAsCatchPhpErrors()
@@ -68,16 +68,16 @@ class SetSpecSettingsTest extends \spectrum\tests\Test
 			'catchPhpErrors' => E_NOTICE,
 			'breakOnFirstPhpError' => true,
 			'breakOnFirstMatcherFail' => true,
-			'inputEncoding' => 'windows-1251',
+			'inputCharset' => 'windows-1251',
 		));
 		
 		$this->assertSame(E_NOTICE, $spec->errorHandling->getCatchPhpErrors());
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstPhpError());
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertSame('windows-1251', $spec->output->getInputEncoding());
+		$this->assertSame('windows-1251', $spec->charset->getInputCharset());
 		
 		callBroker::internal_setSpecSettings($spec, array(
-			'inputEncoding' => 'koi8-r',
+			'inputCharset' => 'koi8-r',
 			'breakOnFirstMatcherFail' => false,
 			'breakOnFirstPhpError' => false,
 			'catchPhpErrors' => E_ERROR,
@@ -86,7 +86,7 @@ class SetSpecSettingsTest extends \spectrum\tests\Test
 		$this->assertSame(E_ERROR, $spec->errorHandling->getCatchPhpErrors());
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstPhpError());
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertSame('koi8-r', $spec->output->getInputEncoding());
+		$this->assertSame('koi8-r', $spec->charset->getInputCharset());
 	}
 	
 	public function testCallsAtDeclaringState_SettingValueIsArrayWithNotSupportedSetting_ThrowsException()

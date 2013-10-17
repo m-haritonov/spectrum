@@ -34,6 +34,13 @@ require_once __DIR__ . '/constructionCommands/commands/internal/setSpecSettings.
 
 final class config
 {
+	static private $outputFormat = 'html';
+	static private $outputIndention = "\t";
+	static private $outputNewline = "\r\n";
+	static private $outputCharset = 'utf-8';
+	static private $allowInputCharsetModify = true;
+	static private $allowErrorHandlingModify = true;
+	
 	static private $constructionCommandCallBrokerClass = '\spectrum\constructionCommands\callBroker';
 	static private $assertClass = '\spectrum\core\Assert';
 	static private $matcherCallDetailsClass = '\spectrum\core\MatcherCallDetails';
@@ -41,19 +48,15 @@ final class config
 	static private $contextDataClass = '\spectrum\core\plugins\basePlugins\contexts\Data';
 	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
 	
-	static private $allowErrorHandlingModify = true;
-	static private $allowInputEncodingModify = true;
-	static private $allowOutputEncodingModify = true;
-	static private $allowReportSettingsModify = true;
-
 	static private $registeredSpecPlugins = array(
-		'\spectrum\core\plugins\basePlugins\reports\Reports',
 		'\spectrum\core\plugins\basePlugins\contexts\Contexts',
 		'\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling',
-		'\spectrum\core\plugins\basePlugins\TestFunction',
+		'\spectrum\core\plugins\basePlugins\reports\Reports',
+		'\spectrum\core\plugins\basePlugins\Charset',
 		'\spectrum\core\plugins\basePlugins\Matchers',
 		'\spectrum\core\plugins\basePlugins\Messages',
 		'\spectrum\core\plugins\basePlugins\Output',
+		'\spectrum\core\plugins\basePlugins\TestFunction',
 	);
 
 	static private $registeredConstructionCommands = array(
@@ -87,6 +90,36 @@ final class config
 	// For abstract class imitation (using "abstract" keyword with "final" not allowed)
 	private function __construct(){}
 	
+	/**
+	 * @param $format "html"|"text"
+	 */
+	static public function setOutputFormat($format)
+	{
+		$format = strtolower($format);
+		
+		if ($format != 'html' && $format != 'text')
+			throw new Exception('Output format "' . $format . '" is not supported');
+		
+		return static::setConfigValue(static::$outputFormat, $format);
+	}
+	
+	static public function getOutputFormat(){ return static::$outputFormat; }
+	
+	static public function setOutputIndention($string){ return static::setConfigValue(static::$outputIndention, $string);}
+	static public function getOutputIndention(){ return static::$outputIndention; }
+
+	static public function setOutputNewline($string){ return static::setConfigValue(static::$outputNewline, $string); }
+	static public function getOutputNewline(){ return static::$outputNewline; }
+
+	static public function setOutputCharset($charsetName){ return static::setConfigValue(static::$outputCharset, $charsetName); }
+	static public function getOutputCharset(){ return static::$outputCharset; }
+	
+	static public function setAllowInputCharsetModify($isEnable){ return static::setConfigValue(static::$allowInputCharsetModify, $isEnable); }
+	static public function getAllowInputCharsetModify(){ return static::$allowInputCharsetModify; }
+	
+	static public function setAllowErrorHandlingModify($isEnable){ return static::setConfigValue(static::$allowErrorHandlingModify, $isEnable); }
+	static public function getAllowErrorHandlingModify(){ return static::$allowErrorHandlingModify; }
+	
 /**/
 
 	static public function setConstructionCommandCallBrokerClass($className){ return static::setConfigClassValue(static::$constructionCommandCallBrokerClass, $className, '\spectrum\constructionCommands\callBrokerInterface'); }
@@ -109,20 +142,6 @@ final class config
 	
 /**/
 
-	static public function setAllowErrorHandlingModify($isEnable){ return static::setConfigValue(static::$allowErrorHandlingModify, $isEnable); }
-	static public function getAllowErrorHandlingModify(){ return static::$allowErrorHandlingModify; }
-
-	static public function setAllowInputEncodingModify($isEnable){ return static::setConfigValue(static::$allowInputEncodingModify, $isEnable); }
-	static public function getAllowInputEncodingModify(){ return static::$allowInputEncodingModify; }
-
-	static public function setAllowOutputEncodingModify($isEnable){ return static::setConfigValue(static::$allowOutputEncodingModify, $isEnable); }
-	static public function getAllowOutputEncodingModify(){ return static::$allowOutputEncodingModify; }
-	
-	static public function setAllowReportSettingsModify($isEnable){ return static::setConfigValue(static::$allowReportSettingsModify, $isEnable); }
-	static public function getAllowReportSettingsModify(){ return static::$allowReportSettingsModify; }
-
-/**/
-	
 	static public function registerSpecPlugin($class)
 	{
 		if (static::$locked)

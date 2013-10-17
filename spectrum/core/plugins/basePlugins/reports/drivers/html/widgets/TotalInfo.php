@@ -8,13 +8,13 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets;
 
-class TotalInfo extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
+class TotalInfo extends Widget
 {
 	public function getStyles()
 	{
 		return
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . '.g-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #ddd; }' . $this->getNewline() .
+				$this->getIndention() . '.g-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #e5e5e5; }' . $this->getNewline() .
 				$this->getIndention() . '.g-totalInfo>div { display: inline; }' . $this->getNewline() .
 				$this->getIndention() . '.g-totalInfo h1 { display: inline; color: #333; font-size: 1em; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
@@ -36,8 +36,6 @@ class TotalInfo extends \spectrum\core\plugins\basePlugins\reports\drivers\html\
 					'' . $this->translate('Details') . ': ' .
 					$this->createWidget('DetailsControl')->getHtml() .
 				'</div>' . $this->getNewline() .
-
-//				$this->prependIndentionToEachLine($this->createWidget('Messages')->getHtml()) . $this->getNewline() .
 			'</div>' . $this->getNewline();
 	}
 

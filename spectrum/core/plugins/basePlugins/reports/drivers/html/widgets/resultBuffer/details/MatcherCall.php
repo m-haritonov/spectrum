@@ -13,35 +13,31 @@ class MatcherCall extends Details
 {
 	public function getStyles()
 	{
-		$expandedParentSelector = '.g-resultBuffer>.results>.result.expand';
-
 		return
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . '.g-resultBuffer-details-matcherCall>.callExpression { margin-bottom: 4px; }' . $this->getNewline() .
-				$this->getIndention() . '.g-resultBuffer-details-matcherCall>.callExpression>.g-code-method>.methodName { font-weight: bold; }' . $this->getNewline() .
-				$this->getIndention() . '.g-resultBuffer-details-matcherCall>div>.title { font-weight: bold; }' . $this->getNewline() .
-				$this->getIndention() . '.g-resultBuffer-details-matcherCall>.returnValue { display: none; }' . $this->getNewline() .
-				$this->getIndention() . $expandedParentSelector . ' .g-resultBuffer-details-matcherCall>.returnValue { display: block; }' . $this->getNewline() .
+				$this->getIndention() . '.g-resultBuffer-details-matcherCall>.evaluatedValues { margin-bottom: 1em; }' . $this->getNewline() .
+				$this->getIndention() . '.g-resultBuffer-details-matcherCall>*>h1 { margin-bottom: 0.2em; font-size: 1em; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
 	public function getHtml(MatcherCallDetailsInterface $details)
 	{
-		$output = '';
-		$output .= '<div class="g-resultBuffer-details-matcherCall g-resultBuffer-details">';
-		$output .= $this->getHtmlForCallExpression($details);
-		$output .= $this->getHtmlForThrownException($details);
-		$output .= $this->getHtmlForReturnValue($details);
-		$output .= '</div>';
-		return $output;
+		return
+			'<div class="g-resultBuffer-details-matcherCall g-resultBuffer-details">' .
+				$this->getHtmlForEvaluatedValues($details) .
+				$this->getHtmlForMatcherException($details) .
+			'</div>';
 	}
 
-	protected function getHtmlForCallExpression(MatcherCallDetailsInterface $details)
+	protected function getHtmlForEvaluatedValues(MatcherCallDetailsInterface $details)
 	{
 		$output = '';
 
-		$output .= '<div class="callExpression">';
+		$output .= '<div class="evaluatedValues">';
+		$output .= '<h1>' . $this->translate('Evaluated values') . ':</h1>';
+		
+		$output .= '<div class="value">';
 		$output .= $this->createWidget('code\Method')->getHtml('the', array($details->getTestedValue()));
 
 		if ($details->getNot())
@@ -53,31 +49,25 @@ class MatcherCall extends Details
 		$output .= $this->createWidget('code\Operator')->getHtml('->');
 		$output .= $this->createWidget('code\Method')->getHtml($details->getMatcherName(), $details->getMatcherArguments());
 		$output .= '</div>';
+		
+		$output .= '</div>';
 
 		return $output;
 	}
-
-	protected function getHtmlForThrownException(MatcherCallDetailsInterface $details)
+	
+	protected function getHtmlForMatcherException(MatcherCallDetailsInterface $details)
 	{
+		if ($details->getMatcherException() === null)
+			return null;
+		
 		return
-			'<div class="thrownException">
-				<span class="title" title="' . $this->translate('Exception thrown by "%matcherName%" matcher', array('%matcherName%' => $details->getMatcherName())) . '">' .
-					$this->translate('Matcher exception') . ':' .
-				'</span> ' .
-
-				$this->createWidget('code\Variable')->getHtml($details->getException()) .
-			'</div>';
-	}
-
-	protected function getHtmlForReturnValue(MatcherCallDetailsInterface $details)
-	{
-		return
-			'<div class="returnValue">
-				<span class="title" title="' . $this->translate('Original value returned by "%matcherName%" matcher', array('%matcherName%' => $details->getMatcherName())) . '">' .
-					$this->translate('Matcher return value') . ':' .
-				'</span> ' .
-
-				$this->createWidget('code\Variable')->getHtml($details->getMatcherReturnValue()) .
+			'<div class="matcherException">' .
+				'<h1 title="' . $this->translate('Exception thrown by "%matcherName%" matcher', array('%matcherName%' => $details->getMatcherName())) . '">' . 
+					$this->translate('Matcher exception') . ':' . 
+				'</h1>' .
+				'<div class="value">' . 
+					$this->createWidget('code\Variable')->getHtml($details->getMatcherException()) .
+				'</div>' .
 			'</div>';
 	}
 }

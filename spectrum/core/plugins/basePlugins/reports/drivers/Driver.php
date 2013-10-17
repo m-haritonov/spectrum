@@ -8,11 +8,14 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers;
 
+use spectrum\config;
+use spectrum\core\plugins\PluginInterface;
+
 abstract class Driver implements DriverInterface
 {
 	protected $ownerPlugin;
 	
-	public function __construct(\spectrum\core\plugins\basePlugins\reports\Reports $ownerPlugin)
+	public function __construct(PluginInterface $ownerPlugin)
 	{
 		$this->ownerPlugin = $ownerPlugin;
 	}
@@ -22,9 +25,11 @@ abstract class Driver implements DriverInterface
 		return $this->ownerPlugin;
 	}
 	
+/**/
+
 	public function getIndention($repeat = 1)
 	{
-		return str_repeat($this->ownerPlugin->getNewline(), $repeat);
+		return str_repeat(config::getOutputIndention(), $repeat);
 	}
 	
 	public function prependIndentionToEachLine($text, $repeat = 1, $trimNewline = true)
@@ -38,9 +43,11 @@ abstract class Driver implements DriverInterface
 			return $text;
 	}
 	
+/**/
+	
 	public function getNewline($repeat = 1)
 	{
-		return str_repeat($this->ownerPlugin->getNewline(), $repeat);
+		return str_repeat(config::getOutputNewline(), $repeat);
 	}
 	
 	public function trimNewline($text)
@@ -49,11 +56,8 @@ abstract class Driver implements DriverInterface
 		return preg_replace('/^(' . $escapedNewline . ')+|(' . $escapedNewline . ')+$/s', '', $text);
 	}
 	
-	/**
-	 * @param $string
-	 * @param array $replacement
-	 * @return string
-	 */
+/**/
+	
 	public function translate($string, array $replacement = array())
 	{
 		return strtr($string, $replacement);

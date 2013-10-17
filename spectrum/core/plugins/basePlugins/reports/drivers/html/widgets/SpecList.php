@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets;
 
-class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
+class SpecList extends Widget
 {
 	static protected $depth;
 	static protected $numbers = array();
@@ -20,7 +20,7 @@ class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\w
 				$this->getIndention() . '.g-specList { list-style: none; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li { margin-top: 3px; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.indention { display: inline-block; width: 0; white-space: pre; }' . $this->getNewline() .
-				$this->getIndention() . '.g-specList>li>.point { position: relative; padding: 1px 16px 1px 6px; border-radius: 20px; background: #ddd; }' . $this->getNewline() .
+				$this->getIndention() . '.g-specList>li>.point { position: relative; padding: 1px 16px 1px 6px; border-radius: 20px; background: #e5e5e5; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.point>.number { font-size: 0.9em; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.point>.number .dot { display: inline-block; width: 0; color: transparent; }' . $this->getNewline() .
 				$this->getIndention() . '.g-specList>li>.point>a.expand { display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-right: 2px; text-decoration: none; text-align: right; }' . $this->getNewline() .
@@ -92,7 +92,7 @@ class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\w
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecPoint() . $this->getNewline();
 			$output .= $this->prependIndentionToEachLine($this->createWidget('SpecTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
-			if ($spec->getChildSpecs() || !$spec->getParentSpecs())
+			if ($spec->getChildSpecs())
 			{
 				$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . '<ol class="g-specList">' . $this->getNewline();
 				static::$depth++;
@@ -119,7 +119,6 @@ class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\w
 
 			$output .= $this->prependIndentionToEachLine($this->createWidget('totalResult\Update')->getHtml($totalResult), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 3) . $this->trimNewline($this->getRunDetails($totalResult)) . $this->getNewline();
-
 			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '</li>' . $this->getNewline();
 		}
 
@@ -171,8 +170,8 @@ class SpecList extends \spectrum\core\plugins\basePlugins\reports\drivers\html\w
 	protected function getSpecCssClass()
 	{
 		if ($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getChildSpecs())
-			return 'container';
+			return 'notEnding';
 		else
-			return 'item';
+			return 'ending';
 	}
 }

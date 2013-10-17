@@ -27,12 +27,11 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\wid
 					totalResult.update = function()
 					{
 						var totalResult = getTotalResult();
-						var resultNodes = document.querySelectorAll(".g-totalResult-result[data-specUid=\'" + totalResult.specUid + "\']");
+						var resultNodes = document.querySelectorAll(".g-totalResult-result[data-specId=\'" + totalResult.specId + "\']");
 						for (var i = 0; i < resultNodes.length; i++)
 						{
-							var resultNode = resultNodes[i];
-							resultNode.className += " " + totalResult.resultAlias;
-							resultNode.innerHTML = totalResult.resultTitle;
+							resultNodes[i].innerHTML = totalResult.resultTitle;
+							resultNodes[i].className += " " + totalResult.resultCssClass;
 						}
 					}
 
@@ -43,9 +42,9 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\wid
 							totalResultNode = totalResultNode.parentNode;
 
 						return {
-							specUid: totalResultNode.getAttribute("data-specUid"),
-							resultAlias: totalResultNode.getAttribute("data-resultAlias"),
-							resultTitle: totalResultNode.getAttribute("data-resultTitle")
+							specId: totalResultNode.getAttribute("data-specId"),
+							resultTitle: totalResultNode.getAttribute("data-resultTitle"),
+							resultCssClass: totalResultNode.getAttribute("data-resultCssClass")
 						};
 					}
 
@@ -60,26 +59,24 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\wid
 
 	public function getHtml($totalResult)
 	{
-		$resultAlias = $this->getTotalResultAlias($totalResult);
+		$resultInfo = $this->getResultInfo($totalResult);
 		return
 			'<span class="g-totalResult-update"
-				data-specUid="' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getSpecId()) . '"
-				data-resultAlias="' . htmlspecialchars($resultAlias) . '"
-				data-resultTitle="' . $this->translate($resultAlias) . '">' . $this->getNewline() .
-
+				data-specId="' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getSpecId()) . '"
+				data-resultTitle="' . $this->translate($resultInfo['title']) . '"
+				data-resultCssClass="' . htmlspecialchars($resultInfo['cssClass']) . '"
+			>' . $this->getNewline() .
 				$this->getIndention() . '<script type="text/javascript">totalResult.update();</script>' . $this->getNewline() .
 			'</span>';
 	}
 
-	protected function getTotalResultAlias($result)
+	protected function getResultInfo($result)
 	{
 		if ($result === false)
-			$alias = 'fail';
+			return array('title' => 'fail', 'cssClass' => 'fail');
 		else if ($result === true)
-			$alias = 'success';
+			return array('title' => 'success', 'cssClass' => 'success');
 		else
-			$alias = 'empty';
-
-		return $alias;
+			return array('title' => 'empty', 'cssClass' => 'empty');
 	}
 }

@@ -8,6 +8,8 @@
 
 namespace spectrum\tests;
 
+use spectrum\config;
+
 require_once __DIR__ . '/init.php';
 
 abstract class Test extends \PHPUnit_Framework_TestCase
@@ -24,7 +26,8 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->backupStaticProperties('\spectrum\constructionCommands\callBroker');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\Output');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
-
+		
+		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\reports\Reports');
 		\spectrum\tests\Test::$temp = null;
 	}
 
@@ -150,7 +153,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				\spectrum\constructionCommands\callBroker::group(null, null, function(){}, null);
 				\spectrum\constructionCommands\callBroker::test(null, null, function(){}, null);
 			}),
-			'settings' => array(true, false, 8, 'koi8-r', array(), array('inputEncoding' => 'koi8-r')),
+			'settings' => array(true, false, 8, 'koi8-r', array(), array('inputCharset' => 'koi8-r')),
 		);
 		
 		$patterns = array(

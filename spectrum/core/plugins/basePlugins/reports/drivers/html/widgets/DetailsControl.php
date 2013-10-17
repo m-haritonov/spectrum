@@ -8,7 +8,7 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\widgets;
 
-class DetailsControl extends \spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Widget
+class DetailsControl extends Widget
 {
 	public function getStyles()
 	{
@@ -64,32 +64,32 @@ class DetailsControl extends \spectrum\core\plugins\basePlugins\reports\drivers\
 						node.querySelector(".state1").addEventListener("click", function(e){
 							clickCurrentState(e);
 
-							tools.removeClass(".g-specList>li.container", "expand");
-							tools.removeClass(".g-specList>li.item", "expand");
+							tools.removeClass(".g-specList>li.notEnding", "expand");
+							tools.removeClass(".g-specList>li.ending", "expand");
 							tools.removeClass(".g-resultBuffer>.results>.result", "expand");
 						});
 
 						node.querySelector(".state2").addEventListener("click", function(e){
 							clickCurrentState(e);
 
-							tools.addClass(".g-specList>li.container", "expand");
-							tools.removeClass(".g-specList>li.item", "expand");
+							tools.addClass(".g-specList>li.notEnding", "expand");
+							tools.removeClass(".g-specList>li.ending", "expand");
 							tools.removeClass(".g-resultBuffer>.results>.result", "expand");
 						});
 
 						node.querySelector(".state3").addEventListener("click", function(e){
 							clickCurrentState(e);
 
-							tools.addClass(".g-specList>li.container", "expand");
-							tools.addClass(".g-specList>li.item", "expand");
+							tools.addClass(".g-specList>li.notEnding", "expand");
+							tools.addClass(".g-specList>li.ending", "expand");
 							tools.removeClass(".g-resultBuffer>.results>.result", "expand");
 						});
 
 						node.querySelector(".state4").addEventListener("click", function(e){
 							clickCurrentState(e);
 
-							tools.addClass(".g-specList>li.container", "expand");
-							tools.addClass(".g-specList>li.item", "expand");
+							tools.addClass(".g-specList>li.notEnding", "expand");
+							tools.addClass(".g-specList>li.ending", "expand");
 							tools.addClass(".g-resultBuffer>.results>.result", "expand");
 						});
 					}

@@ -25,7 +25,7 @@ class Result extends \spectrum\core\plugins\basePlugins\reports\drivers\html\wid
 	{
 		// See "Update" widget to understand update logic
 		return
-			'<span class="g-totalResult-result" data-specUid="' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getSpecId()) . '">' .
+			'<span class="g-totalResult-result" data-specId="' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getSpecId()) . '">' .
 				$this->translate('wait') . '...' .
 			'</span>';
 	}
