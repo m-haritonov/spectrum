@@ -426,6 +426,12 @@ class ConfigTest extends Test
 				
 				public function setMatcherException(\Exception $exception = null){}
 				public function getMatcherException(){}
+				
+				public function setFile($path){}
+				public function getFile(){}
+				
+				public function setLine($number){}
+				public function getLine(){}
 			}
 		');
 		
@@ -480,6 +486,12 @@ class ConfigTest extends Test
 				
 				public function setMatcherException(\Exception $exception = null){}
 				public function getMatcherException(){}
+				
+				public function setFile($path){}
+				public function getFile(){}
+				
+				public function setLine($number){}
+				public function getLine(){}
 			}
 		');
 		
