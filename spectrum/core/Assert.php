@@ -49,7 +49,11 @@ class Assert implements AssertInterface
 		$matcherCallDetails->setNot($this->notFlag);
 		$matcherCallDetails->setMatcherName($matcherName);
 		$matcherCallDetails->setMatcherArguments($matcherArguments);
-	
+		
+		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		$matcherCallDetails->setFile($trace[0]['file']);
+		$matcherCallDetails->setLine($trace[0]['line']);
+		
 		$this->dispatchPluginEvent('onMatcherCallStart', array($matcherCallDetails));
 		
 		$matcherFunction = $this->ownerSpec->matchers->getThroughRunningAncestors($matcherName);

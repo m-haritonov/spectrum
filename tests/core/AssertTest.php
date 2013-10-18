@@ -153,12 +153,15 @@ class AssertTest extends \spectrum\tests\Test
 	public function testMatcherCall_MatcherReturnsFalse_AddsFalseWithMatcherCallDetailsToResultBuffer()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
-			$assert->zzz("ccc", "ddd", "eee");
+			$assert->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -178,6 +181,8 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('ccc', 'ddd', 'eee'), $results[0]['details']->getMatcherArguments());
 		$this->assertSame(false, $results[0]['details']->getMatcherReturnValue());
 		$this->assertSame(null, $results[0]['details']->getMatcherException());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $results[0]['details']->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $results[0]['details']->getLine());
 	}
 	
 	public function testMatcherCall_MatcherReturnsFalse_CastsResultToFalse()
@@ -222,12 +227,15 @@ class AssertTest extends \spectrum\tests\Test
 	public function testMatcherCall_MatcherReturnsFalse_NotFlagEnabled_AddsTrueWithMatcherCallDetailsToResultBuffer()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
-			$assert->not->zzz("ccc", "ddd", "eee");
+			$assert->not->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -247,17 +255,22 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('ccc', 'ddd', 'eee'), $results[0]['details']->getMatcherArguments());
 		$this->assertSame(false, $results[0]['details']->getMatcherReturnValue());
 		$this->assertSame(null, $results[0]['details']->getMatcherException());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $results[0]['details']->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $results[0]['details']->getLine());
 	}
 	
 	public function testMatcherCall_MatcherReturnsTrue_AddsTrueWithMatcherCallDetailsToResultBuffer()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
-			$assert->zzz("ccc", "ddd", "eee");
+			$assert->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -277,6 +290,8 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('ccc', 'ddd', 'eee'), $results[0]['details']->getMatcherArguments());
 		$this->assertSame(true, $results[0]['details']->getMatcherReturnValue());
 		$this->assertSame(null, $results[0]['details']->getMatcherException());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $results[0]['details']->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $results[0]['details']->getLine());
 	}
 	
 	public function testMatcherCall_MatcherReturnsTrue_CastsResultToTrue()
@@ -321,12 +336,15 @@ class AssertTest extends \spectrum\tests\Test
 	public function testMatcherCall_MatcherReturnsTrue_NotFlagEnabled_AddsFalseWithMatcherCallDetailsToResultBuffer()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
-			$assert->not->zzz("ccc", "ddd", "eee");
+			$assert->not->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -346,17 +364,22 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('ccc', 'ddd', 'eee'), $results[0]['details']->getMatcherArguments());
 		$this->assertSame(true, $results[0]['details']->getMatcherReturnValue());
 		$this->assertSame(null, $results[0]['details']->getMatcherException());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $results[0]['details']->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $results[0]['details']->getLine());
 	}
 	
 	public function testMatcherCall_MatcherThrowsException_AddsFalseWithMatcherCallDetailsToResultBuffer()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
-			$assert->zzz("ccc", "ddd", "eee");
+			$assert->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -378,6 +401,8 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(null, $results[0]['details']->getMatcherReturnValue());
 		$this->assertSame($exception, $results[0]['details']->getMatcherException());
 		$this->assertSame('Something wrong', $results[0]['details']->getMatcherException()->getMessage());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $results[0]['details']->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $results[0]['details']->getLine());
 	}
 	
 	public function testMatcherCall_MatcherThrowsException_DoesNotBreakExecution()
@@ -400,12 +425,15 @@ class AssertTest extends \spectrum\tests\Test
 	public function testMatcherCall_MatcherThrowsException_NotFlagEnabled_DoesNotInvertResultAndAddsFalseWithMatcherCallDetailsToResultBuffer()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
-			$assert->not->zzz("ccc", "ddd", "eee");
+			$assert->not->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -427,6 +455,8 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(null, $results[0]['details']->getMatcherReturnValue());
 		$this->assertSame($exception, $results[0]['details']->getMatcherException());
 		$this->assertSame('Something wrong', $results[0]['details']->getMatcherException()->getMessage());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $results[0]['details']->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $results[0]['details']->getLine());
 	}
 	
 	public function testMatcherCall_MatcherNotExists_AddsFalseResultToResultBuffer()
@@ -538,6 +568,9 @@ class AssertTest extends \spectrum\tests\Test
 	public function testMatcherCall_EventDispatch_OnMatcherCallStart_PassesMatcherCallDetailsToCalleeMethod()
 	{
 		\spectrum\tests\Test::$temp["matcherCallDetails"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
+		
 		\spectrum\config::registerSpecPlugin($this->createClass('
 			class ... extends \spectrum\core\plugins\Plugin
 			{
@@ -557,7 +590,8 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
-			$assert->zzz("bbb", "ccc", "ddd");
+			$assert->zzz("bbb", "ccc", "ddd"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -573,6 +607,8 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('bbb', 'ccc', 'ddd'), $matcherCallDetails->getMatcherArguments());
 		$this->assertSame('rrr', $matcherCallDetails->getMatcherReturnValue());
 		$this->assertSame(null, $matcherCallDetails->getMatcherException());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $matcherCallDetails->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $matcherCallDetails->getLine());
 	}
 	
 	public function testMatcherCall_EventDispatch_OnMatcherCallFinish_IsDispatchedAfterMatcherCall()
@@ -676,6 +712,9 @@ class AssertTest extends \spectrum\tests\Test
 	public function testMatcherCall_EventDispatch_OnMatcherCallFinish_PassesMatcherCallDetailsToCalleeMethod()
 	{
 		\spectrum\tests\Test::$temp["matcherCallDetails"] = null;
+		\spectrum\tests\Test::$temp["file"] = false;
+		\spectrum\tests\Test::$temp["line"] = false;
+		
 		\spectrum\config::registerSpecPlugin($this->createClass('
 			class ... extends \spectrum\core\plugins\Plugin
 			{
@@ -695,7 +734,8 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('
 			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
-			$assert->zzz("bbb", "ccc", "ddd");
+			$assert->zzz("bbb", "ccc", "ddd"); \spectrum\tests\Test::$temp["line"] = __LINE__;
+			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
@@ -711,6 +751,8 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('bbb', 'ccc', 'ddd'), $matcherCallDetails->getMatcherArguments());
 		$this->assertSame('rrr', $matcherCallDetails->getMatcherReturnValue());
 		$this->assertSame(null, $matcherCallDetails->getMatcherException());
+		$this->assertSame(\spectrum\tests\Test::$temp["file"], $matcherCallDetails->getFile());
+		$this->assertSame(\spectrum\tests\Test::$temp["line"], $matcherCallDetails->getLine());
 	}
 	
 /**/

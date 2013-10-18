@@ -17,6 +17,8 @@ class MatcherCallDetails implements MatcherCallDetailsInterface
 	protected $matcherArguments = array();
 	protected $matcherReturnValue;
 	protected $matcherException;
+	protected $file;
+	protected $line;
 
 	public function setTestedValue($testedValue){ $this->testedValue = $testedValue; }
 	public function getTestedValue(){ return $this->testedValue; }
@@ -38,4 +40,10 @@ class MatcherCallDetails implements MatcherCallDetailsInterface
 	
 	public function setMatcherException(\Exception $exception = null){ $this->matcherException = $exception; }
 	public function getMatcherException(){ return $this->matcherException; }
+	
+	public function setFile($path){ $this->file = $path; }
+	public function getFile(){ return $this->file; }
+	
+	public function setLine($number){ $this->line = $number; }
+	public function getLine(){ return $this->line; }
 }

@@ -26,6 +26,8 @@ class MatcherCallDetailsTest extends \spectrum\tests\Test
 		$matcherCallDetails->setMatcherArguments(array('ddd', 'eee', 'fff'));
 		$matcherCallDetails->setMatcherReturnValue('ggg');
 		$matcherCallDetails->setMatcherException($exception);
+		$matcherCallDetails->setFile('aaa/bbb.php');
+		$matcherCallDetails->setLine(238);
 		
 		$this->assertSame('aaa', $matcherCallDetails->getTestedValue());
 		$this->assertSame(true, $matcherCallDetails->getNot());
@@ -34,6 +36,8 @@ class MatcherCallDetailsTest extends \spectrum\tests\Test
 		$this->assertSame(array('ddd', 'eee', 'fff'), $matcherCallDetails->getMatcherArguments());
 		$this->assertSame('ggg', $matcherCallDetails->getMatcherReturnValue());
 		$this->assertSame($exception, $matcherCallDetails->getMatcherException());
+		$this->assertSame('aaa/bbb.php', $matcherCallDetails->getFile());
+		$this->assertSame(238, $matcherCallDetails->getLine());
 		
 		$matcherCallDetails->setNot(false);
 		$matcherCallDetails->setMatcherException(null);
@@ -53,5 +57,7 @@ class MatcherCallDetailsTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $matcherCallDetails->getMatcherArguments());
 		$this->assertSame(null, $matcherCallDetails->getMatcherReturnValue());
 		$this->assertSame(null, $matcherCallDetails->getMatcherException());
+		$this->assertSame(null, $matcherCallDetails->getFile());
+		$this->assertSame(null, $matcherCallDetails->getLine());
 	}
 }
