@@ -28,7 +28,6 @@ class Html extends Driver
 		'SpecTitle' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecTitle',
 		'code\Method' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Method',
 		'code\Operator' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Operator',
-		'code\PhpSourceCode' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\PhpSourceCode',
 		'code\Property' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Property',
 		'code\Variable' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Variable',
 		'code\variables\ArrayVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\ArrayVar',

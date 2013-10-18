@@ -11,7 +11,6 @@ namespace spectrum\core;
 class MatcherCallDetails implements MatcherCallDetailsInterface
 {
 	protected $testedValue;
-//	protected $testedValueSourceCode;
 	protected $not;
 	protected $result;
 	protected $matcherName;
@@ -21,9 +20,6 @@ class MatcherCallDetails implements MatcherCallDetailsInterface
 
 	public function setTestedValue($testedValue){ $this->testedValue = $testedValue; }
 	public function getTestedValue(){ return $this->testedValue; }
-
-//	public function setTestedValueSourceCode($sourceCode){ $this->testedValueSourceCode = $sourceCode; }
-//	public function getTestedValueSourceCode(){ return $this->testedValueSourceCode; }
 
 	public function setNot($not){ $this->not = $not; }
 	public function getNot(){ return $this->not; }

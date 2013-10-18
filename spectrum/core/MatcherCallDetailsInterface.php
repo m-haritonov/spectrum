@@ -13,9 +13,6 @@ interface MatcherCallDetailsInterface
 	public function setTestedValue($testedValue);
 	public function getTestedValue();
 	
-//	public function setTestedValueSourceCode($sourceCode);
-//	public function getTestedValueSourceCode();
-
 	public function setNot($not);
 	public function getNot();
 	

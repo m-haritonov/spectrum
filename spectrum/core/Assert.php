@@ -41,8 +41,6 @@ class Assert implements AssertInterface
 
 	public function __call($matcherName, array $matcherArguments = array())
 	{
-//		$argumentsSourceCode = $this->parseArgumentsSourceCode($this->getCurrentVerifyCallSourceCode($verifyFunctionName), $verifyFunctionName);
-		
 		if (!$this->ownerSpec->isRunning())
 			throw new Exception('Matcher call is deny on not running spec (now spec "' . $this->ownerSpec->getName() . '" is not running)');
 		
