@@ -20,7 +20,7 @@ class ObjectVar extends VariableHierarchical
 			parent::getStyles() . $this->getNewline() .
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . "$widgetSelector>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.class { display: inline; overflow: visible; max-width: auto; white-space: normal; vertical-align: baseline; }" . $this->getNewline() .
+				$this->getIndention() . "$this->expandedParentSelector $widgetSelector>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }" . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 
