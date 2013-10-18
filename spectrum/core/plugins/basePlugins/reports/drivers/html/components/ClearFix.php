@@ -15,7 +15,7 @@ class ClearFix extends Component
 		return
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . '.c-clearFix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }' . $this->getNewline() .
-				$this->getIndention() . 'body.c-browser-ie7 .c-clearFix { zoom: 1; }' . $this->getNewline() .
+				$this->getIndention() . 'html.c-browser-ie7 .c-clearFix { zoom: 1; }' . $this->getNewline() .
 			'</style>' . $this->getNewline();
 	}
 }

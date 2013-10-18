@@ -99,24 +99,24 @@ class Html extends Driver
 	{
 		return
 			'<!DOCTYPE html>' . $this->getNewline() .
-			'<html xmlns="http://www.w3.org/1999/xhtml">' . $this->getNewline() .
+			$this->getHtmlTag() .
 			'<head>' . $this->getNewline() .
 				$this->getIndention() . '<meta http-equiv="content-type" content="text/html; charset=utf-8" />' . $this->getNewline() .
 				$this->getIndention() . '<title></title>' . $this->getNewline() .
 				$this->prependIndentionToEachLine($this->getStyles()) . $this->getNewline(2) .
 				$this->prependIndentionToEachLine($this->getScripts()) . $this->getNewline() .
 			'</head>' . $this->getNewline() .
-			$this->getBodyTag();
+			'<body>' . $this->getNewline();
 	}
 
-	protected function getBodyTag()
+	protected function getHtmlTag()
 	{
 		return
-			'<!--[if IE 6]><body class="c-browser-ie c-browser-ie6"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 7]><body class="c-browser-ie c-browser-ie7"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 8]><body class="c-browser-ie c-browser-ie8"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 9]><body class="c-browser-ie c-browser-ie9"><![endif]-->' . $this->getNewline() .
-			'<!--[if !IE]>--><body><!--<![endif]-->' . $this->getNewline();
+			'<!--[if IE 6]><html class="c-browser-ie6"><![endif]-->' . $this->getNewline() .
+			'<!--[if IE 7]><html class="c-browser-ie7"><![endif]-->' . $this->getNewline() .
+			'<!--[if IE 8]><html class="c-browser-ie8"><![endif]-->' . $this->getNewline() .
+			'<!--[if IE 9]><html class="c-browser-ie9"><![endif]-->' . $this->getNewline() .
+			'<!--[if !IE]>--><html><!--<![endif]-->' . $this->getNewline();
 	}
 
 	protected function getStyles()
