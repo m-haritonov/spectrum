@@ -125,7 +125,7 @@ class DriverTest extends \spectrum\tests\Test
 			{
 				public function getContentBeforeSpec(){}
 				public function getContentAfterSpec(){}
-				public function createWidget($name){}
+				public function createComponent($name){}
 			}
 		');
 		return new $driverClass(new Reports(new Spec()));

@@ -16,7 +16,7 @@ interface DriverInterface
 	public function getOwnerPlugin();
 	public function getContentBeforeSpec();
 	public function getContentAfterSpec();
-	public function createWidget($name);
+	public function createComponent($name);
 	public function getIndention($repeat = 1);
 	public function prependIndentionToEachLine($text, $repeat = 1, $trimNewline = true);
 	public function getNewline($repeat = 1);

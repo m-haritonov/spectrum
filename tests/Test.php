@@ -25,7 +25,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->backupStaticProperties('\spectrum\config');
 		$this->backupStaticProperties('\spectrum\constructionCommands\callBroker');
 		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\Output');
-		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
+		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
 		
 		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\reports\Reports');
 		\spectrum\tests\Test::$temp = null;
@@ -33,7 +33,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 	protected function tearDown()
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList');
+		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
 		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\Output');
 		$this->restoreStaticProperties('\spectrum\constructionCommands\callBroker');
 		$this->restoreStaticProperties('\spectrum\config');

@@ -13,33 +13,33 @@ use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
 
 class Html extends Driver
 {
-	protected $widgets = array(
-		'Tools' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Tools',
-		'ClearFix' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\ClearFix',
-		'TotalInfo' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\TotalInfo',
-		'DetailsControl' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\DetailsControl',
-		'totalResult\Result' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\totalResult\Result',
-		'totalResult\Update' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\totalResult\Update',
-		'Messages' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\Messages',
-		'resultBuffer\ResultBuffer' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\ResultBuffer',
-		'resultBuffer\details\MatcherCall' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\details\MatcherCall',
-		'resultBuffer\details\Unknown' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\resultBuffer\details\Unknown',
-		'SpecList' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecList',
-		'SpecTitle' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\SpecTitle',
-		'code\Method' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Method',
-		'code\Operator' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Operator',
-		'code\Property' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Property',
-		'code\Variable' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\Variable',
-		'code\variables\ArrayVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\ArrayVar',
-		'code\variables\BoolVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\BoolVar',
-		'code\variables\FloatVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\FloatVar',
-		'code\variables\FunctionVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\FunctionVar',
-		'code\variables\IntVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\IntVar',
-		'code\variables\NullVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\NullVar',
-		'code\variables\ObjectVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\ObjectVar',
-		'code\variables\ResourceVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\ResourceVar',
-		'code\variables\StringVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\StringVar',
-		'code\variables\UnknownVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\widgets\code\variables\UnknownVar',
+	protected $components = array(
+		'Tools' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\Tools',
+		'ClearFix' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\ClearFix',
+		'TotalInfo' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\TotalInfo',
+		'DetailsControl' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\DetailsControl',
+		'totalResult\Result' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult\Result',
+		'totalResult\Update' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult\Update',
+		'Messages' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\Messages',
+		'resultBuffer\ResultBuffer' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\ResultBuffer',
+		'resultBuffer\details\MatcherCall' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\details\MatcherCall',
+		'resultBuffer\details\Unknown' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\details\Unknown',
+		'SpecList' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList',
+		'SpecTitle' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecTitle',
+		'code\Method' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Method',
+		'code\Operator' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Operator',
+		'code\Property' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Property',
+		'code\Variable' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Variable',
+		'code\variables\ArrayVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\ArrayVar',
+		'code\variables\BoolVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\BoolVar',
+		'code\variables\FloatVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\FloatVar',
+		'code\variables\FunctionVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\FunctionVar',
+		'code\variables\IntVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\IntVar',
+		'code\variables\NullVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\NullVar',
+		'code\variables\ObjectVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\ObjectVar',
+		'code\variables\ResourceVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\ResourceVar',
+		'code\variables\StringVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\StringVar',
+		'code\variables\UnknownVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\UnknownVar',
 	);
 	
 	public function getContentBeforeSpec()
@@ -49,10 +49,10 @@ class Html extends Driver
 		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 		{
 			$output .= $this->getHeader();
-			$output .= $this->createWidget('TotalInfo')->getHtml();
+			$output .= $this->createComponent('TotalInfo')->getHtml();
 		}
 
-		$output .= $this->createWidget('SpecList')->getHtmlBegin();
+		$output .= $this->createComponent('SpecList')->getHtmlBegin();
 		
 		$output .= str_repeat(' ', 256) . $this->getNewline();
 		return $output;
@@ -62,13 +62,13 @@ class Html extends Driver
 	{
 		$output = '';
 		
-		$output .= $this->createWidget('SpecList')->getHtmlEnd();
+		$output .= $this->createComponent('SpecList')->getHtmlEnd();
 
 		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 		{
-			$totalInfoWidget = $this->createWidget('TotalInfo');
-			$output .= $totalInfoWidget->getHtml();
-			$output .= $totalInfoWidget->getHtmlForUpdate();
+			$totalInfoComponent = $this->createComponent('TotalInfo');
+			$output .= $totalInfoComponent->getHtml();
+			$output .= $totalInfoComponent->getHtmlForUpdate();
 			$output .= $this->getFooter();
 		}
 		
@@ -76,9 +76,9 @@ class Html extends Driver
 		return $output;
 	}
 	
-	public function createWidget($name/*, ... */)
+	public function createComponent($name/*, ... */)
 	{
-		$reflection = new \ReflectionClass($this->widgets[$name]);
+		$reflection = new \ReflectionClass($this->components[$name]);
 		$args = func_get_args();
 		array_shift($args);
 		array_unshift($args, $this);
@@ -86,11 +86,11 @@ class Html extends Driver
 		return $reflection->newInstanceArgs($args);
 	}
 	
-	protected function createAllWidgets()
+	protected function createAllComponents()
 	{
 		$result = array();
-		foreach ($this->widgets as $name => $class)
-			$result[$name] = $this->createWidget($name);
+		foreach ($this->components as $name => $class)
+			$result[$name] = $this->createComponent($name);
 
 		return $result;
 	}
@@ -112,10 +112,10 @@ class Html extends Driver
 	protected function getBodyTag()
 	{
 		return
-			'<!--[if IE 6]><body class="g-browser-ie g-browser-ie6"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 7]><body class="g-browser-ie g-browser-ie7"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 8]><body class="g-browser-ie g-browser-ie8"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 9]><body class="g-browser-ie g-browser-ie9"><![endif]-->' . $this->getNewline() .
+			'<!--[if IE 6]><body class="c-browser-ie c-browser-ie6"><![endif]-->' . $this->getNewline() .
+			'<!--[if IE 7]><body class="c-browser-ie c-browser-ie7"><![endif]-->' . $this->getNewline() .
+			'<!--[if IE 8]><body class="c-browser-ie c-browser-ie8"><![endif]-->' . $this->getNewline() .
+			'<!--[if IE 9]><body class="c-browser-ie c-browser-ie9"><![endif]-->' . $this->getNewline() .
 			'<!--[if !IE]>--><body><!--<![endif]-->' . $this->getNewline();
 	}
 
@@ -124,8 +124,8 @@ class Html extends Driver
 		$output = '';
 		$output .= $this->trimNewline($this->getCommonStyles()) . $this->getNewline(2);
 
-		foreach ($this->createAllWidgets() as $widget)
-			$output .= $this->trimNewline($widget->getStyles()) . $this->getNewline(2);
+		foreach ($this->createAllComponents() as $component)
+			$output .= $this->trimNewline($component->getStyles()) . $this->getNewline(2);
 
 		return $output;
 	}
@@ -147,8 +147,8 @@ class Html extends Driver
 		$output = '';
 		$output .= $this->trimNewline($this->getCommonScripts()) . $this->getNewline(2);
 
-		foreach ($this->createAllWidgets() as $widget)
-			$output .= $this->trimNewline($widget->getScripts()) . $this->getNewline(2);
+		foreach ($this->createAllComponents() as $component)
+			$output .= $this->trimNewline($component->getScripts()) . $this->getNewline(2);
 
 		return $output;
 	}
