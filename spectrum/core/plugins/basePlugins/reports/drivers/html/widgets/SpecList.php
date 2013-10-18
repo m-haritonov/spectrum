@@ -84,7 +84,7 @@ class SpecList extends Widget
 			$output .= $this->getIndention($this->getSpecDepth() + 1) . '<ol class="g-specList">' . $this->getNewline();
 		}
 
-		if (!$spec->isAnonymous())
+		if (!$spec->isAnonymous() && $spec->getParentSpecs())
 		{
 			@static::$numbers[static::$depth]++;
 
@@ -108,7 +108,7 @@ class SpecList extends Widget
 		$spec = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec();
 		$totalResult = $spec->getResultBuffer()->getTotalResult();
 
-		if (!$spec->isAnonymous())
+		if (!$spec->isAnonymous() && $spec->getParentSpecs())
 		{
 			if ($spec->getChildSpecs())
 			{
