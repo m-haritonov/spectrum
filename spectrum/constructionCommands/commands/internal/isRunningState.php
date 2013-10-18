@@ -16,7 +16,7 @@ use spectrum\core\SpecInterface;
  */
 function isRunningState()
 {
-	foreach (debug_backtrace() as $trace)
+	foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS) as $trace)
 	{
 		if (is_object(@$trace['object']) && $trace['object'] instanceof SpecInterface)
 			return true;
