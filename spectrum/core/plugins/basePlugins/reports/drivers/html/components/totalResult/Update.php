@@ -34,8 +34,9 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\com
 						var resultNodes = document.querySelectorAll(".c-totalResult-result[data-id=\'" + totalResultNode.getAttribute("data-id") + "\']");
 						for (var i = 0; i < resultNodes.length; i++)
 						{
-							resultNodes[i].innerHTML = totalResultNode.getAttribute("data-resultTitle");
-							resultNodes[i].className += " " + totalResultNode.getAttribute("data-resultCssClass");
+							var resultName = totalResultNode.getAttribute("data-resultName");
+							resultNodes[i].innerHTML = resultName;
+							resultNodes[i].className += " " + resultName;
 						}
 					};
 				})();' . $this->getNewline() .
@@ -44,26 +45,25 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\com
 
 	public function getHtml($totalResult)
 	{
-		$resultInfo = $this->getResultInfo($totalResult);
+		$resultName = $this->getResultName($totalResult);
 		
 		// Uses tag attributes instead of JavaScript function arguments for potential parsing support
 		return
 			'<span class="c-totalResult-update"' .
 				' data-id="' . htmlspecialchars(spl_object_hash($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec())) . '"' .
-				' data-resultTitle="' . $this->translate($resultInfo['title']) . '"' .
-				' data-resultCssClass="' . htmlspecialchars($resultInfo['cssClass']) . '"' .
+				' data-resultName="' . htmlspecialchars($resultName) . '"' .
 			'>' . $this->getNewline() .
 				$this->getIndention() . '<script type="text/javascript">spectrum.totalResult.update();</script>' . $this->getNewline() .
 			'</span>';
 	}
 
-	protected function getResultInfo($result)
+	protected function getResultName($result)
 	{
 		if ($result === false)
-			return array('title' => 'fail', 'cssClass' => 'fail');
+			return 'fail';
 		else if ($result === true)
-			return array('title' => 'success', 'cssClass' => 'success');
+			return 'success';
 		else
-			return array('title' => 'empty', 'cssClass' => 'empty');
+			return 'empty';
 	}
 }
