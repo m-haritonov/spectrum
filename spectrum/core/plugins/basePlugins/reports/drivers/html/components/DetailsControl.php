@@ -33,11 +33,10 @@ class DetailsControl extends Component
 			'<script type="text/javascript">
 				spectrum.tools.addEventListener(document, "DOMContentLoaded", function()
 				{
-					function clickCurrentState(e)
+					function changeDetailsControlStates(newStateNumber)
 					{
-						e.preventDefault();
-						spectrum.tools.removeClass(e.currentTarget.parentNode.querySelectorAll(".state"), "selected");
-						spectrum.tools.addClass(e.currentTarget, "selected");
+						spectrum.tools.removeClass(document.querySelectorAll(".c-detailsControl a.state"), "selected");
+						spectrum.tools.addClass(document.querySelectorAll(".c-detailsControl a.state" + newStateNumber), "selected");
 					}
 
 					var detailsControlNodes = document.querySelectorAll(".c-detailsControl");
@@ -45,44 +44,48 @@ class DetailsControl extends Component
 					{
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".previous"), "click", function(e){
 							e.preventDefault();
-							var previousState = e.currentTarget.parentNode.querySelector(".state.selected").previousSibling;
+							var previousState = e.currentTarget.parentNode.querySelector("a.state.selected").previousSibling;
 							if (spectrum.tools.hasClass(previousState, "state"))
 								spectrum.tools.dispatchEvent(previousState, "click");
 						});
 
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".next"), "click", function(e){
 							e.preventDefault();
-							var nextState = e.currentTarget.parentNode.querySelector(".state.selected").nextSibling;
+							var nextState = e.currentTarget.parentNode.querySelector("a.state.selected").nextSibling;
 							if (spectrum.tools.hasClass(nextState, "state"))
 								spectrum.tools.dispatchEvent(nextState, "click");
 						});
 
-						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".state1"), "click", function(e){
-							clickCurrentState(e);
+						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state1"), "click", function(e){
+							e.preventDefault();
+							changeDetailsControlStates(1);
 
 							spectrum.tools.removeClass(".c-specList>li.notEnding", "expand");
 							spectrum.tools.removeClass(".c-specList>li.ending", "expand");
 							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expand");
 						});
 
-						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".state2"), "click", function(e){
-							clickCurrentState(e);
+						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state2"), "click", function(e){
+							e.preventDefault();
+							changeDetailsControlStates(2);
 
 							spectrum.tools.addClass(".c-specList>li.notEnding", "expand");
 							spectrum.tools.removeClass(".c-specList>li.ending", "expand");
 							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expand");
 						});
 
-						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".state3"), "click", function(e){
-							clickCurrentState(e);
+						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state3"), "click", function(e){
+							e.preventDefault();
+							changeDetailsControlStates(3);
 
 							spectrum.tools.addClass(".c-specList>li.notEnding", "expand");
 							spectrum.tools.addClass(".c-specList>li.ending", "expand");
 							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expand");
 						});
 
-						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".state4"), "click", function(e){
-							clickCurrentState(e);
+						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state4"), "click", function(e){
+							e.preventDefault();
+							changeDetailsControlStates(4);
 
 							spectrum.tools.addClass(".c-specList>li.notEnding", "expand");
 							spectrum.tools.addClass(".c-specList>li.ending", "expand");
