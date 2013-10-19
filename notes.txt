@@ -1,32 +1,50 @@
-TODO: plugin OutputCapture -> output to message, onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
+TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }
+TODO: убрать htmlspecialchars из Component::translate, обернуть вызов Component::translate в $this->escapeHtml()
 
-TODO: в config::lock() и в ResultBuffer::lock записывать в static переменную метода свойства класса, а затем, в __destruct методе проверять, отличаются ли текущие свойства объекта от свойств в lock()::static (выбрасывая исключения в случае отличия) ???
+TODO: удалить getSpecsByName (т.к. она требует сравнения в разных кодировках) или добавить параметр $charset, задающий кодировку аргумента
 
-TODO: для получения исходного кода вызова утверждений добавить счётчик вызовов матчеров на строках 
-TODO: config::setCodeParserClass, config::setHighlightCodeFormatterClass
-TODO: HighlightCodeFormatter->CodeFormatter|CodeHighlight|CodeDecorator
+TODO: throwsException — mb_stripos -> mb_strpos
 
-TODO: удалить verifications и verify из виджетов
-TODO: reports->getOutputType, getIndention, getNewline => get...ThroughRunningAncestors
-TODO: reports — по умолчанию не разворачивать список ошибок
-TODO: success ("has empty" or "success, has empty")
-TODO: реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
-TODO: вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
-TODO: DetailsControl — изменять state глобально - для всех экземпляров на странице. По умолчанию — state3
-TODO: сдвинуть вывод буфера результатов за линию окончания номера узла
-TODO: плагин "Report": report->highlightSpecNameWithSameFileName
+TODO: fix encoding
+TODO: изменить autoload
+TODO: change "$spec->getName()" to "$spec->output->convertToOutputCharset($spec->getName())" in exception messages
+TODO: reports -> use "convertToOutputEncoding"
+TODO: mb_*('', 'latin1'|$spec->charset->getInputEncoding()) и т.п. 
+TODO: использовать convertToOutputCharset при выводе данных из:
+Spec::setName()
+Messages::add()
+ResultBuffer::addResult()
+Output::put('текст')
+fail()
+
+
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
+
+TODO: добавить информацию о фреймворке (название, версию и адрес сайта): либо при нажатии на иконку [i] либо в конце нижнего блока totalResult (<a href="http://spectrum-framework.org/">Spectrum 1.0</a>)
+
+TODO: change text "Run results buffer contains" and etc.
 TODO: добавить всплывающие подсказки с разъяснениями к элементам ползунка "Details"
+TODO: success ("has empty" or "success, has empty")
 TODO: плагин "Report": добавить title к резальтату или выводить "success", если есть "success" и "empty" дети
 		empty title — "empty or has empty", "all or one of children was empty"
 		all specs is "success"
 		one or more specs is "fail"
 		one or more specs is "empty" and has no "fail"
+		
+TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
+TODO: вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
+TODO: реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
 
-TODO: тесты для плагина "Reports"
-TODO: "Reports" test "testGeneratesValidXhtml" (проверяет валидность вёрстки)
+TODO: create "Reports" test "testGeneratesValidXhtml" (проверяет валидность вёрстки)
+
+TODO: fix reports in all browsers 
+
+TODO: plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
+TODO: matchers: be(function(){})->output('aaa a aaaaa ');
 
 TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
+TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
+TODO: добавить setCatchPhpErrors(true/false) ???
 TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
 TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: rename activateMoment to activateType/activationType ???
@@ -37,7 +55,6 @@ TODO: update examples in "README.md"
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
-TODO: change "$spec->getName()" to "$spec->output->convertToOutputEncoding($spec->getName())" in exception messages
 TODO: remove old tests
 TODO: MOVE PROJECT TO GITHUB.COM
 
@@ -52,7 +69,12 @@ TODO: array context group:
 		test('bbb', function(){});
 	});
 
+TO MAN: Убрать лишние условия дя примеров, пускай пучше бутлут одни суккесы в результатах
+TO MAN: Убрать из примера files, оставив только базы данных
+TO MAN: Для примеров использовать скриншоты и ссылку на живое выполнение ???
 TO MAN: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
+TO MAN: заменить "Spectrum is a PHP framework for BDD specification test" на "Spectrum is a PHP framework for test automation"
+TO MAN: поддерживаются кодировки, являющиеся надмножеством ASCII
 TO MAN: на главной закрепить образец использования:
 test('ожидаемый результат', function(){
 	// код для проверки ожидаемого результата
@@ -84,6 +106,9 @@ TODO: run.php
 	сделать run.php
 	run.php?path=qwe.php&id=spec1_1_1
 	возможность указывать путь к файлу или к папке, а так же несколько таких путей
+	параметр "show file names":
+		линейно (имена файлов выводятся целиком, файлы перечисляются подряд)
+		иерархически (для каждой папки создаётся спека с именем этой папки)
 
 TODO: плагин "Report": добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
 
