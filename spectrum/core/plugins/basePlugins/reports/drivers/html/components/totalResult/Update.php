@@ -48,11 +48,11 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\com
 		
 		// Uses tag attributes instead of JavaScript function arguments for potential parsing support
 		return
-			'<span class="c-totalResult-update"
-				data-id="' . htmlspecialchars(spl_object_hash($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec())) . '"
-				data-resultTitle="' . $this->translate($resultInfo['title']) . '"
-				data-resultCssClass="' . htmlspecialchars($resultInfo['cssClass']) . '"
-			>' . $this->getNewline() .
+			'<span class="c-totalResult-update"' .
+				' data-id="' . htmlspecialchars(spl_object_hash($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec())) . '"' .
+				' data-resultTitle="' . $this->translate($resultInfo['title']) . '"' .
+				' data-resultCssClass="' . htmlspecialchars($resultInfo['cssClass']) . '"' .
+			'>' . $this->getNewline() .
 				$this->getIndention() . '<script type="text/javascript">spectrum.totalResult.update();</script>' . $this->getNewline() .
 			'</span>';
 	}

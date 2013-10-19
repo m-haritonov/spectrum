@@ -15,7 +15,7 @@ class Messages extends Component
 		return
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . '.c-messages { position: relative; margin: 0.5em 0 1em 0; }' . $this->getNewline() .
-				$this->getIndention() . '.c-messages>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 7px; color: #888; font-size: 0.9em; font-weight: normal; }' . $this->getNewline() .
+				$this->getIndention() . '.c-messages>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 0; color: #888; font-size: 0.9em; font-weight: normal; }' . $this->getNewline() .
 				$this->getIndention() . '.c-messages>ul { clear: both; float: left; list-style: none; }' . $this->getNewline() .
 				$this->getIndention() . '.c-messages>ul>li { margin-bottom: 2px; padding: 0.4em 7px; border-radius: 4px; background: #e5e5e5; }' . $this->getNewline() .
 				$this->getIndention() . '.c-messages>ul>li>.number { color: #888; font-size: 0.9em; }' . $this->getNewline() .

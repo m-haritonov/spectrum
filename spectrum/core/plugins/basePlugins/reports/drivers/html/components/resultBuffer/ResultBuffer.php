@@ -16,7 +16,7 @@ class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\ht
 		return
 			'<style type="text/css">' . $this->getNewline() .
 				$this->getIndention() . '.c-resultBuffer { position: relative; margin: 0.5em 0 1em 0; }' . $this->getNewline() .
-				$this->getIndention() . '.c-resultBuffer>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 7px; color: #888; font-size: 0.9em; font-weight: normal; }' . $this->getNewline() .
+				$this->getIndention() . '.c-resultBuffer>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 0; color: #888; font-size: 0.9em; font-weight: normal; }' . $this->getNewline() .
 
 				$this->getIndention() . '.c-resultBuffer>.results { clear: both; }' . $this->getNewline() .
 				$this->getIndention() . '.c-resultBuffer>.results>.result { float: left; position: relative; margin: 0 2px 2px 0; border: 1px solid; border-left: 0; border-top: 0; border-radius: 4px; white-space: nowrap; }' . $this->getNewline() .
@@ -77,9 +77,6 @@ class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\ht
 
 	public function getHtml()
 	{
-		if ($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getChildSpecs())
-			return null;
-
 		$output = '';
 
 		$output .= '<div class="c-resultBuffer c-clearFix">' . $this->getNewline();
@@ -93,7 +90,7 @@ class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\ht
 			$output .= $this->getIndention(3) . '<a href="#" class="expand" title="' . $this->translate('Show full details (also available by mouse middle click on the card)') . '"></a>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="num" title="' . $this->translate('Order in run results buffer') . '">' . $this->translate('No.') . ' ' . $num . '</div>' . $this->getNewline();
 			$output .= $this->getIndention(3) . '<div class="value" title="' . $this->translate('Result, contains in run results buffer') . '">' . ($result['result'] ? 'true' : 'false') . '</div>' . $this->getNewline();
-			$output .= $this->getHtmlForResultDetails($result['details']) . $this->getNewline();
+			$output .= $this->prependIndentionToEachLine($this->getHtmlForResultDetails($result['details']), 3) . $this->getNewline();
 			$output .= $this->getIndention(2) . '</div>' . $this->getNewline();
 		}
 

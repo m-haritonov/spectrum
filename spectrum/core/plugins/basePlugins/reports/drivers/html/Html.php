@@ -23,7 +23,6 @@ class Html extends Driver
 		'resultBuffer\details\MatcherCall' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\details\MatcherCall',
 		'resultBuffer\details\Unknown' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\details\Unknown',
 		'SpecList' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList',
-		'SpecTitle' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecTitle',
 		'code\Method' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Method',
 		'code\Operator' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Operator',
 		'code\Property' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Property',
