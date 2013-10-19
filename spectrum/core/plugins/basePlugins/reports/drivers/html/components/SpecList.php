@@ -86,7 +86,7 @@ class SpecList extends Component
 		{
 			@static::$numbers[static::$depth]++;
 
-			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . ' expand" id="' . $spec->getSpecId() . '">' . $this->getNewline();
+			$output .= $this->getIndention($this->getSpecDepth() * 2 + 2) . '<li class="' . $this->getSpecCssClass() . ' ' . ($spec->getChildSpecs() ? 'expand' : '') . '" id="' . $spec->getSpecId() . '">' . $this->getNewline();
 			$output .= $this->getHtmlForCurrentSpecIndention() . $this->getHtmlForSpecPoint() . $this->getNewline();
 			$output .= $this->prependIndentionToEachLine($this->createComponent('SpecTitle')->getHtml(), $this->getSpecDepth() * 2 + 3) . $this->getNewline();
 
