@@ -44,7 +44,6 @@ class TotalInfo extends Component
 		if ($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
 			return;
 
-		$totalResult = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getResultBuffer()->getTotalResult();
-		return '<div>' . $this->createComponent('totalResult\Update')->getHtml($totalResult) . '</div>';
+		return '<div>' . $this->createComponent('totalResult\Update')->getHtml($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getResultBuffer()->getTotalResult()) . '</div>';
 	}
 }

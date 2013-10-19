@@ -47,26 +47,24 @@ class SpecList extends Component
 	{
 		return
 			'<script type="text/javascript">
-				document.addEventListener("DOMContentLoaded", function()
+				spectrum.tools.addEventListener(document, "DOMContentLoaded", function()
 				{
-					var resultNodes = document.body.querySelectorAll(".c-specList>li>.point>a.expand");
-
-					for (var i = 0; i < resultNodes.length; i++)
+					var expandLinkNodes = document.body.querySelectorAll(".c-specList>li>.point>a.expand");
+					for (var i = 0; i < expandLinkNodes.length; i++)
 					{
-						var anchorNode = resultNodes[i];
-						var liNode = anchorNode.parentNode.parentNode;
+						var liNode = expandLinkNodes[i].parentNode.parentNode;
 
 						if (liNode.querySelector(".runDetails, .c-specList") == null)
-							tools.addClass(liNode, "noChildContent");
+							spectrum.tools.addClass(liNode, "noChildContent");
 
-						anchorNode.addEventListener("click", function(e){
+						spectrum.tools.addEventListener(expandLinkNodes[i], "click", function(e){
 							e.preventDefault();
 							var liNode = e.currentTarget.parentNode.parentNode;
 
-							if (tools.hasClass(liNode, "expand"))
-								tools.removeClass(liNode, "expand");
+							if (spectrum.tools.hasClass(liNode, "expand"))
+								spectrum.tools.removeClass(liNode, "expand");
 							else
-								tools.addClass(liNode, "expand");
+								spectrum.tools.addClass(liNode, "expand");
 						});
 					}
 				});' . $this->getNewline() .

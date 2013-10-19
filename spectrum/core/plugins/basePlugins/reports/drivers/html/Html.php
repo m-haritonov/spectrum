@@ -8,13 +8,11 @@
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html;
 
-use spectrum\config;
 use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
 
 class Html extends Driver
 {
 	protected $components = array(
-		'Tools' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\Tools',
 		'ClearFix' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\ClearFix',
 		'TotalInfo' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\TotalInfo',
 		'DetailsControl' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\DetailsControl',
@@ -155,7 +153,117 @@ class Html extends Driver
 
 	protected function getCommonScripts()
 	{
-		return null;
+		return
+			'<script type="text/javascript">
+				spectrum = window.spectrum || {};
+				spectrum.tools = {
+					/**
+					 * @param {HTMLElement} node
+					 */
+					hasClass: function(node, className)
+					{
+						return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
+					},
+
+					/**
+					 * @param {HTMLElement|NodeList|String} node
+					 */
+					addClass: function(node, className)
+					{
+						if (typeof(node) == "string")
+							node = document.querySelectorAll(node);
+
+						if (node instanceof (NodeList || StaticNodeList))
+						{
+							for (var i = 0; i < node.length; i++)
+								arguments.callee(node[i], className);
+						}
+						else if (!spectrum.tools.hasClass(node, className))
+							node.className += " " + className;
+					},
+
+					/**
+					 * @param {HTMLElement|NodeList|String} node
+					 */
+					removeClass: function(node, className)
+					{
+						if (typeof(node) == "string")
+							node = document.querySelectorAll(node);
+
+						if (node instanceof (NodeList || StaticNodeList))
+						{
+							for (var i = 0; i < node.length; i++)
+								arguments.callee(node[i], className);
+						}
+						else if (spectrum.tools.hasClass(node, className))
+							node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
+					},
+					
+					getExecuteScriptNode: function()
+					{
+						var scripts = document.getElementsByTagName("script");
+						return scripts[scripts.length - 1];
+					},
+
+					/**
+					 * @param {HTMLElement} node
+					 */
+					addEventListener: function(node, eventName, callback)
+					{
+						var fixedCallback = function(event)
+						{
+							event = event || window.event;
+							
+							if (!event.isFixed)
+							{
+								event.isFixed = true 
+								
+								event.preventDefault = event.preventDefault || function(){ this.returnValue = false; };
+								event.stopPropagation = event.stopPropagation || function(){ this.cancelBubble = true; };
+								
+								if (!event.target)
+									event.target = event.srcElement;
+								
+								if (!event.relatedTarget && event.fromElement)
+									event.relatedTarget = event.fromElement == event.target ? event.toElement : event.fromElement;
+								
+								if (event.pageX == null && event.clientX != null)
+								{
+									var html = document.documentElement
+									var body = document.body;
+									event.pageX = event.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0);
+									event.pageY = event.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0);
+								}
+								
+								if (!event.which && event.button)
+									event.which = (event.button & 1 ? 1 : (event.button & 2 ? 3 : (event.button & 4 ? 2 : 0)));
+							}
+							
+							return callback(event);
+						}
+					
+						if (node.addEventListener)
+							node.addEventListener(eventName, fixedCallback, false);
+						else if (node.attachEvent)
+							node.attachEvent("on" + eventName, fixedCallback);
+					},
+
+					/**
+					 * @param {HTMLElement} node
+					 */
+					dispatchEvent: function(node, eventName)
+					{
+						if (document.createEvent)
+						{
+							var e = document.createEvent("HTMLEvents");
+							e.initEvent(eventName, true, true);
+							node.dispatchEvent(e);
+						}
+						else
+							node.fireEvent("on" + eventName, document.createEventObject());
+					}
+				};' . $this->getNewline() .
+			'</script>' . $this->getNewline();
 	}
 	
 	protected function getFooter()

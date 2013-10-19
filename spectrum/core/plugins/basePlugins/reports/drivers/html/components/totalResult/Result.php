@@ -25,7 +25,7 @@ class Result extends \spectrum\core\plugins\basePlugins\reports\drivers\html\com
 	{
 		// See "Update" component to understand update logic
 		return
-			'<span class="c-totalResult-result" data-specId="' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getSpecId()) . '">' .
+			'<span class="c-totalResult-result" data-id="' . htmlspecialchars(spl_object_hash($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec())) . '">' .
 				$this->translate('wait') . '...' .
 			'</span>';
 	}

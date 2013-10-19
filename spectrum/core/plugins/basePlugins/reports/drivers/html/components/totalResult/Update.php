@@ -23,36 +23,21 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\com
 		return
 			'<script type="text/javascript">
 				(function(){
-					totalResult = window.totalResult || {};
-					totalResult.update = function()
+					spectrum = window.spectrum || {};
+					spectrum.totalResult = {};
+					spectrum.totalResult.update = function()
 					{
-						var totalResult = getTotalResult();
-						var resultNodes = document.querySelectorAll(".c-totalResult-result[data-specId=\'" + totalResult.specId + "\']");
-						for (var i = 0; i < resultNodes.length; i++)
-						{
-							resultNodes[i].innerHTML = totalResult.resultTitle;
-							resultNodes[i].className += " " + totalResult.resultCssClass;
-						}
-					}
-
-					function getTotalResult()
-					{
-						var totalResultNode = getExecutedScriptNode();
+						var totalResultNode = spectrum.tools.getExecuteScriptNode();
 						while (totalResultNode.className != "c-totalResult-update")
 							totalResultNode = totalResultNode.parentNode;
 
-						return {
-							specId: totalResultNode.getAttribute("data-specId"),
-							resultTitle: totalResultNode.getAttribute("data-resultTitle"),
-							resultCssClass: totalResultNode.getAttribute("data-resultCssClass")
-						};
-					}
-
-					function getExecutedScriptNode()
-					{
-						var scripts = document.getElementsByTagName("script");
-						return scripts[scripts.length - 1];
-					}
+						var resultNodes = document.querySelectorAll(".c-totalResult-result[data-id=\'" + totalResultNode.getAttribute("data-id") + "\']");
+						for (var i = 0; i < resultNodes.length; i++)
+						{
+							resultNodes[i].innerHTML = totalResultNode.getAttribute("data-resultTitle");
+							resultNodes[i].className += " " + totalResultNode.getAttribute("data-resultCssClass");
+						}
+					};
 				})();' . $this->getNewline() .
 			'</script>' . $this->getNewline();
 	}
@@ -60,13 +45,15 @@ class Update extends \spectrum\core\plugins\basePlugins\reports\drivers\html\com
 	public function getHtml($totalResult)
 	{
 		$resultInfo = $this->getResultInfo($totalResult);
+		
+		// Uses tag attributes instead of JavaScript function arguments for potential parsing support
 		return
 			'<span class="c-totalResult-update"
-				data-specId="' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getSpecId()) . '"
+				data-id="' . htmlspecialchars(spl_object_hash($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec())) . '"
 				data-resultTitle="' . $this->translate($resultInfo['title']) . '"
 				data-resultCssClass="' . htmlspecialchars($resultInfo['cssClass']) . '"
 			>' . $this->getNewline() .
-				$this->getIndention() . '<script type="text/javascript">totalResult.update();</script>' . $this->getNewline() .
+				$this->getIndention() . '<script type="text/javascript">spectrum.totalResult.update();</script>' . $this->getNewline() .
 			'</span>';
 	}
 

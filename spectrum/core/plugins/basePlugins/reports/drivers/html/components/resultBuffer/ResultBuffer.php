@@ -45,33 +45,31 @@ class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\ht
 	{
 		return
 			'<script type="text/javascript">
-				document.addEventListener("DOMContentLoaded", function()
+				spectrum.tools.addEventListener(document, "DOMContentLoaded", function()
 				{
-					var resultNodes = document.body.querySelectorAll(".c-resultBuffer>.results>.result");
-
-					for (var i = 0; i < resultNodes.length; i++)
+					function toggleExpand(resultBufferNode)
 					{
-						// "dblclick" event not used for select text by double click (and further copy to clipboard) feature support
-						resultNodes[i].addEventListener("click", function(e){
-							e.preventDefault();
-							if (e.button == 1)
-								toggleExpand(e.currentTarget.querySelector("a.expand"));
-						});
-
-						resultNodes[i].querySelector("a.expand").addEventListener("click", function(e){
-							e.preventDefault();
-							toggleExpand(e.currentTarget);
-						});
-					}
-
-					function toggleExpand(expandLinkNode)
-					{
-						var resultNode = expandLinkNode.parentNode;
-
-						if (tools.hasClass(resultNode, "expand"))
-							tools.removeClass(resultNode, "expand");
+						if (spectrum.tools.hasClass(resultBufferNode, "expand"))
+							spectrum.tools.removeClass(resultBufferNode, "expand");
 						else
-							tools.addClass(resultNode, "expand");
+							spectrum.tools.addClass(resultBufferNode, "expand");
+					}
+					
+					var resultBufferNodes = document.body.querySelectorAll(".c-resultBuffer>.results>.result");
+					for (var i = 0; i < resultBufferNodes.length; i++)
+					{
+						spectrum.tools.addEventListener(resultBufferNodes[i], "click", function(e){
+							e.preventDefault();
+							
+							// Uses middle click instead of double click for text selection by double click support
+							if (e.button == 1)
+								toggleExpand(e.currentTarget);
+						});
+
+						spectrum.tools.addEventListener(resultBufferNodes[i].querySelector("a.expand"), "click", function(e){
+							e.preventDefault();
+							toggleExpand(e.currentTarget.parentNode);
+						});
 					}
 				});' . $this->getNewline() .
 			'</script>' . $this->getNewline();
