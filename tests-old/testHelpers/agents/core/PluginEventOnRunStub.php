@@ -1,11 +1,9 @@
 <?php
 /*
- * (c) Mikhail Kharitonov <mail@mkharitonov.net>
- *
- * For the full copyright and license information, see the
- * LICENSE.txt file that was distributed with this source code.
- */
-
+This file is part of the Spectrum Framework (http://spectrum-framework.org/).
+For the copyright and license information, see the LICENSE.txt file that was
+distributed with this source code.
+*/
 namespace spectrum\tests\testHelpers\agents\core;
 
 class PluginEventOnRunStub extends \spectrum\core\plugins\Plugin implements \spectrum\core\plugins\events\OnRunBeforeInterface, \spectrum\core\plugins\events\OnRunAfterInterface
