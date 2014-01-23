@@ -57,9 +57,11 @@ Result:
 				2.  (495) 123-456-7 — success
 				3.  123-456-7 — success
 
-###Copyright
-(c) Mikhail Kharitonov <mail@mkharitonov.net>
+###Copyright and license
+Project is licensed under the "New BSD License". For the copyright and license information, see the LICENSE.txt file 
+that was distributed with this source code.
 
-For the full copyright and license information, see the LICENSE.txt file.
+###Contacts
+Mikhail Kharitonov <mail@mkharitonov.net>
 
 [1]: http://spectrum-framework.org/

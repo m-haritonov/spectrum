@@ -1,3 +1,6 @@
+TODO: put license text to each file head, remove LICENSE.txt, add to README.md note ""
+
+
 TODO: убрать проверку outputFormat в конфиге
 
 TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }
@@ -58,8 +61,6 @@ TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: rename activateMoment to activateType/activationType ???
 TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???
 
-TODO: put license text to each file head, remove LICENSE.txt, add to README.md note "Project is licensed under New BSD License (see license text in each file)"
-TODO: update examples in "README.md"
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
