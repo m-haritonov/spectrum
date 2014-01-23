@@ -1,3 +1,5 @@
+TODO: убрать проверку outputFormat в конфиге
+
 TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }
 TODO: убрать htmlspecialchars из Component::translate, обернуть вызов Component::translate в $this->escapeHtml()
 
@@ -5,7 +7,13 @@ TODO: удалить getSpecsByName (т.к. она требует сравнен
 
 TODO: throwsException — mb_stripos -> mb_strpos
 
+TODO: output перенести в драйвер (метод put удалить или в репортс плагин)
+
+TODO: spectrum\root() vs spectrum\run() and spectrum\getRootSpec()
+
 TODO: fix encoding
+TODO: данные спеки конвертировать в кодировку скрипта (utf 8) или лучше каждую выводимую строчку конвертировать в выходную кодировку (convertToOutputEncodingFromScriptCharset и convertToOutputEncodingFromSpecInputCharset)
+TODO: indention и newline не конвертировать, предположив что они уже в выходной кодировке
 TODO: изменить autoload
 TODO: change "$spec->getName()" to "$spec->output->convertToOutputCharset($spec->getName())" in exception messages
 TODO: reports -> use "convertToOutputEncoding"
@@ -56,6 +64,7 @@ TODO: проверить методы интерфейсов на соответ
 TODO: написать doc комментарии к методам
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
 TODO: remove old tests
+TODO: create "\spectrum\run" function ???
 TODO: MOVE PROJECT TO GITHUB.COM
 
 TODO: array context group:

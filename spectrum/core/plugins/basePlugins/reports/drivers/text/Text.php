@@ -12,6 +12,11 @@ use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
 
 class Text extends Driver
 {
+	public function createComponent($name)
+	{
+		throw new \spectrum\core\plugins\basePlugins\reports\Exception('Driver is under development');
+	}
+	
 	public function getContentBeforeSpec()
 	{
 		return 'Driver is under development';
