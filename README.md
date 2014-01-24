@@ -37,7 +37,7 @@ Web site: [http://spectrum-framework.org/][1]
 		});
 	});
 	
-	\spectrum\root()->run();
+	\spectrum\run();
 
 Result:
 

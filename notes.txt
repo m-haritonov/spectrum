@@ -1,5 +1,6 @@
-TODO: put license text to each file head, remove LICENSE.txt, add to README.md note ""
-
+TODO: убрать constructionCommands\callBroker?
+TODO: перенести constructionCommands\commands\internal\* в constructionCommands\commands?
+TODO: перенести constructionCommands\commands\* в constructionCommands?
 
 TODO: убрать проверку outputFormat в конфиге
 
@@ -11,8 +12,6 @@ TODO: удалить getSpecsByName (т.к. она требует сравнен
 TODO: throwsException — mb_stripos -> mb_strpos
 
 TODO: output перенести в драйвер (метод put удалить или в репортс плагин)
-
-TODO: spectrum\root() vs spectrum\run() and spectrum\getRootSpec()
 
 TODO: fix encoding
 TODO: данные спеки конвертировать в кодировку скрипта (utf 8) или лучше каждую выводимую строчку конвертировать в выходную кодировку (convertToOutputEncodingFromScriptCharset и convertToOutputEncodingFromSpecInputCharset)

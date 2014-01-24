@@ -7,8 +7,8 @@ distributed with this source code.
 
 namespace spectrum;
 
-function root()
+function run()
 {
 	$callBrokerClass = config::getConstructionCommandCallBrokerClass();
-	return $callBrokerClass::internal_getRootSpec();
+	return $callBrokerClass::internal_getRootSpec()->run();
 }
