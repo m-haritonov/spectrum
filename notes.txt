@@ -1,7 +1,11 @@
-TODO: убрать constructionCommands\callBroker?
-TODO: перенести constructionCommands\commands\internal\* в constructionCommands\commands?
-TODO: перенести constructionCommands\commands\* в constructionCommands?
+TODO: Add condition declaration for builders and "\spectrum\run" function.
+	if (!function_exists('spectrum\builders\group')){}
+	if (!function_exists('spectrum\run')){}
+	if (!function_exists('group')){}
 
+TODO: create run test (config locking before run, return value, root spec run)
+TODO: избавиться от @$
+TODO: rename XxxException to ExceptionXxx (by analogy with ReflectionClass/Object/Function)
 TODO: убрать проверку outputFormat в конфиге
 
 TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }

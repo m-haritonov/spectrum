@@ -11,13 +11,6 @@ require_once __DIR__ . '/init.php';
 
 class AutoloadTest extends Test
 {
-	public function testLoadsFileForCalledClass()
-	{
-		$this->assertFalse(class_exists('\spectrum\core\Spec', false));
-		new \spectrum\core\Spec();
-		$this->assertTrue(class_exists('\spectrum\core\Spec', false));
-	}
-
 	public function testNames_EntityNamesIsIdenticalToFileNames()
 	{
 		foreach ($this->getDirectoryFilesRecursively(array(__DIR__ . '/../spectrum', __DIR__ . '/../tests')) as $file)

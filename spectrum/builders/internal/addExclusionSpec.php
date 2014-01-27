@@ -5,12 +5,12 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum;
+namespace spectrum\builders\internal;
 
-function run()
+use spectrum\core\SpecInterface;
+
+function addExclusionSpec(SpecInterface $spec)
 {
-	if (!config::isLocked())
-		config::lock();
-	
-	return \spectrum\builders\getRootSpec()->run();
+	static $exclusionSpecs = array();
+	$exclusionSpecs[] = $spec;
 }

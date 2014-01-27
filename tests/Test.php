@@ -13,46 +13,73 @@ require_once __DIR__ . '/init.php';
 
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
-	public static $temp;
-	private static $classNumber = 0;
-	private $staticPropertiesBackups = array();
+	static public $temp;
+	static private $classNumber = 0;
+	
+	private $classStaticPropertyBackups = array();
+	private $objectPropertyBackups = array();
 
 	protected function setUp()
 	{
 		parent::setUp();
 		
-		$this->backupStaticProperties('\spectrum\config');
-		$this->backupStaticProperties('\spectrum\constructionCommands\callBroker');
-		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\Output');
-		$this->backupStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
+		\spectrum\builders\internal\setBuildingSpec(null);
+		
+		$this->backupObjectProperties(\spectrum\builders\getRootSpec());
+		$this->backupClassStaticProperties('\spectrum\config');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\basePlugins\Output');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
 		
 		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\reports\Reports');
 		\spectrum\tests\Test::$temp = null;
 	}
-
+	
 	protected function tearDown()
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
-		$this->restoreStaticProperties('\spectrum\core\plugins\basePlugins\Output');
-		$this->restoreStaticProperties('\spectrum\constructionCommands\callBroker');
-		$this->restoreStaticProperties('\spectrum\config');
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\basePlugins\Output');
+		$this->restoreClassStaticProperties('\spectrum\config');
+		$this->restoreObjectProperties(\spectrum\builders\getRootSpec());
 
 		parent::tearDown();
 	}
 
-	final protected function backupStaticProperties($className)
+	final protected function backupClassStaticProperties($className)
 	{
 		$reflection = new \ReflectionClass($className);
-		$this->staticPropertiesBackups[$className] = $reflection->getStaticProperties();
+		$this->classStaticPropertyBackups[$className] = $reflection->getStaticProperties();
 	}
 
-	final protected function restoreStaticProperties($className)
+	final protected function restoreClassStaticProperties($className)
 	{
-		foreach ($this->staticPropertiesBackups[$className] as $name => $value)
+		foreach ($this->classStaticPropertyBackups[$className] as $name => $value)
 		{
 			$propertyReflection = new \ReflectionProperty($className, $name);
 			$propertyReflection->setAccessible(true);
 			$propertyReflection->setValue(null, $value);
+		}
+	}
+	
+	final protected function backupObjectProperties($object)
+	{
+		$this->objectPropertyBackups[spl_object_hash($object)] = serialize($object);
+	}
+
+	final protected function restoreObjectProperties($object)
+	{
+		$objectReflection = new \ReflectionClass($object);
+		
+		$backupObject = unserialize($this->objectPropertyBackups[spl_object_hash($object)]);
+		$backupObjectReflection = new \ReflectionClass($backupObject);
+		
+		foreach ($objectReflection->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE) as $objectProperty)
+		{
+			$objectProperty->setAccessible(true);
+			
+			$backupObjectProperty = $backupObjectReflection->getProperty($objectProperty->getName());
+			$backupObjectProperty->setAccessible(true);
+			
+			$objectProperty->setValue($object, $backupObjectProperty->getValue($backupObject));
 		}
 	}
 	
@@ -140,17 +167,17 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->fail('Exception "' . $expectedClass . '" not thrown');
 	}
 	
-	final protected function getProviderWithCorrectArgumentCombinationsForSpecDeclaringConstructionCommand($name = null, $contexts = null, $body = null, $settings = null)
+	final protected function getProviderWithCorrectArgumentsForGroupAndTestBuilders($name = null, $contexts = null, $body = null, $settings = null)
 	{
 		$values = array(
 			'name' => array('some name text', 123),
 			'contexts' => array(array(), array('aaa' => array('bbb', 'ccc')), function(){}, function(){
-				\spectrum\constructionCommands\callBroker::group(null, null, function(){}, null);
-				\spectrum\constructionCommands\callBroker::test(null, null, function(){}, null);
+				\spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\builders\test(null, null, function(){}, null);
 			}),
 			'body' => array(function(){}, function(){
-				\spectrum\constructionCommands\callBroker::group(null, null, function(){}, null);
-				\spectrum\constructionCommands\callBroker::test(null, null, function(){}, null);
+				\spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\builders\test(null, null, function(){}, null);
 			}),
 			'settings' => array(true, false, 8, 'koi8-r', array(), array('inputCharset' => 'koi8-r')),
 		);
@@ -389,6 +416,8 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
 		return array($depth, $className, $name);
 	}
+	
+/**/
 	
 	final public function testCreateSpecsTree_ReverseOrder_AddsUpSpecsToBottomSpecsAsParents()
 	{

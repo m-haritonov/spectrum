@@ -3290,7 +3290,7 @@ class SpecTest extends \spectrum\tests\Test
 //		/**
 //		 * @dataProvider dataProviderSpecsTreeToSpecId_WithoutContexts
 //		 */
-//		public function testGetSpecId_DeclaringState($specsTree, $specId)
+//		public function testGetSpecId_BuildingState($specsTree, $specId)
 //		{
 //			$specs = $this->createSpecsTree($specsTree);
 //			$this->assertSame($specId, $specs['spec']->identify->getSpecId());
@@ -3315,7 +3315,7 @@ class SpecTest extends \spectrum\tests\Test
 //		/**
 //		 * @dataProvider dataProviderSpecsTreeToSpecId_WithoutContexts
 //		 */
-//		public function testGetSpecById_DeclaringState_ShouldBeReturnProperSpecInstance($specsTree, $specId)
+//		public function testGetSpecById_BuildingState_ShouldBeReturnProperSpecInstance($specsTree, $specId)
 //		{
 //			$specs = $this->createSpecsTree($specsTree, array(), true);
 //			$this->assertSame($specs['spec'], $specs[0]->identify->getSpecById($specId));

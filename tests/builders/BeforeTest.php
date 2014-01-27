@@ -1,0 +1,69 @@
+<?php
+/*
+This file is part of the Spectrum Framework (http://spectrum-framework.org/).
+For the copyright and license information, see the LICENSE.txt file that was
+distributed with this source code.
+*/
+
+namespace spectrum\tests\builders;
+
+use spectrum\config;
+use spectrum\core\Spec;
+
+require_once __DIR__ . '/../init.php';
+
+class BeforeTest extends \spectrum\tests\Test
+{
+	public function testCallsAtBuildingState_AddsContextFunctionWithBeforeTypeToCurrentBuildingSpec()
+	{
+		$spec = new Spec();
+		\spectrum\builders\internal\setBuildingSpec($spec);
+		
+		$function1 = function(){};
+		$function2 = function(){};
+		\spectrum\builders\before($function1);
+		\spectrum\builders\before($function2);
+
+		$this->assertSame(array(
+			array('function' => $function1, 'type' => 'before'),
+			array('function' => $function2, 'type' => 'before'),
+		), $spec->contexts->getAll());
+	}
+
+	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction()
+	{
+		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\contexts\Contexts');
+		config::registerSpecPlugin($this->createClass('
+			class ... extends \spectrum\core\plugins\basePlugins\contexts\Contexts
+			{
+				public function add($function, $type = "before")
+				{
+					return "some text";
+				}
+			}
+		'));
+		
+		$this->assertSame('some text', \spectrum\builders\before(function(){}));
+	}
+	
+	public function testCallsAtRunningState_ThrowsException()
+	{
+		\spectrum\tests\Test::$temp["exception"] = null;
+		
+		$this->registerPluginWithCodeInEvent('
+			try
+			{
+				\spectrum\builders\before(function(){});
+			}
+			catch (\Exception $e)
+			{
+				\spectrum\tests\Test::$temp["exception"] = $e;
+			}
+		', 'onEndingSpecExecute');
+		
+		\spectrum\builders\getRootSpec()->run();
+		
+		$this->assertInstanceOf('\spectrum\builders\Exception', \spectrum\tests\Test::$temp["exception"]);
+		$this->assertSame('Builder "before" should be call only at building state', \spectrum\tests\Test::$temp["exception"]->getMessage());
+	}
+}

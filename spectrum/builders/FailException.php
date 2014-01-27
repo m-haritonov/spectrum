@@ -5,12 +5,9 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum;
+namespace spectrum\builders;
 
-function run()
+class FailException extends Exception
 {
-	if (!config::isLocked())
-		config::lock();
 	
-	return \spectrum\builders\getRootSpec()->run();
 }
