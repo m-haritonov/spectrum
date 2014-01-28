@@ -1,4 +1,3 @@
-TODO: create run test (config locking before run, return value, root spec run)
 TODO: избавиться от @$
 TODO: rename XxxException to ExceptionXxx (by analogy with ReflectionClass/Object/Function)
 TODO: убрать проверку outputFormat в конфиге
