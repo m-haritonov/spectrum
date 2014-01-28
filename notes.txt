@@ -1,8 +1,3 @@
-TODO: Add condition declaration for builders and "\spectrum\run" function.
-	if (!function_exists('spectrum\builders\group')){}
-	if (!function_exists('spectrum\run')){}
-	if (!function_exists('group')){}
-
 TODO: create run test (config locking before run, return value, root spec run)
 TODO: избавиться от @$
 TODO: rename XxxException to ExceptionXxx (by analogy with ReflectionClass/Object/Function)
@@ -57,6 +52,9 @@ TODO: plugin OutputCapture (плюс вывод в отчёте в отдель�
 TODO: matchers: be(function(){})->output('aaa a aaaaa ');
 
 TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
+TODO: перенести инициализацию контекстов в TestFunction???
+TODO: переименовать TestFunction в Test
+TODO: заменить this() передачей аргумента с экземпляром контекста???
 TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
 TODO: добавить setCatchPhpErrors(true/false) ???
 TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
