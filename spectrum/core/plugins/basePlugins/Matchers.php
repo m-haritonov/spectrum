@@ -26,7 +26,10 @@ class Matchers extends \spectrum\core\plugins\Plugin
 
 	public function get($name)
 	{
-		return @$this->items[$name];
+		if (isset($this->items[$name]))
+			return $this->items[$name];
+		else
+			return null;
 	}
 	
 	public function getThroughRunningAncestors($name)

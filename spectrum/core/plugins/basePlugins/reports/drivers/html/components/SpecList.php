@@ -92,7 +92,10 @@ class SpecList extends Component
 
 		if (!$spec->isAnonymous() && $spec->getParentSpecs())
 		{
-			@static::$numbers[static::$depth]++;
+			if (!isset(static::$numbers[static::$depth]))
+				static::$numbers[static::$depth] = 0;
+			
+			static::$numbers[static::$depth]++;
 
 			$output .= $this->getIndention(static::$depth * 2 + 1) . '<li class="' . ($spec->getChildSpecs() ? 'notEnding expand' : 'ending') . '" id="' . $spec->getSpecId() . '">' . $this->getNewline();
 			
@@ -153,7 +156,7 @@ class SpecList extends Component
 		return
 			'<span class="point">' .
 				str_repeat('<span class="indention">' . $this->getIndention() . '</span>', static::$depth) . // Indention for copy to clipboard
-				'<span class="number">' . htmlspecialchars(@static::$numbers[static::$depth]) . '<span class="dot">.</span></span>' .
+				'<span class="number">' . htmlspecialchars(isset(static::$numbers[static::$depth]) ? static::$numbers[static::$depth] : '') . '<span class="dot">.</span></span>' .
 				'<a href="#" class="expand" title="' . $this->translate('Expand/collapse child content') . '"><span></span></a>' .
 			'</span> ';
 	}

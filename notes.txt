@@ -1,4 +1,3 @@
-TODO: избавиться от @$
 TODO: rename XxxException to ExceptionXxx (by analogy with ReflectionClass/Object/Function)
 TODO: убрать проверку outputFormat в конфиге
 
