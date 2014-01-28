@@ -11,7 +11,7 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../../init.php';
 
-class TestFunctionTest extends \spectrum\tests\Test
+class TestTest extends \spectrum\tests\Test
 {
 	public function testSetFunction_SetsNewFunction()
 	{
@@ -19,11 +19,11 @@ class TestFunctionTest extends \spectrum\tests\Test
 		$function2 = function(){};
 		
 		$spec = new Spec();
-		$spec->testFunction->setFunction($function1);
-		$this->assertSame($function1, $spec->testFunction->getFunction());
+		$spec->test->setFunction($function1);
+		$this->assertSame($function1, $spec->test->getFunction());
 		
-		$spec->testFunction->setFunction($function2);
-		$this->assertSame($function2, $spec->testFunction->getFunction());
+		$spec->test->setFunction($function2);
+		$this->assertSame($function2, $spec->test->getFunction());
 	}
 	
 	public function testSetFunction_CallOnRun_ThrowsExceptionAndDoesNotChangeFunction()
@@ -33,7 +33,7 @@ class TestFunctionTest extends \spectrum\tests\Test
 		$this->registerPluginWithCodeInEvent('
 			try
 			{
-				$this->getOwnerSpec()->testFunction->setFunction(function(){});
+				$this->getOwnerSpec()->test->setFunction(function(){});
 			}
 			catch (\Exception $e)
 			{
@@ -44,12 +44,12 @@ class TestFunctionTest extends \spectrum\tests\Test
 		$function = function(){};
 
 		$spec = new Spec();
-		$spec->testFunction->setFunction($function);
+		$spec->test->setFunction($function);
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\TestFunction::setFunction" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
-		$this->assertSame($function, $spec->testFunction->getFunction());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\Test::setFunction" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame($function, $spec->test->getFunction());
 	}
 	
 /**/
@@ -60,17 +60,17 @@ class TestFunctionTest extends \spectrum\tests\Test
 		$function2 = function(){};
 		
 		$spec = new Spec();
-		$spec->testFunction->setFunction($function1);
-		$this->assertSame($function1, $spec->testFunction->getFunction());
+		$spec->test->setFunction($function1);
+		$this->assertSame($function1, $spec->test->getFunction());
 		
-		$spec->testFunction->setFunction($function2);
-		$this->assertSame($function2, $spec->testFunction->getFunction());
+		$spec->test->setFunction($function2);
+		$this->assertSame($function2, $spec->test->getFunction());
 	}
 	
 	public function testGetFunction_ReturnsNullByDefault()
 	{
 		$spec = new Spec();
-		$this->assertSame(null, $spec->testFunction->getFunction());
+		$this->assertSame(null, $spec->test->getFunction());
 	}
 
 /**/
@@ -80,7 +80,7 @@ class TestFunctionTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->testFunction->getFunctionThroughRunningAncestors();
+			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->test->getFunctionThroughRunningAncestors();
 		', 'onEndingSpecExecute');
 		
 		$specs = $this->createSpecsTree('
@@ -97,10 +97,10 @@ class TestFunctionTest extends \spectrum\tests\Test
 		$function3 = function(){};
 		$function4 = function(){};
 		
-		$specs[0]->testFunction->setFunction($function1);
-		$specs['endingSpec1']->testFunction->setFunction($function2);
-		$specs['parent1']->testFunction->setFunction($function3);
-		$specs['parent2']->testFunction->setFunction($function4);
+		$specs[0]->test->setFunction($function1);
+		$specs['endingSpec1']->test->setFunction($function2);
+		$specs['parent1']->test->setFunction($function3);
+		$specs['parent2']->test->setFunction($function4);
 		
 		$specs[0]->run();
 		
@@ -110,7 +110,7 @@ class TestFunctionTest extends \spectrum\tests\Test
 	public function testGetFunctionThroughRunningAncestors_ReturnsNullByDefault()
 	{
 		$spec = new Spec();
-		$this->assertSame(null, $spec->testFunction->getFunctionThroughRunningAncestors());
+		$this->assertSame(null, $spec->test->getFunctionThroughRunningAncestors());
 	}
 	
 /**/
@@ -123,7 +123,7 @@ class TestFunctionTest extends \spectrum\tests\Test
 		');
 
 		$callCount = 0;
-		$specs[1]->testFunction->setFunction(function() use(&$callCount){ $callCount++; });
+		$specs[1]->test->setFunction(function() use(&$callCount){ $callCount++; });
 		$specs[0]->run();
 		
 		$this->assertSame(1, $callCount);
@@ -137,8 +137,8 @@ class TestFunctionTest extends \spectrum\tests\Test
 		');
 
 		$callCount = array('notEndingSpec' => 0, 'endingSpec' => 0);
-		$specs[0]->testFunction->setFunction(function() use(&$callCount){ $callCount['notEndingSpec']++; });
-		$specs[1]->testFunction->setFunction(function() use(&$callCount){ $callCount['endingSpec']++; });
+		$specs[0]->test->setFunction(function() use(&$callCount){ $callCount['notEndingSpec']++; });
+		$specs[1]->test->setFunction(function() use(&$callCount){ $callCount['endingSpec']++; });
 		$specs[0]->run();
 		
 		$this->assertSame(array('notEndingSpec' => 0, 'endingSpec' => 1), $callCount);
@@ -148,7 +148,7 @@ class TestFunctionTest extends \spectrum\tests\Test
 	{
 		$spec = new Spec();
 		$passedArguments = array();
-		$spec->testFunction->setFunction(function() use(&$passedArguments){
+		$spec->test->setFunction(function() use(&$passedArguments){
 			$passedArguments[] = func_get_args();
 		});
 		
@@ -167,9 +167,9 @@ class TestFunctionTest extends \spectrum\tests\Test
 		', array(2 => 4));
 
 		$calls = array();
-		$specs[0]->testFunction->setFunction(function() use(&$calls){ $calls[] = 0; });
-		$specs[1]->testFunction->setFunction(function() use(&$calls){ $calls[] = 1; });
-		$specs[2]->testFunction->setFunction(function() use(&$calls){ $calls[] = 2; });
+		$specs[0]->test->setFunction(function() use(&$calls){ $calls[] = 0; });
+		$specs[1]->test->setFunction(function() use(&$calls){ $calls[] = 1; });
+		$specs[2]->test->setFunction(function() use(&$calls){ $calls[] = 2; });
 		$specs[0]->run();
 		
 		$this->assertSame(array(1, 2, 0), $calls);
@@ -178,7 +178,7 @@ class TestFunctionTest extends \spectrum\tests\Test
 	public function testFunctionCall_FunctionNotSet_DoesNotTryToCallFunction()
 	{
 		$spec = new Spec();
-		$spec->testFunction->setFunction(null);
+		$spec->test->setFunction(null);
 		$spec->run();
 	}
 }

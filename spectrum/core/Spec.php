@@ -16,7 +16,7 @@ use spectrum\config;
  * @property \spectrum\core\plugins\basePlugins\Matchers matchers
  * @property \spectrum\core\plugins\basePlugins\Messages messages
  * @property \spectrum\core\plugins\basePlugins\Output output
- * @property \spectrum\core\plugins\basePlugins\TestFunction testFunction
+ * @property \spectrum\core\plugins\basePlugins\Test test
  */
 class Spec implements SpecInterface
 {

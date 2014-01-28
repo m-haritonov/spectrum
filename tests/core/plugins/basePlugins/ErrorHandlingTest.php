@@ -492,7 +492,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_USER_WARNING, $results[1]['details']->getSeverity());
 	}
 	
-	public function testErrorHandling_CatchesPhpErrorsFromTestFunctionPlugin()
+	public function testErrorHandling_CatchesPhpErrorsFromTestPlugin()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		
@@ -502,7 +502,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		
 		$spec = new Spec();
 		$spec->errorHandling->setCatchPhpErrors(-1);
-		$spec->testFunction->setFunction(function(){ trigger_error("aaa", E_USER_NOTICE); });
+		$spec->test->setFunction(function(){ trigger_error("aaa", E_USER_NOTICE); });
 		$spec->run();
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffer"]->getResults();

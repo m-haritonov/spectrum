@@ -1437,7 +1437,7 @@ class ConfigTest extends Test
 			'\spectrum\core\plugins\basePlugins\Matchers',
 			'\spectrum\core\plugins\basePlugins\Messages',
 			'\spectrum\core\plugins\basePlugins\Output',
-			'\spectrum\core\plugins\basePlugins\TestFunction',
+			'\spectrum\core\plugins\basePlugins\Test',
 		), config::getRegisteredSpecPlugins());
 	}
 	

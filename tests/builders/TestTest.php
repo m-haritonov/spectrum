@@ -209,8 +209,8 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame('aaa', $contextSpecs[0]->getName());
 		$this->assertSame(array(), $contextSpecs[0]->getChildSpecs());
 		
-		$bodyFunction = $contextSpecs[0]->testFunction->getFunction();
-		$this->assertNotSame($testSpec->testFunction->getFunction(), $bodyFunction);
+		$bodyFunction = $contextSpecs[0]->test->getFunction();
+		$this->assertNotSame($testSpec->test->getFunction(), $bodyFunction);
 		$this->assertSame('zzz', $bodyFunction());
 	}
 	
@@ -223,12 +223,12 @@ class TestTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerBodyIsFunction
 	 */
-	public function testCallsAtBuildingState_BodyIsFunction_AddsBodyFunctionToTestFunctionPlugin($arguments)
+	public function testCallsAtBuildingState_BodyIsFunction_AddsBodyFunctionToTestPlugin($arguments)
 	{
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
-		$this->assertInstanceOf('\Closure', $testSpec->testFunction->getFunction());
+		$this->assertInstanceOf('\Closure', $testSpec->test->getFunction());
 		
-		$function = $testSpec->testFunction->getFunction();
+		$function = $testSpec->test->getFunction();
 		$this->assertSame($function(), $function);
 	}
 	

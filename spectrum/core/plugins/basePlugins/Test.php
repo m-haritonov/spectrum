@@ -7,7 +7,7 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins;
 
-class TestFunction extends \spectrum\core\plugins\Plugin
+class Test extends \spectrum\core\plugins\Plugin
 {
 	/**
 	 * @var \Closure
@@ -16,7 +16,7 @@ class TestFunction extends \spectrum\core\plugins\Plugin
 	
 	static public function getAccessName()
 	{
-		return 'testFunction';
+		return 'test';
 	}
 	
 	static public function getEventListeners()

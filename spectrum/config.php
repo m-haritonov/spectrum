@@ -30,7 +30,7 @@ final class config
 		'\spectrum\core\plugins\basePlugins\Matchers',
 		'\spectrum\core\plugins\basePlugins\Messages',
 		'\spectrum\core\plugins\basePlugins\Output',
-		'\spectrum\core\plugins\basePlugins\TestFunction',
+		'\spectrum\core\plugins\basePlugins\Test',
 	);
 	
 	static private $locked = false;

@@ -49,7 +49,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 		$testSpec->setName($name);
 	
 	if ($body)
-		$testSpec->testFunction->setFunction($body);
+		$testSpec->test->setFunction($body);
 	
 	if ($settings !== null)
 		\spectrum\builders\internal\setSettingsToSpec($testSpec, $settings);
