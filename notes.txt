@@ -3,15 +3,13 @@ TODO: убрать htmlspecialchars из Component::translate, обернуть 
 
 TODO: удалить getSpecsByName (т.к. она требует сравнения в разных кодировках) или добавить параметр $charset, задающий кодировку аргумента
 
-TODO: throwsException — mb_stripos -> mb_strpos
-
-TODO: output перенести в драйвер (метод put удалить или в репортс плагин)
+TODO: output перенести в драйвер (метод put удалить или перенести в reports плагин)
 
 TODO: fix encoding
 TODO: данные спеки конвертировать в кодировку скрипта (utf 8) или лучше каждую выводимую строчку конвертировать в выходную кодировку (convertToOutputEncodingFromScriptCharset и convertToOutputEncodingFromSpecInputCharset)
 TODO: indention и newline не конвертировать, предположив что они уже в выходной кодировке
 TODO: изменить autoload
-TODO: change "$spec->getName()" to "$spec->output->convertToOutputCharset($spec->getName())" in exception messages
+TODO: change "$spec->getName()" to "$spec->output->convertToOutputCharset($spec->getName())" in exception messages (or remove $spec->getName() from exception messages)
 TODO: reports -> use "convertToOutputEncoding"
 TODO: mb_*('', 'latin1'|$spec->charset->getInputEncoding()) и т.п. 
 TODO: использовать convertToOutputCharset при выводе данных из:
@@ -24,7 +22,6 @@ fail()
 TODO: FailException -> \spectrum\core\details\UserFailDetails, ErrorException -> \spectrum\core\details\PhpErrorDetails, MatcherCallDetails -> \spectrum\core\details\MatcherCallDetails ???
 
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
-
 TODO: добавить информацию о фреймворке (название, версию и адрес сайта): либо при нажатии на иконку [i] либо в конце нижнего блока totalResult (<a href="http://spectrum-framework.org/">Spectrum 1.0</a>)
 
 TODO: change text "Run results buffer contains" and etc.
@@ -44,8 +41,10 @@ TODO: create "Reports" test "testGeneratesValidXhtml" (проверяет вал
 
 TODO: fix reports in all browsers 
 
-TODO: plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
-TODO: matchers: be(function(){})->output('aaa a aaaaa ');
+TODO: deny "no array" elements in convertArrayWithContextsToSpecs???
+
+TODO: plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
+TODO: matchers: be(function(){})->outputs/prints('aaa a aaaaa ');
 
 TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
 TODO: перенести инициализацию контекстов в плагин "Test"???
@@ -57,10 +56,8 @@ TODO: rename activateMoment to activateType/activationType ???
 TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???
 
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
-TODO: написать doc комментарии к методам
+TODO: написать doc комментарии к методам и функциям (глобальным, расположенным в init.php, в частности)
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
-TODO: remove old tests
-TODO: create "\spectrum\run" function ???
 TODO: MOVE PROJECT TO GITHUB.COM
 
 TODO: array context group:

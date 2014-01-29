@@ -47,7 +47,7 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 		{
 			if ($expectedStringInMessage === '' && $e->getMessage() !== '')
 				return false;
-			else if ($expectedStringInMessage !== '' && mb_stripos($e->getMessage(), $expectedStringInMessage) === false)
+			else if ($expectedStringInMessage !== '' && mb_strpos($e->getMessage(), $expectedStringInMessage) === false)
 				return false;
 		}
 
