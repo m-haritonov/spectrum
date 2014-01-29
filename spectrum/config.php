@@ -41,16 +41,7 @@ final class config
 	/**
 	 * @param $format "html"|"text"
 	 */
-	static public function setOutputFormat($format)
-	{
-		$format = strtolower($format);
-		
-		if ($format != 'html' && $format != 'text')
-			throw new Exception('Output format "' . $format . '" is not supported');
-		
-		return static::setConfigValue(static::$outputFormat, $format);
-	}
-	
+	static public function setOutputFormat($format){ return static::setConfigValue(static::$outputFormat, $format); }
 	static public function getOutputFormat(){ return static::$outputFormat; }
 	
 	static public function setOutputIndention($string){ return static::setConfigValue(static::$outputIndention, $string);}

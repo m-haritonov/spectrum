@@ -40,17 +40,6 @@ class ConfigTest extends Test
 		$this->assertSame('html', config::getOutputFormat());
 	}
 	
-	public function testSetOutputFormat_FormatIsNotSupported_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::setOutputFormat('text');
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Output format "aaa" is not supported', function(){
-			config::setOutputFormat('aaa');
-		});
-
-		$this->assertSame('text', config::getOutputFormat());
-	}
-
 	public function testSetOutputFormat_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		config::setOutputFormat('html');

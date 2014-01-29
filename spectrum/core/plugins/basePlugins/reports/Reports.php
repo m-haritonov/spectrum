@@ -10,6 +10,7 @@ namespace spectrum\core\plugins\basePlugins\reports;
 use spectrum\config;
 use spectrum\core\plugins\basePlugins\reports\drivers\html\Html;
 use spectrum\core\plugins\basePlugins\reports\drivers\text\Text;
+use spectrum\core\plugins\Exception;
 
 class Reports extends \spectrum\core\plugins\Plugin
 {
@@ -40,9 +41,11 @@ class Reports extends \spectrum\core\plugins\Plugin
 	
 	protected function createDriver()
 	{
-		if (config::getOutputFormat() == 'html')
+		if (mb_strtolower(config::getOutputFormat()) == 'html')
 			return new Html($this);
-		else
+		else if (mb_strtolower(config::getOutputFormat()) == 'text')
 			return new Text($this);
+		else
+			throw new Exception('Output format "' . config::getOutputFormat() . '" is not supported by "Reports" plugin');
 	}
 }

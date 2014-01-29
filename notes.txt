@@ -1,6 +1,3 @@
-TODO: rename XxxException to ExceptionXxx (by analogy with ReflectionClass/Object/Function)
-TODO: убрать проверку outputFormat в конфиге
-
 TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }
 TODO: убрать htmlspecialchars из Component::translate, обернуть вызов Component::translate в $this->escapeHtml()
 
@@ -24,6 +21,7 @@ ResultBuffer::addResult()
 Output::put('текст')
 fail()
 
+TODO: FailException -> \spectrum\core\details\UserFailDetails, ErrorException -> \spectrum\core\details\PhpErrorDetails, MatcherCallDetails -> \spectrum\core\details\MatcherCallDetails ???
 
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 
@@ -55,7 +53,6 @@ TODO: заменить this() передачей аргумента с экзе�
 TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
 TODO: добавить setCatchPhpErrors(true/false) ???
 TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
-TODO: choose exception naming style: BreakException vs ExceptionBreak
 TODO: rename activateMoment to activateType/activationType ???
 TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???
 
