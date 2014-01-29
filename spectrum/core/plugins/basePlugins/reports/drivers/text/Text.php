@@ -8,12 +8,13 @@ distributed with this source code.
 namespace spectrum\core\plugins\basePlugins\reports\drivers\text;
 
 use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
+use spectrum\core\plugins\Exception;
 
 class Text extends Driver
 {
 	public function createComponent($name)
 	{
-		throw new \spectrum\core\plugins\basePlugins\reports\Exception('Driver is under development');
+		throw new Exception('Driver is under development');
 	}
 	
 	public function getContentBeforeSpec()
