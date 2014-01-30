@@ -262,32 +262,6 @@ class Spec implements SpecInterface
 	{
 		return $this->childSpecs;
 	}
-	
-	/**
-	 * Return all find specs with same name.
-	 * @return array
-	 */
-	public function getChildSpecsByName($name)
-	{
-		$findSpecs = array();
-
-		foreach ($this->childSpecs as $spec)
-		{
-			if ((string) $spec->getName() === (string) $name)
-				$findSpecs[] = $spec;
-		}
-
-		return $findSpecs;
-	}
-
-	public function getChildSpecByNumber($number)
-	{
-		$number--;
-		if (array_key_exists($number, $this->childSpecs))
-			return $this->childSpecs[$number];
-		else
-			return null;
-	}
 
 	public function hasChildSpec(SpecInterface $spec)
 	{

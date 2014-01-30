@@ -461,8 +461,6 @@ class ConfigTest extends Test
 				public function unbindAllParentSpecs(){}
 			
 				public function getChildSpecs(){}
-				public function getChildSpecsByName($name){}
-				public function getChildSpecByNumber($number){}
 				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
@@ -532,8 +530,6 @@ class ConfigTest extends Test
 				public function unbindAllParentSpecs(){}
 			
 				public function getChildSpecs(){}
-				public function getChildSpecsByName($name){}
-				public function getChildSpecByNumber($number){}
 				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}

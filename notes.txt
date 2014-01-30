@@ -1,8 +1,6 @@
 TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }
 TODO: убрать htmlspecialchars из Component::translate, обернуть вызов Component::translate в $this->escapeHtml()
 
-TODO: удалить getSpecsByName (т.к. она требует сравнения в разных кодировках) или добавить параметр $charset, задающий кодировку аргумента
-
 TODO: output перенести в драйвер (метод put удалить или перенести в reports плагин)
 
 TODO: fix encoding

@@ -29,8 +29,6 @@ interface SpecInterface
 	public function unbindAllParentSpecs();
 
 	public function getChildSpecs();
-	public function getChildSpecsByName($name);
-	public function getChildSpecByNumber($number);
 	public function hasChildSpec(SpecInterface $spec);
 	public function bindChildSpec(SpecInterface $spec);
 	public function unbindChildSpec(SpecInterface $spec);
