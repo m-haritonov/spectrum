@@ -34,30 +34,116 @@ final class config
 	);
 	
 	static private $locked = false;
-	
-	// For abstract class imitation (using "abstract" keyword with "final" not allowed)
+
+	/**
+	 * Use private constructor for abstract class imitation (using of "abstract" and "final" keywords together is not allowed)
+	 */
 	private function __construct(){}
+
+	/**
+	 * Set format for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\basePlugins\reports\*" classes)
+	 * @param $format "html"|"text"
+	 * @return void
+	 */
+	static public function setOutputFormat($format)
+	{
+		static::setConfigValue(static::$outputFormat, $format);
+	}
+
+	/**
+	 * @return string Already set format or "html" by default
+	 */
+	static public function getOutputFormat()
+	{
+		return static::$outputFormat;
+	}
+
+	/**
+	 * @param $string String in output charset (see "self::getOutputCharset" method)
+	 * @return void
+	 */
+	static public function setOutputIndention($string)
+	{
+		static::setConfigValue(static::$outputIndention, $string);
+	}
 	
 	/**
-	 * @param $format "html"|"text"
+	 * @return string Already set indention or "\t" by default
 	 */
-	static public function setOutputFormat($format){ return static::setConfigValue(static::$outputFormat, $format); }
-	static public function getOutputFormat(){ return static::$outputFormat; }
-	
-	static public function setOutputIndention($string){ return static::setConfigValue(static::$outputIndention, $string);}
-	static public function getOutputIndention(){ return static::$outputIndention; }
+	static public function getOutputIndention()
+	{
+		return static::$outputIndention;
+	}
 
-	static public function setOutputNewline($string){ return static::setConfigValue(static::$outputNewline, $string); }
-	static public function getOutputNewline(){ return static::$outputNewline; }
+	/**
+	 * @param $string String in output charset (see "self::getOutputCharset" method)
+	 * @return void
+	 */
+	static public function setOutputNewline($string)
+	{
+		static::setConfigValue(static::$outputNewline, $string);
+	}
+	
+	/**
+	 * @return string Already set newline or "\r\n" by default
+	 */
+	static public function getOutputNewline()
+	{
+		return static::$outputNewline;
+	}
+	
+	/**
+	 * Set charset for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\basePlugins\reports\*" classes)
+	 * @param $format "html"|"text"
+	 * @return void
+	 */
+	static public function setOutputCharset($charsetName)
+	{
+		static::setConfigValue(static::$outputCharset, $charsetName);
+	}
 
-	static public function setOutputCharset($charsetName){ return static::setConfigValue(static::$outputCharset, $charsetName); }
-	static public function getOutputCharset(){ return static::$outputCharset; }
+	/**
+	 * @return string Already set charset or "utf-8" by default
+	 */
+	static public function getOutputCharset()
+	{
+		return static::$outputCharset;
+	}
+
+	/**
+	 * Allow or deny change of input charset (see "\spectrum\core\plugins\basePlugins\Charset" class)
+	 * @param bool $isEnable
+	 */
+	static public function setAllowInputCharsetModify($isEnable)
+	{
+		static::setConfigValue(static::$allowInputCharsetModify, $isEnable);
+	}
 	
-	static public function setAllowInputCharsetModify($isEnable){ return static::setConfigValue(static::$allowInputCharsetModify, $isEnable); }
-	static public function getAllowInputCharsetModify(){ return static::$allowInputCharsetModify; }
+	/**
+	 * @return bool Already set value or "true" by default
+	 */
+	static public function getAllowInputCharsetModify()
+	{
+		return static::$allowInputCharsetModify;
+	}
 	
-	static public function setAllowErrorHandlingModify($isEnable){ return static::setConfigValue(static::$allowErrorHandlingModify, $isEnable); }
-	static public function getAllowErrorHandlingModify(){ return static::$allowErrorHandlingModify; }
+	
+	/**
+	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling" class)
+	 * @param bool $isEnable
+	 */
+	static public function setAllowErrorHandlingModify($isEnable)
+	{
+		static::setConfigValue(static::$allowErrorHandlingModify, $isEnable);
+	}
+	
+	/**
+	 * @return bool Already set value or "true" by default
+	 */
+	static public function getAllowErrorHandlingModify()
+	{
+		return static::$allowErrorHandlingModify;
+	}
 	
 /**/
 
@@ -170,10 +256,17 @@ final class config
 		return false;
 	}
 
-/**/
+	static public function lock()
+	{
+		static::$locked = true;
+	}
 	
-	static public function lock(){ static::$locked = true; }
-	static public function isLocked(){ return static::$locked; }
+	static public function isLocked()
+	{
+		return static::$locked;
+	}
+
+/**/
 
 	static private function setConfigClassValue(&$var, $className, $requiredInterface = null)
 	{
@@ -186,7 +279,7 @@ final class config
 				throw new Exception('Class "' . $className . '" should be implement interface "' . $requiredInterface . '"');
 		}
 
-		return static::setConfigValue($var, $className);
+		static::setConfigValue($var, $className);
 	}
 
 	static private function setConfigValue(&$var, $value)
