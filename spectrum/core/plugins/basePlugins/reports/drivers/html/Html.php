@@ -7,6 +7,7 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html;
 
+use spectrum\config;
 use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
 
 class Html extends Driver
@@ -97,7 +98,7 @@ class Html extends Driver
 			'<!DOCTYPE html>' . $this->getNewline() .
 			$this->getHtmlTag() .
 			'<head>' . $this->getNewline() .
-				$this->getIndention() . '<meta http-equiv="content-type" content="text/html; charset=utf-8" />' . $this->getNewline() .
+				$this->getIndention() . '<meta http-equiv="content-type" content="text/html; charset=' . config::getOutputCharset() . '" />' . $this->getNewline() .
 				$this->getIndention() . '<title></title>' . $this->getNewline() .
 				$this->prependIndentionToEachLine($this->getStyles()) . $this->getNewline(2) .
 				$this->prependIndentionToEachLine($this->getScripts()) . $this->getNewline() .
