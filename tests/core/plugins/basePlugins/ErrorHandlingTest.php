@@ -63,7 +63,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(1, $spec->errorHandling->getCatchPhpErrors());
 	}
 	
@@ -168,7 +168,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstPhpError" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\ErrorHandling::setBreakOnFirstPhpError" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstPhpError());
 	}
 	
@@ -271,7 +271,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
-		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstMatcherFail" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('Call of "\spectrum\core\plugins\basePlugins\ErrorHandling::setBreakOnFirstMatcherFail" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstMatcherFail());
 	}
 	
@@ -343,6 +343,32 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
+	public function testErrorHandling_GetsPhpErrorDetailsClassFromConfig()
+	{
+		$phpErrorDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\PhpError {}');
+		config::setPhpErrorDetailsClass($phpErrorDetailsClassName);
+
+		error_reporting(E_USER_WARNING);
+		
+		\spectrum\tests\Test::$temp["resultBuffer"] = null;
+		
+		$this->registerPluginWithCodeInEvent('
+			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
+			trigger_error("aaa", E_USER_NOTICE);
+		', 'onEndingSpecExecute');
+		
+		$spec = new Spec();
+		$spec->errorHandling->setCatchPhpErrors(-1);
+		$spec->run();
+		
+		$results = \spectrum\tests\Test::$temp["resultBuffer"]->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf($phpErrorDetailsClassName, $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+	}
+	
 	public function testErrorHandling_GetsErrorTypeFromAncestorsOrSelf()
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
@@ -371,15 +397,15 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 
 		$results = \spectrum\tests\Test::$temp["resultBuffers"][0]->getResults();
 		$this->assertSame(1, count($results));
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getSeverity());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffers"][1]->getResults();
 		$this->assertSame(1, count($results));
-		$this->assertSame(E_USER_WARNING, $results[0]['details']->getSeverity());
+		$this->assertSame(E_USER_WARNING, $results[0]['details']->getErrorLevel());
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffers"][2]->getResults();
 		$this->assertSame(1, count($results));
-		$this->assertSame(E_USER_ERROR, $results[0]['details']->getSeverity());
+		$this->assertSame(E_USER_ERROR, $results[0]['details']->getErrorLevel());
 	}
 	
 	public function testErrorHandling_TakesInAccountDefinedOnRunErrorReportingValue()
@@ -417,9 +443,9 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$results = \spectrum\tests\Test::$temp["resultBuffer"]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[0]['details']);
-		$this->assertSame('aaa', $results[0]['details']->getMessage());
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
 	}
 	
 	public function testErrorHandling_RestoreErrorReportingValueAfterRun()
@@ -482,14 +508,14 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(2, count($results));
 		
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[0]['details']);
-		$this->assertSame('aaa', $results[0]['details']->getMessage());
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
 		
 		$this->assertSame(false, $results[1]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[1]['details']);
-		$this->assertSame('bbb', $results[1]['details']->getMessage());
-		$this->assertSame(E_USER_WARNING, $results[1]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
+		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
 	}
 	
 	public function testErrorHandling_CatchesPhpErrorsFromTestPlugin()
@@ -509,9 +535,9 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(1, count($results));
 		
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[0]['details']);
-		$this->assertSame('aaa', $results[0]['details']->getMessage());
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
 	}
 	
 	public function testErrorHandling_ErrorHandlerWasRemovedOnExecute_AddsFalseToResultBufferAndDoesNotRemoveOtherErrorHandlers()
@@ -580,42 +606,42 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$results = \spectrum\tests\Test::$temp["resultBuffers"][0]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[0]['details']);
-		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getMessage());
-		$this->assertSame(E_NOTICE, $results[0]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffers"][1]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[0]['details']);
-		$this->assertSame('bbb', $results[0]['details']->getMessage());
-		$this->assertSame(E_USER_WARNING, $results[0]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('bbb', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[0]['details']->getErrorLevel());
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffers"][2]->getResults();
 		$this->assertSame(2, count($results));
 		
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[0]['details']);
-		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getMessage());
-		$this->assertSame(E_NOTICE, $results[0]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
 		
 		$this->assertSame(false, $results[1]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[1]['details']);
-		$this->assertSame('bbb', $results[1]['details']->getMessage());
-		$this->assertSame(E_USER_WARNING, $results[1]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
+		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffers"][3]->getResults();
 		$this->assertSame(2, count($results));
 		
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[0]['details']);
-		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getMessage());
-		$this->assertSame(E_NOTICE, $results[0]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
 		
 		$this->assertSame(false, $results[1]['result']);
-		$this->assertInstanceOf('\spectrum\core\plugins\basePlugins\errorHandling\ErrorException', $results[1]['details']);
-		$this->assertSame('bbb', $results[1]['details']->getMessage());
-		$this->assertSame(E_USER_WARNING, $results[1]['details']->getSeverity());
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
+		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
 	}
 	
 	public function testErrorHandling_ErrorTypeIsNotIncludeTriggeredErrorType_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer()

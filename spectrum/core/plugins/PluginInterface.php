@@ -40,8 +40,8 @@ interface PluginInterface
 	 *               onEndingSpecExecuteBefore
 	 *               onEndingSpecExecuteAfter
 	 * 
-	 *               onMatcherCallStart(\spectrum\core\MatcherCallDetailsInterface $matcherCallDetails)
-	 *               onMatcherCallFinish(\spectrum\core\MatcherCallDetailsInterface $matcherCallDetails)
+	 *               onMatcherCallStart(\spectrum\core\details\MatcherCallInterface $matcherCallDetails)
+	 *               onMatcherCallFinish(\spectrum\core\details\MatcherCallInterface $matcherCallDetails)
 	 */
 	static public function getEventListeners();
 	

@@ -6,7 +6,7 @@ distributed with this source code.
 */
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\details;
-use \spectrum\core\MatcherCallDetailsInterface;
+use \spectrum\core\details\MatcherCallInterface;
 
 class MatcherCall extends Details
 {
@@ -27,7 +27,7 @@ class MatcherCall extends Details
 			'</style>' . $this->getNewline();
 	}
 
-	public function getHtml(MatcherCallDetailsInterface $details)
+	public function getHtml(MatcherCallInterface $details)
 	{
 		return
 			'<div class="c-resultBuffer-details-matcherCall c-resultBuffer-details">' .
@@ -37,7 +37,7 @@ class MatcherCall extends Details
 			'</div>';
 	}
 
-	protected function getHtmlForEvaluatedValues(MatcherCallDetailsInterface $details)
+	protected function getHtmlForEvaluatedValues(MatcherCallInterface $details)
 	{
 		$output = '';
 
@@ -62,7 +62,7 @@ class MatcherCall extends Details
 		return $output;
 	}
 	
-	protected function getHtmlForMatcherException(MatcherCallDetailsInterface $details)
+	protected function getHtmlForMatcherException(MatcherCallInterface $details)
 	{
 		if ($details->getMatcherException() === null)
 			return null;
@@ -78,7 +78,7 @@ class MatcherCall extends Details
 			'</div>';
 	}
 	
-	protected function getHtmlForSource(MatcherCallDetailsInterface $details)
+	protected function getHtmlForSource(MatcherCallInterface $details)
 	{
 		$filename = $details->getFile();
 		$filenameEndLength = 25;

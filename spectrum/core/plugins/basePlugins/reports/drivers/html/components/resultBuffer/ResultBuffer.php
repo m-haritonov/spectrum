@@ -6,7 +6,7 @@ distributed with this source code.
 */
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer;
-use \spectrum\core\MatcherCallDetailsInterface;
+use \spectrum\core\details\MatcherCallInterface;
 
 class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\Component
 {
@@ -101,7 +101,7 @@ class ResultBuffer extends \spectrum\core\plugins\basePlugins\reports\drivers\ht
 
 	protected function getHtmlForResultDetails($details)
 	{
-		if (is_object($details) && $details instanceof MatcherCallDetailsInterface)
+		if (is_object($details) && $details instanceof MatcherCallInterface)
 			$component = $this->createComponent('resultBuffer\details\MatcherCall');
 		else
 			$component = $this->createComponent('resultBuffer\details\Unknown');

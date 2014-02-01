@@ -5,9 +5,10 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\builders;
+namespace spectrum\core\details;
 
-class FailException extends Exception
+interface UserFailInterface
 {
-	
+	public function __construct($message);
+	public function getMessage();
 }

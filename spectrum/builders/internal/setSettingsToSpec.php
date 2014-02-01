@@ -10,9 +10,9 @@ namespace spectrum\builders\internal;
 /**
  * @example
  * manager::setSettings($spec, array(
- *     'catchPhpErrors' => -1,            // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors()
- *     'breakOnFirstPhpError' => true,    // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstPhpError()
- *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setBreakOnFirstMatcherFail()
+ *     'catchPhpErrors' => -1,            // see \spectrum\core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors()
+ *     'breakOnFirstPhpError' => true,    // see \spectrum\core\plugins\basePlugins\ErrorHandling::setBreakOnFirstPhpError()
+ *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\plugins\basePlugins\ErrorHandling::setBreakOnFirstMatcherFail()
  *     'inputCharset' => 'windows-1251', // see \core\plugins\basePlugins\Charset::setInputCharset()
  * ));
  *
@@ -20,8 +20,8 @@ namespace spectrum\builders\internal;
  * manager::setSettings($spec, 'windows-1251'); // see \core\plugins\basePlugins\Charset::setInputCharset()
  *
  * @example
- * manager::setSettings($spec, E_ALL); // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors()
- * manager::setSettings($spec, true);  // see \spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling::setCatchPhpErrors()
+ * manager::setSettings($spec, E_ALL); // see \spectrum\core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors()
+ * manager::setSettings($spec, true);  // see \spectrum\core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors()
  *
  * @param mixed $settings
  */

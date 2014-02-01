@@ -6,6 +6,8 @@ distributed with this source code.
 */
 
 namespace spectrum\builders;
+use spectrum\config;
+use spectrum\core\details\UserFail;
 
 /**
  * Add to ResultBuffer of running SpecItem false result wits exception as details.
@@ -17,5 +19,6 @@ function fail($message = null)
 	if (!\spectrum\builders\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "fail" should be call only at running state');
 	
-	\spectrum\builders\internal\getRunningEndingSpec()->getResultBuffer()->addResult(false, new \spectrum\builders\FailException($message));
+	$userFailDetailsClass = config::getUserFailDetailsClass();
+	\spectrum\builders\internal\getRunningEndingSpec()->getResultBuffer()->addResult(false, new $userFailDetailsClass($message));
 }

@@ -5,9 +5,9 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\core;
+namespace spectrum\core\details;
 
-class MatcherCallDetails implements MatcherCallDetailsInterface
+class MatcherCall implements MatcherCallInterface
 {
 	protected $testedValue;
 	protected $not;

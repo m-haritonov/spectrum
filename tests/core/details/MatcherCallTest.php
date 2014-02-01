@@ -5,19 +5,19 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\tests\core;
+namespace spectrum\tests\core\details;
 
-use spectrum\core\MatcherCallDetails;
+use spectrum\core\details\MatcherCall;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../init.php';
 
-class MatcherCallDetailsTest extends \spectrum\tests\Test
+class MatcherCallTest extends \spectrum\tests\Test
 {
 	public function testReturnsSetValues()
 	{
 		$exception = new \Exception();
 		
-		$matcherCallDetails = new MatcherCallDetails();
+		$matcherCallDetails = new MatcherCall();
 		$matcherCallDetails->setTestedValue('aaa');
 		$matcherCallDetails->setNot(true);
 		$matcherCallDetails->setResult('bbb');
@@ -47,7 +47,7 @@ class MatcherCallDetailsTest extends \spectrum\tests\Test
 	
 	public function testReturnsEmptyValuesByDefault()
 	{
-		$matcherCallDetails = new MatcherCallDetails();
+		$matcherCallDetails = new MatcherCall();
 		
 		$this->assertSame(null, $matcherCallDetails->getTestedValue());
 		$this->assertSame(null, $matcherCallDetails->getNot());

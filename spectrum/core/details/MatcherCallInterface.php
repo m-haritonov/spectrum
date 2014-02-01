@@ -5,9 +5,9 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\core;
+namespace spectrum\core\details;
 
-interface MatcherCallDetailsInterface
+interface MatcherCallInterface
 {
 	public function setTestedValue($testedValue);
 	public function getTestedValue();

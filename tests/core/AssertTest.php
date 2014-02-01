@@ -15,9 +15,9 @@ require_once __DIR__ . '/../init.php';
 
 class AssertTest extends \spectrum\tests\Test
 {
-	public function testMatcherCall_UsesConfigForMatcherCallDetailsClassGetting()
+	public function testMatcherCall_GetsMatcherCallDetailsClassFromConfig()
 	{
-		$matcherCallDetailsClassName = $this->createClass('class ... extends \spectrum\core\MatcherCallDetails {}');
+		$matcherCallDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\MatcherCall {}');
 		config::setMatcherCallDetailsClass($matcherCallDetailsClassName);
 
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
@@ -172,7 +172,7 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->assertSame(false, $results[0]['result']);
 		
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $results[0]['details']);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]['details']);
 		$this->assertSame('aaa bbb', $results[0]['details']->getTestedValue());
 		$this->assertSame(false, $results[0]['details']->getNot());
 		$this->assertSame(false, $results[0]['details']->getResult());
@@ -246,7 +246,7 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->assertSame(true, $results[0]['result']);
 		
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $results[0]['details']);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]['details']);
 		$this->assertSame('aaa bbb', $results[0]['details']->getTestedValue());
 		$this->assertSame(true, $results[0]['details']->getNot());
 		$this->assertSame(true, $results[0]['details']->getResult());
@@ -281,7 +281,7 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->assertSame(true, $results[0]['result']);
 		
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $results[0]['details']);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]['details']);
 		$this->assertSame('aaa bbb', $results[0]['details']->getTestedValue());
 		$this->assertSame(false, $results[0]['details']->getNot());
 		$this->assertSame(true, $results[0]['details']->getResult());
@@ -355,7 +355,7 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->assertSame(false, $results[0]['result']);
 		
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $results[0]['details']);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]['details']);
 		$this->assertSame('aaa bbb', $results[0]['details']->getTestedValue());
 		$this->assertSame(true, $results[0]['details']->getNot());
 		$this->assertSame(false, $results[0]['details']->getResult());
@@ -391,7 +391,7 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->assertSame(false, $results[0]['result']);
 		
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $results[0]['details']);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]['details']);
 		$this->assertSame('aaa bbb', $results[0]['details']->getTestedValue());
 		$this->assertSame(false, $results[0]['details']->getNot());
 		$this->assertSame(false, $results[0]['details']->getResult());
@@ -445,7 +445,7 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->assertSame(false, $results[0]['result']);
 		
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $results[0]['details']);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]['details']);
 		$this->assertSame('aaa bbb', $results[0]['details']->getTestedValue());
 		$this->assertSame(true, $results[0]['details']->getNot());
 		$this->assertSame(false, $results[0]['details']->getResult());
@@ -598,7 +598,7 @@ class AssertTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$matcherCallDetails = \spectrum\tests\Test::$temp["matcherCallDetails"];
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $matcherCallDetails);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $matcherCallDetails);
 		$this->assertSame('aaa', $matcherCallDetails->getTestedValue());
 		$this->assertSame(false, $matcherCallDetails->getNot());
 		$this->assertSame(true, $matcherCallDetails->getResult());
@@ -673,7 +673,7 @@ class AssertTest extends \spectrum\tests\Test
 		
 		$this->assertSame(1, count(\spectrum\tests\Test::$temp["results"]));
 		$this->assertSame(false, \spectrum\tests\Test::$temp["results"][0]['result']);
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', \spectrum\tests\Test::$temp["results"][0]['details']);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', \spectrum\tests\Test::$temp["results"][0]['details']);
 		$this->assertSame('zzz', \spectrum\tests\Test::$temp["results"][0]['details']->getMatcherName());
 	}
 	
@@ -742,7 +742,7 @@ class AssertTest extends \spectrum\tests\Test
 		$spec->run();
 		
 		$matcherCallDetails = \spectrum\tests\Test::$temp["matcherCallDetails"];
-		$this->assertInstanceOf('\spectrum\core\MatcherCallDetails', $matcherCallDetails);
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $matcherCallDetails);
 		$this->assertSame('aaa', $matcherCallDetails->getTestedValue());
 		$this->assertSame(false, $matcherCallDetails->getNot());
 		$this->assertSame(true, $matcherCallDetails->getResult());

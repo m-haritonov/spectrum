@@ -5,10 +5,11 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\core\plugins\basePlugins\errorHandling;
+namespace spectrum\core\plugins\basePlugins;
 use spectrum\config;
 use spectrum\core\BreakException;
-use spectrum\core\MatcherCallDetailsInterface;
+use spectrum\core\details\MatcherCallInterface;
+use spectrum\core\details\PhpError;
 use spectrum\core\plugins\Exception;
 
 class ErrorHandling extends \spectrum\core\plugins\Plugin
@@ -118,12 +119,13 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 		$this->errorReportingBackup = error_reporting($this->getCatchPhpErrorsThroughRunningAncestors());
 		
 		$thisObject = $this;
-		$this->errorHandler = function($errorSeverity, $errorMessage, $file, $line) use($thisObject)
+		$this->errorHandler = function($errorLevel, $errorMessage, $file, $line) use($thisObject)
 		{
-			if (!($errorSeverity & error_reporting()))
+			if (!($errorLevel & error_reporting()))
 				return;
 			
-			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new ErrorException($errorMessage, 0, $errorSeverity, $file, $line));
+			$phpErrorDetailsClass = config::getPhpErrorDetailsClass();
+			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new $phpErrorDetailsClass($errorLevel, $errorMessage, $file, $line));
 
 			if ($thisObject->getBreakOnFirstPhpErrorThroughRunningAncestors())
 				throw new BreakException();
@@ -177,7 +179,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	}
 		
 		
-	protected function onMatcherCallFinish(MatcherCallDetailsInterface $callDetails)
+	protected function onMatcherCallFinish(MatcherCallInterface $callDetails)
 	{
 		if (!$callDetails->getResult() && $this->getBreakOnFirstMatcherFailThroughRunningAncestors())
 			throw new BreakException();

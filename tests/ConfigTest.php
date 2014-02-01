@@ -306,7 +306,7 @@ class ConfigTest extends Test
 
 	public function testGetMatcherCallDetailsClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\MatcherCallDetails', config::getMatcherCallDetailsClass());
+		$this->assertSame('\spectrum\core\details\MatcherCall', config::getMatcherCallDetailsClass());
 	}
 	
 	public function testGetMatcherCallDetailsClass_ConfigIsLocked_DoesNotThrowException()
@@ -320,7 +320,7 @@ class ConfigTest extends Test
 	public function testSetMatcherCallDetailsClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\MatcherCallDetailsInterface
+			class ... implements \spectrum\core\details\MatcherCallInterface
 			{
 				public function setTestedValue($testedValue){}
 				public function getTestedValue(){}
@@ -380,7 +380,7 @@ class ConfigTest extends Test
 	public function testSetMatcherCallDetailsClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\MatcherCallDetailsInterface
+			class ... implements \spectrum\core\details\MatcherCallInterface
 			{
 				public function setTestedValue($testedValue){}
 				public function getTestedValue(){}
@@ -419,6 +419,154 @@ class ConfigTest extends Test
 		});
 
 		$this->assertSame($oldClass, config::getMatcherCallDetailsClass());
+	}
+	
+/**/
+	
+	public function testGetPhpErrorDetailsClass_ReturnsSpectrumClassByDefault()
+	{
+		$this->assertSame('\spectrum\core\details\PhpError', config::getPhpErrorDetailsClass());
+	}
+	
+	public function testGetPhpErrorDetailsClass_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getPhpErrorDetailsClass();
+	}
+
+/**/
+
+	public function testSetPhpErrorDetailsClass_SetsNewClass()
+	{
+		$className = $this->createClass('
+			class ... implements \spectrum\core\details\PhpErrorInterface
+			{
+				public function __construct($errorLevel, $errorMessage, $file, $line){}
+				public function getErrorLevel(){}
+				public function getErrorMessage(){}
+				public function getFile(){}
+				public function getLine(){}
+			}
+		');
+		
+		config::setPhpErrorDetailsClass($className);
+		$this->assertSame($className, config::getPhpErrorDetailsClass());
+	}
+
+	public function testSetPhpErrorDetailsClass_ClassNotExists_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		$oldClass = config::getPhpErrorDetailsClass();
+
+		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+			config::setPhpErrorDetailsClass('\spectrum\tests\testware\NotExistsClass');
+		});
+
+		$this->assertSame($oldClass, config::getPhpErrorDetailsClass());
+	}
+
+	public function testSetPhpErrorDetailsClass_ClassNotImplementSpectrumInterface_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		$oldClass = config::getPhpErrorDetailsClass();
+
+		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+			config::setPhpErrorDetailsClass('\stdClass');
+		});
+
+		$this->assertSame($oldClass, config::getPhpErrorDetailsClass());
+	}
+
+	public function testSetPhpErrorDetailsClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		$className = $this->createClass('
+			class ... implements \spectrum\core\details\PhpErrorInterface
+			{
+				public function __construct($errorLevel, $errorMessage, $file, $line){}
+				public function getErrorLevel(){}
+				public function getErrorMessage(){}
+				public function getFile(){}
+				public function getLine(){}
+			}
+		');
+		
+		$oldClass = config::getPhpErrorDetailsClass();
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() use($className){
+			config::setPhpErrorDetailsClass($className);
+		});
+
+		$this->assertSame($oldClass, config::getPhpErrorDetailsClass());
+	}
+	
+/**/
+	
+	public function testGetUserFailDetailsClass_ReturnsSpectrumClassByDefault()
+	{
+		$this->assertSame('\spectrum\core\details\UserFail', config::getUserFailDetailsClass());
+	}
+	
+	public function testGetUserFailDetailsClass_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getUserFailDetailsClass();
+	}
+
+/**/
+
+	public function testSetUserFailDetailsClass_SetsNewClass()
+	{
+		$className = $this->createClass('
+			class ... implements \spectrum\core\details\UserFailInterface
+			{
+				public function __construct($message){}
+				public function getMessage(){}
+			}
+		');
+		
+		config::setUserFailDetailsClass($className);
+		$this->assertSame($className, config::getUserFailDetailsClass());
+	}
+
+	public function testSetUserFailDetailsClass_ClassNotExists_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		$oldClass = config::getUserFailDetailsClass();
+
+		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+			config::setUserFailDetailsClass('\spectrum\tests\testware\NotExistsClass');
+		});
+
+		$this->assertSame($oldClass, config::getUserFailDetailsClass());
+	}
+
+	public function testSetUserFailDetailsClass_ClassNotImplementSpectrumInterface_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		$oldClass = config::getUserFailDetailsClass();
+
+		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+			config::setUserFailDetailsClass('\stdClass');
+		});
+
+		$this->assertSame($oldClass, config::getUserFailDetailsClass());
+	}
+
+	public function testSetUserFailDetailsClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		$className = $this->createClass('
+			class ... implements \spectrum\core\details\UserFailInterface
+			{
+				public function __construct($message){}
+				public function getMessage(){}
+			}
+		');
+		
+		$oldClass = config::getUserFailDetailsClass();
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() use($className){
+			config::setUserFailDetailsClass($className);
+		});
+
+		$this->assertSame($oldClass, config::getUserFailDetailsClass());
 	}
 
 /**/
@@ -1416,7 +1564,7 @@ class ConfigTest extends Test
 		
 		$this->assertSame(array(
 			'\spectrum\core\plugins\basePlugins\contexts\Contexts',
-			'\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling',
+			'\spectrum\core\plugins\basePlugins\ErrorHandling',
 			'\spectrum\core\plugins\basePlugins\reports\Reports',
 			'\spectrum\core\plugins\basePlugins\Charset',
 			'\spectrum\core\plugins\basePlugins\Matchers',

@@ -17,14 +17,16 @@ final class config
 	static private $allowErrorHandlingModify = true;
 	
 	static private $assertClass = '\spectrum\core\Assert';
-	static private $matcherCallDetailsClass = '\spectrum\core\MatcherCallDetails';
+	static private $matcherCallDetailsClass = '\spectrum\core\details\MatcherCall';
+	static private $phpErrorDetailsClass = '\spectrum\core\details\PhpError';
+	static private $userFailDetailsClass = '\spectrum\core\details\UserFail';
 	static private $specClass = '\spectrum\core\Spec';
 	static private $contextDataClass = '\spectrum\core\plugins\basePlugins\contexts\Data';
 	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
 	
 	static private $registeredSpecPlugins = array(
 		'\spectrum\core\plugins\basePlugins\contexts\Contexts',
-		'\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling',
+		'\spectrum\core\plugins\basePlugins\ErrorHandling',
 		'\spectrum\core\plugins\basePlugins\reports\Reports',
 		'\spectrum\core\plugins\basePlugins\Charset',
 		'\spectrum\core\plugins\basePlugins\Matchers',
@@ -129,7 +131,7 @@ final class config
 	
 	
 	/**
-	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\basePlugins\errorHandling\ErrorHandling" class)
+	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\basePlugins\ErrorHandling" class)
 	 * @param bool $isEnable
 	 */
 	static public function setAllowErrorHandlingModify($isEnable)
@@ -150,8 +152,14 @@ final class config
 	static public function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\AssertInterface'); }
 	static public function getAssertClass(){ return static::$assertClass; }
 	
-	static public function setMatcherCallDetailsClass($className){ return static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\MatcherCallDetailsInterface'); }
+	static public function setMatcherCallDetailsClass($className){ return static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\details\MatcherCallInterface'); }
 	static public function getMatcherCallDetailsClass(){ return static::$matcherCallDetailsClass; }
+	
+	static public function setPhpErrorDetailsClass($className){ return static::setConfigClassValue(static::$phpErrorDetailsClass, $className, '\spectrum\core\details\PhpErrorInterface'); }
+	static public function getPhpErrorDetailsClass(){ return static::$phpErrorDetailsClass; }
+	
+	static public function setUserFailDetailsClass($className){ return static::setConfigClassValue(static::$userFailDetailsClass, $className, '\spectrum\core\details\UserFailInterface'); }
+	static public function getUserFailDetailsClass(){ return static::$userFailDetailsClass; }
 	
 	static public function setSpecClass($className){ return static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
 	static public function getSpecClass(){ return static::$specClass; }
