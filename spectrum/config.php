@@ -149,25 +149,25 @@ final class config
 	
 /**/
 
-	static public function setAssertClass($className){ return static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\AssertInterface'); }
+	static public function setAssertClass($className){ static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\AssertInterface'); }
 	static public function getAssertClass(){ return static::$assertClass; }
 	
-	static public function setMatcherCallDetailsClass($className){ return static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\details\MatcherCallInterface'); }
+	static public function setMatcherCallDetailsClass($className){ static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\details\MatcherCallInterface'); }
 	static public function getMatcherCallDetailsClass(){ return static::$matcherCallDetailsClass; }
 	
-	static public function setPhpErrorDetailsClass($className){ return static::setConfigClassValue(static::$phpErrorDetailsClass, $className, '\spectrum\core\details\PhpErrorInterface'); }
+	static public function setPhpErrorDetailsClass($className){ static::setConfigClassValue(static::$phpErrorDetailsClass, $className, '\spectrum\core\details\PhpErrorInterface'); }
 	static public function getPhpErrorDetailsClass(){ return static::$phpErrorDetailsClass; }
 	
-	static public function setUserFailDetailsClass($className){ return static::setConfigClassValue(static::$userFailDetailsClass, $className, '\spectrum\core\details\UserFailInterface'); }
+	static public function setUserFailDetailsClass($className){ static::setConfigClassValue(static::$userFailDetailsClass, $className, '\spectrum\core\details\UserFailInterface'); }
 	static public function getUserFailDetailsClass(){ return static::$userFailDetailsClass; }
 	
-	static public function setSpecClass($className){ return static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
+	static public function setSpecClass($className){ static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
 	static public function getSpecClass(){ return static::$specClass; }
 
-	static public function setContextDataClass($className){ return static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\plugins\basePlugins\contexts\DataInterface'); }
+	static public function setContextDataClass($className){ static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\plugins\basePlugins\contexts\DataInterface'); }
 	static public function getContextDataClass(){ return static::$contextDataClass; }
 	
-	static public function setResultBufferClass($className){ return static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
+	static public function setResultBufferClass($className){ static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
 	static public function getResultBufferClass(){ return static::$resultBufferClass; }
 	
 /**/
