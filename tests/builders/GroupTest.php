@@ -7,7 +7,6 @@ distributed with this source code.
 
 namespace spectrum\tests\builders;
 
-use spectrum\config;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
@@ -42,6 +41,265 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertNotSame($groupSpec1, $groupSpec2);
 	}
 	
+	public function providerInputCharset()
+	{
+		return array(
+			array(
+				array('utf-8', 'utf-8', 'utf-8', 'utf-8', 'utf-8', 'utf-8', 'utf-8', 'utf-8', 'utf-8'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\test(null, null, function(){}, null);
+					
+					\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, null);
+						\spectrum\tests\Test::$temp['specs'][3] = \spectrum\builders\test(null, null, function(){}, null);
+						\spectrum\tests\Test::$temp['specs'][4] = \spectrum\builders\test(null, null, function(){}, null);
+						
+						\spectrum\tests\Test::$temp['specs'][5] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][6] = \spectrum\builders\test(null, null, function(){}, null);
+							\spectrum\tests\Test::$temp['specs'][7] = \spectrum\builders\test(null, null, function(){}, null);
+							\spectrum\tests\Test::$temp['specs'][8] = \spectrum\builders\test(null, null, function(){}, null);
+						}, null);
+					}, null);
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa1', 'aaa2', 'aaa3', 'aaa4', 'aaa5', 'aaa6', 'aaa7', 'aaa8'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa0'));
+					
+					\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa2'));
+						\spectrum\tests\Test::$temp['specs'][3] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa3'));
+						\spectrum\tests\Test::$temp['specs'][4] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa4'));
+						
+						\spectrum\tests\Test::$temp['specs'][5] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][6] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa6'));
+							\spectrum\tests\Test::$temp['specs'][7] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa7'));
+							\spectrum\tests\Test::$temp['specs'][8] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa8'));
+						}, array('inputCharset' => 'aaa5'));
+					}, array('inputCharset' => 'aaa1'));
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa0', 'aaa2', 'aaa2', 'aaa2', 'aaa2', 'aaa6', 'aaa6', 'aaa6', 'aaa6', 'aaa2', 'aaa2', 'aaa2', 'aaa2'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\test(null, null, function(){}, null);
+						
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][3] = \spectrum\builders\test(null, null, function(){}, null);
+							\spectrum\tests\Test::$temp['specs'][4] = \spectrum\builders\test(null, null, function(){}, null);
+							\spectrum\tests\Test::$temp['specs'][5] = \spectrum\builders\test(null, null, function(){}, null);
+							
+							\spectrum\tests\Test::$temp['specs'][6] = \spectrum\builders\group(null, null, function(){
+								\spectrum\tests\Test::$temp['specs'][7] = \spectrum\builders\test(null, null, function(){}, null);
+								\spectrum\tests\Test::$temp['specs'][8] = \spectrum\builders\test(null, null, function(){}, null);
+								\spectrum\tests\Test::$temp['specs'][9] = \spectrum\builders\test(null, null, function(){}, null);
+							}, array('inputCharset' => 'aaa6'));
+							
+							\spectrum\tests\Test::$temp['specs'][10] = \spectrum\builders\group(null, null, function(){
+								\spectrum\tests\Test::$temp['specs'][11] = \spectrum\builders\test(null, null, function(){}, null);
+								\spectrum\tests\Test::$temp['specs'][12] = \spectrum\builders\test(null, null, function(){}, null);
+								\spectrum\tests\Test::$temp['specs'][13] = \spectrum\builders\test(null, null, function(){}, null);
+							}, null);
+						}, array('inputCharset' => 'aaa2'));
+					}, array('inputCharset' => 'aaa0'));
+				}
+			),
+			
+			//
+			
+			array(
+				array('utf-8', 'utf-8', 'utf-8'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, null);
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, null);
+					}, null);
+				}
+			),
+			
+			array(
+				array('utf-8', 'utf-8', 'aaa2'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, null);
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa2'));
+					}, null);
+				}
+			),
+			
+			array(
+				array('utf-8', 'aaa1', 'utf-8'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, array('inputCharset' => 'aaa1'));
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, null);
+					}, null);
+				}
+			),
+			
+			array(
+				array('utf-8', 'aaa1', 'aaa2'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, array('inputCharset' => 'aaa1'));
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa2'));
+					}, null);
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa0', 'aaa0'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, null);
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, null);
+					}, array('inputCharset' => 'aaa0'));
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa0', 'aaa2'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, null);
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa2'));
+					}, array('inputCharset' => 'aaa0'));
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa1', 'aaa0'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, array('inputCharset' => 'aaa1'));
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, null);
+					}, array('inputCharset' => 'aaa0'));
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa1', 'aaa2'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, array('inputCharset' => 'aaa1'));
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'aaa2'));
+					}, array('inputCharset' => 'aaa0'));
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa0', 'aaa0', 'aaa0', 'aaa0', 'aaa0', 'aaa0', 'aaa0', 'bbb8', 'bbb9', 'bbb10'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, null);
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][3] = \spectrum\builders\group(null, null, function(){}, null);
+							\spectrum\tests\Test::$temp['specs'][4] = \spectrum\builders\group(null, null, function(){}, null);
+						}, null);
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][5] = \spectrum\builders\test(null, null, function(){}, null);
+						
+						\spectrum\tests\Test::$temp['specs'][6] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][7] = \spectrum\builders\test(null, null, function(){}, null);
+						}, null);
+						
+						\spectrum\tests\Test::$temp['specs'][8] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'bbb8'));
+						
+						\spectrum\tests\Test::$temp['specs'][9] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][10] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'bbb10'));
+						}, array('inputCharset' => 'bbb9'));
+					}, array('inputCharset' => 'aaa0'));
+				}
+			),
+			
+			array(
+				array('aaa0', 'aaa1', 'aaa2', 'aaa3', 'aaa4', 'aaa0', 'aaa0', 'aaa0', 'bbb8', 'bbb9', 'bbb10'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, function(){
+						\spectrum\tests\Test::$temp['specs'][1] = \spectrum\builders\group(null, null, function(){}, array('inputCharset' => 'aaa1'));
+						\spectrum\tests\Test::$temp['specs'][2] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][3] = \spectrum\builders\group(null, null, function(){}, array('inputCharset' => 'aaa3'));
+							\spectrum\tests\Test::$temp['specs'][4] = \spectrum\builders\group(null, null, function(){}, array('inputCharset' => 'aaa4'));
+						}, array('inputCharset' => 'aaa2'));
+					}, function(){
+						\spectrum\tests\Test::$temp['specs'][5] = \spectrum\builders\test(null, null, function(){}, null);
+						
+						\spectrum\tests\Test::$temp['specs'][6] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][7] = \spectrum\builders\test(null, null, function(){}, null);
+						}, null);
+						
+						\spectrum\tests\Test::$temp['specs'][8] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'bbb8'));
+						
+						\spectrum\tests\Test::$temp['specs'][9] = \spectrum\builders\group(null, null, function(){
+							\spectrum\tests\Test::$temp['specs'][10] = \spectrum\builders\test(null, null, function(){}, array('inputCharset' => 'bbb10'));
+						}, array('inputCharset' => 'bbb9'));
+					}, array('inputCharset' => 'aaa0'));
+				}
+			),
+			
+			//
+			
+			array(
+				array('utf-8', 'utf-8', 'utf-8', 'utf-8'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, array(
+						array('a' => 'a'),
+						array('a' => 'b'),
+						array('a' => 'c'),
+					), function(){}, null);
+					
+					$specs = \spectrum\tests\Test::$temp['specs'][0]->getChildSpecs();
+					\spectrum\tests\Test::$temp['specs'][1] = $specs[0];
+					\spectrum\tests\Test::$temp['specs'][2] = $specs[1];
+					\spectrum\tests\Test::$temp['specs'][3] = $specs[2];
+				}
+			),
+			
+			array(
+				array('aaa1', 'aaa1', 'aaa1', 'aaa1'),
+				function(){
+					\spectrum\tests\Test::$temp['specs'][0] = \spectrum\builders\group(null, array(
+						array('a' => 'a'),
+						array('a' => 'b'),
+						array('a' => 'c'),
+					), function(){}, 'aaa1');
+					
+					$specs = \spectrum\tests\Test::$temp['specs'][0]->getChildSpecs();
+					\spectrum\tests\Test::$temp['specs'][1] = $specs[0];
+					\spectrum\tests\Test::$temp['specs'][2] = $specs[1];
+					\spectrum\tests\Test::$temp['specs'][3] = $specs[2];
+				}
+			),
+		);
+	}
+	
+	/**
+	 * @dataProvider providerInputCharset
+	 */
+	public function testCallsAtBuildingState_SetsProperInputCharsetToEachSpec($expectedCharsets, $function)
+	{
+		$function();
+		
+		$charsets = array();
+		foreach (\spectrum\tests\Test::$temp['specs'] as $key => $spec)
+			$charsets[$key] = $spec->getInputCharset();
+		
+		ksort($charsets);
+		$this->assertSame($expectedCharsets, $charsets);
+	}
+	
 	/**
 	 * @dataProvider providerAllArgumentCombinations
 	 */
@@ -56,37 +314,22 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllArgumentCombinations
 	 */
-	public function testCallsAtBuildingState_BuildingSpecIsCustom_AddsGroupSpecToBuildingSpec($arguments)
+	public function testCallsAtBuildingState_BuildingSpecIsRoot_AddsGroupSpecToRootSpec($arguments)
+	{
+		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
+		$this->assertSame(array($groupSpec), \spectrum\builders\getRootSpec()->getChildSpecs());
+	}
+	
+	/**
+	 * @dataProvider providerAllArgumentCombinations
+	 */
+	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_AddsGroupSpecToSpecifySpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		
 		$this->assertSame(array($groupSpec), $parentSpec->getChildSpecs());
-	}
-	
-	/**
-	 * @dataProvider providerAllArgumentCombinationsWithEmptyContextAndBodyFunctions
-	 */
-	public function testCallsAtBuildingState_BuildingSpecIsCustom_DoesNotAddGroupSpecToSiblingGroupSpecs($arguments)
-	{
-		\spectrum\builders\internal\setBuildingSpec(new Spec());
-		$groupSpec1 = call_user_func_array('\spectrum\builders\group', $arguments);
-		$groupSpec2 = call_user_func_array('\spectrum\builders\group', $arguments);
-		$groupSpec3 = call_user_func_array('\spectrum\builders\group', $arguments);
-		
-		$this->assertSame(array(), $groupSpec1->getChildSpecs());
-		$this->assertSame(array(), $groupSpec2->getChildSpecs());
-		$this->assertSame(array(), $groupSpec3->getChildSpecs());
-	}
-	
-	/**
-	 * @dataProvider providerAllArgumentCombinations
-	 */
-	public function testCallsAtBuildingState_BuildingSpecIsRoot_AddsGroupSpecToRootSpec($arguments)
-	{
-		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
-		$this->assertSame(array($groupSpec), \spectrum\builders\getRootSpec()->getChildSpecs());
 	}
 	
 	/**
@@ -100,25 +343,40 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(array(), \spectrum\builders\getRootSpec()->getChildSpecs());
 	}
 	
-	public function providerNameIsString()
+	/**
+	 * @dataProvider providerAllArgumentCombinationsWithEmptyContextAndBodyFunctions
+	 */
+	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddGroupSpecToSiblingGroupSpecs($arguments)
+	{
+		\spectrum\builders\internal\setBuildingSpec(new Spec());
+		$groupSpec1 = call_user_func_array('\spectrum\builders\group', $arguments);
+		$groupSpec2 = call_user_func_array('\spectrum\builders\group', $arguments);
+		$groupSpec3 = call_user_func_array('\spectrum\builders\group', $arguments);
+		
+		$this->assertSame(array(), $groupSpec1->getChildSpecs());
+		$this->assertSame(array(), $groupSpec2->getChildSpecs());
+		$this->assertSame(array(), $groupSpec3->getChildSpecs());
+	}
+	
+	public function providerVariantsOfArguments_NameArgumentIsString()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders('aaa bbb');
 	}
 
 	/**
-	 * @dataProvider providerNameIsString
+	 * @dataProvider providerVariantsOfArguments_NameArgumentIsString
 	 */
-	public function testCallsAtBuildingState_NameIsString_SetsNameToGroupSpec($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_NameArgumentIsString_SetsNameToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
-		
-		$this->assertSame('aaa bbb', $groupSpec->getName());
+
 		$this->assertSame(null, $parentSpec->getName());
+		$this->assertSame('aaa bbb', $groupSpec->getName());
 	}
 	
-	public function providerContextsIsArray()
+	public function providerVariantsOfArguments_ContextsArgumentIsArray()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, array(
 			'aaa' => array(),
@@ -131,9 +389,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerContextsIsArray
+	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsArray
 	 */
-	public function testCallsAtBuildingState_ContextsIsArray_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsArray_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -164,7 +422,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
-	public function providerContextsIsFunction()
+	public function providerVariantsOfArguments_ContextsArgumentIsFunction()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){
 			\spectrum\builders\group('aaa', null, function(){}, null);
@@ -177,9 +435,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerContextsIsFunction
+	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsFunction
 	 */
-	public function testCallsAtBuildingState_ContextsIsFunction_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -210,7 +468,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
-	public function providerContextsIsFunction2()
+	public function providerVariantsOfArguments_ContextsArgumentIsFunction2()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){
 			\spectrum\builders\group('aaa', null, function(){
@@ -225,9 +483,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerContextsIsFunction2
+	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsFunction2
 	 */
-	public function testCallsAtBuildingState_ContextsIsFunction_AddsBodySpecsToEndingContextSpecsOnly($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsBodySpecsToEndingContextSpecsOnly($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -262,7 +520,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
-	public function providerContextsIsFunction3()
+	public function providerVariantsOfArguments_ContextsArgumentIsFunction3()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){
 			\spectrum\builders\group('aaa', null, function(){}, null);
@@ -275,9 +533,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerContextsIsFunction3
+	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsFunction3
 	 */
-	public function testCallsAtBuildingState_ContextsIsFunction_DoesNotAddAnySpecsToTestContextSpecs($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_DoesNotAddAnySpecsToTestContextSpecs($arguments)
 	{
 		\spectrum\builders\internal\setBuildingSpec(new Spec());
 		
@@ -302,7 +560,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 		
-	public function providerBodyIsFunction()
+	public function providerVariantsOfArguments_BodyArgumentIsFunction()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, array(), function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
@@ -314,9 +572,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerBodyIsFunction
+	 * @dataProvider providerVariantsOfArguments_BodyArgumentIsFunction
 	 */
-	public function testCallsAtBuildingState_BodyIsFunction_AddsBodySpecsToGroupSpec($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsBodySpecsToGroupSpec($arguments)
 	{
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -338,7 +596,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $specs[4]->getChildSpecs());
 	}
 	
-	public function providerBodyIsFunction2()
+	public function providerVariantsOfArguments_BodyArgumentIsFunction2()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders('aaa', array(), function(){
 			\spectrum\builders\group('bbb', null, function(){
@@ -359,9 +617,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerBodyIsFunction2
+	 * @dataProvider providerVariantsOfArguments_BodyArgumentIsFunction2
 	 */
-	public function testCallsAtBuildingState_BodyIsFunction_AddsDescendantSpecsOfBodySpecsToHisParents($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsDescendantSpecsOfBodySpecsToHisParents($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -398,7 +656,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(0, count($level3Specs[1]->getChildSpecs()));
 	}
 	
-	public function providerSettingsIsString()
+	public function providerVariantsOfArguments_SettingsArgumentIsString()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
@@ -407,9 +665,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerSettingsIsString
+	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsString
 	 */
-	public function testCallsAtBuildingState_SettingsIsString_SetsInputCharsetToGroupSpec($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsString_SetsInputCharsetToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -417,13 +675,13 @@ class GroupTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
-		$this->assertSame('koi8-r', mb_strtolower($groupSpec->charset->getInputCharset()));
-		$this->assertNotSame('koi8-r', mb_strtolower($parentSpec->charset->getInputCharset()));
-		$this->assertNotSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[0]->charset->getInputCharset()));
-		$this->assertNotSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[1]->charset->getInputCharset()));
+		$this->assertNotSame('koi8-r', mb_strtolower($parentSpec->getInputCharset()));
+		$this->assertSame('koi8-r', mb_strtolower($groupSpec->getInputCharset()));
+		$this->assertSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[0]->getInputCharset()));
+		$this->assertSame('koi8-r', mb_strtolower(\spectrum\tests\Test::$temp[1]->getInputCharset()));
 	}
 	
-	public function providerSettingsIsInteger()
+	public function providerVariantsOfArguments_SettingsArgumentIsInteger()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
@@ -432,9 +690,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerSettingsIsInteger
+	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsInteger
 	 */
-	public function testCallsAtBuildingState_SettingsIsInteger_SetsErrorHandlingLevelToGroupSpec($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsInteger_SetsErrorHandlingLevelToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -442,13 +700,13 @@ class GroupTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
-		$this->assertSame(8, $groupSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(8, $parentSpec->errorHandling->getCatchPhpErrors());
+		$this->assertSame(8, $groupSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(8, \spectrum\tests\Test::$temp[0]->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(8, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function providerSettingsIsTrue()
+	public function providerVariantsOfArguments_SettingsArgumentIsTrue()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
@@ -457,9 +715,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerSettingsIsTrue
+	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsTrue
 	 */
-	public function testCallsAtBuildingState_SettingsIsTrue_SetsErrorHandlingLevelToGroupSpec($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsTrue_SetsErrorHandlingLevelToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -467,13 +725,13 @@ class GroupTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
-		$this->assertSame(-1, $groupSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(-1, $parentSpec->errorHandling->getCatchPhpErrors());
+		$this->assertSame(-1, $groupSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(-1, \spectrum\tests\Test::$temp[0]->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(-1, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function providerSettingsIsFalse()
+	public function providerVariantsOfArguments_SettingsArgumentIsFalse()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
@@ -482,9 +740,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerSettingsIsFalse
+	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsFalse
 	 */
-	public function testCallsAtBuildingState_SettingsIsFalse_SetsErrorHandlingLevelToGroupSpec($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsFalse_SetsErrorHandlingLevelToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -492,13 +750,13 @@ class GroupTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
-		$this->assertSame(0, $groupSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(0, $parentSpec->errorHandling->getCatchPhpErrors());
+		$this->assertSame(0, $groupSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(0, \spectrum\tests\Test::$temp[0]->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(0, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function providerSettingsIsArray()
+	public function providerVariantsOfArguments_SettingsArgumentIsArray()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
@@ -512,9 +770,9 @@ class GroupTest extends \spectrum\tests\Test
 	}
 
 	/**
-	 * @dataProvider providerSettingsIsArray
+	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsArray
 	 */
-	public function testCallsAtBuildingState_SettingsIsArray_SetsSettingsToGroupSpec($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsArray_SetsSettingsToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
 		\spectrum\builders\internal\setBuildingSpec($parentSpec);
@@ -522,25 +780,25 @@ class GroupTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
-		$this->assertSame(8, $groupSpec->errorHandling->getCatchPhpErrors());
-		$this->assertSame(true, $groupSpec->errorHandling->getBreakOnFirstPhpError());
-		$this->assertSame(true, $groupSpec->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertSame('koi8-r', $groupSpec->charset->getInputCharset());
-		
 		$this->assertNotSame(8, $parentSpec->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(true, $parentSpec->errorHandling->getBreakOnFirstPhpError());
 		$this->assertNotSame(true, $parentSpec->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertNotSame('koi8-r', $parentSpec->charset->getInputCharset());
+		$this->assertNotSame('koi8-r', $parentSpec->getInputCharset());
+		
+		$this->assertSame(8, $groupSpec->errorHandling->getCatchPhpErrors());
+		$this->assertSame(true, $groupSpec->errorHandling->getBreakOnFirstPhpError());
+		$this->assertSame(true, $groupSpec->errorHandling->getBreakOnFirstMatcherFail());
+		$this->assertSame('koi8-r', $groupSpec->getInputCharset());
 		
 		$this->assertNotSame(8, \spectrum\tests\Test::$temp[0]->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[0]->errorHandling->getBreakOnFirstPhpError());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[0]->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertNotSame('koi8-r', \spectrum\tests\Test::$temp[0]->charset->getInputCharset());
+		$this->assertSame('koi8-r', \spectrum\tests\Test::$temp[0]->getInputCharset());
 		
 		$this->assertNotSame(8, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[1]->errorHandling->getBreakOnFirstPhpError());
 		$this->assertNotSame(true, \spectrum\tests\Test::$temp[1]->errorHandling->getBreakOnFirstMatcherFail());
-		$this->assertNotSame('koi8-r', \spectrum\tests\Test::$temp[1]->charset->getInputCharset());
+		$this->assertSame('koi8-r', \spectrum\tests\Test::$temp[1]->getInputCharset());
 	}
 	
 /**/

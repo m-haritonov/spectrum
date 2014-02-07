@@ -17,7 +17,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 			array(),
 			array('aaa'),
 			array('bbb', 'ccc'),
-		));
+		), null);
 		
 		$this->assertSame(3, count($specs));
 		
@@ -45,7 +45,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 			array('aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'),
 			array('bbb1', 'bbb2' => 'bbb3', 'bbb4' => 'bbb5'),
 			array('ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'),
-		));
+		), null);
 		
 		\spectrum\builders\getRootSpec()->bindChildSpec($specs[0]);
 		\spectrum\builders\getRootSpec()->bindChildSpec($specs[1]);
@@ -68,7 +68,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 			'some name 1' => 'aaa',
 			'some name 2' => 'bbb',
 			null,
-		));
+		), null);
 		
 		$this->assertSame('some name 1', $specs[0]->getName());
 		$this->assertSame('some name 2', $specs[1]->getName());
@@ -110,7 +110,26 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_SetsToSpecProperName($expectedName, $contexts)
 	{
-		$specs = \spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts);
+		$specs = \spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts, null);
 		$this->assertSame($expectedName, $specs[0]->getName());
+	}
+	
+	public function testCallsAtBuildingState_SetsToSpecProperCharset()
+	{
+		$specs = \spectrum\builders\internal\convertArrayWithContextsToSpecs(array(
+			array('aaa' => 'bbb'),
+			array('aaa' => 'bbb'),
+		), 'windows-1251');
+		
+		$this->assertSame('windows-1251', $specs[0]->getInputCharset());
+		$this->assertSame('windows-1251', $specs[1]->getInputCharset());
+		
+		$specs = \spectrum\builders\internal\convertArrayWithContextsToSpecs(array(
+			array('aaa' => 'bbb'),
+			array('aaa' => 'bbb'),
+		), 'koi8-r');
+		
+		$this->assertSame('koi8-r', $specs[0]->getInputCharset());
+		$this->assertSame('koi8-r', $specs[1]->getInputCharset());
 	}
 }

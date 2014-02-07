@@ -1,15 +1,18 @@
+TODO: remove multi-charset support, add config::setInputCharset method (because there are no correct way to get string charset in any place of code and because passing encoding to each place of code is more difficult; see section "charset problem" in notes.txt to details)
+
 TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }
 TODO: убрать htmlspecialchars из Component::translate, обернуть вызов Component::translate в $this->escapeHtml()
 
-TODO: output перенести в драйвер (метод put удалить или перенести в reports плагин)
-
-TODO: fix encoding
-TODO: данные спеки конвертировать в кодировку скрипта (utf 8) или лучше каждую выводимую строчку конвертировать в выходную кодировку (convertToOutputEncodingFromScriptCharset и convertToOutputEncodingFromSpecInputCharset)
-TODO: indention и newline не конвертировать, предположив что они уже в выходной кодировке
-TODO: изменить autoload
+TODO: indention и newline не конвертировать, т.к. они уже в выходной кодировке
 TODO: change "$spec->getName()" to "$spec->output->convertToOutputCharset($spec->getName())" in exception messages (or remove $spec->getName() from exception messages)
-TODO: reports -> use "convertToOutputEncoding"
-TODO: mb_*('', 'latin1'|$spec->charset->getInputEncoding()) и т.п. 
+
+TODO: mb_*('', 'latin1'|$spec->charset->getInputEncoding()) и т.п.
+TODO: добавить в mb_* функции в autoload указание кодировки???
+
+TODO: данные спеки конвертировать в кодировку скрипта (utf 8) или лучше каждую выводимую строчку конвертировать в выходную кодировку (convertToOutputEncodingFromScriptCharset и convertToOutputEncodingFromSpecInputCharset)
+TODO: output перенести в драйвер (метод put удалить или перенести в reports плагин)
+TODO: reports->put()
+TODO: reports->convertToOutputEncoding || charset->convertStringToOutputCharset
 TODO: использовать convertToOutputCharset при выводе данных из:
 Spec::setName()
 Messages::add()
@@ -17,7 +20,36 @@ ResultBuffer::addResult()
 Output::put('текст')
 fail()
 
-TODO: FailException -> \spectrum\core\details\UserFailDetails, ErrorException -> \spectrum\core\details\PhpErrorDetails, MatcherCallDetails -> \spectrum\core\details\MatcherCallDetails ???
+TODO: fix encoding
+TODO: изменить autoload
+
+TODO: iconv -> mb_convert_encoding
+
+TODO: вынести общую часть из group и test в функцию createSpec
+TODO: createDriver -> getDriverOnce???
+TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
+TODO: config::lock -> deny access from Spec/AssertInterface and builders ???
+TODO: remove ownerSpec from resultBuffer???
+TODO: 'Error handler in spec "' . $this->getOwnerSpec()->getName() . '" was removed' -> 'Error handler was removed'
+TODO: loadBaseMatchers — возвращать массив загруженных матчеров вместо добавления из в передаваемую спеку
+TODO: перенести функции setBuildingSpec, getBuildingSpec, getExclusionSpecs, addExclusionSpec в пространство имён internal/storage ???
+	или создать объект Storage и билдер getStorageOnce()
+	или переименовать функции в функции вида setBuildingSpecInStorage
+	или просто сделать функцию getPermanentStorage(), возвращающую \stdClass
+	добавить слово current к имени переменных в хранилище
+	callFunctionOnBuildingSpec -> callFunctionOnCurrentBuildingSpec
+	filterOutExclusionSpecs -> filterOutCurrentExclusionSpecs
+	
+TODO: isRunningState and getRootSpec to internal
+TODO: Spec::getSpecId move to \spectrum\builders\internal\getSpecId (and use it in run($specId, $runInAllContexts = false) function) ??? 
+TODO: remove $ownerSpec from ResultBuffer???
+TODO: удалить методы config::setXxxClass и все интерфейсы у классов, кроме тех, на которые ссылаются имеющиеся программные сущности ???
+
+TODO: удалить поддержку scalar значений у array контекстов
+TODO: добавить поддержку функций в array контекстах: test(array(
+	'aaa aaa' => array('a1' => 'aaa'),
+	'aaa aaa' => function(){ $this->a1 = 'aaa'; },
+), function(){});
 
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 TODO: добавить информацию о фреймворке (название, версию и адрес сайта): либо при нажатии на иконку [i] либо в конце нижнего блока totalResult (<a href="http://spectrum-framework.org/">Spectrum 1.0</a>)
@@ -55,7 +87,11 @@ TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???
 
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам и функциям (глобальным, расположенным в init.php, в частности)
-TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message"), проверить их грамотность
+TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
+TODO: исправить грамматические ошибки:
+	is deny -> is denied
+	IsDeny -> IsDenied
+	
 TODO: MOVE PROJECT TO GITHUB.COM
 
 TODO: array context group:
@@ -68,17 +104,6 @@ TODO: array context group:
 	), function(){
 		test('bbb', function(){});
 	});
-
-TO MAN: Убрать лишние условия дя примеров, пускай пучше бутлут одни суккесы в результатах
-TO MAN: Убрать из примера files, оставив только базы данных
-TO MAN: Для примеров использовать скриншоты и ссылку на живое выполнение ???
-TO MAN: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
-TO MAN: заменить "Spectrum is a PHP framework for BDD specification test" на "Spectrum is a PHP framework for test automation"
-TO MAN: поддерживаются кодировки, являющиеся надмножеством ASCII
-TO MAN: на главной закрепить образец использования:
-test('ожидаемый результат', function(){
-	// код для проверки ожидаемого результата
-}) 
 
 TODO: добавить возможность перевода??? Пример: 
 test('Makes something', function(){}, function(){
@@ -117,12 +142,70 @@ Command::expectCount();
 incrementCount()
 count(getRunningInstance()->getResultStack())
 
---- mock
-Spy
-FileSystemMockReal
-FileSystemMockVirtual
+=== Documentation ===
 
---- output:
+TODO: Убрать лишние условия дя примеров, пускай пучше бутлут одни суккесы в результатах
+TODO: Убрать из примера files, оставив только базы данных
+TODO: Для примеров использовать скриншоты и ссылку на живое выполнение ???
+TODO: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
+TODO: заменить "Spectrum is a PHP framework for BDD specification test" на "Spectrum is a PHP framework for test automation"
+TODO: поддерживаются кодировки, являющиеся надмножеством ASCII
+TODO: на главной закрепить образец использования:
+	test('ожидаемый результат', function(){
+		// код для проверки ожидаемого результата
+	})
+
+=== Multi-charset support problems ===
+
+group(function(){
+	before(function(){ $this->aaa = 'text in utf-8'; });
+	group(function(){
+		before(function(){ $this->bbb = 'text in cp1251'; });
+		test(function(){
+			// What is result must be added to ResultBuffer (true or false)?
+			// How to detect correct charset for output and compare variables?
+			be($this->aaa)->eq($this->bbb);
+		});
+	}, 'cp1251');
+}, 'utf-8');
+
+group(function(){
+	before(function(){ $this->aaa = 'text in utf-8'; });
+	test(function(){
+		message($this->aaa); // Now message contains utf-8 text, but test charset is set to cp1251
+		message('aaa is: ' . $this->aaa); // Now message contains incorrect string (in mixed charsets)
+	}, 'cp1251');
+}, 'utf-8');
+
+group(function(){
+	before(function(){ \projectName\SomeClass::setText('text in utf-8'); });
+	test(function(){
+		// What behaviour is expected?
+		if (\projectName\SomeClass::getText() != 'text in cp1251')
+			fail();
+	}, 'cp1251');
+}, 'utf-8');
+
+group(function(){
+	addMatcher('something', function($text){
+		return in_array($text, array('text in utf-8', 'text in utf-8', 'text in utf-8'));
+	});
+	test(function(){
+		// What result is expected (true or false)?
+		// Pass charset to matcher function (and to "before/after" functions by analogy)? 
+		be('text in cp1251')->something();
+	}, 'cp1251');
+}, 'utf-8');
+
+group(function(){
+	addMatcher('matcherNameInUtf8', function(){});
+	test(function(){
+		be()->matcherNameInCp1251(); // Is matcher call handling (in "Assert" class) need converting for matcher name?
+	}, 'cp1251');
+}, 'utf-8');
+
+=== Output and charset ===
+
 	Вопрос: if ($spec->getName() == $name) — перекодировать надо или лучше хранить данные внутри обьектов в UTF-8?
 	Ответ:
 		Нет, т.к. тогда надо будет перекодировать данные в:
@@ -141,7 +224,16 @@ FileSystemMockVirtual
 		более прозрачной работе с кодировками из тестов, нежели из дополнительных обработчиков вне кода тестов (плагинов,
 		кода обработки в runner'е и т.п.)
 
-TODO: создать дополнительные матчеры??? Список:
+=== Mocks ===
+
+Spy
+FileSystemMockReal
+FileSystemMockVirtual
+
+=== Additional matchers ===
+
+TODO: create additional matchers? List:
+
 spectrum_DefaultMatchers_Base_BePhpError(level)
 
 spectrum_DefaultMatchers_File_BeFileExists

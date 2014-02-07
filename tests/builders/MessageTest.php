@@ -16,8 +16,8 @@ class MessageTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["messages"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			$selfSpecKey = array_search($this->getOwnerSpec(), \spectrum\tests\Test::$temp["specs"]);
-			$parentSpecKey = array_search($this->getOwnerSpec()->getRunningParentSpec(), \spectrum\tests\Test::$temp["specs"]);
+			$selfSpecKey = array_search($this->getOwnerSpec(), \spectrum\tests\Test::$temp["specs"], true);
+			$parentSpecKey = array_search($this->getOwnerSpec()->getRunningParentSpec(), \spectrum\tests\Test::$temp["specs"], true);
 			\spectrum\builders\message("some message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 			
 			\spectrum\tests\Test::$temp["messages"][] = $this->getOwnerSpec()->messages->getAll();

@@ -38,8 +38,8 @@ class FailTest extends \spectrum\tests\Test
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
 			
-			$selfSpecKey = array_search($this->getOwnerSpec(), \spectrum\tests\Test::$temp["specs"]);
-			$parentSpecKey = array_search($this->getOwnerSpec()->getRunningParentSpec(), \spectrum\tests\Test::$temp["specs"]);
+			$selfSpecKey = array_search($this->getOwnerSpec(), \spectrum\tests\Test::$temp["specs"], true);
+			$parentSpecKey = array_search($this->getOwnerSpec()->getRunningParentSpec(), \spectrum\tests\Test::$temp["specs"], true);
 			\spectrum\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 		', 'onEndingSpecExecute');
 		

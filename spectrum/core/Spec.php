@@ -12,7 +12,6 @@ use spectrum\config;
  * @property \spectrum\core\plugins\basePlugins\contexts\Contexts contexts
  * @property \spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
  * @property \spectrum\core\plugins\basePlugins\reports\Reports reports
- * @property \spectrum\core\plugins\basePlugins\Charset charset
  * @property \spectrum\core\plugins\basePlugins\Matchers matchers
  * @property \spectrum\core\plugins\basePlugins\Messages messages
  * @property \spectrum\core\plugins\basePlugins\Output output
@@ -20,8 +19,25 @@ use spectrum\config;
  */
 class Spec implements SpecInterface
 {
-	protected $name;
+	/**
+	 * @var array
+	 */
+	protected $activatedPlugins = array();
+
+	/**
+	 * @var bool
+	 */
 	protected $isEnabled = true;
+
+	/**
+	 * @var string
+	 */
+	protected $inputCharset = 'utf-8';
+
+	/**
+	 * @var string
+	 */
+	protected $name;
 	
 	/**
 	 * @var SpecInterface[]
@@ -37,8 +53,11 @@ class Spec implements SpecInterface
 	 * @var ResultBufferInterface|null
 	 */
 	protected $resultBuffer;
+
+	/**
+	 * @var bool
+	 */
 	protected $isRunning = false;
-	protected $activatedPlugins = array();
 
 	public function __construct()
 	{
@@ -123,7 +142,24 @@ class Spec implements SpecInterface
 	{
 		return $this->isEnabled;
 	}
-	
+
+/**/
+
+	public function setInputCharset($charsetName)
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		
+		if (!config::getAllowInputCharsetModify())
+			throw new Exception('Input charset modify is deny in config');
+
+		$this->inputCharset = $charsetName;
+	}
+
+	public function getInputCharset()
+	{
+		return $this->inputCharset;
+	}
+
 /**/
 
 	public function setName($name)
@@ -397,14 +433,16 @@ class Spec implements SpecInterface
 		
 		return null;
 	}
-	
+
 /**/
-	
+
 	public function getResultBuffer()
 	{
 		return $this->resultBuffer;
 	}
-	
+
+/**/
+
 	public function isRunning()
 	{
 		return $this->isRunning;

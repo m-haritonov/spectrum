@@ -28,7 +28,7 @@ class Output extends \spectrum\core\plugins\Plugin
 	public function convertToOutputCharset($string, $inputCharset = null)
 	{
 		if ($inputCharset === null)
-			$inputCharset = $this->getOwnerSpec()->charset->getInputCharsetThroughRunningAncestors();
+			$inputCharset = $this->getOwnerSpec()->getInputCharset();
 		
 		$outputCharset = config::getOutputCharset();
 

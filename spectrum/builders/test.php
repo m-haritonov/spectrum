@@ -51,9 +51,24 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($body)
 		$testSpec->test->setFunction($body);
 	
-	if ($settings !== null)
-		\spectrum\builders\internal\setSettingsToSpec($testSpec, $settings);
-
+	$settings = \spectrum\builders\internal\normalizeSettings($settings);
+	
+	if ($settings['catchPhpErrors'] !== null)
+		$testSpec->errorHandling->setCatchPhpErrors($settings['catchPhpErrors']);
+	
+	if ($settings['breakOnFirstPhpError'] !== null)
+		$testSpec->errorHandling->setBreakOnFirstPhpError($settings['breakOnFirstPhpError']);
+	
+	if ($settings['breakOnFirstMatcherFail'] !== null)
+		$testSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
+	
+	if ($settings['inputCharset'] !== null)
+		$inputCharset = $settings['inputCharset'];
+	else
+		$inputCharset = \spectrum\builders\internal\getBuildingSpec()->getInputCharset();
+	
+	$testSpec->setInputCharset($inputCharset);
+		
 	\spectrum\builders\internal\addExclusionSpec($testSpec);
 	\spectrum\builders\internal\getBuildingSpec()->bindChildSpec($testSpec);
 	
@@ -61,7 +76,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	{
 		if (is_array($contexts))
 		{
-			foreach (\spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts) as $spec)
+			foreach (\spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts, $inputCharset) as $spec)
 				$testSpec->bindChildSpec($spec);
 		}
 		else

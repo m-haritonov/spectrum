@@ -845,7 +845,83 @@ class SpecTest extends \spectrum\tests\Test
 		$spec->disable();
 		$this->assertSame(false, $spec->isEnabled());
 	}
+
+/**/
+
+	public function testSetInputCharset_SetsNewCharset()
+	{
+		config::setAllowInputCharsetModify(true);
+		
+		$spec = new Spec();
+		$spec->setInputCharset('windows-1251');
+		$this->assertSame('windows-1251', $spec->getInputCharset());
+		
+		$spec->setInputCharset('koi8-r');
+		$this->assertSame('koi8-r', $spec->getInputCharset());
+	}
 	
+	public function testSetInputCharset_CallOnRun_ThrowsExceptionAndDoesNotChangeCharset()
+	{
+		config::setAllowInputCharsetModify(true);
+		
+		\spectrum\tests\Test::$temp["exception"] = null;
+		
+		$this->registerPluginWithCodeInEvent('
+			try
+			{
+				$this->getOwnerSpec()->setInputCharset("koi8-r");
+			}
+			catch (\Exception $e)
+			{
+				\spectrum\tests\Test::$temp["exception"] = $e;
+			}
+		');
+		
+
+		$spec = new Spec();
+		$spec->setInputCharset('windows-1251');
+		$spec->run();
+		
+		$this->assertInstanceOf('\spectrum\core\Exception', \spectrum\tests\Test::$temp["exception"]);
+		$this->assertSame('Call of "\spectrum\core\Spec::setInputCharset" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
+		$this->assertSame('windows-1251', $spec->getInputCharset());
+	}
+	
+	public function testSetInputCharset_InputCharsetModifyIsDenyInConfig_ThrowsExceptionAndDoesNotChangeCharset()
+	{
+		$spec = new Spec();
+		$spec->setInputCharset('windows-1251');
+		
+		config::setAllowInputCharsetModify(false);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Input charset modify is deny in config', function() use($spec){
+			$spec->setInputCharset('koi8-r');
+		});
+		
+		$this->assertSame('windows-1251', $spec->getInputCharset());
+	}
+	
+/**/
+	
+	public function testGetInputCharset_ReturnsSetCharset()
+	{
+		config::setAllowInputCharsetModify(true);
+		
+		$spec = new Spec();
+		$spec->setInputCharset('windows-1251');
+		$this->assertSame('windows-1251', $spec->getInputCharset());
+		
+		$spec->setInputCharset('koi8-r');
+		$this->assertSame('koi8-r', $spec->getInputCharset());
+	}
+	
+	public function testGetInputCharset_ReturnsUtf8ByDefault()
+	{
+		config::setAllowInputCharsetModify(true);
+		
+		$spec = new Spec();
+		$this->assertSame('utf-8', $spec->getInputCharset());
+	}
+
 /**/
 	
 	public function testSetName_SetsSpecName()

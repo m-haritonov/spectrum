@@ -595,6 +595,9 @@ class ConfigTest extends Test
 				public function disable(){}
 				public function isEnabled(){}
 				
+				public function setInputCharset($charsetName){}
+				public function getInputCharset(){}
+				
 				public function setName($name){}
 				public function getName(){}
 				public function isAnonymous(){}
@@ -663,6 +666,9 @@ class ConfigTest extends Test
 				public function enable(){}
 				public function disable(){}
 				public function isEnabled(){}
+				
+				public function setInputCharset($charsetName){}
+				public function getInputCharset(){}
 				
 				public function setName($name){}
 				public function getName(){}
@@ -1566,7 +1572,6 @@ class ConfigTest extends Test
 			'\spectrum\core\plugins\basePlugins\contexts\Contexts',
 			'\spectrum\core\plugins\basePlugins\ErrorHandling',
 			'\spectrum\core\plugins\basePlugins\reports\Reports',
-			'\spectrum\core\plugins\basePlugins\Charset',
 			'\spectrum\core\plugins\basePlugins\Matchers',
 			'\spectrum\core\plugins\basePlugins\Messages',
 			'\spectrum\core\plugins\basePlugins\Output',

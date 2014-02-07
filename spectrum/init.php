@@ -29,7 +29,7 @@ if (!function_exists('\spectrum\builders\internal\getExclusionSpecs'))          
 if (!function_exists('\spectrum\builders\internal\getRunningEndingSpec'))            { require_once __DIR__ . '/builders/internal/getRunningEndingSpec.php'; }
 if (!function_exists('\spectrum\builders\internal\loadBaseMatchers'))                { require_once __DIR__ . '/builders/internal/loadBaseMatchers.php'; }
 if (!function_exists('\spectrum\builders\internal\setBuildingSpec'))                 { require_once __DIR__ . '/builders/internal/setBuildingSpec.php'; }
-if (!function_exists('\spectrum\builders\internal\setSettingsToSpec'))               { require_once __DIR__ . '/builders/internal/setSettingsToSpec.php'; }
+if (!function_exists('\spectrum\builders\internal\normalizeSettings'))               { require_once __DIR__ . '/builders/internal/normalizeSettings.php'; }
 
 if (!function_exists('addMatcher')) { function addMatcher() { return call_user_func_array('\spectrum\builders\addMatcher', func_get_args()); }}
 if (!function_exists('after'))      { function after()      { return call_user_func_array('\spectrum\builders\after',      func_get_args()); }}

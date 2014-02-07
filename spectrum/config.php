@@ -28,7 +28,6 @@ final class config
 		'\spectrum\core\plugins\basePlugins\contexts\Contexts',
 		'\spectrum\core\plugins\basePlugins\ErrorHandling',
 		'\spectrum\core\plugins\basePlugins\reports\Reports',
-		'\spectrum\core\plugins\basePlugins\Charset',
 		'\spectrum\core\plugins\basePlugins\Matchers',
 		'\spectrum\core\plugins\basePlugins\Messages',
 		'\spectrum\core\plugins\basePlugins\Output',
@@ -113,7 +112,7 @@ final class config
 	}
 
 	/**
-	 * Allow or deny change of input charset (see "\spectrum\core\plugins\basePlugins\Charset" class)
+	 * Allow or deny change of input charset (see "\spectrum\core\Spec::setInputCharset" method)
 	 * @param bool $isEnable
 	 */
 	static public function setAllowInputCharsetModify($isEnable)
