@@ -8,265 +8,306 @@ distributed with this source code.
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html;
 
 use spectrum\config;
-use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
+use spectrum\core\SpecInterface;
 
-class Html extends Driver
+class html
 {
-	protected $components = array(
-		'ClearFix' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\ClearFix',
-		'TotalInfo' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\TotalInfo',
-		'DetailsControl' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\DetailsControl',
-		'totalResult\Result' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult\Result',
-		'totalResult\Update' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult\Update',
-		'Messages' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\Messages',
-		'resultBuffer\ResultBuffer' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\ResultBuffer',
-		'resultBuffer\details\MatcherCall' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\details\MatcherCall',
-		'resultBuffer\details\Unknown' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer\details\Unknown',
-		'SpecList' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList',
-		'code\Method' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Method',
-		'code\Operator' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Operator',
-		'code\Property' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Property',
-		'code\Variable' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\Variable',
-		'code\variables\ArrayVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\ArrayVar',
-		'code\variables\BoolVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\BoolVar',
-		'code\variables\FloatVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\FloatVar',
-		'code\variables\FunctionVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\FunctionVar',
-		'code\variables\IntVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\IntVar',
-		'code\variables\NullVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\NullVar',
-		'code\variables\ObjectVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\ObjectVar',
-		'code\variables\ResourceVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\ResourceVar',
-		'code\variables\StringVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\StringVar',
-		'code\variables\UnknownVar' => 'spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\UnknownVar',
-	);
-	
-	public function getContentBeforeSpec()
+	static public function getContentBeforeSpec(SpecInterface $spec)
 	{
 		$output = '';
 		
-		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
+		if (!$spec->getParentSpecs())
 		{
-			$output .= $this->getHeader();
-			$output .= $this->createComponent('TotalInfo')->getHtml();
+			$output .= static::getHeader() . static::getHtmlEscapedOutputNewline();
+			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline();
 		}
 
-		$output .= $this->createComponent('SpecList')->getHtmlBegin();
+		$specListHtml = static::callComponentMethod('specList', 'getHtmlBegin', array($spec));
+		if ($specListHtml != '')
+			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListHtml) . static::getHtmlEscapedOutputNewline();
 		
-		$output .= str_repeat(' ', 256) . $this->getNewline();
 		return $output;
 	}
 
-	public function getContentAfterSpec()
+	static public function getContentAfterSpec(SpecInterface $spec)
 	{
 		$output = '';
+		$specListHtml = static::callComponentMethod('specList', 'getHtmlEnd', array($spec));
+		if ($specListHtml != '')
+			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListHtml) . static::getHtmlEscapedOutputNewline();
 		
-		$output .= $this->createComponent('SpecList')->getHtmlEnd();
-
-		if (!$this->getOwnerPlugin()->getOwnerSpec()->getParentSpecs())
+		if (!$spec->getParentSpecs())
 		{
-			$totalInfoComponent = $this->createComponent('TotalInfo');
-			$output .= $totalInfoComponent->getHtml();
-			$output .= $totalInfoComponent->getHtmlForUpdate();
-			$output .= $this->getFooter();
+			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline();
+			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtmlForUpdate', array($spec))) . static::getHtmlEscapedOutputNewline();
+			$output .= static::getFooter();
 		}
 		
-		$output .= str_repeat(' ', 256) . $this->getNewline();
 		return $output;
 	}
 	
-	public function createComponent($name/*, ... */)
+	static protected function getHeader()
 	{
-		$reflection = new \ReflectionClass($this->components[$name]);
-		$args = func_get_args();
-		array_shift($args);
-		array_unshift($args, $this);
-
-		return $reflection->newInstanceArgs($args);
+		return
+			static::getHtmlDeclaration() . static::getHtmlEscapedOutputNewline() .
+			static::getHtmlOpenTag() . static::getHtmlEscapedOutputNewline() .
+			'<head>' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<meta http-equiv="content-type" content="text/html; charset=' . static::escapeHtml(config::getOutputCharset()) . '" />' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<title>' . static::translateAndEscapeHtml('Spectrum framework report') . '</title>' . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getCommonStyles()) . static::getHtmlEscapedOutputNewline(2) .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::collectAllComponentStyles()) . static::getHtmlEscapedOutputNewline(2) .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getCommonScripts()) . static::getHtmlEscapedOutputNewline(2) .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::collectAllComponentScripts()) . static::getHtmlEscapedOutputNewline() .
+			'</head>' . static::getHtmlEscapedOutputNewline() .
+			'<body><div>';
 	}
 	
-	protected function createAllComponents()
+	static protected function getHtmlDeclaration()
 	{
-		$result = array();
-		foreach ($this->components as $name => $class)
-			$result[$name] = $this->createComponent($name);
+		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+	}
 
-		return $result;
+	static protected function getHtmlOpenTag()
+	{
+		return
+			'<!--[if IE 6]><html class="c-browser-ie6" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if IE 7]><html class="c-browser-ie7" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if IE 8]><html class="c-browser-ie8" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if IE 9]><html class="c-browser-ie9" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if !IE]>--><html xmlns="http://www.w3.org/1999/xhtml"><!--<![endif]-->';
+	}
+
+	static protected function getFooter()
+	{
+		return '</div></body>' . static::getHtmlEscapedOutputNewline() . '</html>';
 	}
 	
-	protected function getHeader()
+	static protected function getCommonStyles()
 	{
-		return
-			'<!DOCTYPE html>' . $this->getNewline() .
-			$this->getHtmlTag() .
-			'<head>' . $this->getNewline() .
-				$this->getIndention() . '<meta http-equiv="content-type" content="text/html; charset=' . config::getOutputCharset() . '" />' . $this->getNewline() .
-				$this->getIndention() . '<title></title>' . $this->getNewline() .
-				$this->prependIndentionToEachLine($this->getStyles()) . $this->getNewline(2) .
-				$this->prependIndentionToEachLine($this->getScripts()) . $this->getNewline() .
-			'</head>' . $this->getNewline() .
-			'<body>' . $this->getNewline();
+		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
+			html { background: #fff; }
+			body { padding: 10px; font-family: Verdana, sans-serif; font-size: 0.75em; background: #fff; color: #000; }
+			* { margin: 0; padding: 0; }
+			*[title] { cursor: help; }
+			a[title] { cursor: pointer; }
+			.c-clearFix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+			html.c-browser-ie7 .c-clearFix { zoom: 1; }
+		/*]]>*/</style>', 2);
 	}
 
-	protected function getHtmlTag()
+	static protected function getCommonScripts()
 	{
-		return
-			'<!--[if IE 6]><html class="c-browser-ie6"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 7]><html class="c-browser-ie7"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 8]><html class="c-browser-ie8"><![endif]-->' . $this->getNewline() .
-			'<!--[if IE 9]><html class="c-browser-ie9"><![endif]-->' . $this->getNewline() .
-			'<!--[if !IE]>--><html><!--<![endif]-->' . $this->getNewline();
-	}
-
-	protected function getStyles()
-	{
-		$output = '';
-		$output .= $this->trimNewline($this->getCommonStyles()) . $this->getNewline(2);
-
-		foreach ($this->createAllComponents() as $component)
-			$output .= $this->trimNewline($component->getStyles()) . $this->getNewline(2);
-
-		return $output;
-	}
-
-	protected function getCommonStyles()
-	{
-		return
-			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . 'html { background: #fff; }' . $this->getNewline() .
-				$this->getIndention() . 'body { padding: 10px; font-family: Verdana, sans-serif; font-size: 0.75em; background: #fff; color: #000; }' . $this->getNewline() .
-				$this->getIndention() . '* { margin: 0; padding: 0; }' . $this->getNewline() .
-				$this->getIndention() . '*[title] { cursor: help; }' . $this->getNewline() .
-				$this->getIndention() . 'a[title] { cursor: pointer; }' . $this->getNewline() .
-			'</style>' . $this->getNewline();
-	}
-
-	protected function getScripts()
-	{
-		$output = '';
-		$output .= $this->trimNewline($this->getCommonScripts()) . $this->getNewline(2);
-
-		foreach ($this->createAllComponents() as $component)
-			$output .= $this->trimNewline($component->getScripts()) . $this->getNewline(2);
-
-		return $output;
-	}
-
-	protected function getCommonScripts()
-	{
-		return
-			'<script type="text/javascript">
-				spectrum = window.spectrum || {};
-				spectrum.tools = {
-					/**
-					 * @param {HTMLElement} node
-					 */
-					hasClass: function(node, className)
+		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
+			spectrum = window.spectrum || {};
+			spectrum.tools = {
+				/**
+				 * @param {HTMLElement} node
+				 * @param {String} className
+				 */
+				hasClass: function(node, className)
+				{
+					return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
+				},
+				
+				/**
+				 * @param {HTMLElement} node
+				 * @param {String} classNamePrefix
+				 */
+				getClassesByPrefix: function(node, classNamePrefix)
+				{
+					var results = [];
+					var classNames = node.className.split(/\\s+/);
+					for (var i = 0; i < classNames.length; i++)
 					{
-						return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
-					},
-
-					/**
-					 * @param {HTMLElement|NodeList|String} node
-					 */
-					addClass: function(node, className)
-					{
-						if (typeof(node) == "string")
-							node = document.querySelectorAll(node);
-
-						if (node instanceof (NodeList || StaticNodeList))
-						{
-							for (var i = 0; i < node.length; i++)
-								arguments.callee(node[i], className);
-						}
-						else if (!spectrum.tools.hasClass(node, className))
-							node.className += " " + className;
-					},
-
-					/**
-					 * @param {HTMLElement|NodeList|String} node
-					 */
-					removeClass: function(node, className)
-					{
-						if (typeof(node) == "string")
-							node = document.querySelectorAll(node);
-
-						if (node instanceof (NodeList || StaticNodeList))
-						{
-							for (var i = 0; i < node.length; i++)
-								arguments.callee(node[i], className);
-						}
-						else if (spectrum.tools.hasClass(node, className))
-							node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
-					},
+						if (classNames[i].indexOf(classNamePrefix) === 0)
+							results.push(classNames[i]);
+					}
 					
-					getExecuteScriptNode: function()
-					{
-						var scripts = document.getElementsByTagName("script");
-						return scripts[scripts.length - 1];
-					},
+					return results;
+				},
 
-					/**
-					 * @param {HTMLElement} node
-					 */
-					addEventListener: function(node, eventName, callback)
+				/**
+				 * @param {HTMLElement|NodeList|String} node
+				 * @param {String} className
+				 */
+				addClass: function(node, className)
+				{
+					if (typeof(node) == "string")
+						node = document.querySelectorAll(node);
+
+					if (node instanceof (NodeList || StaticNodeList))
 					{
-						var fixedCallback = function(event)
+						for (var i = 0; i < node.length; i++)
+							arguments.callee(node[i], className);
+					}
+					else if (!spectrum.tools.hasClass(node, className))
+						node.className += " " + className;
+				},
+
+				/**
+				 * @param {HTMLElement|NodeList|String} node
+				 * @param {String} className
+				 */
+				removeClass: function(node, className)
+				{
+					if (typeof(node) == "string")
+						node = document.querySelectorAll(node);
+
+					if (node instanceof (NodeList || StaticNodeList))
+					{
+						for (var i = 0; i < node.length; i++)
+							arguments.callee(node[i], className);
+					}
+					else if (spectrum.tools.hasClass(node, className))
+						node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
+				},
+				
+				getExecutingScriptNode: function()
+				{
+					var scripts = document.getElementsByTagName("script");
+					return scripts[scripts.length - 1];
+				},
+
+				/**
+				 * @param {HTMLElement} node
+				 * @param {String} eventName
+				 * @param {Function} callback
+				 */
+				addEventListener: function(node, eventName, callback)
+				{
+					var fixedCallback = function(event)
+					{
+						event = event || window.event;
+						
+						if (!event.isFixed)
 						{
-							event = event || window.event;
+							event.isFixed = true;
+							event.preventDefault = event.preventDefault || function(){ this.returnValue = false; };
+							event.stopPropagation = event.stopPropagation || function(){ this.cancelBubble = true; };
 							
-							if (!event.isFixed)
+							if (!event.target)
+								event.target = event.srcElement;
+							
+							if (!event.relatedTarget && event.fromElement)
+								event.relatedTarget = event.fromElement == event.target ? event.toElement : event.fromElement;
+							
+							if (event.pageX == null && event.clientX != null)
 							{
-								event.isFixed = true 
-								
-								event.preventDefault = event.preventDefault || function(){ this.returnValue = false; };
-								event.stopPropagation = event.stopPropagation || function(){ this.cancelBubble = true; };
-								
-								if (!event.target)
-									event.target = event.srcElement;
-								
-								if (!event.relatedTarget && event.fromElement)
-									event.relatedTarget = event.fromElement == event.target ? event.toElement : event.fromElement;
-								
-								if (event.pageX == null && event.clientX != null)
-								{
-									var html = document.documentElement
-									var body = document.body;
-									event.pageX = event.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0);
-									event.pageY = event.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0);
-								}
-								
-								if (!event.which && event.button)
-									event.which = (event.button & 1 ? 1 : (event.button & 2 ? 3 : (event.button & 4 ? 2 : 0)));
+								var html = document.documentElement;
+								var body = document.body;
+								event.pageX = event.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0);
+								event.pageY = event.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0);
 							}
 							
-							return callback(event);
+							if (!event.which && event.button)
+								event.which = (event.button & 1 ? 1 : (event.button & 2 ? 3 : (event.button & 4 ? 2 : 0)));
 						}
-					
-						if (node.addEventListener)
-							node.addEventListener(eventName, fixedCallback, false);
-						else if (node.attachEvent)
-							node.attachEvent("on" + eventName, fixedCallback);
-					},
+						
+						return callback(event);
+					};
+				
+					if (node.addEventListener)
+						node.addEventListener(eventName, fixedCallback, false);
+					else if (node.attachEvent)
+						node.attachEvent("on" + eventName, fixedCallback);
+				},
 
-					/**
-					 * @param {HTMLElement} node
-					 */
-					dispatchEvent: function(node, eventName)
+				/**
+				 * @param {HTMLElement} node
+				 * @param {String} eventName
+				 */
+				dispatchEvent: function(node, eventName)
+				{
+					if (document.createEvent)
 					{
-						if (document.createEvent)
-						{
-							var e = document.createEvent("HTMLEvents");
-							e.initEvent(eventName, true, true);
-							node.dispatchEvent(e);
-						}
-						else
-							node.fireEvent("on" + eventName, document.createEventObject());
+						var e = document.createEvent("HTMLEvents");
+						e.initEvent(eventName, true, true);
+						node.dispatchEvent(e);
 					}
-				};' . $this->getNewline() .
-			'</script>' . $this->getNewline();
+					else
+						node.fireEvent("on" + eventName, document.createEventObject());
+				}
+			};
+		/*]]>*/</script>', 2);
 	}
 	
-	protected function getFooter()
+	static protected function collectAllComponentStyles()
 	{
-		return '</body>' . $this->getNewline() . '</html>';
+		$output = '';
+		foreach (config::getAllClassReplacements() as $class)
+		{
+			if (mb_stripos($class, '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\\', null, 'us-ascii') === 0)
+			{
+				$styles = $class::getStyles();
+				if ($styles != '')
+					$output .= $styles . static::getHtmlEscapedOutputNewline(2);
+			}
+		}
+
+		return $output;
+	}
+
+	static protected function collectAllComponentScripts()
+	{
+		$output = '';
+		foreach (config::getAllClassReplacements() as $class)
+		{
+			if (mb_stripos($class, '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\\', null, 'us-ascii') === 0)
+			{
+				$scripts = $class::getScripts();
+				if ($scripts != '')
+					$output .= $scripts . static::getHtmlEscapedOutputNewline(2);
+			}
+		}
+
+		return $output;
+	}
+	
+	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array())
+	{
+		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\\' . $componentShortName), $methodName), $arguments);
+	}
+	
+	static protected function escapeHtml($html)
+	{
+		return htmlspecialchars($html, ENT_QUOTES, 'iso-8859-1');
+	}
+
+	static protected function getHtmlEscapedOutputIndention($repeat = 1)
+	{
+		return str_repeat(static::escapeHtml(config::getOutputIndention()), $repeat);
+	}
+	
+	static protected function getHtmlEscapedOutputNewline($repeat = 1)
+	{
+		return str_repeat(static::escapeHtml(config::getOutputNewline()), $repeat);
+	}
+	
+	static protected function prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($text, $repeat = 1)
+	{
+		if ($text == '')
+			return $text;
+		
+		$indention = static::getHtmlEscapedOutputIndention($repeat);
+		$newline = static::getHtmlEscapedOutputNewline();
+		return $indention . str_replace($newline, $newline . $indention, $text);
+	}
+	
+	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0)
+	{
+		$function = config::getFunctionReplacement('\spectrum\tools\formatTextForOutput');
+		return $function($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
+	}
+	
+	static protected function translateAndEscapeHtml($string, array $replacement = array())
+	{
+		$translateFunction = config::getFunctionReplacement('\spectrum\tools\translate');
+		return static::escapeHtml($translateFunction($string, $replacement));
+	}
+	
+	static protected function convertToOutputCharset($string, $inputCharset = null)
+	{
+		$function = config::getFunctionReplacement('\spectrum\tools\convertCharset');
+		return $function($string, $inputCharset);
 	}
 }

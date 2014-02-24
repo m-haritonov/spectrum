@@ -7,59 +7,65 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components;
 
-use spectrum\core\plugins\basePlugins\reports\drivers\DriverInterface;
+use spectrum\config;
 
-class Component
+class component
 {
-	protected $ownerDriver;
-
-	public function __construct(DriverInterface $ownerDriver)
-	{
-		$this->ownerDriver = $ownerDriver;
-	}
-
-	public function getStyles()
+	static public function getStyles()
 	{
 		return null;
 	}
 
-	public function getScripts()
+	static public function getScripts()
 	{
 		return null;
 	}
-
-	protected function getOwnerDriver()
+	
+	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array())
 	{
-		return $this->ownerDriver;
-	}
-
-	protected function createComponent()
-	{
-		return call_user_func_array(array($this->ownerDriver, 'createComponent'), func_get_args());
+		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\\' . $componentShortName), $methodName), $arguments);
 	}
 	
-	protected function getIndention($repeat = 1)
+	static protected function escapeHtml($html)
 	{
-		return $this->ownerDriver->getIndention($repeat);
+		return htmlspecialchars($html, ENT_QUOTES, 'iso-8859-1');
 	}
 
-	protected function prependIndentionToEachLine($text, $repeat = 1, $trimNewline = true)
+	static protected function getHtmlEscapedOutputIndention($repeat = 1)
 	{
-		return $this->ownerDriver->prependIndentionToEachLine($text, $repeat, $trimNewline);
-	}
-
-	protected function getNewline($repeat = 1)
-	{
-		return $this->ownerDriver->getNewline($repeat);
-	}
-
-	protected function trimNewline($text)
-	{
-		return $this->ownerDriver->trimNewline($text);
+		return str_repeat(static::escapeHtml(config::getOutputIndention()), $repeat);
 	}
 	
-	protected function translate($string, array $replacement = array())
+	static protected function getHtmlEscapedOutputNewline($repeat = 1)
 	{
-		return htmlspecialchars($this->ownerDriver->translate($string, $replacement));
+		return str_repeat(static::escapeHtml(config::getOutputNewline()), $repeat);
+	}
+	
+	static protected function prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($text, $repeat = 1)
+	{
+		if ($text == '')
+			return $text;
+		
+		$indention = static::getHtmlEscapedOutputIndention($repeat);
+		$newline = static::getHtmlEscapedOutputNewline();
+		return $indention . str_replace($newline, $newline . $indention, $text);
+	}
+	
+	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0)
+	{
+		$function = config::getFunctionReplacement('\spectrum\tools\formatTextForOutput');
+		return $function($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
+	}
+	
+	static protected function translateAndEscapeHtml($string, array $replacement = array())
+	{
+		$translateFunction = config::getFunctionReplacement('\spectrum\tools\translate');
+		return static::escapeHtml($translateFunction($string, $replacement));
+	}
+	
+	static protected function convertToOutputCharset($string, $inputCharset = null)
+	{
+		$function = config::getFunctionReplacement('\spectrum\tools\convertCharset');
+		return $function($string, $inputCharset);
 	}
 }

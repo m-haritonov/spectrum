@@ -14,7 +14,6 @@ use spectrum\config;
  * @property \spectrum\core\plugins\basePlugins\reports\Reports reports
  * @property \spectrum\core\plugins\basePlugins\Matchers matchers
  * @property \spectrum\core\plugins\basePlugins\Messages messages
- * @property \spectrum\core\plugins\basePlugins\Output output
  * @property \spectrum\core\plugins\basePlugins\Test test
  */
 class Spec implements SpecInterface
@@ -28,11 +27,6 @@ class Spec implements SpecInterface
 	 * @var bool
 	 */
 	protected $isEnabled = true;
-
-	/**
-	 * @var string
-	 */
-	protected $inputCharset = 'utf-8';
 
 	/**
 	 * @var string
@@ -113,15 +107,42 @@ class Spec implements SpecInterface
 			}
 		}
 		
-		usort($methods, function($a, $b)
-		{
+		$this->usortWithOriginalSequencePreserving($methods, function($a, $b){
 			if ($a['order'] == $b['order'])
-				return 0;
+				return 0; 
 			
-			return ($a['order'] < $b['order']) ? -1 : 1;
+			return ($a['order'] < $b['order'] ? -1 : 1);
 		});
 		
 		return $methods;
+	}
+	
+	protected function usortWithOriginalSequencePreserving(&$array, $cmpFunction, $reverseEqualElementSequence = false)
+	{
+		$indexes = array();
+		$num = 0;
+		foreach ($array as $key => $value)
+		{
+			$indexes[$key] = $num;
+			$num++;
+		}
+		
+		uksort($array, function($keyA, $keyB) use($array, &$indexes, &$cmpFunction, &$reverseEqualElementSequence)
+		{
+			$result = $cmpFunction($array[$keyA], $array[$keyB]);
+			
+			// Keep equal elements in original sequence
+			if ($result == 0)
+			{
+				// Equal indexes are not existed
+				if ($reverseEqualElementSequence)
+					return ($indexes[$keyA] < $indexes[$keyB] ? 1 : -1);
+				else
+					return ($indexes[$keyA] < $indexes[$keyB] ? -1 : 1);
+			}
+			
+			return $result;
+		});
 	}
 
 /**/
@@ -141,23 +162,6 @@ class Spec implements SpecInterface
 	public function isEnabled()
 	{
 		return $this->isEnabled;
-	}
-
-/**/
-
-	public function setInputCharset($charsetName)
-	{
-		$this->handleModifyDeny(__FUNCTION__);
-		
-		if (!config::getAllowInputCharsetModify())
-			throw new Exception('Input charset modify is deny in config');
-
-		$this->inputCharset = $charsetName;
-	}
-
-	public function getInputCharset()
-	{
-		return $this->inputCharset;
 	}
 
 /**/
@@ -184,9 +188,14 @@ class Spec implements SpecInterface
 	/*
 	 * format: <ancestor spec index in parent>x<next ancestor spec index in parent>x<etc.>
 	 * example: "0x1x24"
+	 * 
+	 * @return string String in "us-ascii" charset
 	 */
 	public function getSpecId()
 	{
+		// TODO: id should be unique for every running spec (for every running ancestor stack)
+		return 'spec' . spl_object_hash($this);
+		
 /*		$stack = $this->getRunningAncestorSpecs();
 		$stack[] = $this;
 
@@ -206,7 +215,7 @@ class Spec implements SpecInterface
 			}
 		}
 
-		return mb_substr($uid, 0, -1);*/
+		return mb_substr($uid, 0, -1, 'us-ascii');*/
 	}
 
 	public function getSpecById($specId)
@@ -529,17 +538,23 @@ class Spec implements SpecInterface
 	
 	protected function dispatchPluginEventAndCatchExceptions($eventName, array $arguments = array())
 	{
-		try
+		foreach ($this->getPluginEventMethods($eventName) as $method)
 		{
-			$this->dispatchPluginEvent($eventName, $arguments);
-		}
-		catch (BreakException $e)
-		{
-			// Just ignore special break exception
-		}
-		catch (\Exception $e)
-		{
-			$this->getResultBuffer()->addResult(false, $e);
+			try
+			{
+				$reflectionClass = new \ReflectionClass($method['class']);
+				$reflectionMethod = $reflectionClass->getMethod($method['method']);
+				$reflectionMethod->setAccessible(true);
+				$reflectionMethod->invokeArgs($this->activatePluginByAccess($method['class']), $arguments);
+			}
+			catch (BreakException $e)
+			{
+				// Just ignore special break exception
+			}
+			catch (\Exception $e)
+			{
+				$this->getResultBuffer()->addResult(false, $e);
+			}
 		}
 	}
 

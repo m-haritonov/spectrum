@@ -7,57 +7,78 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables;
 
-class StringVar extends Variable
+use spectrum\config;
+
+class stringVar extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
 {
-	protected $type = 'string';
-
-	public function getStyles()
+	static public function getStyles()
 	{
-		$componentSelector = '.c-code-variables-' . htmlspecialchars($this->type);
+		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
+			.c-code-variables-string { font-size: 12px; }
+			.c-code-variables-string .type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
+			.c-code-variables-string .value { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; border-radius: 4px; background: rgba(255, 255, 255, 0.5); white-space: nowrap; vertical-align: text-top; }
+			.c-code-variables-string .quote { color: rgba(0, 0, 0, 0.6); }
+		
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value { overflow: visible; max-width: none; white-space: pre; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char { display: inline-block; overflow: hidden; position: relative; height: 12px; }
 
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.space { width: 8px; height: 10px; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.space:before { content: "\\0020"; position: absolute; bottom: 1px; left: 49%; width: 2px; height: 2px; background: #bbb; }
+
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.tab { width: 15px; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.tab:before { content: "\\21E5"; position: absolute; right: 0; left: 0; text-align: center; color: #aaa; }
+
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.cr { width: 14px; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.cr:before { content: "\\21A9"; position: absolute; bottom: -1px; right: 0; left: 0; text-align: center; color: #aaa; }
+
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.lf { width: 10px; height: 11px; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.lf:before { content: "\\2193"; position: absolute; bottom: 3px; right: 0; left: 0; text-align: center; color: #aaa; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-string .value .char.lf:after { content: "\\0020"; position: absolute; bottom: 2px; right: 2px; left: 2px; border-bottom: 1px solid #bbb; }
+		/*]]>*/</style>', 2);
+	}
+	
+	static public function getHtml($variable, $inputCharset = null)
+	{
 		return
-			parent::getStyles() . $this->getNewline() .
-			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$componentSelector .quote { color: rgba(0, 0, 0, 0.6); }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value { white-space: pre; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char { display: inline-block; overflow: hidden; position: relative; height: 12px; }" . $this->getNewline() .
-
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.space { width: 8px; height: 10px; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.space:before { content: '\\0020'; position: absolute; bottom: 1px; left: 49%; width: 2px; height: 2px; background: #bbb; }" . $this->getNewline() .
-
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.tab { width: 15px; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.tab:before { content: '\\21E5'; position: absolute; right: 0; left: 0; text-align: center; color: #aaa; }" . $this->getNewline() .
-
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.cr { width: 14px; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.cr:before { content: '\\21A9'; position: absolute; bottom: -1px; right: 0; left: 0; text-align: center; color: #aaa; }" . $this->getNewline() .
-
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.lf { width: 10px; height: 11px; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.lf:before { content: '\\2193'; position: absolute; bottom: 3px; right: 0; left: 0; text-align: center; color: #aaa; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value .char.lf:after { content: '\\0020'; position: absolute; bottom: 2px; right: 2px; left: 2px; border-bottom: 1px solid #bbb; }" . $this->getNewline() .
-			'</style>' . $this->getNewline();
+			'<span class="c-code-variables-string">' .
+				static::getHtmlForType($variable, $inputCharset) .
+				static::getHtmlForValue($variable, $inputCharset) .
+			'</span>';
 	}
 
-	protected function getHtmlForType($variable)
+	static protected function getHtmlForType($variable, $inputCharset)
 	{
-		return '<span class="type">' . htmlspecialchars($this->type) . '<span title="' . $this->translate('String length') . '">(' . mb_strlen($variable) . ')</span></span>';
+		if ($inputCharset === null)
+			$inputCharset = config::getInputCharset();
+		
+		return
+			'<span class="type">' .
+				static::translateAndEscapeHtml('string') .
+				'<span title="' . static::translateAndEscapeHtml('String length') . '">' . 
+					'(' . 
+					static::translateAndEscapeHtml('%count% chars', array('%count%' => static::escapeHtml(mb_strlen($variable, $inputCharset)))) . ', ' .
+					static::translateAndEscapeHtml('%count% bytes', array('%count%' => static::escapeHtml(mb_strlen($variable, 'us-ascii')))) .
+					')' .
+				'</span>' .
+			'</span> ';
 	}
 
-	protected function getHtmlForValue($variable)
+	static protected function getHtmlForValue($variable, $inputCharset)
 	{
-		return ' <span class="quote open">&quot;</span>' .
-			'<span class="value">' . $this->makeSpacesVisible(htmlspecialchars($variable)) . '</span>' .
+		return
+			'<span class="quote open">&quot;</span>' .
+				'<span class="value">' . static::highlightSpaces(static::escapeHtml(static::convertToOutputCharset($variable, $inputCharset))) . '</span>' .
 			'<span class="quote close">&quot;</span>';
 	}
 
-	protected function makeSpacesVisible($string)
+	static protected function highlightSpaces($string)
 	{
-		$string = str_replace(" ", '<span class="char space" title="' . $this->translate('Whitespace') . '"> </span>', $string);
-		$string = str_replace("\t", '<span class="char tab" title="' . $this->translate('Tab ("\t")') . '">' . "\t" . '</span>', $string);
-
-		$cr = '<span class="char cr" title="' . $this->translate('Carriage return ("\r")') . '"></span>';
-		$lf = '<span class="char lf" title="' . $this->translate('Line feed ("\n")') . '"></span>';
+		$cr = '<span class="char cr" title="' . static::translateAndEscapeHtml('Carriage return ("\r")') . '"></span>';
+		$lf = '<span class="char lf" title="' . static::translateAndEscapeHtml('Line feed ("\n")') . '"></span>';
 
 		$string = strtr($string, array(
+			" " => '<span class="char space" title="' . static::translateAndEscapeHtml('Whitespace (" ")') . '"> </span>',
+			"\t" => '<span class="char tab" title="' . static::translateAndEscapeHtml('Tab ("\t")') . '">' . "\t" . '</span>',
 			"\r\n" => $cr . $lf . "\r\n",
 			"\r" => $cr . "\r",
 			"\n" => $lf . "\n",

@@ -7,23 +7,25 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code;
 
-class Operator extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\Component
+class operator extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
 {
-	public function getStyles()
+	static public function getStyles()
 	{
-		return
-			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . '.c-code-operator { color: rgba(0, 0, 0, 0.6); }' . $this->getNewline() .
-			'</style>' . $this->getNewline();
+		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
+			.c-code-operator { color: rgba(0, 0, 0, 0.6); }
+		/*]]>*/</style>', 2);
 	}
 
-	public function getHtml($operator)
+	/**
+	 * @param string $operator String in "us-ascii" charset
+	 * @return string
+	 */
+	static public function getHtml($operator, $inputCharset = null)
 	{
-
-		return '<span class="c-code-operator ' . $this->getOperatorName($operator) . '">' . htmlspecialchars($operator) . '</span>';
+		return '<span class="c-code-operator ' . static::escapeHtml(static::getOperatorName($operator)) . '">' . static::escapeHtml(static::convertToOutputCharset($operator, $inputCharset)) . '</span>';
 	}
 
-	protected function getOperatorName($operator)
+	static protected function getOperatorName($operator)
 	{
 		if ($operator == '{' || $operator == '}')
 			return 'curlyBrace';

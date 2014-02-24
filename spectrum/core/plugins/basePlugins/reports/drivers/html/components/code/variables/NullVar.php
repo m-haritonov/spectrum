@@ -7,17 +7,22 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables;
 
-class NullVar extends Variable
+class nullVar extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
 {
-	protected $type = 'null';
-
-	protected function getHtmlForType($variable)
+	static public function getStyles()
 	{
-		return null;
+		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
+			.c-code-variables-null { font-size: 12px; }
+			.c-code-variables-null .value { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; border-radius: 4px; background: rgba(255, 255, 255, 0.5); white-space: nowrap; vertical-align: text-top; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-null .value { overflow: visible; max-width: none; white-space: normal; }
+		/*]]>*/</style>', 2);
 	}
 
-	protected function getHtmlForValue($variable)
+	static public function getHtml()
 	{
-		return '<span class="value">null</span>';
+		return
+			'<span class="c-code-variables-null">' .
+				'<span class="value">null</span>' .
+			'</span>';
 	}
 }

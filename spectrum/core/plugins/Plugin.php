@@ -7,6 +7,8 @@ distributed with this source code.
 
 namespace spectrum\core\plugins;
 
+use spectrum\config;
+
 abstract class Plugin implements PluginInterface
 {
 	/** @var \spectrum\core\SpecInterface|\spectrum\core\Spec */

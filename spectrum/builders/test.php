@@ -62,13 +62,6 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($settings['breakOnFirstMatcherFail'] !== null)
 		$testSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	
-	if ($settings['inputCharset'] !== null)
-		$inputCharset = $settings['inputCharset'];
-	else
-		$inputCharset = \spectrum\builders\internal\getBuildingSpec()->getInputCharset();
-	
-	$testSpec->setInputCharset($inputCharset);
-		
 	\spectrum\builders\internal\addExclusionSpec($testSpec);
 	\spectrum\builders\internal\getBuildingSpec()->bindChildSpec($testSpec);
 	
@@ -76,7 +69,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	{
 		if (is_array($contexts))
 		{
-			foreach (\spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts, $inputCharset) as $spec)
+			foreach (\spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts) as $spec)
 				$testSpec->bindChildSpec($spec);
 		}
 		else

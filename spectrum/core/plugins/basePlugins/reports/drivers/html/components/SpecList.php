@@ -7,187 +7,195 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components;
 
-class SpecList extends Component
+use spectrum\core\SpecInterface;
+
+class specList extends component
 {
 	static protected $depth;
 	static protected $numbers = array();
 
-	public function getStyles()
+	static public function getStyles()
 	{
-		return
-			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . '.c-specList { padding-right: 35px; list-style: none; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li { margin-top: 3px; white-space: nowrap; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li .indention { display: inline-block; width: 0; white-space: pre; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head { display: inline-block; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.point { position: relative; padding: 1px 16px 1px 6px; border-radius: 20px; background: #e5e5e5; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.point>.number { font-size: 0.9em; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.point>.number .dot { display: inline-block; width: 0; color: transparent; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.point>a.expand { display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-right: 2px; text-decoration: none; text-align: right; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.point>a.expand span { display: inline-block; position: relative; width: 8px; height: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: middle; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.point>a.expand span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.point>a.expand span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li>.head>.title { display: inline-block; vertical-align: top; white-space: normal; }' . $this->getNewline() .
+		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
+			.c-specList { padding-right: 35px; list-style: none; }
+			.c-specList>li { margin-top: 3px; white-space: nowrap; }
+			.c-specList>li .indention { display: inline-block; width: 0; white-space: pre; }
+			.c-specList>li>.head { display: inline-block; }
+			.c-specList>li>.head>.point { position: relative; padding: 1px 16px 1px 6px; border-radius: 20px; background: #e5e5e5; }
+			.c-specList>li>.head>.point>.number { font-size: 0.9em; }
+			.c-specList>li>.head>.point>.number .dot { display: inline-block; width: 0; color: transparent; }
+			.c-specList>li>.head>.point>a.expand { display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-right: 2px; text-decoration: none; text-align: right; }
+			.c-specList>li>.head>.point>a.expand span { display: inline-block; position: relative; width: 8px; height: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: middle; }
+			.c-specList>li>.head>.point>a.expand span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
+			.c-specList>li>.head>.point>a.expand span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }
+			.c-specList>li>.head>.title { display: inline-block; vertical-align: text-top; white-space: normal; }
+		
+			.c-specList>li>.c-specList { padding-right: 0; }
+		
+			.c-specList>li.notEnding>.c-specList { display: none; margin-left: 30px; white-space: normal; }
+			.c-specList>li.notEnding>.c-specList>li { position: relative; }
+			.c-specList>li.notEnding>.c-specList>li:before { content: "\\0020"; display: block; position: absolute; top: -3px; bottom: 0; left: -18px; width: 1px; background: #ccc; }
+			.c-specList>li.notEnding>.c-specList>li:after { content: "\\0020"; display: block; position: absolute; top: 8px; left: -17px; width: 17px; height: 1px; background: #ccc; }
+			.c-specList>li.notEnding>.c-specList>li:last-child:before { bottom: auto; height: 12px; }
+		
+			.c-specList>li.ending>.body { display: inline-block; vertical-align: text-top; white-space: normal; }
+			.c-specList>li.ending>.body>.runDetails { display: none; }
 			
-				$this->getIndention() . '.c-specList>li>.c-specList { padding-right: 0; }' . $this->getNewline() .
-			
-				$this->getIndention() . '.c-specList>li.notEnding>.c-specList { display: none; margin-left: 30px; white-space: normal; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.notEnding>.c-specList>li { position: relative; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.notEnding>.c-specList>li:before { content: "\\0020"; display: block; position: absolute; top: -3px; bottom: 0; left: -18px; width: 1px; background: #ccc; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.notEnding>.c-specList>li:after { content: "\\0020"; display: block; position: absolute; top: 8px; left: -17px; width: 17px; height: 1px; background: #ccc; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.notEnding>.c-specList>li:last-child:before { bottom: auto; height: 12px; }' . $this->getNewline() .
-			
-				$this->getIndention() . '.c-specList>li.ending>.body { display: inline-block; vertical-align: top; white-space: normal; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.ending>.body>.runDetails { display: none; }' . $this->getNewline() .
-				
-				$this->getIndention() . '.c-specList>li.noContent>.head>.point>a.expand { display: none; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.noContent>.head>.point { padding-right: 6px; }' . $this->getNewline() .
+			.c-specList>li.noContent>.head>.point>a.expand { display: none; }
+			.c-specList>li.noContent>.head>.point { padding-right: 6px; }
 
-				$this->getIndention() . '.c-specList>li.expand.notEnding>.head { position: relative; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.expand.notEnding>.head:before { content: "\\0020"; display: block; position: absolute; top: 0; bottom: 0; left: 12px; width: 1px; background: #ccc; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.expand.notEnding>.c-specList { display: block; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.expand.ending>.body>.runDetails { display: block; }' . $this->getNewline() .
-				$this->getIndention() . '.c-specList>li.expand>.head>.point>a.expand span:after { display: none; }' . $this->getNewline() .
-			'</style>' . $this->getNewline();
+			.c-specList>li.expand.notEnding>.head { position: relative; }
+			.c-specList>li.expand.notEnding>.head:before { content: "\\0020"; display: block; position: absolute; top: 0; bottom: 0; left: 12px; width: 1px; background: #ccc; }
+			.c-specList>li.expand.notEnding>.c-specList { display: block; }
+			.c-specList>li.expand.ending>.body>.runDetails { display: block; }
+			.c-specList>li.expand>.head>.point>a.expand span:after { display: none; }
+		/*]]>*/</style>', 2);
 	}
 
-	public function getScripts()
+	static public function getScripts()
 	{
-		return
-			'<script type="text/javascript">
-				spectrum.tools.addEventListener(document, "DOMContentLoaded", function()
+		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
+			spectrum.tools.addEventListener(document, "DOMContentLoaded", function()
+			{
+				var expandLinkNodes = document.body.querySelectorAll(".c-specList>li>.head>.point>a.expand");
+				for (var i = 0; i < expandLinkNodes.length; i++)
 				{
-					var expandLinkNodes = document.body.querySelectorAll(".c-specList>li>.head>.point>a.expand");
-					for (var i = 0; i < expandLinkNodes.length; i++)
-					{
-						var liNode = expandLinkNodes[i].parentNode.parentNode.parentNode;
+					var liNode = expandLinkNodes[i].parentNode.parentNode.parentNode;
 
-						if (liNode.querySelector(".runDetails, .c-specList") == null)
-							spectrum.tools.addClass(liNode, "noContent");
+					if (liNode.querySelector(".runDetails, .c-specList") == null)
+						spectrum.tools.addClass(liNode, "noContent");
 
-						spectrum.tools.addEventListener(expandLinkNodes[i], "click", function(e){
-							e.preventDefault();
-							var liNode = e.currentTarget.parentNode.parentNode.parentNode;
+					spectrum.tools.addEventListener(expandLinkNodes[i], "click", function(e){
+						e.preventDefault();
+						var liNode = e.currentTarget.parentNode.parentNode.parentNode;
 
-							if (spectrum.tools.hasClass(liNode, "expand"))
-								spectrum.tools.removeClass(liNode, "expand");
-							else
-								spectrum.tools.addClass(liNode, "expand");
-						});
-					}
-				});' . $this->getNewline() .
-			'</script>' . $this->getNewline();
+						if (spectrum.tools.hasClass(liNode, "expand"))
+							spectrum.tools.removeClass(liNode, "expand");
+						else
+							spectrum.tools.addClass(liNode, "expand");
+					});
+				}
+			});
+		/*]]>*/</script>', 2);
 	}
 
-	public function getHtmlBegin()
+	static public function getHtmlBegin(SpecInterface $spec)
 	{
 		$output = '';
-		$spec = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec();
 		
 		if (!$spec->getParentSpecs())
 		{
 			static::$depth = 0;
-			$output .= $this->getIndention(static::$depth) . '<ol class="c-specList">' . $this->getNewline();
+			$output .= static::getHtmlEscapedOutputIndention(static::$depth) . '<ol class="c-specList">';
 		}
-
-		if (!$spec->isAnonymous() && $spec->getParentSpecs())
+		else if (!$spec->isAnonymous())
 		{
 			if (!isset(static::$numbers[static::$depth]))
 				static::$numbers[static::$depth] = 0;
 			
 			static::$numbers[static::$depth]++;
 
-			$output .= $this->getIndention(static::$depth * 2 + 1) . '<li class="' . ($spec->getChildSpecs() ? 'notEnding expand' : 'ending') . '" id="' . $spec->getSpecId() . '">' . $this->getNewline();
+			$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '<li class="' . ($spec->getChildSpecs() ? 'notEnding' : 'ending') . ' expand" id="' . static::escapeHtml($spec->getSpecId()) . '">' . static::getHtmlEscapedOutputNewline();
 			
 			if ($spec->getChildSpecs())
 			{
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '<div class="head">' . $this->getNewline();
-				$output .= $this->prependIndentionToEachLine($this->getHtmlForSpecPoint(), static::$depth * 2 + 3) . $this->getNewline();
-				$output .= $this->prependIndentionToEachLine($this->getHtmlForSpecTitle(), static::$depth * 2 + 3) . $this->getNewline();
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '</div>' . $this->getNewline();
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '<ol class="c-specList">' . $this->getNewline();
+				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="head">' . static::getHtmlEscapedOutputNewline();
+				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecPoint(), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecTitle($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
+				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<ol class="c-specList">';
 				static::$depth++;
 			}
 			else
 			{
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '<div class="head">' . $this->getNewline();
-				$output .= $this->prependIndentionToEachLine($this->getHtmlForSpecPoint(), static::$depth * 2 + 3) . $this->getNewline();
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '</div>' . $this->getNewline();
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '<div class="body">' . $this->getNewline();
-				$output .= $this->prependIndentionToEachLine($this->getHtmlForSpecTitle(), static::$depth * 2 + 3) . $this->getNewline();
+				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="head">' . static::getHtmlEscapedOutputNewline();
+				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecPoint(), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
+				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="body">' . static::getHtmlEscapedOutputNewline();
+				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecTitle($spec), static::$depth * 2 + 3);
 			}
 		}
 
 		return $output;
 	}
 
-	public function getHtmlEnd()
+	static public function getHtmlEnd(SpecInterface $spec)
 	{
 		$output = '';
-		$spec = $this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec();
-		$totalResult = $spec->getResultBuffer()->getTotalResult();
-
-		if (!$spec->isAnonymous() && $spec->getParentSpecs())
+		
+		if ($spec->getParentSpecs())
 		{
-			if ($spec->getChildSpecs())
+			if (!$spec->isAnonymous())
 			{
-				static::$numbers[static::$depth] = 0;
-				static::$depth--;
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '</ol>' . $this->getNewline();
-			}
-			else
-			{
-				$output .= $this->prependIndentionToEachLine($this->getHtmlForRunDetails($totalResult), static::$depth * 2 + 3) . $this->getNewline();
-				$output .= $this->getIndention(static::$depth * 2 + 2) . '</div>' . $this->getNewline();
-			}
-			
-			$output .= $this->prependIndentionToEachLine($this->createComponent('totalResult\Update')->getHtml($totalResult), static::$depth * 2 + 2) . $this->getNewline();
-			$output .= $this->getIndention(static::$depth * 2 + 1) . '</li>' . $this->getNewline();
-		}
+				if ($spec->getChildSpecs())
+				{
+					static::$numbers[static::$depth] = 0;
+					static::$depth--;
+					$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</ol>' . static::getHtmlEscapedOutputNewline();
+				}
+				else
+				{
+					$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForRunDetails($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+					$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
+				}
 
-		if (!$spec->getParentSpecs())
-			$output .= $this->getIndention(static::$depth) . '</ol>' . $this->getNewline();
+				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getHtmlForUpdate', array($spec)), static::$depth * 2 + 2) . static::getHtmlEscapedOutputNewline();
+				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '</li>';
+			}
+		}
+		else
+			$output .= static::getHtmlEscapedOutputIndention(static::$depth) . '</ol>';
 
 		return $output;
 	}
 
-	protected function getHtmlForSpecPoint()
+	static protected function getHtmlForSpecPoint()
 	{
 		return
 			'<span class="point">' .
-				str_repeat('<span class="indention">' . $this->getIndention() . '</span>', static::$depth) . // Indention for copy to clipboard
-				'<span class="number">' . htmlspecialchars(isset(static::$numbers[static::$depth]) ? static::$numbers[static::$depth] : '') . '<span class="dot">.</span></span>' .
-				'<a href="#" class="expand" title="' . $this->translate('Expand/collapse child content') . '"><span></span></a>' .
+				// Indention should be copied to buffer
+				str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', static::$depth) .
+				'<span class="number">' .
+					static::escapeHtml(isset(static::$numbers[static::$depth]) ? static::$numbers[static::$depth] : '') .
+					'<span class="dot">.</span>' .
+				'</span>' .
+				'<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Expand/collapse child content') . '"><span></span></a>' .
 			'</span> ';
 	}
-	
-	protected function getHtmlForSpecTitle()
+
+	static protected function getHtmlForSpecTitle(SpecInterface $spec)
 	{
 		return
-			'<span class="title">' . $this->getNewline() .
-				$this->getIndention() . '<span class="name">' . htmlspecialchars($this->getOwnerDriver()->getOwnerPlugin()->getOwnerSpec()->getName()) . '</span>' . $this->getNewline() .
-				$this->getIndention() . '<span class="separator"> &mdash; </span>' . $this->getNewline() .
-				$this->prependIndentionToEachLine($this->trimNewline($this->createComponent('totalResult\Result')->getHtml())) . $this->getNewline() .
+			'<span class="title">' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<span class="name">' . static::escapeHtml(static::convertToOutputCharset($spec->getName())) . '</span>' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<span class="separator"> &#8212; </span>' . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline() .
 			'</span>';
 	}
 
-	protected function getHtmlForRunDetails($totalResult)
+	static protected function getHtmlForRunDetails(SpecInterface $spec)
 	{
+		$componentResults = array();
+		if ($spec->getResultBuffer()->getTotalResult() !== true)
+			$componentResults[] = static::callComponentMethod('resultBuffer', 'getHtml', array($spec));
+
+		$componentResults[] = static::callComponentMethod('messages', 'getHtml', array($spec));
+
 		$output = '';
-
-		if ($totalResult === false)
-			$output .= $this->prependIndentionToEachLine($this->createComponent('resultBuffer\ResultBuffer')->getHtml()) . $this->getNewline();
-
-		$output .= $this->prependIndentionToEachLine($this->createComponent('Messages')->getHtml()) . $this->getNewline();
-
-		if (trim($output) != '')
+		foreach ($componentResults as $html)
 		{
-			$output =
-				'<div class="runDetails c-clearFix">' . $this->getNewline() . 
-					$output . 
-				'</div>' . $this->getNewline();
+			if (trim($html) != '')
+				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($html) . static::getHtmlEscapedOutputNewline();
 		}
-
-		return $output;
+		
+		if ($output != '')
+		{
+			return
+				'<div class="runDetails c-clearFix">' . static::getHtmlEscapedOutputNewline() .
+					$output .
+				'</div>';
+		}
+		
+		return null;
 	}
 }

@@ -60,13 +60,6 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 	if ($settings['breakOnFirstMatcherFail'] !== null)
 		$groupSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	
-	if ($settings['inputCharset'] !== null)
-		$inputCharset = $settings['inputCharset'];
-	else
-		$inputCharset = \spectrum\builders\internal\getBuildingSpec()->getInputCharset();
-	
-	$groupSpec->setInputCharset($inputCharset);
-	
 	\spectrum\builders\internal\getBuildingSpec()->bindChildSpec($groupSpec);
 
 	if ($contexts)
@@ -74,8 +67,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 		if (is_array($contexts))
 		{
 			$contextEndingSpec = new $specClass();
-			$contextEndingSpec->setInputCharset($inputCharset);
-			foreach (\spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts, $inputCharset) as $spec)
+			foreach (\spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts) as $spec)
 			{
 				$groupSpec->bindChildSpec($spec);
 				$spec->bindChildSpec($contextEndingSpec);
@@ -86,7 +78,6 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 			\spectrum\builders\internal\callFunctionOnBuildingSpec($contexts, $groupSpec);
 			
 			$contextEndingSpec = new $specClass();
-			$contextEndingSpec->setInputCharset($inputCharset);
 			foreach (\spectrum\builders\internal\filterOutExclusionSpecs($groupSpec->getEndingSpecs()) as $endingSpec)
 				$endingSpec->bindChildSpec($contextEndingSpec);
 		}

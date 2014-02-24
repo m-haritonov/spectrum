@@ -7,25 +7,39 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code;
 
-class Method extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\Component
+class method extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
 {
-	public function getHtml($methodName, array $arguments)
+	/**
+	 * @param string $methodName String in "us-ascii" charset
+	 * @param array $arguments Data in input charset
+	 * @return string
+	 */
+	static public function getHtml($methodName, array $arguments, $inputCharset = null)
 	{
 		return
 			'<span class="c-code-method">' .
-				'<span class="methodName">' . htmlspecialchars($methodName) . '</span>' .
-				$this->createComponent('code\Operator')->getHtml('(') .
-				'<span class="arguments">' . $this->getHtmlForArguments($arguments) . '</span>' .
-			$this->createComponent('code\Operator')->getHtml(')') .
+				'<span class="methodName">' . static::escapeHtml(static::convertToOutputCharset($methodName, $inputCharset)) . '</span>' .
+				static::callComponentMethod('code\operator', 'getHtml', array('(', 'us-ascii')) .
+				'<span class="arguments">' . static::getHtmlForArguments($arguments, $inputCharset) . '</span>' .
+				static::callComponentMethod('code\operator', 'getHtml', array(')', 'us-ascii')) .
 			'</span>';
 	}
 
-	public function getHtmlForArguments(array $arguments)
+	static public function getHtmlForArguments(array $arguments, $inputCharset)
 	{
 		$output = '';
-		foreach ($arguments as $argument)
-			$output .= $this->createComponent('code\Variable')->getHtml($argument) . ', ';
+		
+		end($arguments);
+		$lastKey = key($arguments);
+		
+		foreach ($arguments as $key => $argument)
+		{
+			$output .= static::callComponentMethod('code\variable', 'getHtml', array($argument, 0, $inputCharset));
+			
+			if ($key !== $lastKey)
+				$output .= ', ';
+		}
 
-		return mb_substr($output, 0, -2);
+		return $output;
 	}
 }

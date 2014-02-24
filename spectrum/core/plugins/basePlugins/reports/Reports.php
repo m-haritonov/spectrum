@@ -8,8 +8,6 @@ distributed with this source code.
 namespace spectrum\core\plugins\basePlugins\reports;
 
 use spectrum\config;
-use spectrum\core\plugins\basePlugins\reports\drivers\html\Html;
-use spectrum\core\plugins\basePlugins\reports\drivers\text\Text;
 use spectrum\core\plugins\Exception;
 
 class Reports extends \spectrum\core\plugins\Plugin
@@ -29,22 +27,27 @@ class Reports extends \spectrum\core\plugins\Plugin
 	
 	protected function onSpecRunStart()
 	{
-		$this->getOwnerSpec()->output->put($this->createDriver()->getContentBeforeSpec());
+		$driverClass = $this->getDriverClass();
+		print $driverClass::getContentBeforeSpec($this->getOwnerSpec());
 		flush();
 	}
 
 	protected function onSpecRunFinish()
 	{
-		$this->getOwnerSpec()->output->put($this->createDriver()->getContentAfterSpec());
+		$driverClass = $this->getDriverClass();
+		print $driverClass::getContentAfterSpec($this->getOwnerSpec());
 		flush();
 	}
 	
-	protected function createDriver()
+	protected function getDriverClass()
 	{
-		if (mb_strtolower(config::getOutputFormat()) == 'html')
-			return new Html($this);
-		else if (mb_strtolower(config::getOutputFormat()) == 'text')
-			return new Text($this);
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+		$outputFormatWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction(config::getOutputFormat());
+		
+		if ($outputFormatWithLatinLowerCase == 'html')
+			return config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html');
+		else if ($outputFormatWithLatinLowerCase == 'text')
+			return config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\text');
 		else
 			throw new Exception('Output format "' . config::getOutputFormat() . '" is not supported by "Reports" plugin');
 	}

@@ -15,9 +15,6 @@ interface SpecInterface
 	public function disable();
 	public function isEnabled();
 	
-	public function setInputCharset($charsetName);
-	public function getInputCharset();
-	
 	public function setName($name);
 	public function getName();
 	public function isAnonymous();

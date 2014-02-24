@@ -7,44 +7,38 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code;
 
-class Variable extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\Component
-{
-	public function getHtml($variable, $depth = 0)
-	{
-		$className = $this->getVariableType($variable) . 'Var';
-		$className = mb_strtoupper(mb_substr($className, 0, 1)) . mb_substr($className, 1);
-		return $this->createComponent('code\variables\\' . $className, $depth)->getHtml($variable);
-	}
+use spectrum\config;
 
-	public function getVariableType($variable)
+class variable extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
+{
+	static public function getHtml($variable, $depth = 0, $inputCharset = null)
 	{
-		$type = mb_strtolower(gettype($variable));
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+		$type = $convertLatinCharsToLowerCaseFunction(gettype($variable));
 
 		if ($type == 'boolean')
-			$type = 'bool';
+			return static::callComponentMethod('code\variables\boolVar', 'getHtml', array($variable));
 		else if ($type == 'integer')
-			$type = 'int';
+			return static::callComponentMethod('code\variables\intVar', 'getHtml', array($variable));
 		else if ($type == 'double')
-			$type = 'float';
+			return static::callComponentMethod('code\variables\floatVar', 'getHtml', array($variable));
 		else if ($type == 'string')
-			$type = 'string';
+			return static::callComponentMethod('code\variables\stringVar', 'getHtml', array($variable, $inputCharset));
 		else if ($type == 'array')
-			$type = 'array';
+			return static::callComponentMethod('code\variables\arrayVar', 'getHtml', array($variable, $depth, $inputCharset));
 		else if ($type == 'object')
 		{
 			$closure = function(){};
 			if ($variable instanceof $closure)
-				$type = 'function';
+				return static::callComponentMethod('code\variables\functionVar', 'getHtml', array($variable, $inputCharset));
 			else
-				$type = 'object';
+				return static::callComponentMethod('code\variables\objectVar', 'getHtml', array($variable, $depth, $inputCharset));
 		}
 		else if ($type == 'resource')
-			$type = 'resource';
+			return static::callComponentMethod('code\variables\resourceVar', 'getHtml', array($variable, $inputCharset));
 		else if ($type == 'null')
-			$type = 'null';
+			return static::callComponentMethod('code\variables\nullVar', 'getHtml');
 		else
-			$type = 'unknown';
-
-		return $type;
+			return static::callComponentMethod('code\variables\unknownVar', 'getHtml', array($variable, $inputCharset));
 	}
 }

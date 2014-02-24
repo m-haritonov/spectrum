@@ -27,8 +27,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		
 		$this->backupObjectProperties(\spectrum\builders\getRootSpec());
 		$this->backupClassStaticProperties('\spectrum\config');
-		$this->backupClassStaticProperties('\spectrum\core\plugins\basePlugins\Output');
-		$this->backupClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList');
 		
 		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\reports\Reports');
 		\spectrum\tests\Test::$temp = null;
@@ -36,8 +35,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	
 	protected function tearDown()
 	{
-		$this->restoreClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\SpecList');
-		$this->restoreClassStaticProperties('\spectrum\core\plugins\basePlugins\Output');
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList');
 		$this->restoreClassStaticProperties('\spectrum\config');
 		$this->restoreObjectProperties(\spectrum\builders\getRootSpec());
 
@@ -82,7 +80,10 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			$objectProperty->setValue($object, $backupObjectProperty->getValue($backupObject));
 		}
 	}
-	
+
+	/**
+	 * @return string Class name string in "us-ascii" charset
+	 */
 	final protected function createClass($code)
 	{
 		$namespace = 'spectrum\tests\testware\_dynamicClasses_';
@@ -115,7 +116,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		return '\\' . $namespace . '\\' . $className;
 	}
 	
-	final protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart')
+	final protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart', $order = 100)
 	{
 		$pluginClassName = $this->createClass('
 			class ... extends \spectrum\core\plugins\Plugin
@@ -123,7 +124,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				static public function getEventListeners()
 				{
 					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => 100),
+						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => ' . $order . '),
 					);
 				}
 				
@@ -179,7 +180,11 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				\spectrum\builders\group(null, null, function(){}, null);
 				\spectrum\builders\test(null, null, function(){}, null);
 			}),
-			'settings' => array(true, false, 8, 'koi8-r', array(), array('inputCharset' => 'koi8-r')),
+			'settings' => array(true, false, 8, array(), array('breakOnFirstPhpError' => false), array(
+				'catchPhpErrors' => 8,
+				'breakOnFirstPhpError' => true,
+				'breakOnFirstMatcherFail' => true,
+			)),
 		);
 		
 		$patterns = array(

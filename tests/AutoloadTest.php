@@ -13,16 +13,22 @@ class AutoloadTest extends Test
 {
 	public function testNames_EntityNamesIsIdenticalToFileNames()
 	{
-		foreach ($this->getDirectoryFilesRecursively(array(__DIR__ . '/../spectrum', __DIR__ . '/../tests')) as $file)
+		foreach ($this->getDirectoryFilesRecursively(__DIR__ . '/../spectrum') as $file)
 		{
-			if (mb_substr($file, -4) === '.php')
+			if (mb_substr($file, -4, mb_strlen($file, 'us-ascii'), 'us-ascii') === '.php')
+				require_once $file;
+		}
+		
+		foreach ($this->getDirectoryFilesRecursively(__DIR__ . '/../tests') as $file)
+		{
+			if (mb_substr($file, -8, mb_strlen($file, 'us-ascii'), 'us-ascii') === 'Test.php')
 				require_once $file;
 		}
 		
 		$foundEntitiesCount = 0;
 		foreach ($this->getDeclaredEntities() as $entity)
 		{
-			if (mb_stripos($entity['name'], 'spectrum\\') === 0 && mb_stripos($entity['name'], 'spectrum\tests\testware\_dynamicClasses_\\') !== 0)
+			if (mb_stripos($entity['name'], 'spectrum\\', null, 'us-ascii') === 0 && mb_stripos($entity['name'], 'spectrum\tests\testware\_dynamicClasses_\\', null, 'us-ascii') !== 0)
 			{
 				$foundEntitiesCount++;
 				
@@ -35,10 +41,10 @@ class AutoloadTest extends Test
 				
 				$originalFileName = $reflection->getFileName();
 				$originalFileName = str_replace('/', '\\', $originalFileName);
-				$originalFileName = mb_substr($originalFileName, 0, -4); // Remove file extension
-				$originalFileName = mb_substr($originalFileName, mb_strlen(__DIR__) - mb_strlen(basename(__DIR__)));
+				$originalFileName = mb_substr($originalFileName, 0, -4, 'us-ascii'); // Remove file extension
+				$originalFileName = mb_substr($originalFileName, mb_strlen(__DIR__, 'us-ascii') - mb_strlen(basename(__DIR__), 'us-ascii'), mb_strlen($originalFileName, 'us-ascii'), 'us-ascii');
 				// Add prefix for files in "tests" directory
-				if (mb_stripos($originalFileName, 'spectrum\\') !== 0)
+				if (mb_stripos($originalFileName, 'spectrum\\', null, 'us-ascii') !== 0)
 					$originalFileName = 'spectrum\\' . $originalFileName;
 				
 				$this->assertSame($originalName, $originalFileName);
@@ -84,7 +90,7 @@ class AutoloadTest extends Test
 		{
 			foreach (scandir($paths) as $file)
 			{
-				if (mb_substr($file, 0, 1) == '.')
+				if (mb_substr($file, 0, 1, 'us-ascii') == '.')
 					continue;
 
 				$file = $paths . '/' . $file;

@@ -9,7 +9,7 @@ namespace spectrum\builders\internal;
 
 use spectrum\config;
 
-function convertArrayWithContextsToSpecs(array $contexts, $inputCharset)
+function convertArrayWithContextsToSpecs(array $contexts)
 {
 	$specClass = config::getSpecClass();
 	$specs = array();
@@ -22,14 +22,13 @@ function convertArrayWithContextsToSpecs(array $contexts, $inputCharset)
 		$firstValue = reset($values);
 		if ((!is_string($title) || $title === '') && count($values) >= 1 && is_scalar($firstValue))
 		{
-			if (mb_strlen($firstValue) > 100)
-				$title = mb_substr($firstValue, 0, 100) . '...';
+			if (mb_strlen($firstValue, config::getInputCharset()) > 100)
+				$title = mb_substr($firstValue, 0, 100, config::getInputCharset()) . '...';
 			else
 				$title = $firstValue;
 		}
 		
 		$spec = new $specClass();
-		$spec->setInputCharset($inputCharset);
 		$spec->setName($title);
 		$spec->contexts->add(function() use($values){
 			foreach ($values as $propertyName => $value)

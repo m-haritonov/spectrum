@@ -7,23 +7,24 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables;
 
-class FunctionVar extends Variable
+class functionVar extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
 {
-	protected $type = 'function';
-
-	public function getStyles()
+	static public function getStyles()
 	{
-		$componentSelector = '.c-code-variables-' . htmlspecialchars($this->type);
-
-		return
-			parent::getStyles() . $this->getNewline() .
-			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector .value { white-space: pre; }" . $this->getNewline() .
-			'</style>' . $this->getNewline();
+		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
+			.c-code-variables-function { font-size: 12px; }
+			.c-code-variables-function .type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
+			.c-code-variables-function .value { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; border-radius: 4px; background: rgba(255, 255, 255, 0.5); white-space: nowrap; vertical-align: text-top; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-function .value { overflow: visible; max-width: none; white-space: pre; }
+		/*]]>*/</style>', 2);
 	}
 
-	protected function getHtmlForValue($variable)
+	static public function getHtml($variable, $inputCharset = null)
 	{
-		return ' <span class="value">' . get_class($variable) . '</span>';
+		return
+			'<span class="c-code-variables-function">' .
+				'<span class="type">' . static::translateAndEscapeHtml('function') . '</span> ' .
+				'<span class="value">\\' . static::escapeHtml(static::convertToOutputCharset(get_class($variable), $inputCharset)) . '</span>' .
+			'</span>';
 	}
 }

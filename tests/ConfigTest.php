@@ -17,7 +17,81 @@ class ConfigTest extends Test
 		parent::setUp();
 		config::unregisterSpecPlugins();
 	}
+	
+/**/
+	
+	public function testGetInputCharset_ReturnsUtf8ByDefault()
+	{
+		$this->assertSame('utf-8', config::getInputCharset());
+	}
+	
+	public function testGetInputCharset_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getInputCharset();
+	}
 
+/**/
+
+	public function testSetInputCharset_SetsNewValue()
+	{
+		config::setInputCharset('windows-1251');
+		$this->assertSame('windows-1251', config::getInputCharset());
+		
+		config::setInputCharset('utf-8');
+		$this->assertSame('utf-8', config::getInputCharset());
+	}
+
+	public function testSetInputCharset_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setInputCharset('utf-8');
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setInputCharset('windows-1251');
+		});
+
+		$this->assertSame('utf-8', config::getInputCharset());
+	}
+
+/**/
+
+	public function testGetOutputCharset_ReturnsUtf8ByDefault()
+	{
+		$this->assertSame('utf-8', config::getOutputCharset());
+	}
+	
+	public function testGetOutputCharset_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getOutputCharset();
+	}
+
+/**/
+
+	public function testSetOutputCharset_SetsNewValue()
+	{
+		config::setOutputCharset('windows-1251');
+		$this->assertSame('windows-1251', config::getOutputCharset());
+		
+		config::setOutputCharset('utf-8');
+		$this->assertSame('utf-8', config::getOutputCharset());
+	}
+
+	public function testSetOutputCharset_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputCharset('utf-8');
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setOutputCharset('windows-1251');
+		});
+
+		$this->assertSame('utf-8', config::getOutputCharset());
+	}
+	
+/**/
+	
 	public function testGetOutputFormat_ReturnsHtmlByDefault()
 	{
 		$this->assertSame('html', config::getOutputFormat());
@@ -74,6 +148,20 @@ class ConfigTest extends Test
 		
 		config::setOutputIndention("\t");
 		$this->assertSame("\t", config::getOutputIndention());
+		
+		config::setOutputIndention(" \t ");
+		$this->assertSame(" \t ", config::getOutputIndention());
+	}
+	
+	public function testSetOutputIndention_IncorrectCharIsPassed_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputIndention("\t");
+
+		$this->assertThrowsException('\spectrum\Exception', 'Incorrect char is passed to "\spectrum\config::setOutputIndention" method (only "\t" and " " chars are allowed)', function(){
+			config::setOutputIndention('z');
+		});
+
+		$this->assertSame("\t", config::getOutputIndention());
 	}
 
 	public function testSetOutputIndention_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
@@ -90,9 +178,9 @@ class ConfigTest extends Test
 
 /**/
 
-	public function testGetOutputNewline_ReturnsCrLfByDefault()
+	public function testGetOutputNewline_ReturnsLfByDefault()
 	{
-		$this->assertSame("\r\n", config::getOutputNewline());
+		$this->assertSame("\n", config::getOutputNewline());
 	}
 	
 	public function testGetOutputNewline_ConfigIsLocked_DoesNotThrowException()
@@ -114,6 +202,17 @@ class ConfigTest extends Test
 		config::setOutputNewline("\r\n");
 		$this->assertSame("\r\n", config::getOutputNewline());
 	}
+	
+	public function testSetOutputNewline_IncorrectCharIsPassed_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setOutputNewline("\n");
+
+		$this->assertThrowsException('\spectrum\Exception', 'Incorrect char is passed to "\spectrum\config::setOutputNewline" method (only "\r" and "\n" chars are allowed)', function(){
+			config::setOutputNewline('z');
+		});
+
+		$this->assertSame("\n", config::getOutputNewline());
+	}
 
 	public function testSetOutputNewline_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
@@ -125,75 +224,6 @@ class ConfigTest extends Test
 		});
 
 		$this->assertSame("\r\n", config::getOutputNewline());
-	}
-
-/**/
-
-	public function testGetOutputCharset_ReturnsUtf8ByDefault()
-	{
-		$this->assertSame('utf-8', config::getOutputCharset());
-	}
-	
-	public function testGetOutputCharset_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getOutputCharset();
-	}
-
-/**/
-
-	public function testSetOutputCharset_SetsNewValue()
-	{
-		config::setOutputCharset('windows-1251');
-		$this->assertSame('windows-1251', config::getOutputCharset());
-		
-		config::setOutputCharset('utf-8');
-		$this->assertSame('utf-8', config::getOutputCharset());
-	}
-
-	public function testSetOutputCharset_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::setOutputCharset('utf-8');
-		config::lock();
-
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setOutputCharset('windows-1251');
-		});
-
-		$this->assertSame('utf-8', config::getOutputCharset());
-	}
-	
-/**/
-
-	public function testGetAllowInputCharsetModify_ReturnsTrueByDefault()
-	{
-		$this->assertTrue(config::getAllowInputCharsetModify());
-	}
-	
-	public function testGetAllowInputCharsetModify_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getAllowInputCharsetModify();
-	}
-
-/**/
-
-	public function testSetAllowInputCharsetModify_SetsNewValue()
-	{
-		config::setAllowInputCharsetModify(false);
-		$this->assertFalse(config::getAllowInputCharsetModify());
-	}
-
-	public function testSetAllowInputCharsetModify_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
-	{
-		config::setAllowInputCharsetModify(true);
-		config::lock();
-
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setAllowInputCharsetModify(false);
-		});
-
-		$this->assertTrue(config::getAllowInputCharsetModify());
 	}
 
 /**/
@@ -229,6 +259,72 @@ class ConfigTest extends Test
 		$this->assertTrue(config::getAllowErrorHandlingModify());
 	}
 
+/**/
+	
+	public function testGetClassReplacement_ReturnsSpectrumClassByDefault()
+	{
+		$this->assertSame('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
+	}
+	
+	public function testGetClassReplacement_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html');
+	}
+	
+/**/
+
+	public function testSetClassReplacement_SetsNewClass()
+	{
+		config::setClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', '\aaa');
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
+	}
+
+	public function testSetClassReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', '\aaa');
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', '\bbb');
+		});
+
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
+	}
+	
+/**/
+	
+	public function testGetFunctionReplacement_ReturnsSpectrumClassByDefault()
+	{
+		$this->assertSame('\spectrum\tools\translate', config::getFunctionReplacement('\spectrum\tools\translate'));
+	}
+	
+	public function testGetFunctionReplacement_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getFunctionReplacement('\spectrum\tools\translate');
+	}
+	
+/**/
+
+	public function testSetFunctionReplacement_SetsNewClass()
+	{
+		config::setFunctionReplacement('\spectrum\tools\translate', '\aaa');
+		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\tools\translate'));
+	}
+
+	public function testSetFunctionReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		config::setFunctionReplacement('\spectrum\tools\translate', '\aaa');
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setFunctionReplacement('\spectrum\tools\translate', '\bbb');
+		});
+
+		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\tools\translate'));
+	}
+	
 /**/
 	
 	public function testGetAssertClass_ReturnsSpectrumClassByDefault()
@@ -595,9 +691,6 @@ class ConfigTest extends Test
 				public function disable(){}
 				public function isEnabled(){}
 				
-				public function setInputCharset($charsetName){}
-				public function getInputCharset(){}
-				
 				public function setName($name){}
 				public function getName(){}
 				public function isAnonymous(){}
@@ -666,9 +759,6 @@ class ConfigTest extends Test
 				public function enable(){}
 				public function disable(){}
 				public function isEnabled(){}
-				
-				public function setInputCharset($charsetName){}
-				public function getInputCharset(){}
 				
 				public function setName($name){}
 				public function getName(){}
@@ -905,7 +995,7 @@ class ConfigTest extends Test
 		$className3 = $this->createClass('
 			class ... implements \spectrum\core\plugins\PluginInterface
 			{
-				static public function getAccessName(){ return "ссс"; }
+				static public function getAccessName(){ return "ccc"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
@@ -938,7 +1028,7 @@ class ConfigTest extends Test
 			}
 		');
 
-		config::registerSpecPlugin(mb_strtoupper($className));
+		config::registerSpecPlugin(mb_strtoupper($className, 'us-ascii'));
 		$this->assertSame(array($className), config::getRegisteredSpecPlugins());
 	}
 	
@@ -1082,7 +1172,7 @@ class ConfigTest extends Test
 		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
 		
 		$this->assertThrowsException('\spectrum\Exception', 'Plugin with class "' . $className . '" is already registered', function() use($className){
-			config::registerSpecPlugin(mb_strtoupper($className));
+			config::registerSpecPlugin(mb_strtoupper($className, 'us-ascii'));
 		});
 
 		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
@@ -1431,13 +1521,13 @@ class ConfigTest extends Test
 		
 		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
 		
-		config::unregisterSpecPlugins(mb_strtoupper($className3));
+		config::unregisterSpecPlugins(mb_strtoupper($className3, 'us-ascii'));
 		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
 		
-		config::unregisterSpecPlugins(mb_strtoupper($className2));
+		config::unregisterSpecPlugins(mb_strtoupper($className2, 'us-ascii'));
 		$this->assertSame(array($className1), config::getRegisteredSpecPlugins());
 		
-		config::unregisterSpecPlugins(mb_strtoupper($className1));
+		config::unregisterSpecPlugins(mb_strtoupper($className1, 'us-ascii'));
 		$this->assertSame(array(), config::getRegisteredSpecPlugins());
 	}
 	
@@ -1533,7 +1623,7 @@ class ConfigTest extends Test
 		
 		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
 		
-		config::unregisterSpecPlugins(array(mb_strtoupper($className1), mb_strtoupper($className3)));
+		config::unregisterSpecPlugins(array(mb_strtoupper($className1, 'us-ascii'), mb_strtoupper($className3, 'us-ascii')));
 		$this->assertSame(array($className2), config::getRegisteredSpecPlugins());
 	}
 	
@@ -1574,7 +1664,6 @@ class ConfigTest extends Test
 			'\spectrum\core\plugins\basePlugins\reports\Reports',
 			'\spectrum\core\plugins\basePlugins\Matchers',
 			'\spectrum\core\plugins\basePlugins\Messages',
-			'\spectrum\core\plugins\basePlugins\Output',
 			'\spectrum\core\plugins\basePlugins\Test',
 		), config::getRegisteredSpecPlugins());
 	}
@@ -1727,7 +1816,7 @@ class ConfigTest extends Test
 		
 		config::registerSpecPlugin($className);
 		
-		$this->assertSame(true, config::hasRegisteredSpecPlugin(mb_strtoupper($className)));
+		$this->assertSame(true, config::hasRegisteredSpecPlugin(mb_strtoupper($className, 'us-ascii')));
 	}
 	
 	public function testHasRegisteredSpecPlugin_SoughtPluginClassIsNotRegistered_ReturnsFalse()

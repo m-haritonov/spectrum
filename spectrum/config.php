@@ -9,12 +9,46 @@ namespace spectrum;
 
 final class config
 {
+	static private $inputCharset = 'utf-8';
+	static private $outputCharset = 'utf-8';
 	static private $outputFormat = 'html';
 	static private $outputIndention = "\t";
-	static private $outputNewline = "\r\n";
-	static private $outputCharset = 'utf-8';
-	static private $allowInputCharsetModify = true;
+	static private $outputNewline = "\n";
 	static private $allowErrorHandlingModify = true;
+
+	static private $classReplacements = array(
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\html'                                  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\html',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\text'                                  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\text',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\detailsControl'             => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\detailsControl',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\messages'                   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\messages',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList'                   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalInfo'                  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalInfo',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult'                => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer'               => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\matcherCall'        => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\matcherCall',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\unknown'            => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\unknown',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\method'                => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\method',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\operator'              => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\operator',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\property'              => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\property',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variable'              => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variable',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\arrayVar'    => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\arrayVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\boolVar'     => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\boolVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\floatVar'    => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\floatVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\functionVar' => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\functionVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\intVar'      => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\intVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\nullVar'     => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\nullVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\objectVar'   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\objectVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\resourceVar' => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\resourceVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\stringVar'   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\stringVar',
+		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\unknownVar'  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\unknownVar',
+	);
+	
+	static private $functionReplacements = array(
+		'\spectrum\tools\convertCharset'               => '\spectrum\tools\convertCharset',
+		'\spectrum\tools\convertLatinCharsToLowerCase' => '\spectrum\tools\convertLatinCharsToLowerCase',
+		'\spectrum\tools\formatTextForOutput'          => '\spectrum\tools\formatTextForOutput',
+		'\spectrum\tools\translate'                    => '\spectrum\tools\translate',
+	);
 	
 	static private $assertClass = '\spectrum\core\Assert';
 	static private $matcherCallDetailsClass = '\spectrum\core\details\MatcherCall';
@@ -30,7 +64,6 @@ final class config
 		'\spectrum\core\plugins\basePlugins\reports\Reports',
 		'\spectrum\core\plugins\basePlugins\Matchers',
 		'\spectrum\core\plugins\basePlugins\Messages',
-		'\spectrum\core\plugins\basePlugins\Output',
 		'\spectrum\core\plugins\basePlugins\Test',
 	);
 	
@@ -41,6 +74,42 @@ final class config
 	 */
 	private function __construct(){}
 
+	/**
+	 * Set charset of tests
+	 * @param string $charsetName
+	 * @return void
+	 */
+	static public function setInputCharset($charsetName)
+	{
+		static::setConfigValue(static::$inputCharset, $charsetName);
+	}
+	
+	/**
+	 * @return string Already set charset or "utf-8" by default
+	 */
+	static public function getInputCharset()
+	{
+		return static::$inputCharset;
+	}
+	
+	/**
+	 * Set charset for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\basePlugins\reports\*" classes)
+	 * @param string $charsetName
+	 * @return void
+	 */
+	static public function setOutputCharset($charsetName)
+	{
+		static::setConfigValue(static::$outputCharset, $charsetName);
+	}
+
+	/**
+	 * @return string Already set charset or "utf-8" by default
+	 */
+	static public function getOutputCharset()
+	{
+		return static::$outputCharset;
+	}
+	
 	/**
 	 * Set format for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\basePlugins\reports\*" classes)
 	 * @param $format "html"|"text"
@@ -60,11 +129,14 @@ final class config
 	}
 
 	/**
-	 * @param $string String in output charset (see "self::getOutputCharset" method)
+	 * @param $string String with "\t" or " " chars
 	 * @return void
 	 */
 	static public function setOutputIndention($string)
 	{
+		if (preg_match("/[^\t ]/s", $string))
+			throw new Exception('Incorrect char is passed to "\\' . __METHOD__ . '" method (only "\t" and " " chars are allowed)');
+		
 		static::setConfigValue(static::$outputIndention, $string);
 	}
 	
@@ -77,57 +149,24 @@ final class config
 	}
 
 	/**
-	 * @param $string String in output charset (see "self::getOutputCharset" method)
+	 * @param $string String with "\r" or "\n" chars
 	 * @return void
 	 */
 	static public function setOutputNewline($string)
 	{
+		if (preg_match("/[^\r\n]/s", $string))
+			throw new Exception('Incorrect char is passed to "\\' . __METHOD__ . '" method (only "\r" and "\n" chars are allowed)');
+		
 		static::setConfigValue(static::$outputNewline, $string);
 	}
 	
 	/**
-	 * @return string Already set newline or "\r\n" by default
+	 * @return string Already set newline or "\n" by default
 	 */
 	static public function getOutputNewline()
 	{
 		return static::$outputNewline;
 	}
-	
-	/**
-	 * Set charset for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\basePlugins\reports\*" classes)
-	 * @param $format "html"|"text"
-	 * @return void
-	 */
-	static public function setOutputCharset($charsetName)
-	{
-		static::setConfigValue(static::$outputCharset, $charsetName);
-	}
-
-	/**
-	 * @return string Already set charset or "utf-8" by default
-	 */
-	static public function getOutputCharset()
-	{
-		return static::$outputCharset;
-	}
-
-	/**
-	 * Allow or deny change of input charset (see "\spectrum\core\Spec::setInputCharset" method)
-	 * @param bool $isEnable
-	 */
-	static public function setAllowInputCharsetModify($isEnable)
-	{
-		static::setConfigValue(static::$allowInputCharsetModify, $isEnable);
-	}
-	
-	/**
-	 * @return bool Already set value or "true" by default
-	 */
-	static public function getAllowInputCharsetModify()
-	{
-		return static::$allowInputCharsetModify;
-	}
-	
 	
 	/**
 	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\basePlugins\ErrorHandling" class)
@@ -147,7 +186,43 @@ final class config
 	}
 	
 /**/
-
+	
+	static public function setClassReplacement($className, $newClassName)
+	{
+		if (static::$locked)
+			throw new Exception('\spectrum\config is locked');
+		
+		static::$classReplacements[$className] = $newClassName;
+	}
+	
+	static public function getClassReplacement($className)
+	{
+		return static::$classReplacements[$className];
+	}
+	
+	static public function getAllClassReplacements()
+	{
+		return static::$classReplacements;
+	}
+	
+	static public function setFunctionReplacement($functionName, $newFunctionName)
+	{
+		if (static::$locked)
+			throw new Exception('\spectrum\config is locked');
+		
+		static::$functionReplacements[$functionName] = $newFunctionName;
+	}
+	
+	static public function getFunctionReplacement($functionName)
+	{
+		return static::$functionReplacements[$functionName];
+	}
+	
+	static public function getAllFunctionReplacements()
+	{
+		return static::$functionReplacements;
+	}
+	
 	static public function setAssertClass($className){ static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\AssertInterface'); }
 	static public function getAssertClass(){ return static::$assertClass; }
 	
@@ -227,7 +302,8 @@ final class config
 			{
 				foreach ($classes as $class)
 				{
-					if (mb_strtolower($class) == mb_strtolower($registeredPluginClass))
+					// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+					if (static::convertLatinCharsToLowerCase($class) == static::convertLatinCharsToLowerCase($registeredPluginClass))
 						unset(static::$registeredSpecPlugins[$key]);
 				}
 			}
@@ -256,7 +332,8 @@ final class config
 	{
 		foreach (static::$registeredSpecPlugins as $registeredPluginClass)
 		{
-			if (mb_strtolower($class) == mb_strtolower($registeredPluginClass))
+			// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+			if (static::convertLatinCharsToLowerCase($class) == static::convertLatinCharsToLowerCase($registeredPluginClass))
 				return true;
 		}
 		
@@ -295,5 +372,11 @@ final class config
 			throw new Exception('\spectrum\config is locked');
 
 		$var = $value;
+	}
+	
+	static private function convertLatinCharsToLowerCase($string)
+	{
+		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+		return $convertLatinCharsToLowerCaseFunction($string);
 	}
 }

@@ -532,7 +532,7 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(false, $isCalled);
 	}
 	
-	public function testMatcherCall_EventDispatch_OnMatcherCallStart_IsDispatchedBeforeMatcherCall()
+	public function testEventDispatch_OnMatcherCallStart_IsDispatchedBeforeMatcherCall()
 	{
 		\spectrum\tests\Test::$temp["calls"] = array();
 		\spectrum\config::registerSpecPlugin($this->createClass('
@@ -564,7 +564,7 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('event', 'matcher'), \spectrum\tests\Test::$temp["calls"]);
 	}
 	
-	public function testMatcherCall_EventDispatch_OnMatcherCallStart_PassesMatcherCallDetailsToCalleeMethod()
+	public function testEventDispatch_OnMatcherCallStart_PassesMatcherCallDetailsToCalleeMethod()
 	{
 		\spectrum\tests\Test::$temp["matcherCallDetails"] = null;
 		\spectrum\tests\Test::$temp["file"] = false;
@@ -610,7 +610,7 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp["line"], $matcherCallDetails->getLine());
 	}
 	
-	public function testMatcherCall_EventDispatch_OnMatcherCallFinish_IsDispatchedAfterMatcherCall()
+	public function testEventDispatch_OnMatcherCallFinish_IsDispatchedAfterMatcherCall()
 	{
 		\spectrum\tests\Test::$temp["calls"] = array();
 		\spectrum\config::registerSpecPlugin($this->createClass('
@@ -642,7 +642,7 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(array('matcher', 'event'), \spectrum\tests\Test::$temp["calls"]);
 	}
 	
-	public function testMatcherCall_EventDispatch_OnMatcherCallFinish_IsDispatchedAfterResultAddToResultBuffer()
+	public function testEventDispatch_OnMatcherCallFinish_IsDispatchedAfterResultAddToResultBuffer()
 	{
 		\spectrum\tests\Test::$temp["results"] = null;
 		\spectrum\config::registerSpecPlugin($this->createClass('
@@ -677,7 +677,7 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame('zzz', \spectrum\tests\Test::$temp["results"][0]['details']->getMatcherName());
 	}
 	
-	public function testMatcherCall_EventDispatch_OnMatcherCallFinish_IsDispatchedAfterNotFlagReset()
+	public function testEventDispatch_OnMatcherCallFinish_IsDispatchedAfterNotFlagReset()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		\spectrum\tests\Test::$temp["assert"] = null;
@@ -708,7 +708,7 @@ class AssertTest extends \spectrum\tests\Test
 		$this->assertSame(true, $results[1]['result']);
 	}
 	
-	public function testMatcherCall_EventDispatch_OnMatcherCallFinish_PassesMatcherCallDetailsToCalleeMethod()
+	public function testEventDispatch_OnMatcherCallFinish_PassesMatcherCallDetailsToCalleeMethod()
 	{
 		\spectrum\tests\Test::$temp["matcherCallDetails"] = null;
 		\spectrum\tests\Test::$temp["file"] = false;

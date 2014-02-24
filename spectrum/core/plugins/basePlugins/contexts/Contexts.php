@@ -32,7 +32,9 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	{
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		$type = strtolower($type);
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+		$type = $convertLatinCharsToLowerCaseFunction($type);
+		
 		$this->checkType($type);
 		
 		$this->items[] = array(
@@ -47,7 +49,9 @@ class Contexts extends \spectrum\core\plugins\Plugin
 			return $this->items;
 		else
 		{
-			$type = strtolower($type);
+			$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+			$type = $convertLatinCharsToLowerCaseFunction($type);
+			
 			$this->checkType($type);
 			
 			$resultItems = array();
@@ -67,7 +71,9 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	 */
 	public function getAllThroughRunningAncestors($type = 'before')
 	{
-		$type = strtolower($type);
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+		$type = $convertLatinCharsToLowerCaseFunction($type);
+		
 		$this->checkType($type);
 		
 		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
@@ -143,7 +149,6 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	
 	protected function checkType($type)
 	{
-		$type = strtolower($type);
 		if ($type != 'before' && $type != 'after')
 			throw new Exception('Unknown type "' . $type . '" in plugin "' . static::getAccessName() . '"');
 	}

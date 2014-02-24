@@ -7,80 +7,108 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables;
 
-class ObjectVar extends VariableHierarchical
+class objectVar extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
 {
-	protected $type = 'object';
-
-	public function getStyles()
+	static public function getStyles()
 	{
-		$componentSelector = '.c-code-variables-' . htmlspecialchars($this->type);
-
-		return
-			parent::getStyles() . $this->getNewline() .
-			'<style type="text/css">' . $this->getNewline() .
-				$this->getIndention() . "$componentSelector>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: top; }" . $this->getNewline() .
-				$this->getIndention() . "$this->expandedParentSelector $componentSelector>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }" . $this->getNewline() .
-			'</style>' . $this->getNewline();
+		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
+			.c-code-variables-object { display: inline-block; vertical-align: text-top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); font-size: 12px; }
+			.c-code-variables-object>.indention { display: none; }
+			.c-code-variables-object>.type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
+			.c-code-variables-object>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: text-top; }
+			.c-code-variables-object>.c-code-operator.curlyBrace { display: none; }
+			.c-code-variables-object>.elements:before { content: "\\007B\\2026\\007D"; color: rgba(0, 0, 0, 0.6); }
+			.c-code-variables-object>.elements>.element { display: none; }
+			.c-code-variables-object>.elements>.element>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.c-code-variables-object .c-code-variables-object { display: inline; vertical-align: baseline; background: transparent; }
+			
+			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.c-code-operator.curlyBrace { display: inline; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.elements:before { display: none; }
+			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.elements>.element { display: block; }
+		/*]]>*/</style>', 2);
 	}
-
-	public function getHtml($variable)
+	
+	static public function getHtml($variable, $depth, $inputCharset = null)
 	{
-		$properties = $this->getProperties($variable);
+		$properties = static::getProperties($variable);
 
 		$output = '';
-		$output .= '<span class="c-code-variables-' . htmlspecialchars($this->type) . ' c-code-variables">';
-		$output .= $this->getHtmlForType($variable, $properties);
-		$output .= $this->getHtmlForClass($variable, $properties);
-		$output .= $this->createComponent('code\Operator')->getHtml('{');
-
+		$output .= '<span class="c-code-variables-object">';
+		$output .= static::getHtmlForType($properties);
+		$output .= static::getHtmlForClass($variable, $inputCharset);
+		$output .= static::callComponentMethod('code\operator', 'getHtml', array('{', 'us-ascii'));
+		$output .= static::getHtmlForElements($variable, $properties, $depth, $inputCharset);
+		// Indention should be copied to buffer
+		$output .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth);
+		$output .= static::callComponentMethod('code\operator', 'getHtml', array('}', 'us-ascii'));
+		$output .= '</span>';
+		return $output;
+	}
+	
+	static protected function getHtmlForType($properties)
+	{
+		return
+			'<span class="type">' .
+				static::translateAndEscapeHtml('object') .
+				'<span title="' . static::translateAndEscapeHtml('Properties count') . '">(' . static::escapeHtml(count($properties)) . ')</span> ' .
+			'</span>';
+	}
+	
+	static protected function getHtmlForClass($variable, $inputCharset)
+	{
+		return '<span class="class">\\' . static::escapeHtml(static::convertToOutputCharset(get_class($variable), $inputCharset)) . '</span> ';
+	}
+	
+	static protected function getHtmlForElements($variable, $properties, $depth, $inputCharset)
+	{
+		$output = '';
 		if (count($properties))
 		{
 			$output .= '<span class="elements">';
-			foreach ($properties as $key => $val)
+			foreach ($properties as $key => $value)
 			{
 				if ($variable instanceof \Exception && $key == 'trace')
-					$val = '<removed from reports preview>';
+					$value = static::convertToOutputCharset($variable->getTraceAsString(), 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")
 				
-				$output .= $this->getHtmlForElement($key, $val);
+				$output .= static::getHtmlForElement($key, $value, $depth, $inputCharset);
 			}
 
 			$output .= '</span>';
 		}
-
-		$output .= $this->createComponent('code\Operator')->getHtml('}');
-		$output .= '</span>';
-
+		
 		return $output;
 	}
 
-	protected function getHtmlForType($variable, $properties = array())
+	static protected function getHtmlForElement($key, $value, $depth, $inputCharset)
 	{
 		return
-			'<span class="type">' .
-				htmlspecialchars($this->type) . '<span title="' . $this->translate('Properties count') . '">(' . count($properties) . ')</span> ' .
+			'<span class="element">' .
+				// Indention should be copied to buffer
+				str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth + 1) .
+				'<span class="key">' .
+					static::callComponentMethod('code\operator', 'getHtml', array('[', 'us-ascii')) .
+					static::escapeHtml(static::convertToOutputCharset($key, $inputCharset)) .
+					static::callComponentMethod('code\operator', 'getHtml', array(']', 'us-ascii')) .
+				'</span> ' .
+				static::callComponentMethod('code\operator', 'getHtml', array('=>', 'us-ascii')) . ' ' .
+				static::callComponentMethod('code\variable', 'getHtml', array($value, $depth + 1, $inputCharset)) .
 			'</span>';
 	}
 
-	protected function getHtmlForClass($variable, $properties = array())
+	static protected function getProperties($variable)
 	{
-		return '<span class="class">' . htmlspecialchars(get_class($variable)) . '</span> ';
-	}
-
-	protected function getProperties($variable)
-	{
-		return array_merge(get_object_vars($variable), $this->getNotPublicAndStaticProperties($variable));
-	}
-
-	protected function getNotPublicAndStaticProperties($variable)
-	{
+		// Use "get_object_vars" because "ReflectionClass::getProperties" does not return undeclared public properties
+		$result = get_object_vars($variable);
+		
 		$reflection = new \ReflectionClass($variable);
 		$properties = $reflection->getProperties(
+			\ReflectionProperty::IS_STATIC |
 			\ReflectionProperty::IS_PROTECTED |
-			\ReflectionProperty::IS_PRIVATE |
-			\ReflectionProperty::IS_STATIC
+			\ReflectionProperty::IS_PRIVATE
 		);
 
-		$result = array();
 		foreach ($properties as $property)
 		{
 			$property->setAccessible(true);

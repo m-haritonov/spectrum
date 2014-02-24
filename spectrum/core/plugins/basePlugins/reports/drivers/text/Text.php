@@ -7,22 +7,16 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\text;
 
-use spectrum\core\plugins\basePlugins\reports\drivers\Driver;
-use spectrum\core\plugins\Exception;
+use spectrum\core\SpecInterface;
 
-class Text extends Driver
+class text
 {
-	public function createComponent($name)
-	{
-		throw new Exception('Driver is under development');
-	}
-	
-	public function getContentBeforeSpec()
+	static public function getContentBeforeSpec(SpecInterface $spec)
 	{
 		return 'Driver is under development';
 	}
 
-	public function getContentAfterSpec()
+	static public function getContentAfterSpec(SpecInterface $spec)
 	{
 		return 'Driver is under development';
 	}

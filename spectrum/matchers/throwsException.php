@@ -6,6 +6,7 @@ distributed with this source code.
 */
 
 namespace spectrum\matchers;
+use spectrum\config;
 
 /**
  * Returns true when code in $functionWithTestCode throws exception instance of $expectedClass (if not null) with
@@ -26,10 +27,15 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 	if ($expectedCode !== null && !is_int($expectedCode))
 		throw new \spectrum\core\Exception('Expected code should be a integer');
 	
-	if ($expectedClass !== null && mb_substr($expectedClass, 0, 1) != '\\')
+	if ($expectedClass !== null && mb_substr($expectedClass, 0, 1, 'us-ascii') != '\\')
 		$expectedClass = '\\' . $expectedClass;
 
-	if ($expectedClass !== null && mb_strtolower($expectedClass) !== mb_strtolower('\Exception') && !is_subclass_of($expectedClass, '\Exception'))
+	$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+	
+	// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+	$expectedClassWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction($expectedClass);
+	
+	if ($expectedClass !== null && $expectedClassWithLatinLowerCase !== '\exception' && !is_subclass_of($expectedClass, '\Exception'))
 		throw new \spectrum\core\Exception('Expected class should be subclass of "\Exception" class (now "' . $expectedClass . '" is not subclass of "\Exception" class)');
 
 	try
@@ -38,16 +44,19 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 	}
 	catch (\Exception $e)
 	{
-		$class = '\\' . get_class($e);
+		$actualClass = '\\' . get_class($e);
+		
+		// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+		$actualClassWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction($actualClass);
 
-		if ($expectedClass !== null && mb_strtolower($class) !== mb_strtolower($expectedClass) && !is_subclass_of($class, $expectedClass))
+		if ($expectedClass !== null && $actualClassWithLatinLowerCase !== $expectedClassWithLatinLowerCase && !is_subclass_of($actualClass, $expectedClass))
 			return false;
 		
 		if ($expectedStringInMessage !== null)
 		{
 			if ($expectedStringInMessage === '' && $e->getMessage() !== '')
 				return false;
-			else if ($expectedStringInMessage !== '' && mb_strpos($e->getMessage(), $expectedStringInMessage) === false)
+			else if ($expectedStringInMessage !== '' && mb_strpos($e->getMessage(), $expectedStringInMessage, null, 'us-ascii') === false)
 				return false;
 		}
 

@@ -1,36 +1,40 @@
-TODO: remove multi-charset support, add config::setInputCharset method (because there are no correct way to get string charset in any place of code and because passing encoding to each place of code is more difficult; see section "charset problem" in notes.txt to details)
+TODO: create big example (with anonymous specs, matchers, with all errors, long spec names)
+TODO: check project file charset (all files should be in "US-ASCII" charset), add reminding to readme: "Framework files is in the "US-ASCII" charset"
+TODO: add tests for charset usages
 
-TODO: создать Html::escapeHtml($text){ return htmlspecialchars($text, ENT_QUOTES | ENT_HTML401, 'iso-8859-1'); }
-TODO: убрать htmlspecialchars из Component::translate, обернуть вызов Component::translate в $this->escapeHtml()
+TODO: replace "if ($result['result'] === false)" to "if ($result['result'] === false || ($result['result'] !== true && $result['result'] !== null))" in ResultBuffer::getTotalResult method, add tests
 
-TODO: indention и newline не конвертировать, т.к. они уже в выходной кодировке
-TODO: change "$spec->getName()" to "$spec->output->convertToOutputCharset($spec->getName())" in exception messages (or remove $spec->getName() from exception messages)
+TODO: deny Spec::getSpecById call from not root specs
+TODO: create "Spec::getId" method
+TODO: replace "spl_object_hash($spec)" to "$spec->getId" (spl_object_hash as spec id identify wrong specs in contexts)
 
-TODO: mb_*('', 'latin1'|$spec->charset->getInputEncoding()) и т.п.
-TODO: добавить в mb_* функции в autoload указание кодировки???
+TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
+TODO: use "assertSame" instead of "assertContains" in Test::assertThrowsException
+TODO: testware -> _testware
 
-TODO: данные спеки конвертировать в кодировку скрипта (utf 8) или лучше каждую выводимую строчку конвертировать в выходную кодировку (convertToOutputEncodingFromScriptCharset и convertToOutputEncodingFromSpecInputCharset)
-TODO: output перенести в драйвер (метод put удалить или перенести в reports плагин)
-TODO: reports->put()
-TODO: reports->convertToOutputEncoding || charset->convertStringToOutputCharset
-TODO: использовать convertToOutputCharset при выводе данных из:
-Spec::setName()
-Messages::add()
-ResultBuffer::addResult()
-Output::put('текст')
-fail()
+TODO: replace call_user_func($function)/call_user_func_array($function) to $function() for more performance
+TODO: return; -> return null;
+TODO: remove while(true)
+TODO: MatcherCallDetailsInterface -> details\MatcherCallInterface
+TODO: choose curly bracket style for PHP and JavaScript code
 
-TODO: fix encoding
-TODO: изменить autoload
+TODO: 'Error handler in spec "' . $this->getOwnerSpec()->getName() . '" was removed' -> 'Error handler was removed'
+TODO: Error handler error details string -> details\Error
+TODO: add all "details\*" support to reports
 
-TODO: iconv -> mb_convert_encoding
+TODO: remove onEndingSpecExecuteBefore/After???
+TODO: remove onMatcherCallStart/Finish???
+
+TODO: use config::getFunction('...') for all functions ("builders\*", etc.)
+TODO: init.php -> remove "if (!function_exists('...')){}" from "require_once" calls
+TODO: remove all interfaces, replace function(SomeInterface $object) to /** @param SomeInterface $object */ 
+TODO: replace config::getXxxClass to config::getClass('Xxx')
+TODO: config::lock -> deny access from Spec/AssertInterface and builders ???
+TODO: "if (static::$locked) throw new Exception('\spectrum\config is locked');" перенести в отдельный метод и заменить им вызовы setConfigValue
 
 TODO: вынести общую часть из group и test в функцию createSpec
-TODO: createDriver -> getDriverOnce???
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
-TODO: config::lock -> deny access from Spec/AssertInterface and builders ???
 TODO: remove ownerSpec from resultBuffer???
-TODO: 'Error handler in spec "' . $this->getOwnerSpec()->getName() . '" was removed' -> 'Error handler was removed'
 TODO: loadBaseMatchers — возвращать массив загруженных матчеров вместо добавления из в передаваемую спеку
 TODO: перенести функции setBuildingSpec, getBuildingSpec, getExclusionSpecs, addExclusionSpec в пространство имён internal/storage ???
 	или создать объект Storage и билдер getStorageOnce()
@@ -41,9 +45,11 @@ TODO: перенести функции setBuildingSpec, getBuildingSpec, getExc
 	filterOutExclusionSpecs -> filterOutCurrentExclusionSpecs
 	
 TODO: isRunningState and getRootSpec to internal
-TODO: Spec::getSpecId move to \spectrum\builders\internal\getSpecId (and use it in run($specId, $runInAllContexts = false) function) ??? 
+TODO: move plugins from "basePlugins" to parent namespace???
+
+TODO: add abstract/final/static/private/protected/public string to report output in "objectVar" component
+
 TODO: remove $ownerSpec from ResultBuffer???
-TODO: удалить методы config::setXxxClass и все интерфейсы у классов, кроме тех, на которые ссылаются имеющиеся программные сущности ???
 
 TODO: удалить поддержку scalar значений у array контекстов
 TODO: добавить поддержку функций в array контекстах: test(array(
@@ -55,7 +61,7 @@ TODO: рядом с результатом (серым шрифтом) и в в�
 TODO: добавить информацию о фреймворке (название, версию и адрес сайта): либо при нажатии на иконку [i] либо в конце нижнего блока totalResult (<a href="http://spectrum-framework.org/">Spectrum 1.0</a>)
 
 TODO: change text "Run results buffer contains" and etc.
-TODO: добавить всплывающие подсказки с разъяснениями к элементам ползунка "Details"
+TODO: добавить всплывающие подсказки и текст ссылок с разъяснениями к элементам ползунка "detailsControl"
 TODO: success ("has empty" or "success, has empty")
 TODO: плагин "Report": добавить title к резальтату или выводить "success", если есть "success" и "empty" дети
 		empty title — "empty or has empty", "all or one of children was empty"
@@ -65,20 +71,21 @@ TODO: плагин "Report": добавить title к резальтату ил
 		
 TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
 TODO: вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
-TODO: реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
-
-TODO: create "Reports" test "testGeneratesValidXhtml" (проверяет валидность вёрстки)
+TODO: реализовать проверку *RECURSION* в ArrayVar и ObjectVar (в элементе массива тоже может содержаться объект)
 
 TODO: fix reports in all browsers 
 
 TODO: deny "no array" elements in convertArrayWithContextsToSpecs???
 
-TODO: plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
+TODO: plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 TODO: matchers: be(function(){})->outputs/prints('aaa a aaaaa ');
 
-TODO: rename contexts->add to addFunction/addApplierFunction/addContextApplier ???
+TODO: rename "Contexts" to "ContextModifiers"
+TODO: move "...\contexts\Data" to "core\ContextData" ???
+TODO: callFunctionInContext move to "tools", add "$context" parameter
 TODO: перенести инициализацию контекстов в плагин "Test"???
 TODO: заменить this() передачей аргумента с экземпляром контекста???
+
 TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
 TODO: добавить setCatchPhpErrors(true/false) ???
 TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
@@ -87,8 +94,9 @@ TODO: ResultBuffer: rename $result['result'] to $result['value/flag'] ???
 
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам и функциям (глобальным, расположенным в init.php, в частности)
+TODO: заменить call_user_func_array в глобальных алиасах билдеров на прямой вызов с передачей аргументов
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
-TODO: исправить грамматические ошибки:
+TODO: исправить грамматические ошибки в названиях классов, методов и функций, а сообщениях исключений, в тексте отчётов. Ошибки для исправления:
 	is deny -> is denied
 	IsDeny -> IsDenied
 	
@@ -123,37 +131,62 @@ translate('Делает что-либо', 'ru');
 it('Makes something'), function(){});
 
 установка используемого для отображения языка:
-$spec->output/translate->setLanguage('ru');
+config::setOutputLanguage('ru');
+
+TODO: add parameters to \spectrum\run function:
+	$paths/$files — for example, "/aaa.php", "/abc/*.php", "/abc/**.php", array("./aaa.php", "./abc/*.php") 
+	$specId — for example, spec1_1_1
+	$runInAllContexts = false
+	??? $disableOutputBuffers — while (ob_get_level()){ ob_end_flush(); }
+	$showFileNameAsGroup
+	$fileNameAsGroupType = linear (all files as root groups), hierarchical (each file group as child of folder group) 
+
+TODO: add "run this test in this context" and "run this test in all contexts" links to "Reports" plugin
 
 TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generate)
-TODO: плагин "Report": добавить возможность параллельного сохранения отчёта в файл (report->setWriteToFile())
-TODO: run.php
-	сделать run.php
-	run.php?path=qwe.php&id=spec1_1_1
-	возможность указывать путь к файлу или к папке, а так же несколько таких путей
-	параметр "show file names":
-		линейно (имена файлов выводятся целиком, файлы перечисляются подряд)
-		иерархически (для каждой папки создаётся спека с именем этой папки)
-
-TODO: плагин "Report": добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
-
 TODO: assert, счетчик вызовов
-Command::expectCount();
-incrementCount()
-count(getRunningInstance()->getResultStack())
+	Command::expectCount();
+	incrementCount()
+	count(getRunningInstance()->getResultStack())
 
 === Documentation ===
 
+TODO: example for creation of describe/it/case functions
+TODO: кодировка влияет только на вывод данных и не влияет на работу тестов
+TODO: выводимые в формате HTML данные адаптированы для копирования в буфер обмена в текстовом виде
 TODO: Убрать лишние условия дя примеров, пускай пучше бутлут одни суккесы в результатах
 TODO: Убрать из примера files, оставив только базы данных
 TODO: Для примеров использовать скриншоты и ссылку на живое выполнение ???
 TODO: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
 TODO: заменить "Spectrum is a PHP framework for BDD specification test" на "Spectrum is a PHP framework for test automation"
 TODO: поддерживаются кодировки, являющиеся надмножеством ASCII
+TODO: add "output to file" example to documentation:
+	ob_start(function($buffer){
+		static $handler;
+		if (!$handler)
+			$handler = fopen(__DIR__ . '/tmp.txt', 'w');
+		
+		fwrite($handler, $buffer);
+		return false; // Use "return '';" to disable displaying 
+	});
+	
 TODO: на главной закрепить образец использования:
 	test('ожидаемый результат', function(){
 		// код для проверки ожидаемого результата
 	})
+TODO: пример добавления своего драйвера для отчётов
+	class MyReports extends \spectrum\core\plugins\basePlugins
+	{
+		protected function getDriverClass()
+		{
+			if (mb_strtolower(config::getOutputFormat(), 'us-ascii') == 'html')
+				return 'myDriverClass';
+			else
+				return parent::getDriverClass();
+		}
+	}
+
+config::registerSpecPlugin('MyReports');
 
 === Multi-charset support problems ===
 
@@ -204,25 +237,7 @@ group(function(){
 	}, 'cp1251');
 }, 'utf-8');
 
-=== Output and charset ===
-
-	Вопрос: if ($spec->getName() == $name) — перекодировать надо или лучше хранить данные внутри обьектов в UTF-8?
-	Ответ:
-		Нет, т.к. тогда надо будет перекодировать данные в:
-			Spec->setName(),
-			SpecContainerPattern->setArguments(),
-			SpecContainerPattern->getArguments() — при передаче callback функции в itLikePattern()
-			SpecItemIt->setTestCallbackArguments(),
-			SpecItemIt->getTestCallbackArguments() — при передаче testCallback функции
-		Плюс плагины будут видеть данные world в исходной кодировке, т.к. полностью (включая данные их возможных в нем
-		методов) перекодировать его будет проблематично.
-
-		И если внутри кода тестов, написанного в одной кодировке будет вызван один из этих методов, то ему придется
-		знать о том, что созданные им данные хранятся в обьектной структуре в другой кодировке и перекодировать.
-
-		Вывод: оставляем хранение данных в обьектной структуре в исходной кодировке, отдавая таким образом предпочтение
-		более прозрачной работе с кодировками из тестов, нежели из дополнительных обработчиков вне кода тестов (плагинов,
-		кода обработки в runner'е и т.п.)
+TODO: add limited multi-charset support (with using input charset of each test/group for output/etc. and without using input charset for inner string transformation)???
 
 === Mocks ===
 

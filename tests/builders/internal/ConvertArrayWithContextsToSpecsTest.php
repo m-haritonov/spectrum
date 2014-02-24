@@ -113,23 +113,4 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$specs = \spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts, null);
 		$this->assertSame($expectedName, $specs[0]->getName());
 	}
-	
-	public function testCallsAtBuildingState_SetsToSpecProperCharset()
-	{
-		$specs = \spectrum\builders\internal\convertArrayWithContextsToSpecs(array(
-			array('aaa' => 'bbb'),
-			array('aaa' => 'bbb'),
-		), 'windows-1251');
-		
-		$this->assertSame('windows-1251', $specs[0]->getInputCharset());
-		$this->assertSame('windows-1251', $specs[1]->getInputCharset());
-		
-		$specs = \spectrum\builders\internal\convertArrayWithContextsToSpecs(array(
-			array('aaa' => 'bbb'),
-			array('aaa' => 'bbb'),
-		), 'koi8-r');
-		
-		$this->assertSame('koi8-r', $specs[0]->getInputCharset());
-		$this->assertSame('koi8-r', $specs[1]->getInputCharset());
-	}
 }

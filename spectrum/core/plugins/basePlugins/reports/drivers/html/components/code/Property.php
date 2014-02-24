@@ -7,10 +7,14 @@ distributed with this source code.
 
 namespace spectrum\core\plugins\basePlugins\reports\drivers\html\components\code;
 
-class Property extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\Component
+class property extends \spectrum\core\plugins\basePlugins\reports\drivers\html\components\component
 {
-	public function getHtml($propertyName)
+	/**
+	 * @param string $propertyName String in "us-ascii" charset
+	 * @return string
+	 */
+	static public function getHtml($propertyName, $inputCharset = null)
 	{
-		return '<span class="c-code-property">' . htmlspecialchars($propertyName) . '</span>';
+		return '<span class="c-code-property">' . static::escapeHtml(static::convertToOutputCharset($propertyName, $inputCharset)) . '</span>';
 	}
 }
