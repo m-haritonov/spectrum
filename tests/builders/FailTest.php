@@ -43,7 +43,7 @@ class FailTest extends \spectrum\tests\Test
 			\spectrum\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 		', 'onEndingSpecExecute');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec(ending1)
 			->Spec(parent1)

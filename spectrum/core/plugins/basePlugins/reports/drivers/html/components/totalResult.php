@@ -36,7 +36,7 @@ class totalResult extends component
 		
 					var result = totalResultNode.querySelectorAll(".result")[0].innerHTML;
 					var title = totalResultNode.querySelectorAll(".title")[0].innerHTML;
-					var resultNodes = document.querySelectorAll(".c-totalResult-result." + spectrum.tools.getClassesByPrefix(totalResultNode, "specId-")[0]);
+					var resultNodes = document.querySelectorAll(".c-totalResult-result." + spectrum.tools.getClassesByPrefix(totalResultNode, "id-")[0]);
 					for (var i = 0; i < resultNodes.length; i++)
 					{
 						resultNodes[i].className += " " + result;
@@ -50,7 +50,7 @@ class totalResult extends component
 	static public function getHtml(SpecInterface $spec)
 	{
 		return
-			'<span class="c-totalResult-result specId-' . static::escapeHtml($spec->getSpecId()) . '">' .
+			'<span class="c-totalResult-result id-' . static::escapeHtml($spec->getRunId()) . '">' .
 				static::translateAndEscapeHtml('wait...') .
 			'</span>';
 	}
@@ -59,7 +59,7 @@ class totalResult extends component
 	{
 		$resultName = static::getResultName($spec->getResultBuffer()->getTotalResult());
 		return
-			'<span class="c-totalResult-update specId-' . static::escapeHtml($spec->getSpecId()) . '">' . static::getHtmlEscapedOutputNewline() .
+			'<span class="c-totalResult-update id-' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<span class="result">' . static::escapeHtml($resultName) . '</span>' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<span class="title">' . static::translateAndEscapeHtml($resultName) . '</span>' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<script type="text/javascript">/*<![CDATA[*/spectrum.totalResult.update();/*]]>*/</script>' . static::getHtmlEscapedOutputNewline() .

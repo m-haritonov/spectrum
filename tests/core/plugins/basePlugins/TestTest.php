@@ -83,7 +83,7 @@ class TestTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->test->getFunctionThroughRunningAncestors();
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)
@@ -117,7 +117,7 @@ class TestTest extends \spectrum\tests\Test
 	
 	public function testFunctionCall_CallsFunctionOnEndingSpec()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -131,7 +131,7 @@ class TestTest extends \spectrum\tests\Test
 	
 	public function testFunctionCall_DoesNotCallsFunctionOnNotEndingSpecs()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -158,7 +158,7 @@ class TestTest extends \spectrum\tests\Test
 	
 	public function testFunctionCall_GetsFunctionFromAncestorsOrSelf()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec

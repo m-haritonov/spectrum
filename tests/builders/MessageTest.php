@@ -23,7 +23,7 @@ class MessageTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["messages"][] = $this->getOwnerSpec()->messages->getAll();
 		', 'onEndingSpecExecute');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec(ending1)
 			->Spec(parent1)

@@ -109,7 +109,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->errorHandling->getCatchPhpErrorsThroughRunningAncestors();
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)
@@ -214,7 +214,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->errorHandling->getBreakOnFirstPhpErrorThroughRunningAncestors();
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)
@@ -317,7 +317,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->errorHandling->getBreakOnFirstMatcherFailThroughRunningAncestors();
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)
@@ -380,7 +380,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 			trigger_error("ccc", E_USER_ERROR);
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -586,7 +586,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 			trigger_error("bbb", E_USER_WARNING);
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -707,7 +707,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["isExecuted"][\spectrum\tests\Test::$temp["callCount"]][] = 2;
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -783,7 +783,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["isExecuted"][\spectrum\tests\Test::$temp["callCount"]][] = 2;
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec

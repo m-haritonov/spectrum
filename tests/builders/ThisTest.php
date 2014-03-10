@@ -21,7 +21,7 @@ class ThisTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["returnValues"][] = \spectrum\builders\this();
 		', 'onEndingSpecExecute');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec(ending1)
 			->Spec(parent1)

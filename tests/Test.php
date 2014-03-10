@@ -8,6 +8,7 @@ distributed with this source code.
 namespace spectrum\tests;
 
 use spectrum\config;
+use spectrum\core\Spec;
 
 require_once __DIR__ . '/init.php';
 
@@ -79,6 +80,23 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			
 			$objectProperty->setValue($object, $backupObjectProperty->getValue($backupObject));
 		}
+	}
+	
+	final protected function getUniqueArrayElements(array $array, $preserveKeys = true)
+	{
+		$newArray = array();
+		foreach ($array as $key => $element)
+		{
+			if (!in_array($element, $newArray, true))
+			{
+				if ($preserveKeys)
+					$newArray[$key] = $element;
+				else
+					$newArray[] = $element;
+			}
+		}
+		
+		return $newArray;
 	}
 
 	/**
@@ -288,6 +306,203 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 /**/
 
 	/**
+	 * Format:
+	 * elements
+	 * relations
+	 * elements
+	 * relations
+	 * ...
+	 * elements
+	 * 
+	 * Spaces between elements are required (count of spaces is not important).
+	 * Spaces between relations are not required.
+	 * Leading and ending underscore chars ("_") are removed from element names. 
+	 * 
+	 * Relations:
+	 * "/" - open child of direct group or close child of reversed group
+	 * "|" - single child or child in opened group
+	 * "\" - close child of direct group or open child of reversed group
+	 * "." - no children
+	 * "+" - previous child
+	 * 
+	 * Direct group (lower elements is adding to upper elements):
+	 *    0
+	 *  / | \
+	 * 1  2 3
+	 * 
+	 * Reversed group (upper elements is adding to lower elements):
+	 * 0 1  2
+	 * \ | /
+	 *   3
+	 * 
+	 * === Examples ===
+	 * 
+	 * Example 1:
+	 *     __0__
+	 *    /  |  \
+	 *   1   2  3
+	 *  / \  |
+	 * 4  5 aaa
+	 * 
+	 * Returns: array(
+	 *     '0' => new Spec(),
+	 *     '1' => new Spec(),
+	 *     '2' => new Spec(),
+	 *     '3' => new Spec(),
+	 *     '4' => new Spec(),
+	 *     '5' => new Spec(),
+	 *     'aaa' => new Spec(),
+	 * )
+	 * 
+	 * Example 2 (element "2" has no children, element "3" has one child):
+	 *     ___0___
+	 *    / |  |  \
+	 *   1  2  3  4
+	 *  / \ .  |
+	 * 5  6    7
+	 * 
+	 * Example 3 (element "2" has two parents):
+	 * 0   1
+	 * \  /
+	 *  2
+	 * 
+	 * Example 4 (element "5" has three parents, element "3" has no children): 
+	 *     ___0___
+	 *    / |  |  \
+	 *   1  2  3  4
+	 *   \  |  . /
+	 *       5
+	 * 
+	 * Example 5 (element "6" has two parents):
+	 *     ____0___
+	 *    /  |  |  \
+	 *   1   2  3  4
+	 *  / \+/ \
+	 * 5   6  7
+	 * 
+	 * See "self::providerCreateSpecsByVisualPattern" method for more examples.
+	 */
+	final protected function createSpecsByVisualPattern($pattern, array $additionalRelations = array())
+	{
+		$specs = array();
+		$lines = preg_split('/[\r\n]+/s', trim($pattern));
+		
+		// Process element lines
+		foreach ($lines as $lineIndex => $line)
+		{
+			if ($lineIndex % 2 != 0)
+				continue;
+			
+			$elements = preg_split('/\s+/s', trim($line));
+			foreach ($elements as $elementIndex => $elementName)
+			{
+				$elementName = preg_replace('/^_+|_+$/s', '', $elementName);
+				$elements[$elementIndex] = $elementName;
+				
+				if (array_key_exists($elementName, $specs))
+					throw new \Exception('Duplicate name is present on line ' . ($lineIndex + 1));
+
+				$specs[$elementName] = new Spec();
+			}
+			
+			$lines[$lineIndex] = $elements;
+		}
+		
+		// Process relation lines
+		foreach ($lines as $lineIndex => $line)
+		{
+			if ($lineIndex % 2 == 0)
+				continue;
+			
+			$upperElements = $lines[$lineIndex - 1];
+			$lastUpperElementIndex = count($upperElements) - 1;
+			
+			$lowerElements = $lines[$lineIndex + 1];
+			$lastLowerElementIndex = count($lowerElements) - 1;
+			
+			$relations = preg_replace('/\s+/s', '', $line);
+			$relationLength = mb_strlen($relations, 'us-ascii');
+			
+			$currentUpperElementIndex = 0;
+			$currentLowerElementIndex = 0;
+			
+			$openedGroup = null;
+			
+			for ($i = 0; $i < $relationLength; $i++)
+			{
+				$relation = $relations[$i];
+				if ($relation == '+')
+					$currentLowerElementIndex--;
+				else if ($currentUpperElementIndex > $lastUpperElementIndex || $currentLowerElementIndex > $lastLowerElementIndex)
+					break;
+				else if ($relation == '.')
+					$currentUpperElementIndex++;
+				else if ($relation == '/')
+				{
+					if (!$openedGroup)
+						$openedGroup = 'direct';
+					
+					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
+					
+					if ($openedGroup == 'direct')
+						$currentLowerElementIndex++;
+					else
+					{
+						$currentUpperElementIndex++;
+						$currentLowerElementIndex++;
+						$openedGroup = null;
+					}
+				}
+				else if ($relation == '|')
+				{
+					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
+					
+					if ($openedGroup == 'direct')
+						$currentLowerElementIndex++;
+					else if ($openedGroup == 'reversed')
+						$currentUpperElementIndex++;
+					else
+					{
+						$currentUpperElementIndex++;
+						$currentLowerElementIndex++;
+					}
+				}
+				else if ($relation == '\\')
+				{
+					if (!$openedGroup)
+						$openedGroup = 'reversed';
+					
+					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
+					
+					if ($openedGroup == 'reversed')
+						$currentUpperElementIndex++;
+					else
+					{
+						$currentUpperElementIndex++;
+						$currentLowerElementIndex++;
+						$openedGroup = null;
+					}
+				}
+				else
+					throw new \Exception('Unknown relation "' . $relation . '" is present on line ' . ($lineIndex + 1));
+			}
+			
+			if ($currentLowerElementIndex <= $lastLowerElementIndex)
+				throw new \Exception('Unnecessary children are present on line ' . ($lineIndex + 2));
+		}
+		
+		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames)
+		{
+			foreach ((array) $childrenSpecNames as $childSpecName)
+				$specs[$parentSpecName]->bindChildSpec($specs[$childSpecName]);
+		}
+		
+		return $specs;
+	}
+
+	/**
+	 * @deprecated Use "self::createSpecsByVisualPattern" method
+	 * 
 	 * Example 1 (add parent specs):
 	 * ->Spec
 	 * ->->Spec
@@ -309,7 +524,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	 * ->->Spec
 	 * ->Spec
 	 * 
-	 * @param $specBindings Example:
+	 * @param $additionalRelations Example:
 	 *                      array(
 	 *                          'name' => array(4, 5, 6, 'aaa'),
 	 *                          4 => array('bbb', 'ccc'),
@@ -318,11 +533,11 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	 * 
 	 * @return array
 	 */
-	final protected function createSpecsTree($specTreePattern, array $specBindings = array())
+	final protected function createSpecsByListPattern($pattern, array $additionalRelations = array())
 	{
-		$specTreePattern = trim($specTreePattern);
+		$pattern = trim($pattern);
 		
-		if (preg_match('/^\-\>/is', $specTreePattern))
+		if (preg_match('/^\-\>/is', $pattern))
 			$isReverse = true;
 		else
 			$isReverse = false;
@@ -330,7 +545,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$specsWithNames = array();
 		$specsWithDepths = array();
 		
-		foreach (preg_split("/\r?\n/s", $specTreePattern) as $key => $row)
+		foreach (preg_split("/\r?\n/s", $pattern) as $key => $row)
 		{
 			list($depth, $className, $name) = $this->parseSpecTreeRow($row);
 			
@@ -374,7 +589,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			}
 		}
 		
-		foreach ($specBindings as $parentSpecName => $childrenSpecNames)
+		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames)
 		{
 			foreach ((array) $childrenSpecNames as $childSpecName)
 				$specsWithNames[$parentSpecName]->bindChildSpec($specsWithNames[$childSpecName]);
@@ -420,175 +635,5 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			$name = '';
 
 		return array($depth, $className, $name);
-	}
-	
-/**/
-	
-	final public function testCreateSpecsTree_ReverseOrder_AddsUpSpecsToBottomSpecsAsParents()
-	{
-		$specs = $this->createSpecsTree('
-			->->Spec
-			->Spec(ccc)
-			->->->Spec
-			->->Spec
-			->Spec(bbb)
-			->Spec(aaa)
-			Spec
-		');
-
-		$this->assertSame(7, count($specs));
-		$this->assertSame(array($specs['ccc'], $specs['bbb'], $specs['aaa']), $specs[6]->getParentSpecs());
-		$this->assertSame(array(), $specs[6]->getChildSpecs());
-		
-		$this->assertSame(array(), $specs['aaa']->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs['aaa']->getChildSpecs());
-		
-		$this->assertSame(array($specs[3]), $specs['bbb']->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs['bbb']->getChildSpecs());
-		
-		$this->assertSame(array($specs[2]), $specs[3]->getParentSpecs());
-		$this->assertSame(array($specs['bbb']), $specs[3]->getChildSpecs());
-		
-		$this->assertSame(array(), $specs[2]->getParentSpecs());
-		$this->assertSame(array($specs[3]), $specs[2]->getChildSpecs());
-		
-		$this->assertSame(array($specs[0]), $specs['ccc']->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs['ccc']->getChildSpecs());
-		
-		$this->assertSame(array(), $specs[0]->getParentSpecs());
-		$this->assertSame(array($specs['ccc']), $specs[0]->getChildSpecs());
-	}
-	
-	final public function testCreateSpecsTree_ReverseOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne()
-	{
-		try
-		{
-			$this->createSpecsTree('
-				->->Spec
-				Spec
-			');
-		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$this->fail('Should be thrown exception');
-	}
-	
-	final public function testCreateSpecsTree_DirectOrder_AddsBottomSpecsToUpSpecsAsChildren()
-	{
-		$specs = $this->createSpecsTree('
-			Spec
-			->Spec(aaa)
-			->Spec(bbb)
-			->->Spec
-			->->->Spec
-			->Spec(ccc)
-			->->Spec
-		');
-
-		$this->assertSame(7, count($specs));
-		$this->assertSame(array(), $specs[0]->getParentSpecs());
-		$this->assertSame(array($specs[0]), $specs['aaa']->getParentSpecs());
-		$this->assertSame(array($specs[0]), $specs['bbb']->getParentSpecs());
-		$this->assertSame(array($specs['bbb']), $specs[3]->getParentSpecs());
-		$this->assertSame(array($specs[3]), $specs[4]->getParentSpecs());
-		$this->assertSame(array($specs[0]), $specs['ccc']->getParentSpecs());
-		$this->assertSame(array($specs['ccc']), $specs[6]->getParentSpecs());
-	}
-	
-	final public function testCreateSpecsTree_DirectOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne()
-	{
-		try
-		{
-			$this->createSpecsTree('
-				Spec
-				->->Spec
-			');
-		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$this->fail('Should be thrown exception');
-	}
-
-	final public function testCreateSpecsTree_MixedOrder_AddsUpSpecsToBottomSpecsAsParentsAndAddsBottomSpecsToUpSpecsAsChildren()
-	{
-		$specs = $this->createSpecsTree('
-			->->Spec
-			->Spec
-			->->->Spec
-			->->Spec
-			->Spec
-			->Spec
-			Spec
-			->Spec
-			->Spec
-			->->Spec
-			->->->Spec
-			->Spec
-			->->Spec
-		');
-		
-		$this->assertSame(13, count($specs));
-		
-		$this->assertSame(array(), $specs[0]->getParentSpecs());
-		$this->assertSame(array($specs[1]), $specs[0]->getChildSpecs());
-		
-		$this->assertSame(array($specs[0]), $specs[1]->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs[1]->getChildSpecs());
-		
-		$this->assertSame(array(), $specs[2]->getParentSpecs());
-		$this->assertSame(array($specs[3]), $specs[2]->getChildSpecs());
-		
-		$this->assertSame(array($specs[2]), $specs[3]->getParentSpecs());
-		$this->assertSame(array($specs[4]), $specs[3]->getChildSpecs());
-		
-		$this->assertSame(array($specs[3]), $specs[4]->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs[4]->getChildSpecs());
-		
-		$this->assertSame(array(), $specs[5]->getParentSpecs());
-		$this->assertSame(array($specs[6]), $specs[5]->getChildSpecs());
-		
-		$this->assertSame(array($specs[1], $specs[4], $specs[5]), $specs[6]->getParentSpecs());
-		$this->assertSame(array($specs[7], $specs[8], $specs[11]), $specs[6]->getChildSpecs());
-		
-		$this->assertSame(array($specs[6]), $specs[7]->getParentSpecs());
-		$this->assertSame(array(), $specs[7]->getChildSpecs());
-		
-		$this->assertSame(array($specs[6]), $specs[8]->getParentSpecs());
-		$this->assertSame(array($specs[9]), $specs[8]->getChildSpecs());
-		
-		$this->assertSame(array($specs[8]), $specs[9]->getParentSpecs());
-		$this->assertSame(array($specs[10]), $specs[9]->getChildSpecs());
-		
-		$this->assertSame(array($specs[9]), $specs[10]->getParentSpecs());
-		$this->assertSame(array(), $specs[10]->getChildSpecs());
-		
-		$this->assertSame(array($specs[6]), $specs[11]->getParentSpecs());
-		$this->assertSame(array($specs[12]), $specs[11]->getChildSpecs());
-		
-		$this->assertSame(array($specs[11]), $specs[12]->getParentSpecs());
-		$this->assertSame(array(), $specs[12]->getChildSpecs());
-	}
-
-	final public function testCreateSpecsTree_ThrowsExceptionWhenNameIsDuplicate()
-	{
-		try
-		{
-			$this->createSpecsTree('
-				Spec(aaa)
-				->Spec(aaa)
-			');
-		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$this->fail('Should be thrown exception');
 	}
 }

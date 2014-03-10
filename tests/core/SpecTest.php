@@ -580,7 +580,7 @@ class SpecTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["specs"][1]->enable();
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -633,7 +633,7 @@ class SpecTest extends \spectrum\tests\Test
 	}
 
 /**/
-	
+
 	public function testSetName_SetsSpecName()
 	{
 		$spec = new Spec();
@@ -1149,14 +1149,14 @@ class SpecTest extends \spectrum\tests\Test
 
 	public function testGetRootSpecs_ReturnsAllRootSpecs()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec(aaa)
 		');
 		$this->assertSame(array($specs[0], $specs[1]), $specs['aaa']->getRootSpecs());
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			->->Spec
 			->Spec
 			->->Spec
@@ -1180,7 +1180,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 	public function testGetEndingSpecs_ReturnsAllEndingSpecs()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec
@@ -1214,7 +1214,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningParentSpec();
 		');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec
@@ -1232,7 +1232,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 	public function testGetRunningParentSpec_NoRunningParentSpec_ReturnsNull()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec(aaa)
@@ -1251,7 +1251,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningAncestorSpecs();
 		');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec
@@ -1272,7 +1272,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 	public function testGetRunningAncestorSpecs_NoRunningParentSpec_ReturnsEmptyArray()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec(aaa)
@@ -1287,7 +1287,7 @@ class SpecTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["runningEndingSpecs"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runningEndingSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningEndingSpec();');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -1317,7 +1317,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["runningEndingSpecs"][] = $this->getOwnerSpec()->getRunningEndingSpec();
 		');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -1343,7 +1343,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		', 'onEndingSpecExecute');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec(checkpoint)
@@ -1365,11 +1365,557 @@ class SpecTest extends \spectrum\tests\Test
 	}
 	
 /**/
+
+	public function providerGetSpecsByRunId_CorrectIds()
+	{
+		return array(
+			array(
+				'0',
+				array(
+					'r' => array('0'),
+				),
+			),
+			
+			// Single parent, level 2
+			
+			array(
+				'
+				0
+				|
+				1
+				',
+				array(
+					'r_0' => array('0', '1'),
+				),
+			),
+			
+			array(
+				'
+				  0
+				 / \
+				1   2
+				',
+				array(
+					'r_0' => array('0', '1'),
+					'r_1' => array('0', '2'),
+				),
+			),
+			
+			array(
+				'
+				   0
+				 / | \
+				1  2  3
+				',
+				array(
+					'r_1' => array('0', '2'),
+				),
+			),
+
+			array(
+				'
+				  ___0___
+				 / |  |  \
+				1  2  3   4
+				',
+				array(
+					'r_2' => array('0', '3'),
+				),
+			),
+			
+			// Single parent, level 3
+			
+			array(
+				'
+				0
+				|
+				1
+				|
+				2
+				',
+				array(
+					'r_0_0' => array('0', '1', '2'),
+				),
+			),
+			
+			array(
+				'
+				  0
+				 / \
+				1   2
+				.   |
+				    3
+				',
+				array('r_1_0' => array('0', '2', '3')),
+			),
+			
+			array(
+				'
+				   0
+				 / | \
+				1  2  3
+				.  |
+				   4
+				',
+				array(
+					'r_1_0' => array('0', '2', '4'),
+				),
+			),
+			
+			array(
+				'
+				  _____0______
+				 /     |      \
+				1    __2____   3
+				.   / |  |  \
+				   4  5  6   7
+				',
+				array(
+					'r_1_2' => array('0', '2', '6'),
+					'r_1_0' => array('0', '2', '4'),
+					'r_0' => array('0', '1'),
+				),
+			),
+			
+			// Single parent, level 4
+			
+			array(
+				'
+				  ____________0_____________
+				 /            |             \
+				1   __________2__________    3
+				.  / |        |          \
+				  4  5   _____6________   7
+				  .  .  / |  |  |  |   \
+				       8  9 10 11 12   13
+				',
+				array(
+					'r_1_2_0' => array('0', '2', '6', '8'),
+					'r_1_2_4' => array('0', '2', '6', '12'),
+					'r_1_2_5' => array('0', '2', '6', '13'),
+					'r_1_1' => array('0', '2', '5'),
+				),
+			),
+			
+			// Two parents
+			
+			array(
+				'
+				  0
+				 / \
+				1   2
+				 \ /
+				  3
+				',
+				array(
+					'r_0_0' => array('0', '1', '3'),
+					'r_1_0' => array('0', '2', '3'),
+				),
+			),
+			
+			array(
+				'
+				  __0__
+				 / | | \
+				1  2 3  4
+				|  \ /  |
+				5   6   7
+				',
+				array(
+					'r_1_0' => array('0', '2', '6'),
+					'r_2_0' => array('0', '3', '6'),
+				),
+			),
+			
+			array(
+				'
+				  0
+				 / \
+				1   2
+				 \ /
+				  3
+				 / \
+				4   5
+				 \ /
+				  6
+				',
+				array(
+					'r_0_0_0_0' => array('0', '1', '3', '4', '6'),
+					'r_0_0_1_0' => array('0', '1', '3', '5', '6'),
+					'r_1_0_0_0' => array('0', '2', '3', '4', '6'),
+					'r_1_0_1_0' => array('0', '2', '3', '5', '6'),
+				),
+			),
+			
+			// Three parents
+			
+			array(
+				'
+				   0
+				 / | \
+				1  2  3
+				 \ | /
+				   4
+				',
+				array(
+					'r_0_0' => array('0', '1', '4'),
+					'r_1_0' => array('0', '2', '4'),
+					'r_2_0' => array('0', '3', '4'),
+				),
+			),
+			
+			array(
+				'
+				  ____0____
+				 / |  |  | \
+				1  2  3  4  5
+				|   \ | /   |
+				6     7     8
+				',
+				array(
+					'r_1_0' => array('0', '2', '7'),
+					'r_2_0' => array('0', '3', '7'),
+					'r_3_0' => array('0', '4', '7'),
+				),
+			),
+			
+			array(
+				'
+				  _0_
+				 / | \
+				1  2  3
+				 \ | /
+				   4
+				 / | \
+				5  6  7
+				 \ | /
+				   8
+				',
+				array(
+					'r_0_0_0_0' => array('0', '1', '4', '5', '8'),
+					'r_0_0_1_0' => array('0', '1', '4', '6', '8'),
+					'r_0_0_2_0' => array('0', '1', '4', '7', '8'),
+					
+					'r_1_0_0_0' => array('0', '2', '4', '5', '8'),
+					'r_1_0_1_0' => array('0', '2', '4', '6', '8'),
+					'r_1_0_2_0' => array('0', '2', '4', '7', '8'),
+					
+					'r_2_0_0_0' => array('0', '3', '4', '5', '8'),
+					'r_2_0_1_0' => array('0', '3', '4', '6', '8'),
+					'r_2_0_2_0' => array('0', '3', '4', '7', '8'),
+				),
+			),
+		);
+	}
+	
+	/**
+	 * @dataProvider providerGetSpecsByRunId_CorrectIds
+	 */
+	public function testGetSpecsByRunId_ReturnsProperSpecs($pattern, array $expectedRunIdsAndSpecKeys)
+	{
+		$specs = $this->createSpecsByVisualPattern($pattern);
+		
+		foreach ($expectedRunIdsAndSpecKeys as $runId => $expectedSpecKeys)
+		{
+			$expectedSpecs = array();
+			foreach ($expectedSpecKeys as $key)
+				$expectedSpecs[] = $specs[$key];
+
+			$this->assertSame($expectedSpecs, $specs['0']->getSpecsByRunId($runId));
+		}
+	}
+	
+	public function testGetSpecsByRunId_IgnoreInitialAndEndingSpaces()
+	{
+		$specs = $this->createSpecsByVisualPattern('
+			  0
+			 / \
+			1   2
+		');
+		
+		$this->assertSame(array($specs['0'], $specs['1']), $specs[0]->getSpecsByRunId("\r\n\t   r_0\r\n\t   "));
+		$this->assertSame(array($specs['0'], $specs['2']), $specs[0]->getSpecsByRunId("\r\n\t   r_1\r\n\t   "));
+	}
+	
+	public function testGetSpecsByRunId_SpecIsNotRoot_ThrowsException()
+	{
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+		');
+		
+		$this->assertThrowsException('\spectrum\core\Exception', 'Method "\spectrum\core\Spec::getSpecsByRunId" should be called from root spec only', function() use($specs){
+			$specs['1']->getSpecsByRunId('r');
+		});
+	}
+	
+	public function providerGetSpecsByRunId_IncorrectIds()
+	{
+		return array(
+			array('aaa'),
+			array('r0'),
+			array('0'),
+			array('_0'),
+			array('0_0'),
+			array('_r_0'),
+			array('r_0_'),
+			array('_r_0_'),
+		);
+	}
+	
+	/**
+	 * @dataProvider providerGetSpecsByRunId_IncorrectIds
+	 */
+	public function testGetSpecsByRunId_RunIdIsIncorrect_ThrowsException($runId)
+	{
+		$spec = new Spec();
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect run id "' . $runId . '" (id should be in format "r_<number>_<number>_...")', function() use($spec, $runId){
+			$spec->getSpecsByRunId($runId);
+		});
+	}
+	
+	public function testGetSpecsByRunId_SpecWithDeclaredIndexIsNotExists_ThrowsException()
+	{
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+			|
+			2
+		');
+		
+		$this->assertThrowsException('\spectrum\core\Exception', 'Spec with index "1" on "2" position of run id "r_1_0" is not exists', function() use($specs){
+			$specs['0']->getSpecsByRunId('r_1_0');
+		});
+	}
+
+/**/
 	
 	public function testGetResultBuffer_ReturnsNullByDefault()
 	{
 		$spec = new Spec();
 		$this->assertSame(null, $spec->getResultBuffer());
+	}
+	
+/**/
+	
+	public function providerGetRunId()
+	{
+		return array(
+			array('
+				spec
+			', array(
+				'r',
+			)),
+			
+			// Single parent, level 2
+			
+			array('
+				 0
+				 |
+				spec
+			', array(
+				'r_0',
+			)),
+			
+			array('
+				  0
+				 / \
+				1  spec
+			', array(
+				'r_1',
+			)),
+			
+			array('
+				   0
+				 / | \
+				1  2 spec
+			', array(
+				'r_2',
+			)),
+			
+			array('
+				  ___0___
+				 / |  |  \
+				1  2 spec 4
+			', array(
+				'r_2',
+			)),
+			
+			// Single parent, level 3
+			
+			array('
+				 0
+				 |
+				 1
+				 |
+				spec
+			', array(
+				'r_0_0',
+			)),
+			
+			array('
+				  0
+				 / \
+				1   2
+				.   |
+				   spec
+			', array(
+				'r_1_0',
+			)),
+			
+			array('
+				   0
+				 / | \
+				1  2  3
+				.  |
+				  spec
+			', array(
+				'r_1_0',
+			)),
+			
+			array('
+				  _____0______
+				 /     |      \
+				1    __2____   3
+				.   / |  |  \
+				   4  5 spec 7
+			', array(
+				'r_1_2',
+			)),
+			
+			// Single parent, level 4
+			
+			array('
+				  ____________0_____________
+				 /            |             \
+				1   __________2__________    3
+				.  / |        |          \
+				  4  5   _____6________   7
+				  .  .  / |  |  |  |   \
+				       8  9 10 11 spec 13
+			', array(
+				'r_1_2_4',
+			)),
+			
+			// Two parents
+			
+			array('
+				  0
+				 / \
+				1   2
+				 \ /
+				 spec
+			', array(
+				'r_0_0',
+				'r_1_0',
+			)),
+			
+			array('
+				  __0__
+				 / | | \
+				1  2 3  4
+				|  \ /  |
+				5  spec 7
+			', array(
+				'r_1_0',
+				'r_2_0',
+			)),
+			
+			array('
+				  0
+				 / \
+				1   2
+				 \ /
+				  3
+				 / \
+				4   5
+				 \ /
+				 spec
+			', array(
+				'r_0_0_0_0',
+				'r_0_0_1_0',
+				'r_1_0_0_0',
+				'r_1_0_1_0',
+			)),
+			
+			// Three parents
+			
+			array('
+				   0
+				 / | \
+				1  2  3
+				 \ | /
+				 spec
+			', array(
+				'r_0_0',
+				'r_1_0',
+				'r_2_0',
+			)),
+			
+			array('
+				  ____0____
+				 / |  |  | \
+				1  2  3  4  5
+				|   \ | /   |
+				6   spec    8
+			', array(
+				'r_1_0',
+				'r_2_0',
+				'r_3_0',
+			)),
+			
+			array('
+				  _0_
+				 / | \
+				1  2  3
+				 \ | /
+				   4
+				 / | \
+				5  6  7
+				 \ | /
+				 spec
+			', array(
+				'r_0_0_0_0',
+				'r_0_0_1_0',
+				'r_0_0_2_0',
+				
+				'r_1_0_0_0',
+				'r_1_0_1_0',
+				'r_1_0_2_0',
+				
+				'r_2_0_0_0',
+				'r_2_0_1_0',
+				'r_2_0_2_0',
+			)),
+		);
+	}
+	
+	/**
+	 * @dataProvider providerGetRunId
+	 */
+	public function testGetRunId_SpecIsRunning_ReturnsUniqueId($pattern, $expectedRunIds)
+	{
+		$this->registerPluginWithCodeInEvent('
+			$ownerSpec = $this->getOwnerSpec();
+			if ($ownerSpec === \spectrum\tests\Test::$temp["specs"]["spec"])
+				\spectrum\tests\Test::$temp["results"][] = $ownerSpec->getRunId();
+		', 'onEndingSpecExecute');
+		
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByVisualPattern($pattern);
+		\spectrum\tests\Test::$temp["results"] = array();
+
+		\spectrum\tests\Test::$temp["specs"]['spec']->run();
+		$this->assertSame($expectedRunIds, \spectrum\tests\Test::$temp["results"]);
+	}
+	
+	public function testGetRunId_SpecIsNotRunning_ThrowsException()
+	{
+		$spec = new Spec();
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::getRunId" method is available on run only', function() use($spec){
+			$spec->getRunId();
+		});
 	}
 	
 /**/
@@ -1410,7 +1956,7 @@ class SpecTest extends \spectrum\tests\Test
 	 */
 	public function testRun_SpecHasMoreThanOneRootAncestors_ThrowsException($specTreePattern)
 	{
-		$specs = $this->createSpecsTree($specTreePattern);
+		$specs = $this->createSpecsByListPattern($specTreePattern);
 		$specs['spec']->setName('aaa');
 		
 		$this->assertThrowsException('\spectrum\core\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use($specs){
@@ -1429,7 +1975,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			->->Spec(caller)
 			->Spec
 			->Spec
@@ -1484,7 +2030,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["specs"]["spec"]->run();
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec(spec)
 			->->Spec
@@ -1522,7 +2068,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec(caller)
 			->Spec(callee)
@@ -1546,7 +2092,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec(caller)
 			->->Spec
@@ -1858,7 +2404,7 @@ class SpecTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["calledSpecs"][] = array_search($ownerSpec, \spectrum\tests\Test::$temp["specs"], true);
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree($specTreePattern, $specBindings);
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern($specTreePattern, $specBindings);
 		\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		
 		$this->assertSame($specStates, \spectrum\tests\Test::$temp["specStates"]);
@@ -1870,7 +2416,7 @@ class SpecTest extends \spectrum\tests\Test
 	 */
 	public function testRun_ChildSpecRunWithoutRunningParent_EnablesDisabledSpecsAfterRun($specTreePattern, $specStates, $calledSpecs, $specBindings = array())
 	{
-		$specs = $this->createSpecsTree($specTreePattern, $specBindings);
+		$specs = $this->createSpecsByListPattern($specTreePattern, $specBindings);
 		$specs["callee"]->run();
 		
 		foreach ($specs as $spec)
@@ -1900,7 +2446,7 @@ class SpecTest extends \spectrum\tests\Test
 	 */
 	public function testRun_ChildSpecRunWithoutRunningParent_DoesNotEnableUserDisabledSpecsAfterRun($specTreePattern)
 	{
-		$specs = $this->createSpecsTree($specTreePattern);
+		$specs = $this->createSpecsByListPattern($specTreePattern);
 		$specs["disabled"]->disable();
 		$specs["callee"]->run();
 		
@@ -1924,7 +2470,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		config::setResultBufferClass($resultBufferClassName);
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -1951,7 +2497,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec(caller)
 			->Spec
 			->->Spec
@@ -1976,7 +2522,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec(caller)
 			->Spec
 			->->Spec
@@ -2007,7 +2553,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		', 'onEndingSpecExecute');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2041,7 +2587,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		', 'onEndingSpecExecute');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2059,7 +2605,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2079,7 +2625,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2101,7 +2647,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2149,7 +2695,7 @@ class SpecTest extends \spectrum\tests\Test
 		config::setResultBufferClass($resultBufferClassName);
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2182,7 +2728,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		config::setResultBufferClass($resultBufferClassName);
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2290,7 +2836,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 	public function testRun_RootSpecRun_ResultBuffer_UnsetResultBufferLinkAfterRun()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2339,7 +2885,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		config::registerSpecPlugin($pluginClassName);
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2368,7 +2914,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
 		', 'onSpecRunFinish');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2388,7 +2934,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2425,7 +2971,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		config::setResultBufferClass($resultBufferClassName);
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2450,7 +2996,7 @@ class SpecTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][1]->getResultBuffer();
 		', 'onSpecRunFinish');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2788,7 +3334,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunBefore');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2804,7 +3350,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunBefore');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2819,7 +3365,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunBefore');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2834,7 +3380,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunBefore');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2851,7 +3397,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunAfter');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2867,7 +3413,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunAfter');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2882,7 +3428,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunAfter');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2897,7 +3443,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunAfter');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2918,7 +3464,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2935,7 +3481,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2950,7 +3496,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2965,7 +3511,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2981,7 +3527,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2998,7 +3544,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3015,7 +3561,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onSpecRunFinish');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3030,7 +3576,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onSpecRunFinish');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3045,7 +3591,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -3061,7 +3607,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3097,7 +3643,7 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', $eventName);
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3283,267 +3829,4 @@ class SpecTest extends \spectrum\tests\Test
 		
 		$this->assertSame(array(1, 2, 3), \spectrum\tests\Test::$temp["calledPlugins"]);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-// TODO
-// OLD TESTS FOR SPEC ID FEATURE:
-//
-//	class IdentifyTest extends Test
-//	{
-//		/**
-//		 * @dataProvider dataProviderSpecsTreeToSpecId_WithoutContexts
-//		 */
-//		public function testGetSpecId_BuildingState($specsTree, $specId)
-//		{
-//			$specs = $this->createSpecsTree($specsTree);
-//			$this->assertSame($specId, $specs['spec']->identify->getSpecId());
-//		}
-//	
-//		/**
-//		 * @dataProvider dataProviderSpecsTreeToSpecId_WithContexts
-//		 */
-//		public function testGetSpecId_RunningState($specsTree, $specId)
-//		{
-//			$specs = $this->createSpecsTree($specsTree);
-//			$specs['spec']->setTestCallback(function() use(&$result, $specs){
-//				$result = $specs['spec']->identify->getSpecId();
-//			});
-//	
-//			$specs['spec']->run();
-//			$this->assertSame($specId, $result);
-//		}
-//	
-//	/**/
-//	
-//		/**
-//		 * @dataProvider dataProviderSpecsTreeToSpecId_WithoutContexts
-//		 */
-//		public function testGetSpecById_BuildingState_ShouldBeReturnProperSpecInstance($specsTree, $specId)
-//		{
-//			$specs = $this->createSpecsTree($specsTree, array(), true);
-//			$this->assertSame($specs['spec'], $specs[0]->identify->getSpecById($specId));
-//		}
-//	
-//		/**
-//		 * @dataProvider dataProviderSpecsTreeToSpecId_WithContexts
-//		 */
-//		public function testGetSpecById_RunningState_ShouldBeReturnProperSpecInstance($specsTree, $specId)
-//		{
-//			$specs = $this->createSpecsTree($specsTree, array(), true);
-//			$specs['spec']->setTestCallback(function() use(&$result, $specs, $specId){
-//				$result = $specs[0]->identify->getSpecById($specId);
-//			});
-//	
-//			$specs['spec']->run();
-//			$this->assertSame($specs['spec'], $result);
-//		}
-//	
-//		public function testGetSpecById_ShouldBeIgnoreStartingAndEndingSpaces()
-//		{
-//			$specs = $this->createSpecsTree('
-//				Describe
-//				->Context
-//				->It(spec)
-//			');
-//	
-//			$this->assertSame($specs['spec'], $specs[0]->identify->getSpecById("\r\n\t   spec0x1\r\n\t   "));
-//			$this->assertSame($specs['spec'], $specs[0]->identify->getSpecById("\r\n\t   spec0x1_c0\r\n\t   "));
-//		}
-//	
-//		public function testGetSpecById_ShouldBeThrowExceptionIfSpecIdNotStartedWithSpecString()
-//		{
-//			$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "foo0" (id should be started with "spec" string)', function(){
-//				$spec = new SpecItemIt();
-//				$spec->identify->getSpecById('foo0');
-//			});
-//		}
-//	
-//		public function testGetSpecById_ShouldBeThrowExceptionIfSpecIdContainsDenySymbols()
-//		{
-//			$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0b0" (id should be contains only "spec" string, chars "x", "c", "_" and digits)', function(){
-//				$spec = new SpecItemIt();
-//				$spec->identify->getSpecById('spec0b0');
-//			});
-//		}
-//	
-//		public function testGetSpecById_ShouldBeThrowExceptionIfSpecIdHasIncorrectFormat()
-//		{
-//			$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x" (id should be in format like "spec0x1" or "spec0x1_c0c0")', function(){
-//				$spec = new SpecItemIt();
-//				$spec->identify->getSpecById('spec0x');
-//			});
-//		}
-//	
-//		public function testGetSpecById_ShouldBeThrowExceptionIfFirstIndexNotZero()
-//		{
-//			$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec1x0" (first index in id should be "0")', function(){
-//				$spec = new SpecItemIt();
-//				$spec->identify->getSpecById('spec1x0');
-//			});
-//		}
-//	
-//		public function testGetSpecById_ShouldBeThrowExceptionIfSomeSpecNotExists()
-//		{
-//			$specs = $this->createSpecsTree('
-//				Describe
-//				->It(spec)
-//			');
-//	
-//			$this->assertThrowException('\spectrum\core\plugins\Exception', 'Incorrect spec id "spec0x999x0" (spec with index "999" on "2" position in id not exists)', function() use($specs){
-//				$specs['spec']->identify->getSpecById('spec0x999x0');
-//			});
-//		}
-//	
-//	/* Data providers */
-//	
-//		public function dataProviderSpecsTreeToSpecId_WithoutContexts()
-//		{
-//			return array(
-//				array('It(spec)', 'spec0'),
-//	
-//				// Describe level 1
-//				array('
-//					Describe
-//					->It(spec)
-//				', 'spec0x0'),
-//	
-//				array('
-//					Describe
-//					->It
-//					->It(spec)
-//				', 'spec0x1'),
-//	
-//				// Describe level 2
-//				array('
-//					Describe
-//					->Describe
-//					->->It(spec)
-//				', 'spec0x0x0'),
-//	
-//				array('
-//					Describe
-//					->Describe
-//					->Describe
-//					->->It
-//					->->It(spec)
-//				', 'spec0x1x1'),
-//	
-//				// Context level 2
-//				array('
-//					Context
-//					->Context
-//					->->It(spec)
-//				', 'spec0x0x0'),
-//	
-//				array('
-//					Context
-//					->Context
-//					->Context
-//					->->It
-//					->->It(spec)
-//				', 'spec0x1x1'),
-//			);
-//		}
-//	
-//		public function dataProviderSpecsTreeToSpecId_WithContexts()
-//		{
-//			return array(
-//				array('It(spec)', 'spec0_c'),
-//	
-//				// Describe level 1, no contexts
-//				array('
-//					Describe
-//					->It(spec)
-//				', 'spec0x0_cc'),
-//	
-//				array('
-//					Describe
-//					->It
-//					->It(spec)
-//				', 'spec0x1_cc'),
-//	
-//				// Describe level 2, no contexts
-//				array('
-//					Describe
-//					->Describe
-//					->->It(spec)
-//				', 'spec0x0x0_ccc'),
-//	
-//				array('
-//					Describe
-//					->Describe
-//					->Describe
-//					->->It
-//					->->It(spec)
-//				', 'spec0x1x1_ccc'),
-//	
-//				// Describe level 1, with contexts
-//				array('
-//					Describe
-//					->Context
-//					->It(spec)
-//				', 'spec0x1_c0c'),
-//	
-//				array('
-//					Describe
-//					->Context
-//					->It
-//					->It(spec)
-//				', 'spec0x2_c0c'),
-//	
-//				// Describe level 2, with contexts
-//				array('
-//					Describe
-//					->Context
-//					->Describe
-//					->->It
-//					->->It(spec)
-//					->->Context
-//				', 'spec0x1x1_c0c2c'),
-//	
-//				// Describe level 2, with contexts, many specs
-//				array('
-//					Describe
-//					->Context
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->Describe
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It
-//					->->It(spec)
-//					->->Context
-//				', 'spec0x11x16_c0c17c'),
-//			);
-//		}
-//	}
 }

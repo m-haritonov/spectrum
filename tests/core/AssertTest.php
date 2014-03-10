@@ -42,7 +42,7 @@ class AssertTest extends \spectrum\tests\Test
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)

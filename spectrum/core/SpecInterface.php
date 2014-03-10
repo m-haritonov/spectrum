@@ -14,14 +14,11 @@ interface SpecInterface
 	public function enable();
 	public function disable();
 	public function isEnabled();
-	
+
 	public function setName($name);
 	public function getName();
 	public function isAnonymous();
 	
-	public function getSpecId();
-	public function getSpecById($specId);
-
 	public function getParentSpecs();
 	public function hasParentSpec(SpecInterface $spec);
 	public function bindParentSpec(SpecInterface $spec);
@@ -40,11 +37,13 @@ interface SpecInterface
 	public function getRunningAncestorSpecs();
 	public function getRunningChildSpec();
 	public function getRunningEndingSpec();
+	public function getSpecsByRunId($id);
 
 	/**
 	 * @return null|ResultBuffer
 	 */
 	public function getResultBuffer();
+	public function getRunId();
 	public function isRunning();
 	public function run();
 }

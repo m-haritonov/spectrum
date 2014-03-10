@@ -41,14 +41,11 @@ class IsRunningStateTest extends \spectrum\tests\Test
 				public function enable(){}
 				public function disable(){}
 				public function isEnabled(){}
-				
+			
 				public function setName($name){}
 				public function getName(){}
 				public function isAnonymous(){}
 				
-				public function getSpecId(){}
-				public function getSpecById($specId){}
-			
 				public function getParentSpecs(){}
 				public function hasParentSpec(\spectrum\core\SpecInterface $spec){}
 				public function bindParentSpec(\spectrum\core\SpecInterface $spec){}
@@ -67,8 +64,10 @@ class IsRunningStateTest extends \spectrum\tests\Test
 				public function getRunningAncestorSpecs(){}
 				public function getRunningChildSpec(){}
 				public function getRunningEndingSpec(){}
+				public function getSpecsByRunId($id){}
 			
 				public function getResultBuffer(){}
+				public function getRunId(){}
 				public function isRunning(){}
 				public function run()
 				{

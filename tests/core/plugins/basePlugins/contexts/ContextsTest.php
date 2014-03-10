@@ -325,7 +325,7 @@ class ContextsTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->contexts->getAllThroughRunningAncestors("before");
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -449,7 +449,7 @@ class ContextsTest extends \spectrum\tests\Test
 				\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->contexts->getAllThroughRunningAncestors("after");
 		');
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -817,7 +817,7 @@ class ContextsTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["properties"][] = get_object_vars($this->getOwnerSpec()->contexts->getContextData());
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -846,7 +846,7 @@ class ContextsTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["contextData"][] = $this->getOwnerSpec()->contexts->getContextData();
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');

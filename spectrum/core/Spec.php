@@ -165,7 +165,7 @@ class Spec implements SpecInterface
 	}
 
 /**/
-
+	
 	public function setName($name)
 	{
 		$this->handleModifyDeny(__FUNCTION__);
@@ -184,74 +184,7 @@ class Spec implements SpecInterface
 	}
 
 /**/
-	
-	/*
-	 * format: <ancestor spec index in parent>x<next ancestor spec index in parent>x<etc.>
-	 * example: "0x1x24"
-	 * 
-	 * @return string String in "us-ascii" charset
-	 */
-	public function getSpecId()
-	{
-		// TODO: id should be unique for every running spec (for every running ancestor stack)
-		return 'spec' . spl_object_hash($this);
-		
-/*		$stack = $this->getRunningAncestorSpecs();
-		$stack[] = $this;
 
-		$uid = '0x';
-		foreach ($stack as $spec)
-		{
-			if ($spec->getParentSpec())
-			{
-				foreach ($spec->getParentSpec()->getSpecs() as $index => $specInParent)
-				{
-					if ($specInParent === $spec)
-					{
-						$uid .= (int) $index . 'x';
-						break;
-					}
-				}
-			}
-		}
-
-		return mb_substr($uid, 0, -1, 'us-ascii');*/
-	}
-
-	public function getSpecById($specId)
-	{
-/*		$specId = trim($specId);
-		
-		if (!preg_match('/^0(x\d+)*$/s', $specId))
-			throw new Exception('Incorrect spec id "' . $specId . '" (id should be in format like "0x4" and first index in id should be "0")');
-
-		$spec = null;
-		foreach ($this->parseSpecIndexesInSpecId($specId) as $num => $specIndex)
-		{
-			if ($num == 0)
-				$spec = $this->getRootSpec();
-			else
-				$spec = $spec->getChildSpecByIndex($specIndex);
-
-			if (!$spec)
-				throw new Exception('Incorrect spec id "' . $specId . '" (spec with index "' . $specIndex . '" on "' . ($num + 1) . '" position in id not exists)');
-		}
-
-		return $spec;*/
-	}
-
-	protected function parseSpecIndexesInSpecId($specId)
-	{
-		$specId = trim($specId);
-
-		if (preg_match('/^spec(\d+(x\d+)*)/is', $specId, $matches))
-			return explode('x', $matches[1]);
-		else
-			return array();
-	}
-	
-/**/
-	
 	public function getParentSpecs()
 	{
 		return $this->parentSpecs;
@@ -442,6 +375,40 @@ class Spec implements SpecInterface
 		
 		return null;
 	}
+	
+	public function getSpecsByRunId($runId)
+	{
+		if ($this->getParentSpecs())
+			throw new Exception('Method "\\' . get_class($this) . '::' . __FUNCTION__ . '" should be called from root spec only');
+		
+		$runId = trim($runId);
+		
+		if (!preg_match('/^r(_\d+)*$/s', $runId))
+			throw new Exception('Incorrect run id "' . $runId . '" (id should be in format "r_<number>_<number>_...")');
+
+		$specs = array();
+		$currentSpec = $this;
+		$specs[] = $currentSpec;
+		
+		$runIdWithoutRoot = mb_substr($runId, 2, mb_strlen($runId, 'us-ascii'), 'us-ascii');
+		if ($runIdWithoutRoot != '')
+		{
+			foreach (explode('_', $runIdWithoutRoot) as $num => $index)
+			{
+				$childSpecs = $currentSpec->getChildSpecs();
+
+				if (array_key_exists($index, $childSpecs))
+				{
+					$currentSpec = $childSpecs[$index];
+					$specs[] = $currentSpec;
+				}
+				else
+					throw new Exception('Spec with index "' . $index . '" on "' . ($num + 2) . '" position of run id "' . $runId . '" is not exists');
+			}
+		}
+		
+		return $specs;
+	}
 
 /**/
 
@@ -451,6 +418,46 @@ class Spec implements SpecInterface
 	}
 
 /**/
+
+	/*
+	 * format: <ancestor spec index in parent>x<next ancestor spec index in parent>x<etc.>
+	 * example: "0x1x24"
+	 * 
+	 * @return string String in "us-ascii" charset
+	 */
+	public function getRunId()
+	{
+		if (!$this->isRunning())
+			throw new Exception('Call of "\\' . get_class($this) . '::' . __FUNCTION__ . '" method is available on run only');
+		
+		$runId = '';
+		
+		$spec = $this;
+		while (true)
+		{
+			$runningParentSpec = $spec->getRunningParentSpec();
+			if ($runningParentSpec)
+			{
+				foreach ($runningParentSpec->getChildSpecs() as $index => $specInParent)
+				{
+					if ($specInParent === $spec)
+					{
+						$runId = '_' . $index . $runId;
+						break;
+					}
+				}
+				
+				$spec = $runningParentSpec;
+			}
+			else
+			{
+				$runId = 'r' . $runId;
+				break;
+			}
+		}
+
+		return $runId;
+	}
 
 	public function isRunning()
 	{

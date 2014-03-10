@@ -135,7 +135,7 @@ class PluginTest extends \spectrum\tests\Test
 			}
 		'));
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree($specTreePattern, $specBindings);
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern($specTreePattern, $specBindings);
 		
 		foreach ($pluginValues as $specKey => $pluginValue)
 			\spectrum\tests\Test::$temp["specs"][$specKey]->testPlugin->value = $pluginValue;
@@ -286,7 +286,7 @@ class PluginTest extends \spectrum\tests\Test
 			}
 		'));
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree($specTreePattern, $specBindings);
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern($specTreePattern, $specBindings);
 		
 		foreach ($pluginValues as $specKey => $pluginValue)
 			\spectrum\tests\Test::$temp["specs"][$specKey]->testPlugin->value = $pluginValue;
@@ -330,7 +330,7 @@ class PluginTest extends \spectrum\tests\Test
 			}
 		'));
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -470,7 +470,7 @@ class PluginTest extends \spectrum\tests\Test
 		
 		config::registerSpecPlugin($pluginClassName);
 		
-		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsTree('
+		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
 			->Spec(checkpoint)
 			->->Spec(tested)

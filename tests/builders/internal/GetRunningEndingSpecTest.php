@@ -33,7 +33,7 @@ class GetRunningEndingSpecTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["returnValues"][] = \spectrum\builders\internal\getRunningEndingSpec();
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec

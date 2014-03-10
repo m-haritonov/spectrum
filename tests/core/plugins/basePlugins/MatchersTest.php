@@ -103,7 +103,7 @@ class MatchersTest extends \spectrum\tests\Test
 			\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->matchers->getThroughRunningAncestors("aaa");
 		', 'onEndingSpecExecute');
 		
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)

@@ -183,7 +183,7 @@ class ReportsTest extends \spectrum\tests\Test
 		});
 		
 		// Tests for "id" attribute uniqueness
-		// TODO: fix "Spec::getSpecId" method for test success
+		
 		$spec1 = new Spec();
 		$spec1->bindParentSpec($groupSpec);
 		

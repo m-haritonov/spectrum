@@ -1,20 +1,27 @@
+TODO: replace "the" to "be" in reports
+TODO: config test wrong order
+
+TODO: MERGE BRANCH
+TODO: добавить старые версии проекта в начало истории репозитория
+TODO: MOVE PROJECT TO GITHUB.COM
+
 TODO: create big example (with anonymous specs, matchers, with all errors, long spec names)
-TODO: check project file charset (all files should be in "US-ASCII" charset), add reminding to readme: "Framework files is in the "US-ASCII" charset"
+TODO: check project file charset (all files should be in "US-ASCII" charset; find not "US-ASCII" chars in files by regexp), add reminding to readme: "Framework files is in the "US-ASCII" charset"
 TODO: add tests for charset usages
 
 TODO: replace "if ($result['result'] === false)" to "if ($result['result'] === false || ($result['result'] !== true && $result['result'] !== null))" in ResultBuffer::getTotalResult method, add tests
-
-TODO: deny Spec::getSpecById call from not root specs
-TODO: create "Spec::getId" method
-TODO: replace "spl_object_hash($spec)" to "$spec->getId" (spl_object_hash as spec id identify wrong specs in contexts)
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
 TODO: use "assertSame" instead of "assertContains" in Test::assertThrowsException
 TODO: testware -> _testware
 
+TOOD: move \spectrum\tools\* to \spectrum\_internal\*? 
+TOOD: move \spectrum\builders\internal\* to \spectrum\_internal\*? 
+
 TODO: replace call_user_func($function)/call_user_func_array($function) to $function() for more performance
 TODO: return; -> return null;
 TODO: remove while(true)
+TODO: while ($parent) -> while ($parent = $this->getRunningParentSpec())
 TODO: MatcherCallDetailsInterface -> details\MatcherCallInterface
 TODO: choose curly bracket style for PHP and JavaScript code
 
@@ -24,6 +31,8 @@ TODO: add all "details\*" support to reports
 
 TODO: remove onEndingSpecExecuteBefore/After???
 TODO: remove onMatcherCallStart/Finish???
+
+TODO: вынести dispatchPluginEvent в функцию в core\*, а плагины сделать просто функциями, которым передавать параметр $spec? где сохранять активированные плагины? как организовать доступ к плагинам через $spec->pluginName->* в таком случае?
 
 TODO: use config::getFunction('...') for all functions ("builders\*", etc.)
 TODO: init.php -> remove "if (!function_exists('...')){}" from "require_once" calls
@@ -100,8 +109,8 @@ TODO: исправить грамматические ошибки в назва
 	is deny -> is denied
 	IsDeny -> IsDenied
 	
-TODO: MOVE PROJECT TO GITHUB.COM
-
+TODO: create "\spectrum\tools|helpers\createTree" function and similar auxiliary functions and classes?
+	
 TODO: array context group:
 	group('aaa', array(
 		'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),

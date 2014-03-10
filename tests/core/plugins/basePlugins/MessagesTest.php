@@ -69,7 +69,7 @@ class MessagesTest extends \spectrum\tests\Test
 	
 	public function testAdd_SpecWithChildren_ThrowsExceptionAndDoesNotAddMessage()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -84,7 +84,7 @@ class MessagesTest extends \spectrum\tests\Test
 	
 	public function testAdd_SpecWithoutChildren_DoesNotThrowsExceptionAndAddsMessage()
 	{
-		$specs = $this->createSpecsTree('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
