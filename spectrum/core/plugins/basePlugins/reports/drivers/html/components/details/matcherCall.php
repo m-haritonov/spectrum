@@ -41,7 +41,7 @@ class matcherCall extends \spectrum\core\plugins\basePlugins\reports\drivers\htm
 		$output .= '<div class="evaluatedValues">' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Evaluated values') . ':</h1>' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<p>';
-		$output .= static::callComponentMethod('code\method', 'getHtml', array('the', array($details->getTestedValue())));
+		$output .= static::callComponentMethod('code\method', 'getHtml', array('be', array($details->getTestedValue())));
 
 		if ($details->getNot())
 		{
