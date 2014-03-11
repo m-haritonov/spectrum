@@ -689,7 +689,7 @@ class ContextsTest extends \spectrum\tests\Test
 	public function testCallFunctionInContext_PhpIsGreaterThanOrEqualTo54_BindContextDataToThisVariable()
 	{
 		if (version_compare(PHP_VERSION, '5.4', '<'))
-			return;
+			return null;
 		
 		\spectrum\tests\Test::$temp["contextData"] = null;
 		\spectrum\tests\Test::$temp["thisValue"] = null;

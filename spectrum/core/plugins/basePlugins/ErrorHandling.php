@@ -150,12 +150,8 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 	protected function removeSubsequentErrorHandlers($checkErrorHandler)
 	{
 		$errorHandlers = array();
-		while (true)
+		while ($lastErrorHandler = $this->getLastErrorHandler())
 		{
-			$lastErrorHandler = $this->getLastErrorHandler();
-			if ($lastErrorHandler === null)
-				break;
-			
 			if ($lastErrorHandler === $checkErrorHandler)
 			{
 				$errorHandlers = array();

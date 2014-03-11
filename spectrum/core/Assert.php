@@ -95,7 +95,7 @@ class Assert implements AssertInterface
 	}
 
 	/**
-	 * @return MatcherCallDetailsInterface
+	 * @return \spectrum\core\details\MatcherCallInterface
 	 */
 	protected function createMatcherCallDetails()
 	{

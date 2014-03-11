@@ -168,7 +168,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			$message = $stringInMessageOrCallback;
 
 		try {
-			call_user_func($callback);
+			$callback();
 		}
 		catch (\Exception $e)
 		{
@@ -179,7 +179,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				if ($message !== null)
 					$this->assertSame($message, $e->getMessage());
 				
-				return;
+				return null;
 			}
 		}
 

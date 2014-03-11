@@ -12,13 +12,6 @@ TODO: testware -> _testware
 TOOD: move \spectrum\tools\* to \spectrum\_internal\*? 
 TOOD: move \spectrum\builders\internal\* to \spectrum\_internal\*? 
 
-TODO: replace call_user_func($function)/call_user_func_array($function) to $function() for more performance
-TODO: return; -> return null;
-TODO: remove while(true)
-TODO: while ($parent) -> while ($parent = $this->getRunningParentSpec())
-TODO: MatcherCallDetailsInterface -> details\MatcherCallInterface
-TODO: choose curly bracket style for PHP and JavaScript code
-
 TODO: 'Error handler in spec "' . $this->getOwnerSpec()->getName() . '" was removed' -> 'Error handler was removed'
 TODO: Error handler error details string -> details\Error
 TODO: add all "details\*" support to reports

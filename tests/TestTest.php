@@ -496,7 +496,7 @@ class TestTest extends Test
 		catch (\Exception $e)
 		{
 			$this->assertSame('Duplicate name is present on line 3', $e->getMessage());
-			return;
+			return null;
 		}
 
 		$this->fail('Should be thrown exception');
@@ -515,7 +515,7 @@ class TestTest extends Test
 		catch (\Exception $e)
 		{
 			$this->assertSame($e->getMessage(), 'Unnecessary children are present on line 3');
-			return;
+			return null;
 		}
 
 		$this->fail('Should be thrown exception');
@@ -534,7 +534,7 @@ class TestTest extends Test
 		catch (\Exception $e)
 		{
 			$this->assertSame($e->getMessage(), 'Unknown relation "*" is present on line 2');
-			return;
+			return null;
 		}
 
 		$this->fail('Should be thrown exception');
@@ -588,7 +588,7 @@ class TestTest extends Test
 		}
 		catch (\Exception $e)
 		{
-			return;
+			return null;
 		}
 
 		$this->fail('Should be thrown exception');
@@ -627,7 +627,7 @@ class TestTest extends Test
 		}
 		catch (\Exception $e)
 		{
-			return;
+			return null;
 		}
 
 		$this->fail('Should be thrown exception');
@@ -704,7 +704,7 @@ class TestTest extends Test
 		}
 		catch (\Exception $e)
 		{
-			return;
+			return null;
 		}
 
 		$this->fail('Should be thrown exception');

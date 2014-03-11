@@ -40,7 +40,7 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 
 	try
 	{
-		call_user_func($functionWithTestCode);
+		$functionWithTestCode();
 	}
 	catch (\Exception $e)
 	{

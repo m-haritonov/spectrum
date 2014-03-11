@@ -14,7 +14,7 @@ function callFunctionOnBuildingSpec($function, SpecInterface $spec)
 	$specBackup = \spectrum\builders\internal\getBuildingSpec();
 	
 	\spectrum\builders\internal\setBuildingSpec($spec);
-	$returnValue = call_user_func($function);
+	$returnValue = $function();
 	\spectrum\builders\internal\setBuildingSpec($specBackup);
 	
 	return $returnValue;

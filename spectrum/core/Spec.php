@@ -339,12 +339,9 @@ class Spec implements SpecInterface
 	{
 		$ancestorSpecs = array();
 
-		$parent = $this->getRunningParentSpec();
-		while ($parent)
-		{
+		$parent = $this;
+		while ($parent = $parent->getRunningParentSpec())
 			$ancestorSpecs[] = $parent;
-			$parent = $parent->getRunningParentSpec();
-		}
 
 		return $ancestorSpecs;
 	}
@@ -433,30 +430,21 @@ class Spec implements SpecInterface
 		$runId = '';
 		
 		$spec = $this;
-		while (true)
+		while ($runningParentSpec = $spec->getRunningParentSpec())
 		{
-			$runningParentSpec = $spec->getRunningParentSpec();
-			if ($runningParentSpec)
+			foreach ($runningParentSpec->getChildSpecs() as $index => $specInParent)
 			{
-				foreach ($runningParentSpec->getChildSpecs() as $index => $specInParent)
+				if ($specInParent === $spec)
 				{
-					if ($specInParent === $spec)
-					{
-						$runId = '_' . $index . $runId;
-						break;
-					}
+					$runId = '_' . $index . $runId;
+					break;
 				}
-				
-				$spec = $runningParentSpec;
 			}
-			else
-			{
-				$runId = 'r' . $runId;
-				break;
-			}
+			
+			$spec = $runningParentSpec;
 		}
-
-		return $runId;
+		
+		return 'r' . $runId;
 	}
 
 	public function isRunning()
