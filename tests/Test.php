@@ -177,7 +177,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			if ($actualClass == $expectedClass || is_subclass_of($actualClass, $expectedClass))
 			{
 				if ($message !== null)
-					$this->assertContains($message, $e->getMessage());
+					$this->assertSame($message, $e->getMessage());
 				
 				return;
 			}

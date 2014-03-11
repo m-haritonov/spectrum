@@ -7,9 +7,8 @@ TODO: check project file charset (all files should be in "US-ASCII" charset; fin
 TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
-TODO: use "assertSame" instead of "assertContains" in Test::assertThrowsException
-TODO: testware -> _testware
 
+TODO: testware -> _testware
 TOOD: move \spectrum\tools\* to \spectrum\_internal\*? 
 TOOD: move \spectrum\builders\internal\* to \spectrum\_internal\*? 
 

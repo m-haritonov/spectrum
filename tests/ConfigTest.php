@@ -346,7 +346,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getAssertClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
 			config::setAssertClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
@@ -357,7 +357,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getAssertClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\AssertInterface"', function(){
 			config::setAssertClass('\stdClass');
 		});
 
@@ -442,7 +442,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getMatcherCallDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
 			config::setMatcherCallDetailsClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
@@ -453,7 +453,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getMatcherCallDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\details\MatcherCallInterface"', function(){
 			config::setMatcherCallDetailsClass('\stdClass');
 		});
 
@@ -540,7 +540,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getPhpErrorDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
 			config::setPhpErrorDetailsClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
@@ -551,7 +551,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getPhpErrorDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\details\PhpErrorInterface"', function(){
 			config::setPhpErrorDetailsClass('\stdClass');
 		});
 
@@ -614,7 +614,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getUserFailDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
 			config::setUserFailDetailsClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
@@ -625,7 +625,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getUserFailDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\details\UserFailInterface"', function(){
 			config::setUserFailDetailsClass('\stdClass');
 		});
 
@@ -717,7 +717,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getSpecClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
 			config::setSpecClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
@@ -728,7 +728,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getSpecClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\SpecInterface"', function(){
 			config::setSpecClass('\stdClass');
 		});
 
@@ -823,7 +823,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getContextDataClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
 			config::setContextDataClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
@@ -834,7 +834,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getContextDataClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\plugins\basePlugins\contexts\DataInterface"', function(){
 			config::setContextDataClass('\stdClass');
 		});
 
@@ -904,7 +904,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getResultBufferClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'not exists', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
 			config::setResultBufferClass('\spectrum\tests\testware\NotExistsClass');
 		});
 
@@ -915,7 +915,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getResultBufferClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'should be implement interface', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\ResultBufferInterface"', function(){
 			config::setResultBufferClass('\stdClass');
 		});
 
