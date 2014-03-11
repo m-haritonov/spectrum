@@ -6,8 +6,6 @@ TODO: create big example (with anonymous specs, matchers, with all errors, long 
 TODO: check project file charset (all files should be in "US-ASCII" charset; find not "US-ASCII" chars in files by regexp), add reminding to readme: "Framework files is in the "US-ASCII" charset"
 TODO: add tests for charset usages
 
-TODO: replace "if ($result['result'] === false)" to "if ($result['result'] === false || ($result['result'] !== true && $result['result'] !== null))" in ResultBuffer::getTotalResult method, add tests
-
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
 TODO: use "assertSame" instead of "assertContains" in Test::assertThrowsException
 TODO: testware -> _testware

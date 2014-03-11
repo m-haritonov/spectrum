@@ -164,6 +164,29 @@ class ResultBufferTest extends \spectrum\tests\Test
 
 		$this->assertSame(false, $resultBuffer->getTotalResult());
 	}
+	
+	public function testGetTotalResult_AnyResultIsNotTrueAndNotNullAndNotFalse_ThrowsException()
+	{
+		$resultBufferClass = $this->createClass('
+			class ... extends \spectrum\core\ResultBuffer
+			{
+				public function addResult($result, $details = null)
+				{
+					$this->results[] = array(
+						"result" => $result,
+						"details" => $details,
+					);
+				}
+			}
+		');
+		
+		$resultBuffer = new $resultBufferClass(new Spec());
+		$resultBuffer->addResult('aaa');
+
+		$this->assertThrowsException('\spectrum\core\Exception', 'ResultBuffer should be contain "true", "false" or "null" values only (now it is contain value of "string" type)', function() use($resultBuffer){
+			$resultBuffer->getTotalResult();
+		});
+	}
 
 	public function providerTrueResult()
 	{

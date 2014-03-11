@@ -56,6 +56,8 @@ class ResultBuffer implements ResultBufferInterface
 				return false;
 			else if ($result['result'] === null)
 				$hasNull = true;
+			else if ($result['result'] !== true)
+				throw new Exception('ResultBuffer should be contain "true", "false" or "null" values only (now it is contain value of "' . gettype($result['result']) . '" type)');
 		}
 
 		if ($hasNull)
