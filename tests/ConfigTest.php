@@ -17,19 +17,6 @@ class ConfigTest extends Test
 		parent::setUp();
 		config::unregisterSpecPlugins();
 	}
-	
-/**/
-	
-	public function testGetInputCharset_ReturnsUtf8ByDefault()
-	{
-		$this->assertSame('utf-8', config::getInputCharset());
-	}
-	
-	public function testGetInputCharset_ConfigIsLocked_DoesNotThrowException()
-	{
-		config::lock();
-		config::getInputCharset();
-	}
 
 /**/
 
@@ -53,18 +40,18 @@ class ConfigTest extends Test
 
 		$this->assertSame('utf-8', config::getInputCharset());
 	}
-
+		
 /**/
-
-	public function testGetOutputCharset_ReturnsUtf8ByDefault()
+	
+	public function testGetInputCharset_ReturnsUtf8ByDefault()
 	{
-		$this->assertSame('utf-8', config::getOutputCharset());
+		$this->assertSame('utf-8', config::getInputCharset());
 	}
 	
-	public function testGetOutputCharset_ConfigIsLocked_DoesNotThrowException()
+	public function testGetInputCharset_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getOutputCharset();
+		config::getInputCharset();
 	}
 
 /**/
@@ -91,18 +78,18 @@ class ConfigTest extends Test
 	}
 	
 /**/
-	
-	public function testGetOutputFormat_ReturnsHtmlByDefault()
+
+	public function testGetOutputCharset_ReturnsUtf8ByDefault()
 	{
-		$this->assertSame('html', config::getOutputFormat());
+		$this->assertSame('utf-8', config::getOutputCharset());
 	}
 	
-	public function testGetOutputFormat_ConfigIsLocked_DoesNotThrowException()
+	public function testGetOutputCharset_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getOutputFormat();
+		config::getOutputCharset();
 	}
-
+	
 /**/
 
 	public function testSetOutputFormat_SetsNewValue()
@@ -125,18 +112,18 @@ class ConfigTest extends Test
 
 		$this->assertSame('html', config::getOutputFormat());
 	}
-
+	
 /**/
-
-	public function testGetOutputIndention_ReturnsTabByDefault()
+	
+	public function testGetOutputFormat_ReturnsHtmlByDefault()
 	{
-		$this->assertSame("\t", config::getOutputIndention());
+		$this->assertSame('html', config::getOutputFormat());
 	}
 	
-	public function testGetOutputIndention_ConfigIsLocked_DoesNotThrowException()
+	public function testGetOutputFormat_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getOutputIndention();
+		config::getOutputFormat();
 	}
 
 /**/
@@ -177,16 +164,16 @@ class ConfigTest extends Test
 	}
 
 /**/
-
-	public function testGetOutputNewline_ReturnsLfByDefault()
+	
+	public function testGetOutputIndention_ReturnsTabByDefault()
 	{
-		$this->assertSame("\n", config::getOutputNewline());
+		$this->assertSame("\t", config::getOutputIndention());
 	}
 	
-	public function testGetOutputNewline_ConfigIsLocked_DoesNotThrowException()
+	public function testGetOutputIndention_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getOutputNewline();
+		config::getOutputIndention();
 	}
 
 /**/
@@ -227,18 +214,18 @@ class ConfigTest extends Test
 	}
 
 /**/
-	
-	public function testGetAllowErrorHandlingModify_ReturnsTrueByDefault()
+
+	public function testGetOutputNewline_ReturnsLfByDefault()
 	{
-		$this->assertTrue(config::getAllowErrorHandlingModify());
+		$this->assertSame("\n", config::getOutputNewline());
 	}
 	
-	public function testGetAllowErrorHandlingModify_ConfigIsLocked_DoesNotThrowException()
+	public function testGetOutputNewline_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getAllowErrorHandlingModify();
+		config::getOutputNewline();
 	}
-
+	
 /**/
 
 	public function testSetAllowErrorHandlingModify_SetsNewValue()
@@ -258,18 +245,18 @@ class ConfigTest extends Test
 
 		$this->assertTrue(config::getAllowErrorHandlingModify());
 	}
-
+	
 /**/
 	
-	public function testGetClassReplacement_ReturnsSpectrumClassByDefault()
+	public function testGetAllowErrorHandlingModify_ReturnsTrueByDefault()
 	{
-		$this->assertSame('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
+		$this->assertTrue(config::getAllowErrorHandlingModify());
 	}
 	
-	public function testGetClassReplacement_ConfigIsLocked_DoesNotThrowException()
+	public function testGetAllowErrorHandlingModify_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html');
+		config::getAllowErrorHandlingModify();
 	}
 	
 /**/
@@ -294,15 +281,15 @@ class ConfigTest extends Test
 	
 /**/
 	
-	public function testGetFunctionReplacement_ReturnsSpectrumClassByDefault()
+	public function testGetClassReplacement_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\tools\translate', config::getFunctionReplacement('\spectrum\tools\translate'));
+		$this->assertSame('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
 	}
 	
-	public function testGetFunctionReplacement_ConfigIsLocked_DoesNotThrowException()
+	public function testGetClassReplacement_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getFunctionReplacement('\spectrum\tools\translate');
+		config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html');
 	}
 	
 /**/
@@ -327,15 +314,15 @@ class ConfigTest extends Test
 	
 /**/
 	
-	public function testGetAssertClass_ReturnsSpectrumClassByDefault()
+	public function testGetFunctionReplacement_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\Assert', config::getAssertClass());
+		$this->assertSame('\spectrum\tools\translate', config::getFunctionReplacement('\spectrum\tools\translate'));
 	}
 	
-	public function testGetAssertClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetFunctionReplacement_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getAssertClass();
+		config::getFunctionReplacement('\spectrum\tools\translate');
 	}
 	
 /**/
@@ -397,18 +384,18 @@ class ConfigTest extends Test
 
 		$this->assertSame($oldClass, config::getAssertClass());
 	}
-
+	
 /**/
-
-	public function testGetMatcherCallDetailsClass_ReturnsSpectrumClassByDefault()
+	
+	public function testGetAssertClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\details\MatcherCall', config::getMatcherCallDetailsClass());
+		$this->assertSame('\spectrum\core\Assert', config::getAssertClass());
 	}
 	
-	public function testGetMatcherCallDetailsClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetAssertClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getMatcherCallDetailsClass();
+		config::getAssertClass();
 	}
 
 /**/
@@ -518,16 +505,16 @@ class ConfigTest extends Test
 	}
 	
 /**/
-	
-	public function testGetPhpErrorDetailsClass_ReturnsSpectrumClassByDefault()
+
+	public function testGetMatcherCallDetailsClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\details\PhpError', config::getPhpErrorDetailsClass());
+		$this->assertSame('\spectrum\core\details\MatcherCall', config::getMatcherCallDetailsClass());
 	}
 	
-	public function testGetPhpErrorDetailsClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetMatcherCallDetailsClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getPhpErrorDetailsClass();
+		config::getMatcherCallDetailsClass();
 	}
 
 /**/
@@ -596,15 +583,15 @@ class ConfigTest extends Test
 	
 /**/
 	
-	public function testGetUserFailDetailsClass_ReturnsSpectrumClassByDefault()
+	public function testGetPhpErrorDetailsClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\details\UserFail', config::getUserFailDetailsClass());
+		$this->assertSame('\spectrum\core\details\PhpError', config::getPhpErrorDetailsClass());
 	}
 	
-	public function testGetUserFailDetailsClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetPhpErrorDetailsClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getUserFailDetailsClass();
+		config::getPhpErrorDetailsClass();
 	}
 
 /**/
@@ -664,18 +651,18 @@ class ConfigTest extends Test
 
 		$this->assertSame($oldClass, config::getUserFailDetailsClass());
 	}
-
+	
 /**/
-
-	public function testGetSpecClass_ReturnsSpectrumClassByDefault()
+	
+	public function testGetUserFailDetailsClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\Spec', config::getSpecClass());
+		$this->assertSame('\spectrum\core\details\UserFail', config::getUserFailDetailsClass());
 	}
 	
-	public function testGetSpecClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetUserFailDetailsClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getSpecClass();
+		config::getUserFailDetailsClass();
 	}
 
 /**/
@@ -799,18 +786,18 @@ class ConfigTest extends Test
 
 		$this->assertSame($oldClass, config::getSpecClass());
 	}
-
+	
 /**/
 
-	public function testGetContextDataClass_ReturnsSpectrumClassByDefault()
+	public function testGetSpecClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\plugins\basePlugins\contexts\Data', config::getContextDataClass());
+		$this->assertSame('\spectrum\core\Spec', config::getSpecClass());
 	}
 	
-	public function testGetContextDataClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetSpecClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getContextDataClass();
+		config::getSpecClass();
 	}
 
 /**/
@@ -878,16 +865,16 @@ class ConfigTest extends Test
 	}
 	
 /**/
-	
-	public function testGetResultBufferClass_ReturnsSpectrumClassByDefault()
+
+	public function testGetContextDataClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\ResultBuffer', config::getResultBufferClass());
+		$this->assertSame('\spectrum\core\plugins\basePlugins\contexts\Data', config::getContextDataClass());
 	}
 	
-	public function testGetResultBufferClass_ConfigIsLocked_DoesNotThrowException()
+	public function testGetContextDataClass_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getResultBufferClass();
+		config::getContextDataClass();
 	}
 
 /**/
@@ -961,7 +948,20 @@ class ConfigTest extends Test
 
 		$this->assertSame($oldClass, config::getResultBufferClass());
 	}
-
+	
+/**/
+	
+	public function testGetResultBufferClass_ReturnsSpectrumClassByDefault()
+	{
+		$this->assertSame('\spectrum\core\ResultBuffer', config::getResultBufferClass());
+	}
+	
+	public function testGetResultBufferClass_ConfigIsLocked_DoesNotThrowException()
+	{
+		config::lock();
+		config::getResultBufferClass();
+	}
+	
 /**/
 
 	public function testRegisterSpecPlugin_AddsPluginClassToRegisteredPlugins()

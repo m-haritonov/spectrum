@@ -1,5 +1,3 @@
-TODO: config test wrong order
-
 TODO: MERGE BRANCH
 TODO: добавить старые версии проекта в начало истории репозитория
 TODO: MOVE PROJECT TO GITHUB.COM
