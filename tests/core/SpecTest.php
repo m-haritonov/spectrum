@@ -83,11 +83,11 @@ class SpecTest extends \spectrum\tests\Test
 		config::registerSpecPlugin($pluginClassName2);
 		$spec = new Spec();
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Access to plugins by empty access name is deny', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Access to plugins by empty access name is denied', function() use($spec){
 			$spec->{null};
 		});
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'Access to plugins by empty access name is deny', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Access to plugins by empty access name is denied', function() use($spec){
 			$spec->{''};
 		});
 	}

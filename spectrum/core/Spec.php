@@ -61,7 +61,7 @@ class Spec implements SpecInterface
 	public function __get($pluginAccessName)
 	{
 		if ($pluginAccessName == '')
-			throw new Exception('Access to plugins by empty access name is deny');
+			throw new Exception('Access to plugins by empty access name is denied');
 		
 		$pluginClass = config::getRegisteredSpecPluginClassByAccessName($pluginAccessName);
 		if ($pluginClass)

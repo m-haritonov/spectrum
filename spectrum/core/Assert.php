@@ -42,7 +42,7 @@ class Assert implements AssertInterface
 	public function __call($matcherName, array $matcherArguments = array())
 	{
 		if (!$this->ownerSpec->isRunning())
-			throw new Exception('Matcher call is deny on not running spec (now spec "' . $this->ownerSpec->getName() . '" is not running)');
+			throw new Exception('Matcher call is denied on not running spec (now spec "' . $this->ownerSpec->getName() . '" is not running)');
 		
 		$matcherCallDetails = $this->createMatcherCallDetails();
 		$matcherCallDetails->setTestedValue($this->testedValue);

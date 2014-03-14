@@ -525,7 +525,7 @@ class AssertTest extends \spectrum\tests\Test
 		});
 		
 		$assert = new Assert($spec, null);
-		$this->assertThrowsException('\spectrum\core\Exception', 'Matcher call is deny on not running spec (now spec "aaa" is not running)', function() use($assert){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Matcher call is denied on not running spec (now spec "aaa" is not running)', function() use($assert){
 			$assert->zzz();
 		});
 		

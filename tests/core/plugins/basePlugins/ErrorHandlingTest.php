@@ -67,7 +67,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(1, $spec->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function testSetCatchPhpErrors_ErrorHandlingModifyIsDenyInConfig_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetCatchPhpErrors_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$spec = new Spec();
 		$spec->errorHandling->setCatchPhpErrors(1);
@@ -172,7 +172,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstPhpError());
 	}
 	
-	public function testSetBreakOnFirstPhpError_ErrorHandlingModifyIsDenyInConfig_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetBreakOnFirstPhpError_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstPhpError(true);
@@ -275,7 +275,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstMatcherFail());
 	}
 	
-	public function testSetBreakOnFirstMatcherFail_ErrorHandlingModifyIsDenyInConfig_ThrowsExceptionAndDoesNotChangeValue()
+	public function testSetBreakOnFirstMatcherFail_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstMatcherFail(true);
