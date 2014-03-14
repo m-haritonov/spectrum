@@ -1,9 +1,8 @@
 TODO: MERGE BRANCH
 TODO: добавить старые версии проекта в начало истории репозитория
 TODO: MOVE PROJECT TO GITHUB.COM
-
+	
 TODO: create big example (with anonymous specs, matchers, with all errors, long spec names)
-TODO: check project file charset (all files should be in "US-ASCII" charset; find not "US-ASCII" chars in files by regexp), add reminding to readme: "Framework files is in the "US-ASCII" charset"
 TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components

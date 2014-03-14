@@ -29,6 +29,11 @@ class specList extends component
 			.c-specList>li>.head>.point>a.expand span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
 			.c-specList>li>.head>.point>a.expand span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }
 			.c-specList>li>.head>.title { display: inline-block; vertical-align: text-top; white-space: normal; }
+			
+			.c-specList>li>.head>.title>.separator span,
+			.c-specList>li>.body>.title>.separator span { display: inline-block; width: 0; color: transparent; }
+			.c-specList>li>.head>.title>.separator:before,
+			.c-specList>li>.body>.title>.separator:before { content: "\\2014"; display: inline; }
 		
 			.c-specList>li>.c-specList { padding-right: 0; }
 		
@@ -167,8 +172,8 @@ class specList extends component
 	{
 		return
 			'<span class="title">' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<span class="name">' . static::escapeHtml(static::convertToOutputCharset($spec->getName())) . '</span>' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<span class="separator"> &#8212; </span>' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<span class="name">' . static::escapeHtml(static::convertToOutputCharset($spec->getName())) . '</span> ' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<span class="separator"><span>-</span></span> ' . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline() .
 			'</span>';
 	}
