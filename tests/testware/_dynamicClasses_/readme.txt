@@ -1,1 +1,0 @@
-Namespace "\spectrum\tests\testware\_dynamicClasses_" reserved for method "\spectrum\tests\Test::createClass".

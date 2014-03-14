@@ -104,7 +104,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	 */
 	final protected function createClass($code)
 	{
-		$namespace = 'spectrum\tests\testware\_dynamicClasses_';
+		$namespace = 'spectrum\tests\_testware\_dynamicClasses_';
 		$className = 'DynamicClass' . self::$classNumber;
 		self::$classNumber++;
 		
@@ -120,7 +120,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	
 	final protected function createInterface($code)
 	{
-		$namespace = 'spectrum\tests\testware\_dynamicClasses_';
+		$namespace = 'spectrum\tests\_testware\_dynamicClasses_';
 		$className = 'DynamicClass' . self::$classNumber;
 		self::$classNumber++;
 		

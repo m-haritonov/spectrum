@@ -28,7 +28,7 @@ class AutoloadTest extends Test
 		$foundEntitiesCount = 0;
 		foreach ($this->getDeclaredEntities() as $entity)
 		{
-			if (mb_stripos($entity['name'], 'spectrum\\', null, 'us-ascii') === 0 && mb_stripos($entity['name'], 'spectrum\tests\testware\_dynamicClasses_\\', null, 'us-ascii') !== 0)
+			if (mb_stripos($entity['name'], 'spectrum\\', null, 'us-ascii') === 0 && mb_stripos($entity['name'], 'spectrum\tests\_testware\_dynamicClasses_\\', null, 'us-ascii') !== 0)
 			{
 				$foundEntitiesCount++;
 				

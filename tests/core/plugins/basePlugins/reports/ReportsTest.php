@@ -208,7 +208,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$this->assertNotEquals('', $html);
 		$this->assertTrue($domDocument->loadHTML($html));
 		$this->assertTrue($domDocument->loadXML($html));
-		$this->assertTrue($domDocument->schemaValidate(__DIR__ . '/../../../../testware/xhtml1-strict.xsd'));
+		$this->assertTrue($domDocument->schemaValidate(__DIR__ . '/../../../../_testware/xhtml1-strict.xsd'));
 		$this->assertSame(array(), libxml_get_errors());
 	}
 	

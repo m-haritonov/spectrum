@@ -346,8 +346,8 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getAssertClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
-			config::setAssertClass('\spectrum\tests\testware\NotExistsClass');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\_testware\NotExistsClass" not exists', function(){
+			config::setAssertClass('\spectrum\tests\_testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getAssertClass());
@@ -442,8 +442,8 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getMatcherCallDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
-			config::setMatcherCallDetailsClass('\spectrum\tests\testware\NotExistsClass');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\_testware\NotExistsClass" not exists', function(){
+			config::setMatcherCallDetailsClass('\spectrum\tests\_testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getMatcherCallDetailsClass());
@@ -540,8 +540,8 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getPhpErrorDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
-			config::setPhpErrorDetailsClass('\spectrum\tests\testware\NotExistsClass');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\_testware\NotExistsClass" not exists', function(){
+			config::setPhpErrorDetailsClass('\spectrum\tests\_testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getPhpErrorDetailsClass());
@@ -614,8 +614,8 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getUserFailDetailsClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
-			config::setUserFailDetailsClass('\spectrum\tests\testware\NotExistsClass');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\_testware\NotExistsClass" not exists', function(){
+			config::setUserFailDetailsClass('\spectrum\tests\_testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getUserFailDetailsClass());
@@ -717,8 +717,8 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getSpecClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
-			config::setSpecClass('\spectrum\tests\testware\NotExistsClass');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\_testware\NotExistsClass" not exists', function(){
+			config::setSpecClass('\spectrum\tests\_testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getSpecClass());
@@ -823,8 +823,8 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getContextDataClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
-			config::setContextDataClass('\spectrum\tests\testware\NotExistsClass');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\_testware\NotExistsClass" not exists', function(){
+			config::setContextDataClass('\spectrum\tests\_testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getContextDataClass());
@@ -904,8 +904,8 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getResultBufferClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\testware\NotExistsClass" not exists', function(){
-			config::setResultBufferClass('\spectrum\tests\testware\NotExistsClass');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\spectrum\tests\_testware\NotExistsClass" not exists', function(){
+			config::setResultBufferClass('\spectrum\tests\_testware\NotExistsClass');
 		});
 
 		$this->assertSame($oldClass, config::getResultBufferClass());

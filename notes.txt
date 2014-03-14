@@ -1,3 +1,6 @@
+TOOD: move \spectrum\tools\* to \spectrum\_internal\*? 
+TOOD: move \spectrum\builders\internal\* to \spectrum\_internal\*?
+
 TODO: MERGE BRANCH
 TODO: добавить старые версии проекта в начало истории репозитория
 TODO: MOVE PROJECT TO GITHUB.COM
@@ -7,10 +10,6 @@ TODO: check project file charset (all files should be in "US-ASCII" charset; fin
 TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
-
-TODO: testware -> _testware
-TOOD: move \spectrum\tools\* to \spectrum\_internal\*? 
-TOOD: move \spectrum\builders\internal\* to \spectrum\_internal\*? 
 
 TODO: 'Error handler in spec "' . $this->getOwnerSpec()->getName() . '" was removed' -> 'Error handler was removed'
 TODO: Error handler error details string -> details\Error
