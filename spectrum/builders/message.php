@@ -13,8 +13,8 @@ namespace spectrum\builders;
  */
 function message($message)
 {
-	if (!\spectrum\builders\isRunningState())
+	if (!\spectrum\_internal\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "message" should be call only at running state');
 	
-	\spectrum\builders\internal\getRunningEndingSpec()->messages->add($message);
+	\spectrum\_internal\getRunningEndingSpec()->messages->add($message);
 }

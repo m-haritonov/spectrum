@@ -18,10 +18,10 @@ use spectrum\config;
  */
 function test($name = null, $contexts = null, $body = null, $settings = null)
 {
-	if (\spectrum\builders\isRunningState())
+	if (\spectrum\_internal\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "test" should be call only at building state');
 
-	$arguments = \spectrum\builders\internal\convertArguments(func_get_args(), array(
+	$arguments = \spectrum\_internal\convertArguments(func_get_args(), array(
 		array('closure:body'),                                                                                  // function(\Closure $body)
 		array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
 		array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
@@ -51,7 +51,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($body)
 		$testSpec->test->setFunction($body);
 	
-	$settings = \spectrum\builders\internal\normalizeSettings($settings);
+	$settings = \spectrum\_internal\normalizeSettings($settings);
 	
 	if ($settings['catchPhpErrors'] !== null)
 		$testSpec->errorHandling->setCatchPhpErrors($settings['catchPhpErrors']);
@@ -62,18 +62,18 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($settings['breakOnFirstMatcherFail'] !== null)
 		$testSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	
-	\spectrum\builders\internal\addExclusionSpec($testSpec);
-	\spectrum\builders\internal\getBuildingSpec()->bindChildSpec($testSpec);
+	\spectrum\_internal\addExclusionSpec($testSpec);
+	\spectrum\_internal\getBuildingSpec()->bindChildSpec($testSpec);
 	
 	if ($contexts)
 	{
 		if (is_array($contexts))
 		{
-			foreach (\spectrum\builders\internal\convertArrayWithContextsToSpecs($contexts) as $spec)
+			foreach (\spectrum\_internal\convertArrayWithContextsToSpecs($contexts) as $spec)
 				$testSpec->bindChildSpec($spec);
 		}
 		else
-			\spectrum\builders\internal\callFunctionOnBuildingSpec($contexts, $testSpec);	
+			\spectrum\_internal\callFunctionOnBuildingSpec($contexts, $testSpec);	
 	}
 	
 	return $testSpec;

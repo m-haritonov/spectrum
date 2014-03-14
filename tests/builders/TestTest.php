@@ -29,7 +29,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_ReturnsNewTestSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		
 		$testSpec1 = call_user_func_array('\spectrum\builders\test', $arguments);
 		$this->assertInstanceOf('\spectrum\core\Spec', $testSpec1);
@@ -47,9 +47,9 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_RestoreBuildingSpecAfterCall($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		call_user_func_array('\spectrum\builders\test', $arguments);
-		$this->assertSame($parentSpec, \spectrum\builders\internal\getBuildingSpec());
+		$this->assertSame($parentSpec, \spectrum\_internal\getBuildingSpec());
 	}
 	
 	/**
@@ -58,7 +58,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_BuildingSpecIsRoot_AddsTestSpecToRootSpec($arguments)
 	{
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
-		$this->assertSame(array($testSpec), \spectrum\builders\getRootSpec()->getChildSpecs());
+		$this->assertSame(array($testSpec), \spectrum\_internal\getRootSpec()->getChildSpecs());
 	}
 	
 	/**
@@ -67,7 +67,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_AddsTestSpecToSpecifySpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 		
 		$this->assertSame(array($testSpec), $parentSpec->getChildSpecs());
@@ -78,10 +78,10 @@ class TestTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddTestSpecToRootSpec($arguments)
 	{
-		\spectrum\builders\internal\setBuildingSpec(new Spec());
+		\spectrum\_internal\setBuildingSpec(new Spec());
 		call_user_func_array('\spectrum\builders\test', $arguments);
 		
-		$this->assertSame(array(), \spectrum\builders\getRootSpec()->getChildSpecs());
+		$this->assertSame(array(), \spectrum\_internal\getRootSpec()->getChildSpecs());
 	}
 	
 	/**
@@ -89,7 +89,7 @@ class TestTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddTestSpecToSiblingTestSpecs($arguments)
 	{
-		\spectrum\builders\internal\setBuildingSpec(new Spec());
+		\spectrum\_internal\setBuildingSpec(new Spec());
 		$testSpec1 = call_user_func_array('\spectrum\builders\test', $arguments);
 		$testSpec2 = call_user_func_array('\spectrum\builders\test', $arguments);
 		$testSpec3 = call_user_func_array('\spectrum\builders\test', $arguments);
@@ -110,7 +110,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_NameArgumentIsString_SetsNameToTestSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
 		$this->assertSame(null, $parentSpec->getName());
@@ -132,7 +132,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsArray_AddsContextSpecsToTestSpecAsChildSpecs($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 		
 		$this->assertSame(array($testSpec), $parentSpec->getChildSpecs());
@@ -166,7 +166,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsContextSpecsToTestSpecAsChildSpecs($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 		
 		$this->assertSame(array($testSpec), $parentSpec->getChildSpecs());
@@ -200,7 +200,7 @@ class TestTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsTestContextSpecToTestSpecWithOwnBodyFunction($arguments)
 	{
-		\spectrum\builders\internal\setBuildingSpec(new Spec());
+		\spectrum\_internal\setBuildingSpec(new Spec());
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 		
 		$contextSpecs = $testSpec->getChildSpecs();
@@ -259,7 +259,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsInteger_SetsErrorHandlingLevelToTestSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
 		$this->assertNotSame(8, $parentSpec->errorHandling->getCatchPhpErrors());
@@ -277,7 +277,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsTrue_SetsErrorHandlingLevelToTestSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
 		$this->assertNotSame(-1, $parentSpec->errorHandling->getCatchPhpErrors());
@@ -295,7 +295,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsFalse_SetsErrorHandlingLevelToTestSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
 		$this->assertNotSame(0, $parentSpec->errorHandling->getCatchPhpErrors());
@@ -317,7 +317,7 @@ class TestTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsArray_SetsSettingsToTestSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($parentSpec);
+		\spectrum\_internal\setBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
 		$this->assertNotSame(8, $parentSpec->errorHandling->getCatchPhpErrors());
@@ -355,7 +355,7 @@ class TestTest extends \spectrum\tests\Test
 			}
 		', 'onEndingSpecExecute');
 		
-		\spectrum\builders\getRootSpec()->run();
+		\spectrum\_internal\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\builders\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Builder "test" should be call only at building state', \spectrum\tests\Test::$temp["exception"]->getMessage());

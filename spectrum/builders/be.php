@@ -16,9 +16,9 @@ use spectrum\config;
  */
 function be($testedValue)
 {
-	if (!\spectrum\builders\isRunningState())
+	if (!\spectrum\_internal\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "be" should be call only at running state');
 
 	$assertClass = config::getAssertClass();
-	return new $assertClass(\spectrum\builders\internal\getRunningEndingSpec(), $testedValue);
+	return new $assertClass(\spectrum\_internal\getRunningEndingSpec(), $testedValue);
 }

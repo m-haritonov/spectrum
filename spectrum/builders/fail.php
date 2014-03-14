@@ -16,9 +16,9 @@ use spectrum\core\details\UserFail;
  */
 function fail($message = null)
 {
-	if (!\spectrum\builders\isRunningState())
+	if (!\spectrum\_internal\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "fail" should be call only at running state');
 	
 	$userFailDetailsClass = config::getUserFailDetailsClass();
-	\spectrum\builders\internal\getRunningEndingSpec()->getResultBuffer()->addResult(false, new $userFailDetailsClass($message));
+	\spectrum\_internal\getRunningEndingSpec()->getResultBuffer()->addResult(false, new $userFailDetailsClass($message));
 }

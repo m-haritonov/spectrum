@@ -14,28 +14,28 @@ if (!function_exists('\spectrum\builders\after'))                               
 if (!function_exists('\spectrum\builders\be'))                                       { require_once __DIR__ . '/builders/be.php'; }
 if (!function_exists('\spectrum\builders\before'))                                   { require_once __DIR__ . '/builders/before.php'; }
 if (!function_exists('\spectrum\builders\fail'))                                     { require_once __DIR__ . '/builders/fail.php'; }
-if (!function_exists('\spectrum\builders\getRootSpec'))                              { require_once __DIR__ . '/builders/getRootSpec.php'; }
 if (!function_exists('\spectrum\builders\group'))                                    { require_once __DIR__ . '/builders/group.php'; }
-if (!function_exists('\spectrum\builders\isRunningState'))                           { require_once __DIR__ . '/builders/isRunningState.php'; }
 if (!function_exists('\spectrum\builders\message'))                                  { require_once __DIR__ . '/builders/message.php'; }
 if (!function_exists('\spectrum\builders\test'))                                     { require_once __DIR__ . '/builders/test.php'; }
 if (!function_exists('\spectrum\builders\this'))                                     { require_once __DIR__ . '/builders/this.php'; }
-if (!function_exists('\spectrum\builders\internal\addExclusionSpec'))                { require_once __DIR__ . '/builders/internal/addExclusionSpec.php'; }
-if (!function_exists('\spectrum\builders\internal\callFunctionOnBuildingSpec'))      { require_once __DIR__ . '/builders/internal/callFunctionOnBuildingSpec.php'; }
-if (!function_exists('\spectrum\builders\internal\convertArguments'))                { require_once __DIR__ . '/builders/internal/convertArguments.php'; }
-if (!function_exists('\spectrum\builders\internal\convertArrayWithContextsToSpecs')) { require_once __DIR__ . '/builders/internal/convertArrayWithContextsToSpecs.php'; }
-if (!function_exists('\spectrum\builders\internal\filterOutExclusionSpecs'))         { require_once __DIR__ . '/builders/internal/filterOutExclusionSpecs.php'; }
-if (!function_exists('\spectrum\builders\internal\getBuildingSpec'))                 { require_once __DIR__ . '/builders/internal/getBuildingSpec.php'; }
-if (!function_exists('\spectrum\builders\internal\getExclusionSpecs'))               { require_once __DIR__ . '/builders/internal/getExclusionSpecs.php'; }
-if (!function_exists('\spectrum\builders\internal\getRunningEndingSpec'))            { require_once __DIR__ . '/builders/internal/getRunningEndingSpec.php'; }
-if (!function_exists('\spectrum\builders\internal\loadBaseMatchers'))                { require_once __DIR__ . '/builders/internal/loadBaseMatchers.php'; }
-if (!function_exists('\spectrum\builders\internal\setBuildingSpec'))                 { require_once __DIR__ . '/builders/internal/setBuildingSpec.php'; }
-if (!function_exists('\spectrum\builders\internal\normalizeSettings'))               { require_once __DIR__ . '/builders/internal/normalizeSettings.php'; }
+if (!function_exists('\spectrum\_internal\addExclusionSpec'))                { require_once __DIR__ . '/_internal/addExclusionSpec.php'; }
+if (!function_exists('\spectrum\_internal\callFunctionOnBuildingSpec'))      { require_once __DIR__ . '/_internal/callFunctionOnBuildingSpec.php'; }
+if (!function_exists('\spectrum\_internal\convertArguments'))                { require_once __DIR__ . '/_internal/convertArguments.php'; }
+if (!function_exists('\spectrum\_internal\convertArrayWithContextsToSpecs')) { require_once __DIR__ . '/_internal/convertArrayWithContextsToSpecs.php'; }
+if (!function_exists('\spectrum\_internal\filterOutExclusionSpecs'))         { require_once __DIR__ . '/_internal/filterOutExclusionSpecs.php'; }
+if (!function_exists('\spectrum\_internal\getBuildingSpec'))                 { require_once __DIR__ . '/_internal/getBuildingSpec.php'; }
+if (!function_exists('\spectrum\_internal\getExclusionSpecs'))               { require_once __DIR__ . '/_internal/getExclusionSpecs.php'; }
+if (!function_exists('\spectrum\_internal\getRootSpec'))                     { require_once __DIR__ . '/_internal/getRootSpec.php'; }
+if (!function_exists('\spectrum\_internal\getRunningEndingSpec'))            { require_once __DIR__ . '/_internal/getRunningEndingSpec.php'; }
+if (!function_exists('\spectrum\_internal\isRunningState'))                  { require_once __DIR__ . '/_internal/isRunningState.php'; }
+if (!function_exists('\spectrum\_internal\loadBaseMatchers'))                { require_once __DIR__ . '/_internal/loadBaseMatchers.php'; }
+if (!function_exists('\spectrum\_internal\setBuildingSpec'))                 { require_once __DIR__ . '/_internal/setBuildingSpec.php'; }
+if (!function_exists('\spectrum\_internal\normalizeSettings'))               { require_once __DIR__ . '/_internal/normalizeSettings.php'; }
 
-require_once __DIR__ . '/tools/convertCharset.php';
-require_once __DIR__ . '/tools/convertLatinCharsToLowerCase.php';
-require_once __DIR__ . '/tools/formatTextForOutput.php';
-require_once __DIR__ . '/tools/translate.php';
+require_once __DIR__ . '/_internal/convertCharset.php';
+require_once __DIR__ . '/_internal/convertLatinCharsToLowerCase.php';
+require_once __DIR__ . '/_internal/formatTextForOutput.php';
+require_once __DIR__ . '/_internal/translate.php';
 
 if (!function_exists('addMatcher')) { function addMatcher() { return call_user_func_array('\spectrum\builders\addMatcher', func_get_args()); }}
 if (!function_exists('after'))      { function after()      { return call_user_func_array('\spectrum\builders\after',      func_get_args()); }}

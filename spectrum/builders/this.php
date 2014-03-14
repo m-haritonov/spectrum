@@ -9,8 +9,8 @@ namespace spectrum\builders;
 
 function this()
 {
-	if (!\spectrum\builders\isRunningState())
+	if (!\spectrum\_internal\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "this" should be call only at running state');
 
-	return \spectrum\builders\internal\getRunningEndingSpec()->contexts->getContextData();
+	return \spectrum\_internal\getRunningEndingSpec()->contexts->getContextData();
 }

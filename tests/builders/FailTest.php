@@ -24,7 +24,7 @@ class FailTest extends \spectrum\tests\Test
 			\spectrum\builders\fail("some fail message");
 		', 'onEndingSpecExecute');
 		
-		\spectrum\builders\getRootSpec()->run();
+		\spectrum\_internal\getRootSpec()->run();
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffer"]->getResults();
 		$this->assertInstanceOf($userFailDetailsClassName, $results[0]['details']);
@@ -51,8 +51,8 @@ class FailTest extends \spectrum\tests\Test
 			->->Spec(ending2)
 		', array('parent1' => 'ending2'));
 		
-		\spectrum\builders\getRootSpec()->bindChildSpec(\spectrum\tests\Test::$temp["specs"][0]);
-		\spectrum\builders\getRootSpec()->run();
+		\spectrum\_internal\getRootSpec()->bindChildSpec(\spectrum\tests\Test::$temp["specs"][0]);
+		\spectrum\_internal\getRootSpec()->run();
 
 		$this->assertSame(3, count(\spectrum\tests\Test::$temp["resultBuffers"]));
 		
@@ -84,7 +84,7 @@ class FailTest extends \spectrum\tests\Test
 			\spectrum\builders\fail();
 		', 'onEndingSpecExecute');
 		
-		\spectrum\builders\getRootSpec()->run();
+		\spectrum\_internal\getRootSpec()->run();
 
 		$this->assertSame(1, count(\spectrum\tests\Test::$temp["resultBuffers"]));
 		

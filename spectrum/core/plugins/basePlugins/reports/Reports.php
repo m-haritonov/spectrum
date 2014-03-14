@@ -41,7 +41,7 @@ class Reports extends \spectrum\core\plugins\Plugin
 	
 	protected function getDriverClass()
 	{
-		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
 		$outputFormatWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction(config::getOutputFormat());
 		
 		if ($outputFormatWithLatinLowerCase == 'html')

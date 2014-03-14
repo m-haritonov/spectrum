@@ -30,7 +30,7 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 	if ($expectedClass !== null && mb_substr($expectedClass, 0, 1, 'us-ascii') != '\\')
 		$expectedClass = '\\' . $expectedClass;
 
-	$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+	$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
 	
 	// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
 	$expectedClassWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction($expectedClass);

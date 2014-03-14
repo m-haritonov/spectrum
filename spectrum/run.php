@@ -12,5 +12,5 @@ function run()
 	if (!config::isLocked())
 		config::lock();
 	
-	return \spectrum\builders\getRootSpec()->run();
+	return \spectrum\_internal\getRootSpec()->run();
 }

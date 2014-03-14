@@ -17,7 +17,7 @@ class AddMatcherTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_AddsMatcherFunctionToCurrentBuildingSpec()
 	{
 		$spec = new Spec();
-		\spectrum\builders\internal\setBuildingSpec($spec);
+		\spectrum\_internal\setBuildingSpec($spec);
 		
 		$function = function(){};
 		\spectrum\builders\addMatcher('aaa', $function);
@@ -56,7 +56,7 @@ class AddMatcherTest extends \spectrum\tests\Test
 			}
 		', 'onEndingSpecExecute');
 		
-		\spectrum\builders\getRootSpec()->run();
+		\spectrum\_internal\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\builders\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Builder "addMatcher" should be call only at building state', \spectrum\tests\Test::$temp["exception"]->getMessage());

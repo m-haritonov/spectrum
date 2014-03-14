@@ -53,19 +53,19 @@ class component
 	
 	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0)
 	{
-		$function = config::getFunctionReplacement('\spectrum\tools\formatTextForOutput');
+		$function = config::getFunctionReplacement('\spectrum\_internal\formatTextForOutput');
 		return $function($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
 	}
 	
 	static protected function translateAndEscapeHtml($string, array $replacement = array())
 	{
-		$translateFunction = config::getFunctionReplacement('\spectrum\tools\translate');
+		$translateFunction = config::getFunctionReplacement('\spectrum\_internal\translate');
 		return static::escapeHtml($translateFunction($string, $replacement));
 	}
 	
 	static protected function convertToOutputCharset($string, $inputCharset = null)
 	{
-		$function = config::getFunctionReplacement('\spectrum\tools\convertCharset');
+		$function = config::getFunctionReplacement('\spectrum\_internal\convertCharset');
 		return $function($string, $inputCharset);
 	}
 }

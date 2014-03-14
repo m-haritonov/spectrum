@@ -44,10 +44,10 @@ final class config
 	);
 	
 	static private $functionReplacements = array(
-		'\spectrum\tools\convertCharset'               => '\spectrum\tools\convertCharset',
-		'\spectrum\tools\convertLatinCharsToLowerCase' => '\spectrum\tools\convertLatinCharsToLowerCase',
-		'\spectrum\tools\formatTextForOutput'          => '\spectrum\tools\formatTextForOutput',
-		'\spectrum\tools\translate'                    => '\spectrum\tools\translate',
+		'\spectrum\_internal\convertCharset'               => '\spectrum\_internal\convertCharset',
+		'\spectrum\_internal\convertLatinCharsToLowerCase' => '\spectrum\_internal\convertLatinCharsToLowerCase',
+		'\spectrum\_internal\formatTextForOutput'          => '\spectrum\_internal\formatTextForOutput',
+		'\spectrum\_internal\translate'                    => '\spectrum\_internal\translate',
 	);
 	
 	static private $assertClass = '\spectrum\core\Assert';
@@ -376,7 +376,7 @@ final class config
 	
 	static private function convertLatinCharsToLowerCase($string)
 	{
-		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\tools\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
 		return $convertLatinCharsToLowerCaseFunction($string);
 	}
 }

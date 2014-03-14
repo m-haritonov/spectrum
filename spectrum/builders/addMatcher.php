@@ -14,8 +14,8 @@ namespace spectrum\builders;
  */
 function addMatcher($name, $function)
 {
-	if (\spectrum\builders\isRunningState())
+	if (\spectrum\_internal\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "addMatcher" should be call only at building state');
 
-	return \spectrum\builders\internal\getBuildingSpec()->matchers->add($name, $function);
+	return \spectrum\_internal\getBuildingSpec()->matchers->add($name, $function);
 }

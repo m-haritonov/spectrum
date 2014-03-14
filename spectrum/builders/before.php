@@ -13,8 +13,8 @@ namespace spectrum\builders;
  */
 function before($function)
 {
-	if (\spectrum\builders\isRunningState())
+	if (\spectrum\_internal\isRunningState())
 		throw new \spectrum\builders\Exception('Builder "before" should be call only at building state');
 
-	return \spectrum\builders\internal\getBuildingSpec()->contexts->add($function, 'before');
+	return \spectrum\_internal\getBuildingSpec()->contexts->add($function, 'before');
 }

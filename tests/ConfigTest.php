@@ -296,33 +296,33 @@ class ConfigTest extends Test
 
 	public function testSetFunctionReplacement_SetsNewClass()
 	{
-		config::setFunctionReplacement('\spectrum\tools\translate', '\aaa');
-		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\tools\translate'));
+		config::setFunctionReplacement('\spectrum\_internal\translate', '\aaa');
+		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\_internal\translate'));
 	}
 
 	public function testSetFunctionReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
-		config::setFunctionReplacement('\spectrum\tools\translate', '\aaa');
+		config::setFunctionReplacement('\spectrum\_internal\translate', '\aaa');
 		config::lock();
 
 		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setFunctionReplacement('\spectrum\tools\translate', '\bbb');
+			config::setFunctionReplacement('\spectrum\_internal\translate', '\bbb');
 		});
 
-		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\tools\translate'));
+		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\_internal\translate'));
 	}
 	
 /**/
 	
 	public function testGetFunctionReplacement_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\tools\translate', config::getFunctionReplacement('\spectrum\tools\translate'));
+		$this->assertSame('\spectrum\_internal\translate', config::getFunctionReplacement('\spectrum\_internal\translate'));
 	}
 	
 	public function testGetFunctionReplacement_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getFunctionReplacement('\spectrum\tools\translate');
+		config::getFunctionReplacement('\spectrum\_internal\translate');
 	}
 	
 /**/

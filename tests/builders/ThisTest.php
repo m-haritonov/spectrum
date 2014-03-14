@@ -29,8 +29,8 @@ class ThisTest extends \spectrum\tests\Test
 			->->Spec(ending2)
 		', array('parent1' => 'ending2'));
 		
-		\spectrum\builders\getRootSpec()->bindChildSpec(\spectrum\tests\Test::$temp["specs"][0]);
-		\spectrum\builders\getRootSpec()->run();
+		\spectrum\_internal\getRootSpec()->bindChildSpec(\spectrum\tests\Test::$temp["specs"][0]);
+		\spectrum\_internal\getRootSpec()->run();
 
 		$this->assertSame(\spectrum\tests\Test::$temp["contextDataObjects"], \spectrum\tests\Test::$temp["returnValues"]);
 	}
