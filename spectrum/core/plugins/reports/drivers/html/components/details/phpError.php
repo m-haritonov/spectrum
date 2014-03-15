@@ -41,7 +41,7 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		
 		$output = '';
 		$output .= '<div class="errorLevel">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error level') . ':</h1>' . static::getHtmlEscapedOutputNewline();
+		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error level') . '</h1>' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<p>' . static::escapeHtml($errorLevel) . ' (' . static::escapeHtml(static::getErrorLevelConstantNameByValue($errorLevel)) . ')</p>' . static::getHtmlEscapedOutputNewline();
 		$output .= '</div>';
 		return $output;
@@ -63,7 +63,7 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 	{
 		$output = '';
 		$output .= '<div class="errorMessage">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error message') . ':</h1>' . static::getHtmlEscapedOutputNewline();
+		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error message') . '</h1>' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<p>' . static::escapeHtml($details->getErrorMessage()) . '</p>' . static::getHtmlEscapedOutputNewline();
 		$output .= '</div>';
 		return $output;
@@ -78,7 +78,7 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		
 		return
 			'<div class="source">' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Source') . ':</h1>' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Source') . '</h1>' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<p>' . 
 					static::translateAndEscapeHtml('File') . ' ' .
 					'"<span class="file">' . 

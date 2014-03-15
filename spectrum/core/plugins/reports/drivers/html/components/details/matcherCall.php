@@ -39,7 +39,7 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 	{
 		$output = '';
 		$output .= '<div class="evaluatedValues">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Evaluated values') . ':</h1>' . static::getHtmlEscapedOutputNewline();
+		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Evaluated values') . '</h1>' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<p>';
 		$output .= static::callComponentMethod('code\method', 'getHtml', array('be', array($details->getTestedValue())));
 
@@ -82,7 +82,7 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		
 		return
 			'<div class="source">' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Source') . ':</h1>' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Source') . '</h1>' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<p>' . 
 					static::translateAndEscapeHtml('File') . ' ' .
 					'"<span class="file">' . 
