@@ -12,5 +12,6 @@ function run()
 	if (!config::isLocked())
 		config::lock();
 	
-	return \spectrum\_internal\getRootSpec()->run();
+	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRootSpec');
+	return $getRootSpecFunction()->run();
 }

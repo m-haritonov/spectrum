@@ -17,8 +17,6 @@ TODO: remove onMatcherCallStart/Finish???
 TODO: вынести dispatchPluginEvent в функцию в core\*, а плагины сделать просто функциями, которым передавать параметр $spec? где сохранять активированные плагины? как организовать доступ к плагинам через $spec->pluginName->* в таком случае?
 
 TODO: добавить в setFunctionReplacement и setClassReplacement проверку на наличие публичных методов и соответствие параметров???
-TODO: use config::getFunction('...') for all functions ("builders\*", etc.)
-TODO: init.php -> remove "if (!function_exists('...')){}" from "require_once" calls
 TODO: remove all interfaces, replace function(SomeInterface $object) to /** @param SomeInterface $object */ 
 TODO: config::lock -> deny access from Spec/AssertInterface and builders ???
 TODO: "if (static::$locked) throw new Exception('\spectrum\config is locked');" перенести в отдельный метод и заменить им вызовы setConfigValue

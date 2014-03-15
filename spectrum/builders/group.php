@@ -19,10 +19,12 @@ use spectrum\builders\Exception;
  */
 function group($name = null, $contexts = null, $body = null, $settings = null)
 {
-	if (\spectrum\_internal\isRunningState())
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	if ($isRunningStateFunction())
 		throw new Exception('Builder "group" should be call only at building state');
 
-	$arguments = \spectrum\_internal\convertArguments(func_get_args(), array(
+	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArguments');
+	$arguments = $convertArgumentsFunction(func_get_args(), array(
 		array('closure:body'),                                                                                  // function(\Closure $body)
 		array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
 		array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
@@ -49,7 +51,8 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 	if ($name !== null)
 		$groupSpec->setName($name);
 
-	$settings = \spectrum\_internal\normalizeSettings($settings);
+	$normalizeSettingsFunction = config::getFunctionReplacement('\spectrum\_internal\normalizeSettings');
+	$settings = $normalizeSettingsFunction($settings);
 	
 	if ($settings['catchPhpErrors'] !== null)
 		$groupSpec->errorHandling->setCatchPhpErrors($settings['catchPhpErrors']);
@@ -60,14 +63,16 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 	if ($settings['breakOnFirstMatcherFail'] !== null)
 		$groupSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	
-	\spectrum\_internal\getBuildingSpec()->bindChildSpec($groupSpec);
+	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
+	$getBuildingSpecFunction()->bindChildSpec($groupSpec);
 
 	if ($contexts)
 	{
 		if (is_array($contexts))
 		{
 			$contextEndingSpec = new $specClass();
-			foreach (\spectrum\_internal\convertArrayWithContextsToSpecs($contexts) as $spec)
+			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArrayWithContextsToSpecs');
+			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $spec)
 			{
 				$groupSpec->bindChildSpec($spec);
 				$spec->bindChildSpec($contextEndingSpec);
@@ -75,10 +80,12 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 		}
 		else
 		{
-			\spectrum\_internal\callFunctionOnBuildingSpec($contexts, $groupSpec);
+			$callFunctionOnBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnBuildingSpec');
+			$callFunctionOnBuildingSpecFunction($contexts, $groupSpec);
 			
 			$contextEndingSpec = new $specClass();
-			foreach (\spectrum\_internal\filterOutExclusionSpecs($groupSpec->getEndingSpecs()) as $endingSpec)
+			$filterOutExclusionSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\filterOutExclusionSpecs');
+			foreach ($filterOutExclusionSpecsFunction($groupSpec->getEndingSpecs()) as $endingSpec)
 				$endingSpec->bindChildSpec($contextEndingSpec);
 		}
 	}
@@ -86,7 +93,10 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 		$contextEndingSpec = $groupSpec;
 	
 	if ($body)
-		\spectrum\_internal\callFunctionOnBuildingSpec($body, $contextEndingSpec);
+	{
+		$callFunctionOnBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnBuildingSpec');
+		$callFunctionOnBuildingSpecFunction($body, $contextEndingSpec);
+	}
 
 	return $groupSpec;
 }

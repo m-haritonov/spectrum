@@ -7,15 +7,18 @@ distributed with this source code.
 
 namespace spectrum\_internal;
 
+use spectrum\config;
 use spectrum\core\SpecInterface;
 
 function callFunctionOnBuildingSpec($function, SpecInterface $spec)
 {
-	$specBackup = \spectrum\_internal\getBuildingSpec();
+	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
+	$specBackup = $getBuildingSpecFunction();
 	
-	\spectrum\_internal\setBuildingSpec($spec);
+	$setBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\setBuildingSpec');
+	$setBuildingSpecFunction($spec);
 	$returnValue = $function();
-	\spectrum\_internal\setBuildingSpec($specBackup);
+	$setBuildingSpecFunction($specBackup);
 	
 	return $returnValue;
 }

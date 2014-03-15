@@ -7,9 +7,11 @@ distributed with this source code.
 
 namespace spectrum\_internal;
 
+use spectrum\config;
+
 function getExclusionSpecs()
 {
-	$reflection = new \ReflectionFunction('spectrum\_internal\addExclusionSpec');
+	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internal\addExclusionSpec'));
 	$staticVariables = $reflection->getStaticVariables();
 	
 	if (isset($staticVariables['exclusionSpecs']))

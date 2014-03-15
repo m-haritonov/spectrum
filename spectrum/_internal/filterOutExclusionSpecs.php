@@ -7,9 +7,12 @@ distributed with this source code.
 
 namespace spectrum\_internal;
 
+use spectrum\config;
+
 function filterOutExclusionSpecs(array $specs)
 {
-	$exclusionSpecs = \spectrum\_internal\getExclusionSpecs();
+	$getExclusionSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\getExclusionSpecs');
+	$exclusionSpecs = $getExclusionSpecsFunction();
 	
 	$filteredSpecs = array();
 	foreach ($specs as $spec)

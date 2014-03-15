@@ -7,10 +7,14 @@ distributed with this source code.
 
 namespace spectrum\builders;
 
+use spectrum\config;
+
 function this()
 {
-	if (!\spectrum\_internal\isRunningState())
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	if (!$isRunningStateFunction())
 		throw new \spectrum\builders\Exception('Builder "this" should be call only at running state');
 
-	return \spectrum\_internal\getRunningEndingSpec()->contexts->getContextData();
+	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
+	return $getRunningEndingSpecFunction()->contexts->getContextData();
 }

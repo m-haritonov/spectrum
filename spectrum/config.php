@@ -17,13 +17,16 @@ final class config
 	static private $allowErrorHandlingModify = true;
 
 	static private $classReplacements = array(
-		'\spectrum\core\Assert'                => '\spectrum\core\Assert',
-		'\spectrum\core\ResultBuffer'          => '\spectrum\core\ResultBuffer',
-		'\spectrum\core\Spec'                  => '\spectrum\core\Spec',
-		'\spectrum\core\details\MatcherCall'   => '\spectrum\core\details\MatcherCall',
-		'\spectrum\core\details\PhpError'      => '\spectrum\core\details\PhpError',
-		'\spectrum\core\details\UserFail'      => '\spectrum\core\details\UserFail',
+		'\spectrum\core\Assert' => '\spectrum\core\Assert',
+		'\spectrum\core\ResultBuffer' => '\spectrum\core\ResultBuffer',
+		'\spectrum\core\Spec' => '\spectrum\core\Spec',
+		
+		'\spectrum\core\details\MatcherCall' => '\spectrum\core\details\MatcherCall',
+		'\spectrum\core\details\PhpError' => '\spectrum\core\details\PhpError',
+		'\spectrum\core\details\UserFail' => '\spectrum\core\details\UserFail',
+		
 		'\spectrum\core\plugins\contexts\Data' => '\spectrum\core\plugins\contexts\Data',
+		
 		'\spectrum\core\plugins\reports\drivers\html\html'                                  => '\spectrum\core\plugins\reports\drivers\html\html',
 		'\spectrum\core\plugins\reports\drivers\html\text'                                  => '\spectrum\core\plugins\reports\drivers\html\text',
 		'\spectrum\core\plugins\reports\drivers\html\components\detailsControl'             => '\spectrum\core\plugins\reports\drivers\html\components\detailsControl',
@@ -51,10 +54,33 @@ final class config
 	);
 	
 	static private $functionReplacements = array(
-		'\spectrum\_internal\convertCharset'               => '\spectrum\_internal\convertCharset',
+		'\spectrum\_internal\addExclusionSpec' => '\spectrum\_internal\addExclusionSpec',
+		'\spectrum\_internal\callFunctionOnBuildingSpec' => '\spectrum\_internal\callFunctionOnBuildingSpec',
+		'\spectrum\_internal\convertArguments' => '\spectrum\_internal\convertArguments',
+		'\spectrum\_internal\convertArrayWithContextsToSpecs' => '\spectrum\_internal\convertArrayWithContextsToSpecs',
+		'\spectrum\_internal\convertCharset' => '\spectrum\_internal\convertCharset',
 		'\spectrum\_internal\convertLatinCharsToLowerCase' => '\spectrum\_internal\convertLatinCharsToLowerCase',
-		'\spectrum\_internal\formatTextForOutput'          => '\spectrum\_internal\formatTextForOutput',
-		'\spectrum\_internal\translate'                    => '\spectrum\_internal\translate',
+		'\spectrum\_internal\filterOutExclusionSpecs' => '\spectrum\_internal\filterOutExclusionSpecs',
+		'\spectrum\_internal\formatTextForOutput' => '\spectrum\_internal\formatTextForOutput',
+		'\spectrum\_internal\getBuildingSpec' => '\spectrum\_internal\getBuildingSpec',
+		'\spectrum\_internal\getExclusionSpecs' => '\spectrum\_internal\getExclusionSpecs',
+		'\spectrum\_internal\getRootSpec' => '\spectrum\_internal\getRootSpec',
+		'\spectrum\_internal\getRunningEndingSpec' => '\spectrum\_internal\getRunningEndingSpec',
+		'\spectrum\_internal\isRunningState' => '\spectrum\_internal\isRunningState',
+		'\spectrum\_internal\loadBaseMatchers' => '\spectrum\_internal\loadBaseMatchers',
+		'\spectrum\_internal\normalizeSettings' => '\spectrum\_internal\normalizeSettings',
+		'\spectrum\_internal\setBuildingSpec' => '\spectrum\_internal\setBuildingSpec',
+		'\spectrum\_internal\translate' => '\spectrum\_internal\translate',
+		
+		'\spectrum\builders\addMatcher' => '\spectrum\builders\addMatcher',
+		'\spectrum\builders\after' => '\spectrum\builders\after',
+		'\spectrum\builders\be' => '\spectrum\builders\be',
+		'\spectrum\builders\before' => '\spectrum\builders\before',
+		'\spectrum\builders\fail' => '\spectrum\builders\fail',
+		'\spectrum\builders\group' => '\spectrum\builders\group',
+		'\spectrum\builders\message' => '\spectrum\builders\message',
+		'\spectrum\builders\test' => '\spectrum\builders\test',
+		'\spectrum\builders\this' => '\spectrum\builders\this',
 	);
 	
 	static private $registeredSpecPlugins = array(

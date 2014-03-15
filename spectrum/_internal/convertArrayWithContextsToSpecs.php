@@ -31,8 +31,10 @@ function convertArrayWithContextsToSpecs(array $contexts)
 		$spec = new $specClass();
 		$spec->setName($title);
 		$spec->contexts->add(function() use($values){
+			$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
+			$contextData = $getRunningEndingSpecFunction()->contexts->getContextData();
 			foreach ($values as $propertyName => $value)
-				\spectrum\builders\this()->$propertyName = $value;
+				$contextData->$propertyName = $value;
 		}, 'before');
 		
 		$specs[] = $spec;

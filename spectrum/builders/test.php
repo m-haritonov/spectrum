@@ -18,10 +18,12 @@ use spectrum\config;
  */
 function test($name = null, $contexts = null, $body = null, $settings = null)
 {
-	if (\spectrum\_internal\isRunningState())
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	if ($isRunningStateFunction())
 		throw new \spectrum\builders\Exception('Builder "test" should be call only at building state');
 
-	$arguments = \spectrum\_internal\convertArguments(func_get_args(), array(
+	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArguments');
+	$arguments = $convertArgumentsFunction(func_get_args(), array(
 		array('closure:body'),                                                                                  // function(\Closure $body)
 		array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
 		array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
@@ -51,7 +53,8 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($body)
 		$testSpec->test->setFunction($body);
 	
-	$settings = \spectrum\_internal\normalizeSettings($settings);
+	$normalizeSettingsFunction = config::getFunctionReplacement('\spectrum\_internal\normalizeSettings');
+	$settings = $normalizeSettingsFunction($settings);
 	
 	if ($settings['catchPhpErrors'] !== null)
 		$testSpec->errorHandling->setCatchPhpErrors($settings['catchPhpErrors']);
@@ -62,18 +65,25 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($settings['breakOnFirstMatcherFail'] !== null)
 		$testSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	
-	\spectrum\_internal\addExclusionSpec($testSpec);
-	\spectrum\_internal\getBuildingSpec()->bindChildSpec($testSpec);
+	$addExclusionSpecFunction = config::getFunctionReplacement('\spectrum\_internal\addExclusionSpec');
+	$addExclusionSpecFunction($testSpec);
+	
+	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
+	$getBuildingSpecFunction()->bindChildSpec($testSpec);
 	
 	if ($contexts)
 	{
 		if (is_array($contexts))
 		{
-			foreach (\spectrum\_internal\convertArrayWithContextsToSpecs($contexts) as $spec)
+			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArrayWithContextsToSpecs');
+			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $spec)
 				$testSpec->bindChildSpec($spec);
 		}
 		else
-			\spectrum\_internal\callFunctionOnBuildingSpec($contexts, $testSpec);	
+		{
+			$callFunctionOnBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnBuildingSpec');
+			$callFunctionOnBuildingSpecFunction($contexts, $testSpec);
+		}	
 	}
 	
 	return $testSpec;

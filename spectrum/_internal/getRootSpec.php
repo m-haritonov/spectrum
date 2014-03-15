@@ -18,7 +18,8 @@ function getRootSpec()
 		$specClass = config::getClassReplacement('\spectrum\core\Spec');
 		$rootSpec = new $specClass;
 		
-		\spectrum\_internal\loadBaseMatchers($rootSpec);
+		$loadBaseMatchersFunction = config::getFunctionReplacement('\spectrum\_internal\loadBaseMatchers');
+		$loadBaseMatchersFunction($rootSpec);
 	}
 	
 	return $rootSpec;

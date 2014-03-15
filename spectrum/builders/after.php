@@ -6,6 +6,7 @@ distributed with this source code.
 */
 
 namespace spectrum\builders;
+use spectrum\config;
 
 /**
  * @throws \spectrum\builders\Exception If called not at building state
@@ -13,8 +14,10 @@ namespace spectrum\builders;
  */
 function after($function)
 {
-	if (\spectrum\_internal\isRunningState())
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	if ($isRunningStateFunction())
 		throw new \spectrum\builders\Exception('Builder "after" should be call only at building state');
 
-	return \spectrum\_internal\getBuildingSpec()->contexts->add($function, 'after');
+	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
+	return $getBuildingSpecFunction()->contexts->add($function, 'after');
 }

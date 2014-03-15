@@ -6,6 +6,7 @@ distributed with this source code.
 */
 
 namespace spectrum\builders;
+use spectrum\config;
 
 /**
  * Add message to Messages plugin.
@@ -13,8 +14,10 @@ namespace spectrum\builders;
  */
 function message($message)
 {
-	if (!\spectrum\_internal\isRunningState())
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	if (!$isRunningStateFunction())
 		throw new \spectrum\builders\Exception('Builder "message" should be call only at running state');
 	
-	\spectrum\_internal\getRunningEndingSpec()->messages->add($message);
+	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
+	$getRunningEndingSpecFunction()->messages->add($message);
 }

@@ -6,13 +6,15 @@ distributed with this source code.
 */
 
 namespace spectrum\_internal;
+use spectrum\config;
 
 /**
  * @return \spectrum\core\SpecInterface|null
  */
 function getRunningEndingSpec()
 {
-	$rootSpec = \spectrum\_internal\getRootSpec();
+	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRootSpec');
+	$rootSpec = $getRootSpecFunction();
 	if ($rootSpec->isRunning() && !$rootSpec->getChildSpecs())
 		return $rootSpec;
 	else
