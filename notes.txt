@@ -34,8 +34,6 @@ TODO: перенести функции setBuildingSpec, getBuildingSpec, getExc
 	добавить слово current к имени переменных в хранилище
 	callFunctionOnBuildingSpec -> callFunctionOnCurrentBuildingSpec
 	filterOutExclusionSpecs -> filterOutCurrentExclusionSpecs
-	
-TODO: move plugins from "basePlugins" to parent namespace???
 
 TODO: add abstract/final/static/private/protected/public string to report output in "objectVar" component
 
@@ -163,7 +161,7 @@ TODO: на главной закрепить образец использова
 		// код для проверки ожидаемого результата
 	})
 TODO: пример добавления своего драйвера для отчётов
-	class MyReports extends \spectrum\core\plugins\basePlugins
+	class MyReports extends \spectrum\core\plugins
 	{
 		protected function getDriverClass()
 		{

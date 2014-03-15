@@ -32,9 +32,9 @@ class BeforeTest extends \spectrum\tests\Test
 
 	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction()
 	{
-		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\contexts\Contexts');
+		config::unregisterSpecPlugins('\spectrum\core\plugins\contexts\Contexts');
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\basePlugins\contexts\Contexts
+			class ... extends \spectrum\core\plugins\contexts\Contexts
 			{
 				public function add($function, $type = "before")
 				{

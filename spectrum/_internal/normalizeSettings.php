@@ -11,14 +11,14 @@ use spectrum\config;
 /**
  * @example
  * \spectrum\_internal\normalizeSettings(array(
- *     'catchPhpErrors' => -1,            // see \spectrum\core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors()
- *     'breakOnFirstPhpError' => true,    // see \spectrum\core\plugins\basePlugins\ErrorHandling::setBreakOnFirstPhpError()
- *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\plugins\basePlugins\ErrorHandling::setBreakOnFirstMatcherFail()
+ *     'catchPhpErrors' => -1,            // see \spectrum\core\plugins\ErrorHandling::setCatchPhpErrors()
+ *     'breakOnFirstPhpError' => true,    // see \spectrum\core\plugins\ErrorHandling::setBreakOnFirstPhpError()
+ *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\plugins\ErrorHandling::setBreakOnFirstMatcherFail()
  * ));
  *
  * @example
- * \spectrum\_internal\normalizeSettings(E_ALL); // see \spectrum\core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors()
- * \spectrum\_internal\normalizeSettings(true);  // see \spectrum\core\plugins\basePlugins\ErrorHandling::setCatchPhpErrors()
+ * \spectrum\_internal\normalizeSettings(E_ALL); // see \spectrum\core\plugins\ErrorHandling::setCatchPhpErrors()
+ * \spectrum\_internal\normalizeSettings(true);  // see \spectrum\core\plugins\ErrorHandling::setCatchPhpErrors()
  *
  * @param mixed $settings
  */

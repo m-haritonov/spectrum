@@ -9,12 +9,12 @@ namespace spectrum\core;
 use spectrum\config;
 
 /**
- * @property \spectrum\core\plugins\basePlugins\contexts\Contexts contexts
- * @property \spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
- * @property \spectrum\core\plugins\basePlugins\reports\Reports reports
- * @property \spectrum\core\plugins\basePlugins\Matchers matchers
- * @property \spectrum\core\plugins\basePlugins\Messages messages
- * @property \spectrum\core\plugins\basePlugins\Test test
+ * @property \spectrum\core\plugins\contexts\Contexts contexts
+ * @property \spectrum\core\plugins\ErrorHandling errorHandling
+ * @property \spectrum\core\plugins\reports\Reports reports
+ * @property \spectrum\core\plugins\Matchers matchers
+ * @property \spectrum\core\plugins\Messages messages
+ * @property \spectrum\core\plugins\Test test
  */
 class Spec implements SpecInterface
 {

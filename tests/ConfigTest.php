@@ -263,33 +263,33 @@ class ConfigTest extends Test
 
 	public function testSetClassReplacement_SetsNewClass()
 	{
-		config::setClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', '\aaa');
-		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
+		config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\aaa');
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html'));
 	}
 
 	public function testSetClassReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
-		config::setClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', '\aaa');
+		config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\aaa');
 		config::lock();
 
 		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', '\bbb');
+			config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\bbb');
 		});
 
-		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html'));
 	}
 	
 /**/
 	
 	public function testGetClassReplacement_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\plugins\basePlugins\reports\drivers\html\html', config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html'));
+		$this->assertSame('\spectrum\core\plugins\reports\drivers\html\html', config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html'));
 	}
 	
 	public function testGetClassReplacement_ConfigIsLocked_DoesNotThrowException()
 	{
 		config::lock();
-		config::getClassReplacement('\spectrum\core\plugins\basePlugins\reports\drivers\html\html');
+		config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html');
 	}
 	
 /**/
@@ -805,7 +805,7 @@ class ConfigTest extends Test
 	public function testSetContextDataClass_SetsNewClass()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\basePlugins\contexts\DataInterface
+			class ... implements \spectrum\core\plugins\contexts\DataInterface
 			{
 				public function count(){}
 				public function offsetSet($key, $value){}
@@ -834,7 +834,7 @@ class ConfigTest extends Test
 	{
 		$oldClass = config::getContextDataClass();
 
-		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\plugins\basePlugins\contexts\DataInterface"', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Class "\stdClass" should be implement interface "\spectrum\core\plugins\contexts\DataInterface"', function(){
 			config::setContextDataClass('\stdClass');
 		});
 
@@ -844,7 +844,7 @@ class ConfigTest extends Test
 	public function testSetContextDataClass_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\basePlugins\contexts\DataInterface
+			class ... implements \spectrum\core\plugins\contexts\DataInterface
 			{
 				public function count(){}
 				public function offsetSet($key, $value){}
@@ -868,7 +868,7 @@ class ConfigTest extends Test
 
 	public function testGetContextDataClass_ReturnsSpectrumClassByDefault()
 	{
-		$this->assertSame('\spectrum\core\plugins\basePlugins\contexts\Data', config::getContextDataClass());
+		$this->assertSame('\spectrum\core\plugins\contexts\Data', config::getContextDataClass());
 	}
 	
 	public function testGetContextDataClass_ConfigIsLocked_DoesNotThrowException()
@@ -1657,12 +1657,12 @@ class ConfigTest extends Test
 		$this->restoreClassStaticProperties('\spectrum\config');
 		
 		$this->assertSame(array(
-			'\spectrum\core\plugins\basePlugins\contexts\Contexts',
-			'\spectrum\core\plugins\basePlugins\ErrorHandling',
-			'\spectrum\core\plugins\basePlugins\reports\Reports',
-			'\spectrum\core\plugins\basePlugins\Matchers',
-			'\spectrum\core\plugins\basePlugins\Messages',
-			'\spectrum\core\plugins\basePlugins\Test',
+			'\spectrum\core\plugins\contexts\Contexts',
+			'\spectrum\core\plugins\ErrorHandling',
+			'\spectrum\core\plugins\reports\Reports',
+			'\spectrum\core\plugins\Matchers',
+			'\spectrum\core\plugins\Messages',
+			'\spectrum\core\plugins\Test',
 		), config::getRegisteredSpecPlugins());
 	}
 	

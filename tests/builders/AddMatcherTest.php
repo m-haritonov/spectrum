@@ -27,9 +27,9 @@ class AddMatcherTest extends \spectrum\tests\Test
 
 	public function testCallsAtBuildingState_ReturnsReturnValueOfMatcherAddFunction()
 	{
-		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\Matchers');
+		config::unregisterSpecPlugins('\spectrum\core\plugins\Matchers');
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\basePlugins\Matchers
+			class ... extends \spectrum\core\plugins\Matchers
 			{
 				public function add($name, $function)
 				{

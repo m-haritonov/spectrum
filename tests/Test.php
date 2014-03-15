@@ -28,15 +28,15 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		
 		$this->backupObjectProperties(\spectrum\_internal\getRootSpec());
 		$this->backupClassStaticProperties('\spectrum\config');
-		$this->backupClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
 		
-		config::unregisterSpecPlugins('\spectrum\core\plugins\basePlugins\reports\Reports');
+		config::unregisterSpecPlugins('\spectrum\core\plugins\reports\Reports');
 		\spectrum\tests\Test::$temp = null;
 	}
 	
 	protected function tearDown()
 	{
-		$this->restoreClassStaticProperties('\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList');
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
 		$this->restoreClassStaticProperties('\spectrum\config');
 		$this->restoreObjectProperties(\spectrum\_internal\getRootSpec());
 

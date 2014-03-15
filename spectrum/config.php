@@ -17,30 +17,30 @@ final class config
 	static private $allowErrorHandlingModify = true;
 
 	static private $classReplacements = array(
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\html'                                  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\html',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\text'                                  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\text',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\detailsControl'             => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\detailsControl',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\messages'                   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\messages',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList'                   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\specList',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalInfo'                  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalInfo',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult'                => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\totalResult',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer'               => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\resultBuffer',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\matcherCall'        => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\matcherCall',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\unknown'            => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\details\unknown',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\method'                => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\method',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\operator'              => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\operator',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\property'              => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\property',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variable'              => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variable',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\arrayVar'    => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\arrayVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\boolVar'     => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\boolVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\floatVar'    => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\floatVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\functionVar' => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\functionVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\intVar'      => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\intVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\nullVar'     => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\nullVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\objectVar'   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\objectVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\resourceVar' => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\resourceVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\stringVar'   => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\stringVar',
-		'\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\unknownVar'  => '\spectrum\core\plugins\basePlugins\reports\drivers\html\components\code\variables\unknownVar',
+		'\spectrum\core\plugins\reports\drivers\html\html'                                  => '\spectrum\core\plugins\reports\drivers\html\html',
+		'\spectrum\core\plugins\reports\drivers\html\text'                                  => '\spectrum\core\plugins\reports\drivers\html\text',
+		'\spectrum\core\plugins\reports\drivers\html\components\detailsControl'             => '\spectrum\core\plugins\reports\drivers\html\components\detailsControl',
+		'\spectrum\core\plugins\reports\drivers\html\components\messages'                   => '\spectrum\core\plugins\reports\drivers\html\components\messages',
+		'\spectrum\core\plugins\reports\drivers\html\components\specList'                   => '\spectrum\core\plugins\reports\drivers\html\components\specList',
+		'\spectrum\core\plugins\reports\drivers\html\components\totalInfo'                  => '\spectrum\core\plugins\reports\drivers\html\components\totalInfo',
+		'\spectrum\core\plugins\reports\drivers\html\components\totalResult'                => '\spectrum\core\plugins\reports\drivers\html\components\totalResult',
+		'\spectrum\core\plugins\reports\drivers\html\components\resultBuffer'               => '\spectrum\core\plugins\reports\drivers\html\components\resultBuffer',
+		'\spectrum\core\plugins\reports\drivers\html\components\details\matcherCall'        => '\spectrum\core\plugins\reports\drivers\html\components\details\matcherCall',
+		'\spectrum\core\plugins\reports\drivers\html\components\details\unknown'            => '\spectrum\core\plugins\reports\drivers\html\components\details\unknown',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\method'                => '\spectrum\core\plugins\reports\drivers\html\components\code\method',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\operator'              => '\spectrum\core\plugins\reports\drivers\html\components\code\operator',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\property'              => '\spectrum\core\plugins\reports\drivers\html\components\code\property',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variable'              => '\spectrum\core\plugins\reports\drivers\html\components\code\variable',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\arrayVar'    => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\arrayVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\boolVar'     => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\boolVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\floatVar'    => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\floatVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\functionVar' => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\functionVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\intVar'      => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\intVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\nullVar'     => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\nullVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\objectVar'   => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\objectVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\resourceVar' => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\resourceVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\stringVar'   => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\stringVar',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\unknownVar'  => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\unknownVar',
 	);
 	
 	static private $functionReplacements = array(
@@ -55,16 +55,16 @@ final class config
 	static private $phpErrorDetailsClass = '\spectrum\core\details\PhpError';
 	static private $userFailDetailsClass = '\spectrum\core\details\UserFail';
 	static private $specClass = '\spectrum\core\Spec';
-	static private $contextDataClass = '\spectrum\core\plugins\basePlugins\contexts\Data';
+	static private $contextDataClass = '\spectrum\core\plugins\contexts\Data';
 	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
 	
 	static private $registeredSpecPlugins = array(
-		'\spectrum\core\plugins\basePlugins\contexts\Contexts',
-		'\spectrum\core\plugins\basePlugins\ErrorHandling',
-		'\spectrum\core\plugins\basePlugins\reports\Reports',
-		'\spectrum\core\plugins\basePlugins\Matchers',
-		'\spectrum\core\plugins\basePlugins\Messages',
-		'\spectrum\core\plugins\basePlugins\Test',
+		'\spectrum\core\plugins\contexts\Contexts',
+		'\spectrum\core\plugins\ErrorHandling',
+		'\spectrum\core\plugins\reports\Reports',
+		'\spectrum\core\plugins\Matchers',
+		'\spectrum\core\plugins\Messages',
+		'\spectrum\core\plugins\Test',
 	);
 	
 	static private $locked = false;
@@ -93,7 +93,7 @@ final class config
 	}
 	
 	/**
-	 * Set charset for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\basePlugins\reports\*" classes)
+	 * Set charset for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\reports\*" classes)
 	 * @param string $charsetName
 	 * @return void
 	 */
@@ -111,7 +111,7 @@ final class config
 	}
 	
 	/**
-	 * Set format for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\basePlugins\reports\*" classes)
+	 * Set format for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\reports\*" classes)
 	 * @param $format "html"|"text"
 	 * @return void
 	 */
@@ -169,7 +169,7 @@ final class config
 	}
 	
 	/**
-	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\basePlugins\ErrorHandling" class)
+	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\ErrorHandling" class)
 	 * @param bool $isEnable
 	 */
 	static public function setAllowErrorHandlingModify($isEnable)
@@ -238,7 +238,7 @@ final class config
 	static public function setSpecClass($className){ static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
 	static public function getSpecClass(){ return static::$specClass; }
 
-	static public function setContextDataClass($className){ static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\plugins\basePlugins\contexts\DataInterface'); }
+	static public function setContextDataClass($className){ static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\plugins\contexts\DataInterface'); }
 	static public function getContextDataClass(){ return static::$contextDataClass; }
 	
 	static public function setResultBufferClass($className){ static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
