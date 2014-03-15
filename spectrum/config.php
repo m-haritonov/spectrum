@@ -106,7 +106,8 @@ final class config
 	 */
 	static public function setInputCharset($charsetName)
 	{
-		static::setConfigValue(static::$inputCharset, $charsetName);
+		static::throwExceptionIfLocked();
+		static::$inputCharset = $charsetName;
 	}
 	
 	/**
@@ -124,7 +125,8 @@ final class config
 	 */
 	static public function setOutputCharset($charsetName)
 	{
-		static::setConfigValue(static::$outputCharset, $charsetName);
+		static::throwExceptionIfLocked();
+		static::$outputCharset = $charsetName;
 	}
 
 	/**
@@ -142,7 +144,8 @@ final class config
 	 */
 	static public function setOutputFormat($format)
 	{
-		static::setConfigValue(static::$outputFormat, $format);
+		static::throwExceptionIfLocked();
+		static::$outputFormat = $format;
 	}
 
 	/**
@@ -159,10 +162,12 @@ final class config
 	 */
 	static public function setOutputIndention($string)
 	{
+		static::throwExceptionIfLocked();
+		
 		if (preg_match("/[^\t ]/s", $string))
 			throw new Exception('Incorrect char is passed to "\\' . __METHOD__ . '" method (only "\t" and " " chars are allowed)');
 		
-		static::setConfigValue(static::$outputIndention, $string);
+		static::$outputIndention = $string;
 	}
 	
 	/**
@@ -179,10 +184,12 @@ final class config
 	 */
 	static public function setOutputNewline($string)
 	{
+		static::throwExceptionIfLocked();
+		
 		if (preg_match("/[^\r\n]/s", $string))
 			throw new Exception('Incorrect char is passed to "\\' . __METHOD__ . '" method (only "\r" and "\n" chars are allowed)');
 		
-		static::setConfigValue(static::$outputNewline, $string);
+		static::$outputNewline = $string;
 	}
 	
 	/**
@@ -199,7 +206,8 @@ final class config
 	 */
 	static public function setAllowErrorHandlingModify($isEnable)
 	{
-		static::setConfigValue(static::$allowErrorHandlingModify, $isEnable);
+		static::throwExceptionIfLocked();
+		static::$allowErrorHandlingModify = $isEnable;
 	}
 	
 	/**
@@ -358,12 +366,10 @@ final class config
 
 /**/
 
-	static private function setConfigValue(&$var, $value)
+	static private function throwExceptionIfLocked()
 	{
 		if (static::$locked)
 			throw new Exception('\spectrum\config is locked');
-
-		$var = $value;
 	}
 	
 	static private function convertLatinCharsToLowerCase($string)

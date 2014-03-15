@@ -18,8 +18,6 @@ TODO: вынести dispatchPluginEvent в функцию в core\*, а пла�
 
 TODO: добавить в setFunctionReplacement и setClassReplacement проверку на наличие публичных методов и соответствие параметров???
 TODO: remove all interfaces, replace function(SomeInterface $object) to /** @param SomeInterface $object */ 
-TODO: config::lock -> deny access from Spec/AssertInterface and builders ???
-TODO: "if (static::$locked) throw new Exception('\spectrum\config is locked');" перенести в отдельный метод и заменить им вызовы setConfigValue
 
 TODO: вынести общую часть из group и test в функцию createSpec
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
