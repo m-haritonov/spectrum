@@ -7,8 +7,14 @@ distributed with this source code.
 
 namespace spectrum\core\plugins;
 
+use spectrum\config;
+use spectrum\core\ContextDataInterface;
+
 class Test extends \spectrum\core\plugins\Plugin
 {
+	/** @var ContextDataInterface */
+	protected $contextData;
+	
 	/**
 	 * @var \Closure
 	 */
@@ -44,10 +50,38 @@ class Test extends \spectrum\core\plugins\Plugin
 
 /**/
 	
+	public function getContextData()
+	{
+		return $this->contextData;
+	}
+	
+/**/
+	
 	protected function onEndingSpecExecute()
 	{
 		$function = $this->getFunctionThroughRunningAncestors();
 		if ($function)
-			$this->getOwnerSpec()->contexts->callFunctionInContext($function);
+		{
+			$this->contextData = $this->createContextData();
+			
+			$callFunctionOnContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnContextData');
+			foreach ($this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors('before') as $context)
+				$callFunctionOnContextDataFunction($context['function'], array(), $this->contextData);
+			
+			$callFunctionOnContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnContextData');
+			$callFunctionOnContextDataFunction($function, array(), $this->contextData);
+			
+			$callFunctionOnContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnContextData');
+			foreach ($this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors('after') as $context)
+				$callFunctionOnContextDataFunction($context['function'], array(), $this->contextData);
+			
+			$this->contextData = null;
+		}
+	}
+	
+	protected function createContextData()
+	{
+		$contextClass = config::getClassReplacement('\spectrum\core\ContextData');
+		return new $contextClass();
 	}
 }

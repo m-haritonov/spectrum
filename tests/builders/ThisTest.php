@@ -17,7 +17,7 @@ class ThisTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["contextDataObjects"][] = $this->getOwnerSpec()->contexts->getContextData();
+			\spectrum\tests\Test::$temp["contextDataObjects"][] = $this->getOwnerSpec()->test->getContextData();
 			\spectrum\tests\Test::$temp["returnValues"][] = \spectrum\builders\this();
 		', 'onEndingSpecExecute');
 		

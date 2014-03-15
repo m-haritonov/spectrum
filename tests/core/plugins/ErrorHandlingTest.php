@@ -490,7 +490,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		restore_error_handler();
 	}
 	
-	public function testErrorHandling_CatchesPhpErrorsFromContextsPlugin()
+	public function testErrorHandling_CatchesPhpErrorsFromContextModifiers()
 	{
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		
@@ -500,8 +500,9 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		
 		$spec = new Spec();
 		$spec->errorHandling->setCatchPhpErrors(-1);
-		$spec->contexts->add(function(){ trigger_error("aaa", E_USER_NOTICE); }, 'before');
-		$spec->contexts->add(function(){ trigger_error("bbb", E_USER_WARNING); }, 'after');
+		$spec->contextModifiers->add(function(){ trigger_error("aaa", E_USER_NOTICE); }, 'before');
+		$spec->contextModifiers->add(function(){ trigger_error("bbb", E_USER_WARNING); }, 'after');
+		$spec->test->setFunction(function(){});
 		$spec->run();
 		
 		$results = \spectrum\tests\Test::$temp["resultBuffer"]->getResults();

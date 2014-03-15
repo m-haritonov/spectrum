@@ -27,14 +27,14 @@ class BeforeTest extends \spectrum\tests\Test
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'before'),
 			array('function' => $function2, 'type' => 'before'),
-		), $spec->contexts->getAll());
+		), $spec->contextModifiers->getAll());
 	}
 
 	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction()
 	{
-		config::unregisterSpecPlugins('\spectrum\core\plugins\contexts\Contexts');
+		config::unregisterSpecPlugins('\spectrum\core\plugins\ContextModifiers');
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\contexts\Contexts
+			class ... extends \spectrum\core\plugins\ContextModifiers
 			{
 				public function add($function, $type = "before")
 				{

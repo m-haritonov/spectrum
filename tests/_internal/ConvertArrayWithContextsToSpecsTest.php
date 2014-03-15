@@ -21,26 +21,21 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		
 		$this->assertSame(3, count($specs));
 		
-		$contexts = $specs[0]->contexts->getAll();
+		$contexts = $specs[0]->contextModifiers->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[1]->contexts->getAll();
+		$contexts = $specs[1]->contextModifiers->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[2]->contexts->getAll();
+		$contexts = $specs[2]->contextModifiers->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 	}
 	
 	public function testCallsAtBuildingState_CreatesContextFunctionsWithElementKeyAsContextDataPropertyName()
 	{
-		\spectrum\tests\Test::$temp["contextDataObjects"] = array();
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["contextDataObjects"][] = $this->getOwnerSpec()->contexts->getContextData();
-		', 'onEndingSpecExecute');
-		
 		$specs = \spectrum\_internal\convertArrayWithContextsToSpecs(array(
 			array('aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'),
 			array('bbb1', 'bbb2' => 'bbb3', 'bbb4' => 'bbb5'),
@@ -50,20 +45,24 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[0]);
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[1]);
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[2]);
+		
+		$contextDataObjects = array();
+		foreach ($specs as $spec)
+		{
+			$spec->test->setFunction(function() use(&$contextDataObjects, $spec){
+				$contextDataObjects[] = $spec->test->getContextData();
+			});
+		}
+		
 		\spectrum\_internal\getRootSpec()->run();
 
-		$this->assertSame(array('aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'), get_object_vars(\spectrum\tests\Test::$temp["contextDataObjects"][0]));
-		$this->assertSame(array('bbb1', 'bbb2' => 'bbb3', 'bbb4' => 'bbb5'), get_object_vars(\spectrum\tests\Test::$temp["contextDataObjects"][1]));
-		$this->assertSame(array('ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'), get_object_vars(\spectrum\tests\Test::$temp["contextDataObjects"][2]));
+		$this->assertSame(array('aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'), get_object_vars($contextDataObjects[0]));
+		$this->assertSame(array('bbb1', 'bbb2' => 'bbb3', 'bbb4' => 'bbb5'), get_object_vars($contextDataObjects[1]));
+		$this->assertSame(array('ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'), get_object_vars($contextDataObjects[2]));
 	}
 	
 	public function testCallsAtBuildingState_ElementIsNotArray_UsesElementAsArraysWithOneElement()
 	{
-		\spectrum\tests\Test::$temp["contextDataObjects"] = array();
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["contextDataObjects"][] = $this->getOwnerSpec()->contexts->getContextData();
-		', 'onEndingSpecExecute');
-		
 		$specs = \spectrum\_internal\convertArrayWithContextsToSpecs(array(
 			'some name 1' => 'aaa',
 			'some name 2' => 'bbb',
@@ -77,11 +76,20 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[0]);
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[1]);
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[2]);
+		
+		$contextDataObjects = array();
+		foreach ($specs as $spec)
+		{
+			$spec->test->setFunction(function() use(&$contextDataObjects, $spec){
+				$contextDataObjects[] = $spec->test->getContextData();
+			});
+		}
+		
 		\spectrum\_internal\getRootSpec()->run();
 
-		$this->assertSame(array(0 => 'aaa'), get_object_vars(\spectrum\tests\Test::$temp["contextDataObjects"][0]));
-		$this->assertSame(array(0 => 'bbb'), get_object_vars(\spectrum\tests\Test::$temp["contextDataObjects"][1]));
-		$this->assertSame(array(0 => null), get_object_vars(\spectrum\tests\Test::$temp["contextDataObjects"][2]));
+		$this->assertSame(array(0 => 'aaa'), get_object_vars($contextDataObjects[0]));
+		$this->assertSame(array(0 => 'bbb'), get_object_vars($contextDataObjects[1]));
+		$this->assertSame(array(0 => null), get_object_vars($contextDataObjects[2]));
 	}
 	
 	public function provider()

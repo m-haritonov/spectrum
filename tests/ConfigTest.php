@@ -1045,7 +1045,7 @@ class ConfigTest extends Test
 		$this->restoreClassStaticProperties('\spectrum\config');
 		
 		$this->assertSame(array(
-			'\spectrum\core\plugins\contexts\Contexts',
+			'\spectrum\core\plugins\ContextModifiers',
 			'\spectrum\core\plugins\ErrorHandling',
 			'\spectrum\core\plugins\reports\Reports',
 			'\spectrum\core\plugins\Matchers',

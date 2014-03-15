@@ -5,9 +5,9 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\core\plugins\contexts;
+namespace spectrum\core;
 
-class Data implements DataInterface
+class ContextData implements ContextDataInterface
 {
 	public function count()
 	{

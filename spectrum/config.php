@@ -18,14 +18,13 @@ final class config
 
 	static private $classReplacements = array(
 		'\spectrum\core\Assert' => '\spectrum\core\Assert',
+		'\spectrum\core\ContextData' => '\spectrum\core\ContextData',
 		'\spectrum\core\ResultBuffer' => '\spectrum\core\ResultBuffer',
 		'\spectrum\core\Spec' => '\spectrum\core\Spec',
 		
 		'\spectrum\core\details\MatcherCall' => '\spectrum\core\details\MatcherCall',
 		'\spectrum\core\details\PhpError' => '\spectrum\core\details\PhpError',
 		'\spectrum\core\details\UserFail' => '\spectrum\core\details\UserFail',
-		
-		'\spectrum\core\plugins\contexts\Data' => '\spectrum\core\plugins\contexts\Data',
 		
 		'\spectrum\core\plugins\reports\drivers\html\html'                                  => '\spectrum\core\plugins\reports\drivers\html\html',
 		'\spectrum\core\plugins\reports\drivers\html\text'                                  => '\spectrum\core\plugins\reports\drivers\html\text',
@@ -58,6 +57,7 @@ final class config
 	static private $functionReplacements = array(
 		'\spectrum\_internal\addExclusionSpec' => '\spectrum\_internal\addExclusionSpec',
 		'\spectrum\_internal\callFunctionOnBuildingSpec' => '\spectrum\_internal\callFunctionOnBuildingSpec',
+		'\spectrum\_internal\callFunctionOnContextData' => '\spectrum\_internal\callFunctionOnContextData',
 		'\spectrum\_internal\convertArguments' => '\spectrum\_internal\convertArguments',
 		'\spectrum\_internal\convertArrayWithContextsToSpecs' => '\spectrum\_internal\convertArrayWithContextsToSpecs',
 		'\spectrum\_internal\convertCharset' => '\spectrum\_internal\convertCharset',
@@ -65,6 +65,7 @@ final class config
 		'\spectrum\_internal\filterOutExclusionSpecs' => '\spectrum\_internal\filterOutExclusionSpecs',
 		'\spectrum\_internal\formatTextForOutput' => '\spectrum\_internal\formatTextForOutput',
 		'\spectrum\_internal\getBuildingSpec' => '\spectrum\_internal\getBuildingSpec',
+		'\spectrum\_internal\getContextData' => '\spectrum\_internal\getContextData',
 		'\spectrum\_internal\getExclusionSpecs' => '\spectrum\_internal\getExclusionSpecs',
 		'\spectrum\_internal\getRootSpec' => '\spectrum\_internal\getRootSpec',
 		'\spectrum\_internal\getRunningEndingSpec' => '\spectrum\_internal\getRunningEndingSpec',
@@ -86,7 +87,7 @@ final class config
 	);
 	
 	static private $registeredSpecPlugins = array(
-		'\spectrum\core\plugins\contexts\Contexts',
+		'\spectrum\core\plugins\ContextModifiers',
 		'\spectrum\core\plugins\ErrorHandling',
 		'\spectrum\core\plugins\reports\Reports',
 		'\spectrum\core\plugins\Matchers',

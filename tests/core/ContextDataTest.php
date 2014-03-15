@@ -5,16 +5,17 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\tests\core\plugins\contexts;
-use spectrum\core\plugins\contexts\Data;
+namespace spectrum\tests\core;
 
-require_once __DIR__ . '/../../../init.php';
+use spectrum\core\ContextData;
 
-class DataTest extends \spectrum\tests\Test
+require_once __DIR__ . '/../init.php';
+
+class ContextDataTest extends \spectrum\tests\Test
 {
 	public function testSupportsAccessToPropertiesThroughObjectAccessStyle()
 	{
-		$context = new Data();
+		$context = new ContextData();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 		$context->ccc = 'cccVal';
@@ -26,7 +27,7 @@ class DataTest extends \spectrum\tests\Test
 
 	public function testSupportsAccessToPropertiesThroughArrayAccessStyle()
 	{
-		$context = new Data();
+		$context = new ContextData();
 		$context['aaa-aaa'] = 'aaaVal';
 		$context['bbb-bbb'] = 'bbbVal';
 		$context['ccc-ccc'] = 'cccVal';
@@ -38,7 +39,7 @@ class DataTest extends \spectrum\tests\Test
 
 	public function testSupportsPropertyExistCheck()
 	{
-		$context = new Data();
+		$context = new ContextData();
 		$this->assertFalse(isset($context->aaa));
 		$context->aaa = 'aaaVal';
 		$this->assertTrue(isset($context->aaa));
@@ -46,7 +47,7 @@ class DataTest extends \spectrum\tests\Test
 
  	public function testSupportsPropertyUnset()
 	{
-		$context = new Data();
+		$context = new ContextData();
 		$context->aaa = 'aaaVal';
 		unset($context->aaa);
 		$this->assertFalse(property_exists($context, 'aaa'));
@@ -54,7 +55,7 @@ class DataTest extends \spectrum\tests\Test
 
  	public function testSupportsPropertyCountCheck()
 	{
-		$context = new Data();
+		$context = new ContextData();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 
@@ -63,7 +64,7 @@ class DataTest extends \spectrum\tests\Test
 
 	public function testSupportsForeachTraverse()
 	{
-		$context = new Data();
+		$context = new ContextData();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 		$context->ccc = 'cccVal';

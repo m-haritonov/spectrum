@@ -15,6 +15,6 @@ function this()
 	if (!$isRunningStateFunction())
 		throw new \spectrum\builders\Exception('Builder "this" should be call only at running state');
 
-	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
-	return $getRunningEndingSpecFunction()->contexts->getContextData();
+	$getContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\getContextData');
+	return $getContextDataFunction();
 }

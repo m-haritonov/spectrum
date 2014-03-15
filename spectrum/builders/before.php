@@ -19,5 +19,5 @@ function before($function)
 		throw new \spectrum\builders\Exception('Builder "before" should be call only at building state');
 
 	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
-	return $getBuildingSpecFunction()->contexts->add($function, 'before');
+	return $getBuildingSpecFunction()->contextModifiers->add($function, 'before');
 }

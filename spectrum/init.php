@@ -21,6 +21,7 @@ require_once __DIR__ . '/builders/this.php';
 
 require_once __DIR__ . '/_internal/addExclusionSpec.php';
 require_once __DIR__ . '/_internal/callFunctionOnBuildingSpec.php';
+require_once __DIR__ . '/_internal/callFunctionOnContextData.php';
 require_once __DIR__ . '/_internal/convertArguments.php';
 require_once __DIR__ . '/_internal/convertArrayWithContextsToSpecs.php';
 require_once __DIR__ . '/_internal/convertCharset.php';
@@ -28,6 +29,7 @@ require_once __DIR__ . '/_internal/convertLatinCharsToLowerCase.php';
 require_once __DIR__ . '/_internal/filterOutExclusionSpecs.php';
 require_once __DIR__ . '/_internal/formatTextForOutput.php';
 require_once __DIR__ . '/_internal/getBuildingSpec.php';
+require_once __DIR__ . '/_internal/getContextData.php';
 require_once __DIR__ . '/_internal/getExclusionSpecs.php';
 require_once __DIR__ . '/_internal/getRootSpec.php';
 require_once __DIR__ . '/_internal/getRunningEndingSpec.php';

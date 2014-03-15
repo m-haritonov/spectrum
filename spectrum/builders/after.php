@@ -19,5 +19,5 @@ function after($function)
 		throw new \spectrum\builders\Exception('Builder "after" should be call only at building state');
 
 	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
-	return $getBuildingSpecFunction()->contexts->add($function, 'after');
+	return $getBuildingSpecFunction()->contextModifiers->add($function, 'after');
 }

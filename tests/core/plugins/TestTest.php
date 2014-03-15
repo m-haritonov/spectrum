@@ -7,6 +7,7 @@ distributed with this source code.
 
 namespace spectrum\tests\core\plugins;
 
+use spectrum\config;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
@@ -115,6 +116,14 @@ class TestTest extends \spectrum\tests\Test
 	
 /**/
 	
+	public function testGetContextData_ReturnsNullByDefault()
+	{
+		$spec = new Spec();
+		$this->assertSame(null, $spec->test->getContextData());
+	}
+	
+/**/
+	
 	public function testFunctionCall_CallsFunctionOnEndingSpec()
 	{
 		$specs = $this->createSpecsByListPattern('
@@ -174,11 +183,149 @@ class TestTest extends \spectrum\tests\Test
 		
 		$this->assertSame(array(1, 2, 0), $calls);
 	}
+
+	
+	public function testFunctionCall_InitializesContextDataBeforeFunctionCall()
+	{
+		$spec = new Spec();
+		$contextData = array();
+		$spec->test->setFunction(function() use(&$contextData, $spec){
+			$contextData = $spec->test->getContextData();
+		});
+		
+		$spec->run();
+		$this->assertInstanceOf('\spectrum\core\ContextData', $contextData);
+	}
+	
+	public function testFunctionCall_SetsContextDataToNullAfterFunctionCall()
+	{
+		$spec = new Spec();
+		$spec->test->setFunction(function(){});
+		$spec->run();
+		
+		$this->assertNull($spec->test->getContextData());
+	}
+	
+	public function testFunctionCall_CreatesNewInstanceOfContextDataOnEveryRun()
+	{
+		$spec = new Spec();
+		$contextDataItems = array();
+		$spec->test->setFunction(function() use(&$contextDataItems, $spec){
+			$contextDataItems[] = $spec->test->getContextData();
+		});
+		
+		$spec->run();
+		$spec->run();
+		$spec->run();
+		
+		$this->assertSame(3, count($contextDataItems));
+		
+		$this->assertInstanceOf('\spectrum\core\ContextData', $contextDataItems[0]);
+		$this->assertInstanceOf('\spectrum\core\ContextData', $contextDataItems[1]);
+		$this->assertInstanceOf('\spectrum\core\ContextData', $contextDataItems[2]);
+		
+		$this->assertNotSame($contextDataItems[0], $contextDataItems[1]);
+		$this->assertNotSame($contextDataItems[1], $contextDataItems[2]);
+		$this->assertNotSame($contextDataItems[2], $contextDataItems[0]);
+	}
+	
+	public function testFunctionCall_ApplyBeforeFunctionsToContextDataBeforeFunctionCallAndInDirectOrder()
+	{
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+		');
+		
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '1'; }, 'before');
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '2'; }, 'before');
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '3'; }, 'after');
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '4'; }, 'before');
+		
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '5'; }, 'before');
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '6'; }, 'before');
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '7'; }, 'after');
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '8'; }, 'before');
+		
+		$properties = array();
+		$specs[1]->test->setFunction(function() use(&$properties, $specs){
+			$properties[] = get_object_vars($specs[1]->test->getContextData());
+		});
+		
+		$specs[0]->run();
+		
+		$this->assertSame(array(array('aaa' => '124568')), $properties);
+	}
+	
+	public function testFunctionCall_ApplyAfterFunctionsToContextDataAfterFunctionCallAndInBackwardOrder()
+	{
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+		');
+		
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '1'; }, 'after');
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '2'; }, 'after');
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '3'; }, 'before');
+		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '4'; }, 'after');
+		
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '5'; }, 'after');
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '6'; }, 'after');
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '7'; }, 'before');
+		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getContextData()->aaa .= '8'; }, 'after');
+		
+		$properties = array();
+		$contextDataItems = array();
+		$specs[1]->test->setFunction(function() use(&$properties, &$contextDataItems, $specs){
+			$properties[] = get_object_vars($specs[1]->test->getContextData());
+			$contextDataItems[] = $specs[1]->test->getContextData();
+		});
+		
+		$specs[0]->run();
+		
+		$this->assertSame(array(array('aaa' => '37')), $properties);
+		$this->assertSame(array('aaa' => '37865421'), get_object_vars($contextDataItems[0]));
+	}
+	
+	public function testFunctionCall_UsesConfigForContextDataClassGetting()
+	{
+		$contextDataClassName = $this->createClass('class ... extends \spectrum\core\ContextData {}');
+		config::setClassReplacement('\spectrum\core\ContextData', $contextDataClassName);
+
+		$spec = new Spec();
+		$contextData = array();
+		$spec->test->setFunction(function() use(&$contextData, $spec){
+			$contextData = $spec->test->getContextData();
+		});
+		
+		$spec->run();
+		
+		$this->assertInstanceOf($contextDataClassName, $contextData);
+	}
 	
 	public function testFunctionCall_FunctionNotSet_DoesNotTryToCallFunction()
 	{
 		$spec = new Spec();
 		$spec->test->setFunction(null);
 		$spec->run();
+	}
+	
+	public function testFunctionCall_FunctionNotSet_DoesNotInitializeContextData()
+	{
+		\spectrum\tests\Test::$temp["contextDataInitializeCount"] = 0;
+		config::setClassReplacement('\spectrum\core\ContextData', $this->createClass('
+			class ... extends \spectrum\core\ContextData
+			{
+				public function __construct()
+				{
+					\spectrum\tests\Test::$temp["contextDataInitializeCount"]++;
+				}
+			}
+		'));
+		
+		$spec = new Spec();
+		$spec->run();
+		$this->assertSame(0, \spectrum\tests\Test::$temp["contextDataInitializeCount"]);
 	}
 }

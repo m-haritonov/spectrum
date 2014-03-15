@@ -5,9 +5,9 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\core\plugins\contexts;
+namespace spectrum\core;
 
-interface DataInterface extends \Countable, \ArrayAccess
+interface ContextDataInterface extends \Countable, \ArrayAccess
 {
 
 }

@@ -1,12 +1,6 @@
 TODO: MERGE BRANCH
 TODO: добавить старые версии проекта в начало истории репозитория
 TODO: MOVE PROJECT TO GITHUB.COM
-
-TODO: rename "Contexts" to "ContextModifiers"
-TODO: move "...\contexts\Data" to "core\ContextData" ???
-TODO: callFunctionInContext move to "tools", add "$context" parameter
-TODO: перенести инициализацию контекстов в плагин "Test"???
-TODO: заменить this() передачей аргумента с экземпляром контекста???
 	
 TODO: create big example (with anonymous specs, matchers, with all errors, long spec names)
 TODO: add tests for charset usages

@@ -9,7 +9,7 @@ namespace spectrum\core;
 use spectrum\config;
 
 /**
- * @property \spectrum\core\plugins\contexts\Contexts contexts
+ * @property \spectrum\core\plugins\ContextModifiers contextModifiers
  * @property \spectrum\core\plugins\ErrorHandling errorHandling
  * @property \spectrum\core\plugins\reports\Reports reports
  * @property \spectrum\core\plugins\Matchers matchers

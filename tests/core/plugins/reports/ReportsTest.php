@@ -89,7 +89,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
-		$spec->contexts->add(function() use($spec){
+		$spec->contextModifiers->add(function() use($spec){
 			$assert = new Assert($spec, null);
 			$assert->__call('<>&"\'');
 		}, 'before');
@@ -98,7 +98,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ return '<>&"\''; });
-		$spec->contexts->add(function() use($spec){
+		$spec->contextModifiers->add(function() use($spec){
 			$object = new \stdClass();
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
@@ -114,13 +114,13 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
-		$spec->contexts->add(function(){ throw new \Exception('<>&"\''); }, 'before');
+		$spec->contextModifiers->add(function(){ throw new \Exception('<>&"\''); }, 'before');
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->errorHandling->setCatchPhpErrors(true);
-		$spec->contexts->add(function(){ trigger_error('<>&"\''); }, 'before');
+		$spec->contextModifiers->add(function(){ trigger_error('<>&"\''); }, 'before');
 		
 		// Tests for generating data by context modifiers with "after" type
 		
@@ -128,7 +128,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
-		$spec->contexts->add(function() use($spec){
+		$spec->contextModifiers->add(function() use($spec){
 			$assert = new Assert($spec, null);
 			$assert->__call('<>&"\'');
 		}, 'after');
@@ -137,7 +137,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ return '<>&"\''; });
-		$spec->contexts->add(function() use($spec){
+		$spec->contextModifiers->add(function() use($spec){
 			$object = new \stdClass();
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
@@ -153,13 +153,13 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
-		$spec->contexts->add(function(){ throw new \Exception('<>&"\''); }, 'after');
+		$spec->contextModifiers->add(function(){ throw new \Exception('<>&"\''); }, 'after');
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->errorHandling->setCatchPhpErrors(true);
-		$spec->contexts->add(function(){ trigger_error('<>&"\''); }, 'after');
+		$spec->contextModifiers->add(function(){ trigger_error('<>&"\''); }, 'after');
 		
 		// Tests for generating data by "\spectrum\core\details\*" classes
 		
