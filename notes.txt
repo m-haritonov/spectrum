@@ -13,7 +13,7 @@ TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
 
-TODO: add all "details\*" support to reports
+TODO: remove ":" from h1
 
 TODO: вынести общую часть из group и test в функцию createSpec
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
