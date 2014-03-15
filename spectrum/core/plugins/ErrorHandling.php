@@ -141,7 +141,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 		if ($this->getLastErrorHandler() === $this->errorHandler)
 			restore_error_handler();
 		else
-			$this->getOwnerSpec()->getResultBuffer()->addResult(false, 'Error handler in spec "' . $this->getOwnerSpec()->getName() . '" was removed');
+			$this->getOwnerSpec()->getResultBuffer()->addResult(false, 'Error handler was removed');
 
 		$this->errorHandler = null;
 		error_reporting($this->errorReportingBackup);

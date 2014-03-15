@@ -559,11 +559,10 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		', 'onEndingSpecExecute');
 		
 		$spec = new Spec();
-		$spec->setName('aaa');
 		$spec->run();
 		
 		$this->assertSame(array(
-			array('result' => false, 'details' => 'Error handler in spec "aaa" was removed'),
+			array('result' => false, 'details' => 'Error handler was removed'),
 		), \spectrum\tests\Test::$temp["resultBuffer"]->getResults());
 		
 		$this->assertSame($errorHandler3, $this->getLastErrorHandler());
