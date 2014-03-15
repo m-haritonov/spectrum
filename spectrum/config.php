@@ -17,6 +17,13 @@ final class config
 	static private $allowErrorHandlingModify = true;
 
 	static private $classReplacements = array(
+		'\spectrum\core\Assert'                => '\spectrum\core\Assert',
+		'\spectrum\core\ResultBuffer'          => '\spectrum\core\ResultBuffer',
+		'\spectrum\core\Spec'                  => '\spectrum\core\Spec',
+		'\spectrum\core\details\MatcherCall'   => '\spectrum\core\details\MatcherCall',
+		'\spectrum\core\details\PhpError'      => '\spectrum\core\details\PhpError',
+		'\spectrum\core\details\UserFail'      => '\spectrum\core\details\UserFail',
+		'\spectrum\core\plugins\contexts\Data' => '\spectrum\core\plugins\contexts\Data',
 		'\spectrum\core\plugins\reports\drivers\html\html'                                  => '\spectrum\core\plugins\reports\drivers\html\html',
 		'\spectrum\core\plugins\reports\drivers\html\text'                                  => '\spectrum\core\plugins\reports\drivers\html\text',
 		'\spectrum\core\plugins\reports\drivers\html\components\detailsControl'             => '\spectrum\core\plugins\reports\drivers\html\components\detailsControl',
@@ -49,14 +56,6 @@ final class config
 		'\spectrum\_internal\formatTextForOutput'          => '\spectrum\_internal\formatTextForOutput',
 		'\spectrum\_internal\translate'                    => '\spectrum\_internal\translate',
 	);
-	
-	static private $assertClass = '\spectrum\core\Assert';
-	static private $matcherCallDetailsClass = '\spectrum\core\details\MatcherCall';
-	static private $phpErrorDetailsClass = '\spectrum\core\details\PhpError';
-	static private $userFailDetailsClass = '\spectrum\core\details\UserFail';
-	static private $specClass = '\spectrum\core\Spec';
-	static private $contextDataClass = '\spectrum\core\plugins\contexts\Data';
-	static private $resultBufferClass = '\spectrum\core\ResultBuffer';
 	
 	static private $registeredSpecPlugins = array(
 		'\spectrum\core\plugins\contexts\Contexts',
@@ -205,6 +204,8 @@ final class config
 		return static::$classReplacements;
 	}
 	
+/**/
+	
 	static public function setFunctionReplacement($functionName, $newFunctionName)
 	{
 		if (static::$locked)
@@ -222,27 +223,6 @@ final class config
 	{
 		return static::$functionReplacements;
 	}
-	
-	static public function setAssertClass($className){ static::setConfigClassValue(static::$assertClass, $className, '\spectrum\core\AssertInterface'); }
-	static public function getAssertClass(){ return static::$assertClass; }
-	
-	static public function setMatcherCallDetailsClass($className){ static::setConfigClassValue(static::$matcherCallDetailsClass, $className, '\spectrum\core\details\MatcherCallInterface'); }
-	static public function getMatcherCallDetailsClass(){ return static::$matcherCallDetailsClass; }
-	
-	static public function setPhpErrorDetailsClass($className){ static::setConfigClassValue(static::$phpErrorDetailsClass, $className, '\spectrum\core\details\PhpErrorInterface'); }
-	static public function getPhpErrorDetailsClass(){ return static::$phpErrorDetailsClass; }
-	
-	static public function setUserFailDetailsClass($className){ static::setConfigClassValue(static::$userFailDetailsClass, $className, '\spectrum\core\details\UserFailInterface'); }
-	static public function getUserFailDetailsClass(){ return static::$userFailDetailsClass; }
-	
-	static public function setSpecClass($className){ static::setConfigClassValue(static::$specClass, $className, '\spectrum\core\SpecInterface'); }
-	static public function getSpecClass(){ return static::$specClass; }
-
-	static public function setContextDataClass($className){ static::setConfigClassValue(static::$contextDataClass, $className, '\spectrum\core\plugins\contexts\DataInterface'); }
-	static public function getContextDataClass(){ return static::$contextDataClass; }
-	
-	static public function setResultBufferClass($className){ static::setConfigClassValue(static::$resultBufferClass, $className, '\spectrum\core\ResultBufferInterface'); }
-	static public function getResultBufferClass(){ return static::$resultBufferClass; }
 	
 /**/
 
@@ -351,20 +331,6 @@ final class config
 	}
 
 /**/
-
-	static private function setConfigClassValue(&$var, $className, $requiredInterface = null)
-	{
-		if (!class_exists($className))
-			throw new Exception('Class "' . $className . '" not exists');
-		else if ($requiredInterface != null)
-		{
-			$reflection = new \ReflectionClass($className);
-			if (!$reflection->implementsInterface($requiredInterface))
-				throw new Exception('Class "' . $className . '" should be implement interface "' . $requiredInterface . '"');
-		}
-
-		static::setConfigValue($var, $className);
-	}
 
 	static private function setConfigValue(&$var, $value)
 	{

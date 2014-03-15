@@ -99,7 +99,7 @@ class Assert implements AssertInterface
 	 */
 	protected function createMatcherCallDetails()
 	{
-		$callDetailsClass = \spectrum\config::getMatcherCallDetailsClass();
+		$callDetailsClass = \spectrum\config::getClassReplacement('\spectrum\core\details\MatcherCall');
 		return new $callDetailsClass();
 	}
 	

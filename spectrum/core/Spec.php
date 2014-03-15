@@ -558,7 +558,7 @@ class Spec implements SpecInterface
 	 */
 	protected function createResultBuffer()
 	{
-		$resultBufferClass = config::getResultBufferClass();
+		$resultBufferClass = config::getClassReplacement('\spectrum\core\ResultBuffer');
 		return new $resultBufferClass($this);
 	}
 	

@@ -15,7 +15,7 @@ function getRootSpec()
 	
 	if (!isset($rootSpec))
 	{
-		$specClass = config::getSpecClass();
+		$specClass = config::getClassReplacement('\spectrum\core\Spec');
 		$rootSpec = new $specClass;
 		
 		\spectrum\_internal\loadBaseMatchers($rootSpec);

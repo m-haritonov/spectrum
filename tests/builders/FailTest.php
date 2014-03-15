@@ -16,7 +16,7 @@ class FailTest extends \spectrum\tests\Test
 	public function testCallsAtRunningState_GetsUserFailDetailsClassFromConfig()
 	{
 		$userFailDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\UserFail {}');
-		config::setUserFailDetailsClass($userFailDetailsClassName);
+		config::setClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
 
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		$this->registerPluginWithCodeInEvent('

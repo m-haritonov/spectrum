@@ -11,7 +11,7 @@ use spectrum\config;
 
 function convertArrayWithContextsToSpecs(array $contexts)
 {
-	$specClass = config::getSpecClass();
+	$specClass = config::getClassReplacement('\spectrum\core\Spec');
 	$specs = array();
 	
 	foreach ($contexts as $title => $values)

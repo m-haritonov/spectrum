@@ -141,7 +141,7 @@ class Contexts extends \spectrum\core\plugins\Plugin
 	
 	protected function createContextData()
 	{
-		$contextClass = config::getContextDataClass();
+		$contextClass = config::getClassReplacement('\spectrum\core\plugins\contexts\Data');
 		return new $contextClass();
 	}
 	

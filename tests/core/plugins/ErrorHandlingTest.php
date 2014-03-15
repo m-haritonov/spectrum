@@ -346,7 +346,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	public function testErrorHandling_GetsPhpErrorDetailsClassFromConfig()
 	{
 		$phpErrorDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\PhpError {}');
-		config::setPhpErrorDetailsClass($phpErrorDetailsClassName);
+		config::setClassReplacement('\spectrum\core\details\PhpError', $phpErrorDetailsClassName);
 
 		error_reporting(E_USER_WARNING);
 		

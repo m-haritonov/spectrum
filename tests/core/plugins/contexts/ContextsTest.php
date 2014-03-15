@@ -797,7 +797,7 @@ class ContextsTest extends \spectrum\tests\Test
 	public function testContextDataInitialization_UsesConfigForContextDataClassGetting()
 	{
 		$contextDataClassName = $this->createClass('class ... extends \spectrum\core\plugins\contexts\Data {}');
-		config::setContextDataClass($contextDataClassName);
+		config::setClassReplacement('\spectrum\core\plugins\contexts\Data', $contextDataClassName);
 
 		\spectrum\tests\Test::$temp["contextData"] = null;
 		$this->registerPluginWithCodeInEvent('

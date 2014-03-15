@@ -18,7 +18,7 @@ class AssertTest extends \spectrum\tests\Test
 	public function testMatcherCall_GetsMatcherCallDetailsClassFromConfig()
 	{
 		$matcherCallDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\MatcherCall {}');
-		config::setMatcherCallDetailsClass($matcherCallDetailsClassName);
+		config::setClassReplacement('\spectrum\core\details\MatcherCall', $matcherCallDetailsClassName);
 
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		$this->registerPluginWithCodeInEvent('

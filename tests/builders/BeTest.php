@@ -34,7 +34,7 @@ class BeTest extends \spectrum\tests\Test
 	public function testCallsAtRunningState_UsesConfigForAssertClassGetting()
 	{
 		$assertClassName = $this->createClass('class ... extends \spectrum\core\Assert {}');
-		config::setAssertClass($assertClassName);
+		config::setClassReplacement('\spectrum\core\Assert', $assertClassName);
 
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
@@ -52,7 +52,7 @@ class BeTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["assert"] = null;
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
-		config::setAssertClass($this->createClass('
+		config::setClassReplacement('\spectrum\core\Assert', $this->createClass('
 			class ... extends \spectrum\core\Assert
 			{
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue)

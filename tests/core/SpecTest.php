@@ -2468,7 +2468,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		');
 		
-		config::setResultBufferClass($resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
@@ -2672,7 +2672,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		');
 		
-		config::setResultBufferClass($resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
 		$spec = new Spec();
 		
@@ -2692,7 +2692,7 @@ class SpecTest extends \spectrum\tests\Test
 	{
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		$resultBufferClassName = $this->createClass('class ... extends \spectrum\core\ResultBuffer {}');
-		config::setResultBufferClass($resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
 		
 		$specs = $this->createSpecsByListPattern('
@@ -2726,7 +2726,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		');
 		
-		config::setResultBufferClass($resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -2815,7 +2815,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		');
 		
-		config::setResultBufferClass($resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
 		$spec = new Spec();
 		$spec->run();
@@ -2969,7 +2969,7 @@ class SpecTest extends \spectrum\tests\Test
 			}
 		');
 		
-		config::setResultBufferClass($resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec

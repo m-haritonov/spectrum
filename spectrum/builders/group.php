@@ -43,7 +43,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 	else
 		list($name, $contexts, $body, $settings) = $arguments;
 	
-	$specClass = config::getSpecClass();
+	$specClass = config::getClassReplacement('\spectrum\core\Spec');
 	$groupSpec = new $specClass();
 	
 	if ($name !== null)

@@ -124,7 +124,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin
 			if (!($errorLevel & error_reporting()))
 				return;
 			
-			$phpErrorDetailsClass = config::getPhpErrorDetailsClass();
+			$phpErrorDetailsClass = config::getClassReplacement('\spectrum\core\details\PhpError');
 			$thisObject->getOwnerSpec()->getResultBuffer()->addResult(false, new $phpErrorDetailsClass($errorLevel, $errorMessage, $file, $line));
 
 			if ($thisObject->getBreakOnFirstPhpErrorThroughRunningAncestors())
