@@ -261,12 +261,37 @@ class ConfigTest extends Test
 	
 /**/
 
-	public function testSetClassReplacement_SetsNewClass()
+	public function testSetClassReplacement_ClassHasInterface_NewClassImplementsInterface_SetsNewClass()
+	{
+		$className = $this->createClass('
+			class ... implements \spectrum\core\AssertInterface
+			{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue){}
+				public function __call($name, array $matcherArguments = array()){}
+				public function __get($name){}
+			}
+		');
+		
+		config::setClassReplacement('\spectrum\core\Assert', $className);
+		$this->assertSame($className, config::getClassReplacement('\spectrum\core\Assert'));
+	}
+	
+	public function testSetClassReplacement_ClassHasInterface_NewClassDoesNotImplementInterface_ThrowsExceptionAndDoesNotChangeValue()
+	{
+		$className = $this->createClass('class ... {}');
+		$this->assertThrowsException('\spectrum\Exception', 'Class "' . $className . '" does not implement "\spectrum\core\AssertInterface"', function() use($className){
+			config::setClassReplacement('\spectrum\core\Assert', $className);
+		});
+
+		$this->assertSame('\spectrum\core\Assert', config::getClassReplacement('\spectrum\core\Assert'));
+	}
+
+	public function testSetClassReplacement_ClassHasNoInterface_NewClassDoesNotImplementInterface_SetsNewClass()
 	{
 		config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\aaa');
 		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html'));
 	}
-
+	
 	public function testSetClassReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue()
 	{
 		config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\aaa');

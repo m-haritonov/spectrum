@@ -16,9 +16,6 @@ TODO: remove onMatcherCallStart/Finish???
 
 TODO: вынести dispatchPluginEvent в функцию в core\*, а плагины сделать просто функциями, которым передавать параметр $spec? где сохранять активированные плагины? как организовать доступ к плагинам через $spec->pluginName->* в таком случае?
 
-TODO: добавить в setFunctionReplacement и setClassReplacement проверку на наличие публичных методов и соответствие параметров???
-TODO: remove all interfaces, replace function(SomeInterface $object) to /** @param SomeInterface $object */ 
-
 TODO: вынести общую часть из group и test в функцию createSpec
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
 TODO: remove ownerSpec from resultBuffer???

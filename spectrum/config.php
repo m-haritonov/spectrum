@@ -225,6 +225,14 @@ final class config
 		if (static::$locked)
 			throw new Exception('\spectrum\config is locked');
 		
+		$interface = $className . 'Interface';
+		if (interface_exists($interface))
+		{
+			$reflection = new \ReflectionClass($newClassName);
+			if (!$reflection->implementsInterface($interface))
+				throw new Exception('Class "' . $newClassName . '" does not implement "' . $interface . '"');
+		}
+		
 		static::$classReplacements[$className] = $newClassName;
 	}
 	
