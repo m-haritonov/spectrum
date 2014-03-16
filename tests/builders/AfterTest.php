@@ -17,7 +17,7 @@ class AfterTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_AddsContextFunctionWithAfterTypeToCurrentBuildingSpec()
 	{
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
 		
 		$function1 = function(){};
 		$function2 = function(){};

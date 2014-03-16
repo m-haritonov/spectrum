@@ -20,7 +20,7 @@ require_once __DIR__ . '/builders/test.php';
 require_once __DIR__ . '/builders/this.php';
 
 require_once __DIR__ . '/_internal/addExclusionSpec.php';
-require_once __DIR__ . '/_internal/callFunctionOnBuildingSpec.php';
+require_once __DIR__ . '/_internal/callFunctionOnCurrentBuildingSpec.php';
 require_once __DIR__ . '/_internal/callFunctionOnContextData.php';
 require_once __DIR__ . '/_internal/convertArguments.php';
 require_once __DIR__ . '/_internal/convertArrayWithContextsToSpecs.php';
@@ -28,15 +28,15 @@ require_once __DIR__ . '/_internal/convertCharset.php';
 require_once __DIR__ . '/_internal/convertLatinCharsToLowerCase.php';
 require_once __DIR__ . '/_internal/filterOutExclusionSpecs.php';
 require_once __DIR__ . '/_internal/formatTextForOutput.php';
-require_once __DIR__ . '/_internal/getBuildingSpec.php';
-require_once __DIR__ . '/_internal/getContextData.php';
+require_once __DIR__ . '/_internal/getCurrentBuildingSpec.php';
+require_once __DIR__ . '/_internal/getCurrentContextData.php';
 require_once __DIR__ . '/_internal/getExclusionSpecs.php';
 require_once __DIR__ . '/_internal/getRootSpec.php';
-require_once __DIR__ . '/_internal/getRunningEndingSpec.php';
+require_once __DIR__ . '/_internal/getCurrentRunningEndingSpec.php';
 require_once __DIR__ . '/_internal/isRunningState.php';
 require_once __DIR__ . '/_internal/loadBaseMatchers.php';
 require_once __DIR__ . '/_internal/normalizeSettings.php';
-require_once __DIR__ . '/_internal/setBuildingSpec.php';
+require_once __DIR__ . '/_internal/setCurrentBuildingSpec.php';
 require_once __DIR__ . '/_internal/translate.php';
 
 if (!function_exists('addMatcher')) { function addMatcher() { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\addMatcher'), func_get_args()); }}

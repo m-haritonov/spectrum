@@ -19,6 +19,6 @@ function message($message)
 	if (!$isRunningStateFunction())
 		throw new Exception('Builder "message" should be call only at running state');
 	
-	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
-	$getRunningEndingSpecFunction()->messages->add($message);
+	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');
+	$getCurrentRunningEndingSpecFunction()->messages->add($message);
 }

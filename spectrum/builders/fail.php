@@ -21,7 +21,7 @@ function fail($message = null)
 	if (!$isRunningStateFunction())
 		throw new Exception('Builder "fail" should be call only at running state');
 
-	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
+	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');
 	$userFailDetailsClass = config::getClassReplacement('\spectrum\core\details\UserFail');
-	$getRunningEndingSpecFunction()->getResultBuffer()->addResult(false, new $userFailDetailsClass($message));
+	$getCurrentRunningEndingSpecFunction()->getResultBuffer()->addResult(false, new $userFailDetailsClass($message));
 }

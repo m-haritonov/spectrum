@@ -11,9 +11,9 @@ use spectrum\config;
 /**
  * @return \spectrum\core\SpecInterface|null
  */
-function getBuildingSpec()
+function getCurrentBuildingSpec()
 {
-	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internal\setBuildingSpec'));
+	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internal\setCurrentBuildingSpec'));
 	$staticVariables = $reflection->getStaticVariables();
 	
 	if (isset($staticVariables['buildingSpec']))

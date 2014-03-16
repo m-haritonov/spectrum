@@ -9,8 +9,8 @@ namespace spectrum\_internal;
 
 use spectrum\config;
 
-function getContextData()
+function getCurrentContextData()
 {
-	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
-	return $getRunningEndingSpecFunction()->test->getContextData();
+	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');
+	return $getCurrentRunningEndingSpecFunction()->test->getContextData();
 }

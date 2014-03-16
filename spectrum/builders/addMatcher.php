@@ -20,6 +20,6 @@ function addMatcher($name, $function)
 	if ($isRunningStateFunction())
 		throw new Exception('Builder "addMatcher" should be call only at building state');
 
-	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
-	return $getBuildingSpecFunction()->matchers->add($name, $function);
+	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');
+	return $getCurrentBuildingSpecFunction()->matchers->add($name, $function);
 }

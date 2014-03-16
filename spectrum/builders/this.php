@@ -16,6 +16,6 @@ function this()
 	if (!$isRunningStateFunction())
 		throw new Exception('Builder "this" should be call only at running state');
 
-	$getContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\getContextData');
-	return $getContextDataFunction();
+	$getCurrentContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentContextData');
+	return $getCurrentContextDataFunction();
 }

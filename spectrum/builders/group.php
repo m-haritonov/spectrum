@@ -63,8 +63,8 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 	if ($settings['breakOnFirstMatcherFail'] !== null)
 		$groupSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	
-	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
-	$getBuildingSpecFunction()->bindChildSpec($groupSpec);
+	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');
+	$getCurrentBuildingSpecFunction()->bindChildSpec($groupSpec);
 
 	if ($contexts)
 	{
@@ -80,8 +80,8 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 		}
 		else
 		{
-			$callFunctionOnBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnBuildingSpec');
-			$callFunctionOnBuildingSpecFunction($contexts, $groupSpec);
+			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnCurrentBuildingSpec');
+			$callFunctionOnCurrentBuildingSpecFunction($contexts, $groupSpec);
 			
 			$contextEndingSpec = new $specClass();
 			$filterOutExclusionSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\filterOutExclusionSpecs');
@@ -94,8 +94,8 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 	
 	if ($body)
 	{
-		$callFunctionOnBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnBuildingSpec');
-		$callFunctionOnBuildingSpecFunction($body, $contextEndingSpec);
+		$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnCurrentBuildingSpec');
+		$callFunctionOnCurrentBuildingSpecFunction($body, $contextEndingSpec);
 	}
 
 	return $groupSpec;

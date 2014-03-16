@@ -17,7 +17,7 @@ class BeforeTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_AddsContextFunctionWithBeforeTypeToCurrentBuildingSpec()
 	{
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
 		
 		$function1 = function(){};
 		$function2 = function(){};

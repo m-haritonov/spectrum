@@ -19,6 +19,6 @@ function before($function)
 	if ($isRunningStateFunction())
 		throw new Exception('Builder "before" should be call only at building state');
 
-	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
-	return $getBuildingSpecFunction()->contextModifiers->add($function, 'before');
+	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');
+	return $getCurrentBuildingSpecFunction()->contextModifiers->add($function, 'before');
 }

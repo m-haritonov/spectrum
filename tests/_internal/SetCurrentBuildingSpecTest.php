@@ -11,42 +11,42 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class SetBuildingSpecTest extends \spectrum\tests\Test
+class SetCurrentBuildingSpecTest extends \spectrum\tests\Test
 {
 	public function testCallsAtBuildingState_ArgumentIsNull_SetsNullToStaticVariable()
 	{
-		$reflection = new \ReflectionFunction('spectrum\_internal\setBuildingSpec');
+		$reflection = new \ReflectionFunction('spectrum\_internal\setCurrentBuildingSpec');
 		
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
 		$this->assertSame($spec, $staticVariables['buildingSpec']);
 		
-		\spectrum\_internal\setBuildingSpec(null);
+		\spectrum\_internal\setCurrentBuildingSpec(null);
 		$staticVariables = $reflection->getStaticVariables();
 		$this->assertSame(null, $staticVariables['buildingSpec']);
 	}
 	
 	public function testCallsAtBuildingState_ArgumentIsSpec_SetsSpecToStaticVariable()
 	{
-		$reflection = new \ReflectionFunction('spectrum\_internal\setBuildingSpec');
+		$reflection = new \ReflectionFunction('spectrum\_internal\setCurrentBuildingSpec');
 		
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
 		$this->assertSame($spec, $staticVariables['buildingSpec']);
 		
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
 		$this->assertSame($spec, $staticVariables['buildingSpec']);
 		
-		\spectrum\_internal\setBuildingSpec(null);
+		\spectrum\_internal\setCurrentBuildingSpec(null);
 		$staticVariables = $reflection->getStaticVariables();
 		$this->assertSame(null, $staticVariables['buildingSpec']);
 		
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
 		$this->assertSame($spec, $staticVariables['buildingSpec']);
 	}

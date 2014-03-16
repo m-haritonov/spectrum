@@ -11,27 +11,27 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class GetBuildingSpecTest extends \spectrum\tests\Test
+class GetCurrentBuildingSpecTest extends \spectrum\tests\Test
 {
 	public function testCallsAtBuildingState_ReturnsBuildingSpec()
 	{
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
-		$this->assertSame($spec, \spectrum\_internal\getBuildingSpec());
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
+		$this->assertSame($spec, \spectrum\_internal\getCurrentBuildingSpec());
 		
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
-		$this->assertSame($spec, \spectrum\_internal\getBuildingSpec());
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
+		$this->assertSame($spec, \spectrum\_internal\getCurrentBuildingSpec());
 	}
 	
 	public function testCallsAtBuildingState_BuildingSpecIsNotSet_ReturnsRootSpec()
 	{
 		$rootSpec = \spectrum\_internal\getRootSpec();
 		$this->assertInstanceOf('\spectrum\core\SpecInterface', $rootSpec);
-		$this->assertSame($rootSpec, \spectrum\_internal\getBuildingSpec());
+		$this->assertSame($rootSpec, \spectrum\_internal\getCurrentBuildingSpec());
 		
-		\spectrum\_internal\setBuildingSpec(new Spec());
-		\spectrum\_internal\setBuildingSpec(null);
-		$this->assertSame($rootSpec, \spectrum\_internal\getBuildingSpec());
+		\spectrum\_internal\setCurrentBuildingSpec(new Spec());
+		\spectrum\_internal\setCurrentBuildingSpec(null);
+		$this->assertSame($rootSpec, \spectrum\_internal\getCurrentBuildingSpec());
 	}
 }

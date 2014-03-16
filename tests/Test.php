@@ -24,7 +24,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	{
 		parent::setUp();
 		
-		\spectrum\_internal\setBuildingSpec(null);
+		\spectrum\_internal\setCurrentBuildingSpec(null);
 		
 		$this->backupObjectProperties(\spectrum\_internal\getRootSpec());
 		$this->backupClassStaticProperties('\spectrum\config');

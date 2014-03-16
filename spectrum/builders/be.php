@@ -22,6 +22,6 @@ function be($testedValue)
 		throw new Exception('Builder "be" should be call only at running state');
 
 	$assertClass = config::getClassReplacement('\spectrum\core\Assert');
-	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
-	return new $assertClass($getRunningEndingSpecFunction(), $testedValue);
+	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');
+	return new $assertClass($getCurrentRunningEndingSpecFunction(), $testedValue);
 }

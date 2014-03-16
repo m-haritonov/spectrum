@@ -7,11 +7,10 @@ TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
 
+TODO: addExclusionSpec -> addTestSpec, getExclusionSpecs -> getTestSpecs, remove filterOutExclusionSpecs
+
 TODO: вынести общую часть из group и test в функцию createSpec
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
-TODO: добавить слово current к имени переменных в хранилище
-	callFunctionOnBuildingSpec -> callFunctionOnCurrentBuildingSpec
-	filterOutExclusionSpecs -> filterOutCurrentExclusionSpecs
 
 TODO: add abstract/final/static/private/protected/public string to report output in "objectVar" component
 

@@ -69,8 +69,8 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	$addExclusionSpecFunction = config::getFunctionReplacement('\spectrum\_internal\addExclusionSpec');
 	$addExclusionSpecFunction($testSpec);
 	
-	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
-	$getBuildingSpecFunction()->bindChildSpec($testSpec);
+	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');
+	$getCurrentBuildingSpecFunction()->bindChildSpec($testSpec);
 	
 	if ($contexts)
 	{
@@ -82,8 +82,8 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 		}
 		else
 		{
-			$callFunctionOnBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnBuildingSpec');
-			$callFunctionOnBuildingSpecFunction($contexts, $testSpec);
+			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnCurrentBuildingSpec');
+			$callFunctionOnCurrentBuildingSpecFunction($contexts, $testSpec);
 		}	
 	}
 	

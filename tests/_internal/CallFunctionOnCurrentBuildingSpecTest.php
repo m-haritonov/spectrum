@@ -11,14 +11,14 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class CallFunctionOnBuildingSpecTest extends \spectrum\tests\Test
+class CallFunctionOnCurrentBuildingSpecTest extends \spectrum\tests\Test
 {
 	public function testCallsAtBuildingState_CallsPassedFunctionOnPassedBuildingSpec()
 	{
 		$spec = new Spec();
 		$buildingSpec = null;
-		\spectrum\_internal\callFunctionOnBuildingSpec(function() use(&$buildingSpec){
-			$buildingSpec = \spectrum\_internal\getBuildingSpec();
+		\spectrum\_internal\callFunctionOnCurrentBuildingSpec(function() use(&$buildingSpec){
+			$buildingSpec = \spectrum\_internal\getCurrentBuildingSpec();
 		}, $spec);
 		
 		$this->assertSame($spec, $buildingSpec);
@@ -27,16 +27,16 @@ class CallFunctionOnBuildingSpecTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_RestoresBuildingSpecAfterCall()
 	{
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
-		\spectrum\_internal\callFunctionOnBuildingSpec(function(){}, new Spec());
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
+		\spectrum\_internal\callFunctionOnCurrentBuildingSpec(function(){}, new Spec());
 		
-		$this->assertSame($spec, \spectrum\_internal\getBuildingSpec());
+		$this->assertSame($spec, \spectrum\_internal\getCurrentBuildingSpec());
 	}
 	
 	public function testCallsAtBuildingState_DoesNotPassArgumentsToCalleeFunction()
 	{
 		$passedArguments = null;
-		\spectrum\_internal\callFunctionOnBuildingSpec(function() use(&$passedArguments){
+		\spectrum\_internal\callFunctionOnCurrentBuildingSpec(function() use(&$passedArguments){
 			$passedArguments = func_get_args();
 		}, new Spec());
 		
@@ -45,7 +45,7 @@ class CallFunctionOnBuildingSpecTest extends \spectrum\tests\Test
 
 	public function testCallsAtBuildingState_ReturnsReturnValueOfPassedFunction()
 	{
-		$this->assertSame('aaa', \spectrum\_internal\callFunctionOnBuildingSpec(function(){
+		$this->assertSame('aaa', \spectrum\_internal\callFunctionOnCurrentBuildingSpec(function(){
 			return 'aaa';
 		}, new Spec()));
 	}

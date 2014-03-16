@@ -9,14 +9,14 @@ namespace spectrum\tests\_internal;
 
 require_once __DIR__ . '/../init.php';
 
-class GetRunningEndingSpecTest extends \spectrum\tests\Test
+class GetCurrentRunningEndingSpecTest extends \spectrum\tests\Test
 {
 	public function testCallsAtRunningState_RootSpecHasNoChildren_ReturnsRootSpec()
 	{
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\_internal\getRunningEndingSpec();
+			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\_internal\getCurrentRunningEndingSpec();
 		', 'onEndingSpecExecute');
 		
 		$rootSpec = \spectrum\_internal\getRootSpec();
@@ -30,7 +30,7 @@ class GetRunningEndingSpecTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["returnValues"][] = \spectrum\_internal\getRunningEndingSpec();
+			\spectrum\tests\Test::$temp["returnValues"][] = \spectrum\_internal\getCurrentRunningEndingSpec();
 		', 'onEndingSpecExecute');
 		
 		$specs = $this->createSpecsByListPattern('
@@ -50,6 +50,6 @@ class GetRunningEndingSpecTest extends \spectrum\tests\Test
 
 	public function testCallsAtBuildingState_ReturnsNull()
 	{
-		$this->assertSame(null, \spectrum\_internal\getRunningEndingSpec());
+		$this->assertSame(null, \spectrum\_internal\getCurrentRunningEndingSpec());
 	}
 }

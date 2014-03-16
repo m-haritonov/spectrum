@@ -10,9 +10,9 @@ namespace spectrum\_internal;
 use spectrum\core\SpecInterface;
 
 /**
- * @see getBuildingSpec()
+ * @see getCurrentBuildingSpec()
  */
-function setBuildingSpec(SpecInterface $spec = null)
+function setCurrentBuildingSpec(SpecInterface $spec = null)
 {
 	static $buildingSpec = null;
 	$buildingSpec = $spec;

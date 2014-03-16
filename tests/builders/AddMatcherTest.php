@@ -17,7 +17,7 @@ class AddMatcherTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_AddsMatcherFunctionToCurrentBuildingSpec()
 	{
 		$spec = new Spec();
-		\spectrum\_internal\setBuildingSpec($spec);
+		\spectrum\_internal\setCurrentBuildingSpec($spec);
 		
 		$function = function(){};
 		\spectrum\builders\addMatcher('aaa', $function);

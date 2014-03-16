@@ -56,7 +56,7 @@ final class config
 	
 	static private $functionReplacements = array(
 		'\spectrum\_internal\addExclusionSpec' => '\spectrum\_internal\addExclusionSpec',
-		'\spectrum\_internal\callFunctionOnBuildingSpec' => '\spectrum\_internal\callFunctionOnBuildingSpec',
+		'\spectrum\_internal\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internal\callFunctionOnCurrentBuildingSpec',
 		'\spectrum\_internal\callFunctionOnContextData' => '\spectrum\_internal\callFunctionOnContextData',
 		'\spectrum\_internal\convertArguments' => '\spectrum\_internal\convertArguments',
 		'\spectrum\_internal\convertArrayWithContextsToSpecs' => '\spectrum\_internal\convertArrayWithContextsToSpecs',
@@ -64,15 +64,15 @@ final class config
 		'\spectrum\_internal\convertLatinCharsToLowerCase' => '\spectrum\_internal\convertLatinCharsToLowerCase',
 		'\spectrum\_internal\filterOutExclusionSpecs' => '\spectrum\_internal\filterOutExclusionSpecs',
 		'\spectrum\_internal\formatTextForOutput' => '\spectrum\_internal\formatTextForOutput',
-		'\spectrum\_internal\getBuildingSpec' => '\spectrum\_internal\getBuildingSpec',
-		'\spectrum\_internal\getContextData' => '\spectrum\_internal\getContextData',
+		'\spectrum\_internal\getCurrentBuildingSpec' => '\spectrum\_internal\getCurrentBuildingSpec',
+		'\spectrum\_internal\getCurrentContextData' => '\spectrum\_internal\getCurrentContextData',
 		'\spectrum\_internal\getExclusionSpecs' => '\spectrum\_internal\getExclusionSpecs',
 		'\spectrum\_internal\getRootSpec' => '\spectrum\_internal\getRootSpec',
-		'\spectrum\_internal\getRunningEndingSpec' => '\spectrum\_internal\getRunningEndingSpec',
+		'\spectrum\_internal\getCurrentRunningEndingSpec' => '\spectrum\_internal\getCurrentRunningEndingSpec',
 		'\spectrum\_internal\isRunningState' => '\spectrum\_internal\isRunningState',
 		'\spectrum\_internal\loadBaseMatchers' => '\spectrum\_internal\loadBaseMatchers',
 		'\spectrum\_internal\normalizeSettings' => '\spectrum\_internal\normalizeSettings',
-		'\spectrum\_internal\setBuildingSpec' => '\spectrum\_internal\setBuildingSpec',
+		'\spectrum\_internal\setCurrentBuildingSpec' => '\spectrum\_internal\setCurrentBuildingSpec',
 		'\spectrum\_internal\translate' => '\spectrum\_internal\translate',
 		
 		'\spectrum\builders\addMatcher' => '\spectrum\builders\addMatcher',

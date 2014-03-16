@@ -11,7 +11,7 @@ use spectrum\config;
 /**
  * @return \spectrum\core\SpecInterface|null
  */
-function getRunningEndingSpec()
+function getCurrentRunningEndingSpec()
 {
 	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRootSpec');
 	$rootSpec = $getRootSpecFunction();
