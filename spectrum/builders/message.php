@@ -7,16 +7,17 @@ distributed with this source code.
 
 namespace spectrum\builders;
 use spectrum\config;
+use spectrum\Exception;
 
 /**
  * Add message to Messages plugin.
- * @throws \spectrum\builders\Exception If called not at running state
+ * @throws \spectrum\Exception If called not at running state
  */
 function message($message)
 {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
 	if (!$isRunningStateFunction())
-		throw new \spectrum\builders\Exception('Builder "message" should be call only at running state');
+		throw new Exception('Builder "message" should be call only at running state');
 	
 	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
 	$getRunningEndingSpecFunction()->messages->add($message);

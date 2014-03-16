@@ -95,14 +95,14 @@ class NormalizeSettingsTest extends \spectrum\tests\Test
 	
 	public function testCallsAtBuildingState_SettingValueIsArrayWithNotSupportedSetting_ThrowsException()
 	{
-		$this->assertThrowsException('\spectrum\builders\Exception', 'Invalid setting "someSettingName"', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Invalid setting "someSettingName"', function(){
 			\spectrum\_internal\normalizeSettings(array('someSettingName' => 'windows-1251'));
 		});
 	}
 	
 	public function testCallsAtBuildingState_SettingValueHasNotSupportedType_ThrowsException()
 	{
-		$this->assertThrowsException('\spectrum\builders\Exception', 'Invalid settings variable type ("object")', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Invalid settings variable type ("object")', function(){
 			\spectrum\_internal\normalizeSettings(new \stdClass());
 		});
 	}

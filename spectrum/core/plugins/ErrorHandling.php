@@ -9,8 +9,7 @@ namespace spectrum\core\plugins;
 use spectrum\config;
 use spectrum\core\BreakException;
 use spectrum\core\details\MatcherCallInterface;
-use spectrum\core\details\PhpError;
-use spectrum\core\plugins\Exception;
+use spectrum\Exception;
 
 class ErrorHandling extends \spectrum\core\plugins\Plugin
 {

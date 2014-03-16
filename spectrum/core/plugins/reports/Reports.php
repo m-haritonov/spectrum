@@ -8,7 +8,7 @@ distributed with this source code.
 namespace spectrum\core\plugins\reports;
 
 use spectrum\config;
-use spectrum\core\plugins\Exception;
+use spectrum\Exception;
 
 class Reports extends \spectrum\core\plugins\Plugin
 {

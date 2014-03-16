@@ -475,7 +475,7 @@ class AssertTest extends \spectrum\tests\Test
 		$results = \spectrum\tests\Test::$temp["resultBuffer"]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\Exception', $results[0]['details']);
+		$this->assertInstanceOf('\spectrum\Exception', $results[0]['details']);
 		$this->assertSame('Matcher "zzz" not exists', $results[0]['details']->getMessage());
 	}
 	
@@ -525,7 +525,7 @@ class AssertTest extends \spectrum\tests\Test
 		});
 		
 		$assert = new Assert($spec, null);
-		$this->assertThrowsException('\spectrum\core\Exception', 'Matcher call is denied on not running spec (now spec "aaa" is not running)', function() use($assert){
+		$this->assertThrowsException('\spectrum\Exception', 'Matcher call is denied on not running spec (now spec "aaa" is not running)', function() use($assert){
 			$assert->zzz();
 		});
 		
@@ -759,7 +759,7 @@ class AssertTest extends \spectrum\tests\Test
 	public function testPropertyAccess_PropertyNotExists_ThrowsException()
 	{
 		$assert = new \spectrum\core\Assert(new Spec(), null);
-		$this->assertThrowsException('\spectrum\core\Exception', 'Undefined property "aaa" in "\spectrum\core\Assert" class', function() use($assert){
+		$this->assertThrowsException('\spectrum\Exception', 'Undefined property "aaa" in "\spectrum\core\Assert" class', function() use($assert){
 			$assert->aaa;
 		});
 	}

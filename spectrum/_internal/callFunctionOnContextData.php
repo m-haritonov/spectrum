@@ -7,6 +7,8 @@ distributed with this source code.
 
 namespace spectrum\_internal;
 
+use spectrum\Exception;
+
 function callFunctionOnContextData($function, array $arguments, $contextData)
 {
 	// Access to context through "$this" variable, available in php >= 5.4
@@ -14,7 +16,7 @@ function callFunctionOnContextData($function, array $arguments, $contextData)
 	{
 		$function = $function->bindTo($contextData);
 		if (!$function)
-			throw new \spectrum\core\Exception('Can\'t bind "$this" variable to context data instance');
+			throw new Exception('Can\'t bind "$this" variable to context data instance');
 	}
 
 	return call_user_func_array($function, $arguments);

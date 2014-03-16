@@ -7,6 +7,8 @@ distributed with this source code.
 
 namespace spectrum\core;
 
+use spectrum\Exception;
+
 class ResultBuffer implements ResultBufferInterface
 {
 	/** @var \spectrum\core\SpecInterface */

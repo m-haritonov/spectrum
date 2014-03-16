@@ -37,7 +37,7 @@ class ThisTest extends \spectrum\tests\Test
 	
 	public function testCallsAtBuildingState_ThrowsException()
 	{
-		$this->assertThrowsException('\spectrum\builders\Exception', 'Builder "this" should be call only at running state', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Builder "this" should be call only at running state', function(){
 			\spectrum\builders\this();
 		});
 	}

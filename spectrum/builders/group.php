@@ -8,10 +8,10 @@ distributed with this source code.
 namespace spectrum\builders;
 
 use spectrum\config;
-use spectrum\builders\Exception;
+use spectrum\Exception;
 
 /**
- * @throws \spectrum\builders\Exception If called not at building state
+ * @throws \spectrum\Exception If called not at building state
  * @param  string|int|null $name
  * @param  \Closure|array|null $contexts
  * @param  \Closure|null $body

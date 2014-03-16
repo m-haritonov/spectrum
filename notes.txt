@@ -7,8 +7,6 @@ TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
 
-TODO: в matchers используются исключения из core, в _internal используются исключения из core и из builders. Удалить все классы исключений, кроме \spectrum\Exception
-
 TODO: вынести общую часть из group и test в функцию createSpec
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
 TODO: loadBaseMatchers — возвращать массив загруженных матчеров вместо добавления из в передаваемую спеку

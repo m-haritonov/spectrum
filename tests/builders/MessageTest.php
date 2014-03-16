@@ -43,7 +43,7 @@ class MessageTest extends \spectrum\tests\Test
 	
 	public function testCallsAtBuildingState_ThrowsException()
 	{
-		$this->assertThrowsException('\spectrum\builders\Exception', 'Builder "message" should be call only at running state', function(){
+		$this->assertThrowsException('\spectrum\Exception', 'Builder "message" should be call only at running state', function(){
 			\spectrum\builders\message("aaa");
 		});
 	}

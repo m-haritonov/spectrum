@@ -6,7 +6,8 @@ distributed with this source code.
 */
 
 namespace spectrum\_internal;
-use spectrum\config;
+
+use spectrum\Exception;
 
 /**
  * @example
@@ -41,11 +42,11 @@ function normalizeSettings($settings)
 				if (in_array($settingName, array('catchPhpErrors', 'breakOnFirstPhpError', 'breakOnFirstMatcherFail')))
 					$normalizedSettings[$settingName] = $settingValue;
 				else
-					throw new \spectrum\builders\Exception('Invalid setting "' . $settingName . '"');
+					throw new Exception('Invalid setting "' . $settingName . '"');
 			}
 		}
 		else
-			throw new \spectrum\builders\Exception('Invalid settings variable type ("' . gettype($settings) . '")');
+			throw new Exception('Invalid settings variable type ("' . gettype($settings) . '")');
 	}
 	
 	return $normalizedSettings;

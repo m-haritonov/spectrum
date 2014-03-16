@@ -8,9 +8,10 @@ distributed with this source code.
 namespace spectrum\builders;
 
 use spectrum\config;
+use spectrum\Exception;
 
 /**
- * @throws \spectrum\builders\Exception If called not at building state or if data provider is bad
+ * @throws \spectrum\Exception If called not at building state or if data provider is bad
  * @param  string|int|null $name
  * @param  \Closure|array|null $contexts
  * @param  \Closure|null $body
@@ -20,7 +21,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
 	if ($isRunningStateFunction())
-		throw new \spectrum\builders\Exception('Builder "test" should be call only at building state');
+		throw new Exception('Builder "test" should be call only at building state');
 
 	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArguments');
 	$arguments = $convertArgumentsFunction(func_get_args(), array(
@@ -40,7 +41,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	));
 	
 	if ($arguments === null)
-		throw new \spectrum\builders\Exception('Incorrect arguments in "test" builder');
+		throw new Exception('Incorrect arguments in "test" builder');
 	else
 		list($name, $contexts, $body, $settings) = $arguments;
 	

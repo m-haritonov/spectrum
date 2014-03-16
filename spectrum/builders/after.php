@@ -7,16 +7,17 @@ distributed with this source code.
 
 namespace spectrum\builders;
 use spectrum\config;
+use spectrum\Exception;
 
 /**
- * @throws \spectrum\builders\Exception If called not at building state
+ * @throws \spectrum\Exception If called not at building state
  * @param  callback $function
  */
 function after($function)
 {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
 	if ($isRunningStateFunction())
-		throw new \spectrum\builders\Exception('Builder "after" should be call only at building state');
+		throw new Exception('Builder "after" should be call only at building state');
 
 	$getBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getBuildingSpec');
 	return $getBuildingSpecFunction()->contextModifiers->add($function, 'after');

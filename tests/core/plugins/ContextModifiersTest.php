@@ -7,7 +7,6 @@ distributed with this source code.
 
 namespace spectrum\tests\core\plugins;
 
-use spectrum\config;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
@@ -68,7 +67,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 
 		$spec = new Spec();
 		$spec->run();
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
+		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Call of "\spectrum\core\plugins\ContextModifiers::add" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(array(), $spec->contextModifiers->getAll());
 	}
@@ -76,7 +75,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	public function testAdd_ThrowsExceptionForInvalidTypes()
 	{
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\core\plugins\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
 			$spec->contextModifiers->add(function(){}, 'aaa');
 		});
 	}
@@ -86,7 +85,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	public function testGetAll_ThrowsExceptionForInvalidTypes()
 	{
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\core\plugins\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
 			$spec->contextModifiers->getAll('aaa');
 		});
 	}
@@ -271,7 +270,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	public function testGetAllThroughRunningAncestors_ThrowsExceptionForInvalidTypes()
 	{
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\core\plugins\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
 			$spec->contextModifiers->getAllThroughRunningAncestors('aaa');
 		});
 	}
@@ -590,7 +589,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		$spec->contextModifiers->add($function1, 'before');
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
+		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Call of "\spectrum\core\plugins\ContextModifiers::remove" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'before'), 
@@ -645,7 +644,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		$spec->contextModifiers->add($function1, 'before');
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
+		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Call of "\spectrum\core\plugins\ContextModifiers::removeAll" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'before'), 

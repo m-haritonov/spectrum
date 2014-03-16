@@ -48,7 +48,7 @@ class TestTest extends \spectrum\tests\Test
 		$spec->test->setFunction($function);
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["exception"]);
+		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Call of "\spectrum\core\plugins\Test::setFunction" method is forbidden on run', \spectrum\tests\Test::$temp["exception"]->getMessage());
 		$this->assertSame($function, $spec->test->getFunction());
 	}

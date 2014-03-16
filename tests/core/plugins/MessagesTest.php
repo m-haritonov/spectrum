@@ -74,7 +74,7 @@ class MessagesTest extends \spectrum\tests\Test
 			->Spec
 		');
 		
-		$this->assertThrowsException('\spectrum\core\plugins\Exception', 'Messages::add() method available only on specs without children', function() use($specs){
+		$this->assertThrowsException('\spectrum\Exception', 'Messages::add() method available only on specs without children', function() use($specs){
 			$specs[0]->messages->add('aaa aaa');
 		});
 		

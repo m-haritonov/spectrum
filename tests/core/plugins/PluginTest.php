@@ -428,7 +428,7 @@ class PluginTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["caughtException"]);
+		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["caughtException"]);
 		$this->assertSame('Call of "' . $pluginClassName . '::aaa" method is forbidden on run', \spectrum\tests\Test::$temp["caughtException"]->getMessage());
 	}
 	
@@ -478,7 +478,7 @@ class PluginTest extends \spectrum\tests\Test
 		
 		\spectrum\tests\Test::$temp["specs"][0]->run();
 		
-		$this->assertInstanceOf('\spectrum\core\plugins\Exception', \spectrum\tests\Test::$temp["caughtException"]);
+		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["caughtException"]);
 		$this->assertSame('Call of "' . $pluginClassName . '::aaa" method is forbidden on run', \spectrum\tests\Test::$temp["caughtException"]->getMessage());
 	}
 }

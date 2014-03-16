@@ -6,7 +6,9 @@ distributed with this source code.
 */
 
 namespace spectrum\matchers;
+
 use spectrum\config;
+use spectrum\Exception;
 
 /**
  * Returns true when code in $functionWithTestCode throws exception instance of $expectedClass (if not null) with
@@ -16,16 +18,16 @@ use spectrum\config;
 function throwsException($functionWithTestCode, $expectedClass = null, $expectedStringInMessage = null, $expectedCode = null)
 {
 	if (!is_callable($functionWithTestCode))
-		throw new \spectrum\core\Exception('Function with test code is not callable');
+		throw new Exception('Function with test code is not callable');
 	
 	if ($expectedClass !== null && (!is_string($expectedClass) || $expectedClass === ''))
-		throw new \spectrum\core\Exception('Expected class should be not empty string');
+		throw new Exception('Expected class should be not empty string');
 	
 	if ($expectedStringInMessage !== null && !is_string($expectedStringInMessage))
-		throw new \spectrum\core\Exception('Expected string in message should be a string');
+		throw new Exception('Expected string in message should be a string');
 	
 	if ($expectedCode !== null && !is_int($expectedCode))
-		throw new \spectrum\core\Exception('Expected code should be a integer');
+		throw new Exception('Expected code should be a integer');
 	
 	if ($expectedClass !== null && mb_substr($expectedClass, 0, 1, 'us-ascii') != '\\')
 		$expectedClass = '\\' . $expectedClass;
@@ -36,7 +38,7 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 	$expectedClassWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction($expectedClass);
 	
 	if ($expectedClass !== null && $expectedClassWithLatinLowerCase !== '\exception' && !is_subclass_of($expectedClass, '\Exception'))
-		throw new \spectrum\core\Exception('Expected class should be subclass of "\Exception" class (now "' . $expectedClass . '" is not subclass of "\Exception" class)');
+		throw new Exception('Expected class should be subclass of "\Exception" class (now "' . $expectedClass . '" is not subclass of "\Exception" class)');
 
 	try
 	{

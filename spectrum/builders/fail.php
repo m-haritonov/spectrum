@@ -8,17 +8,18 @@ distributed with this source code.
 namespace spectrum\builders;
 use spectrum\config;
 use spectrum\core\details\UserFail;
+use spectrum\Exception;
 
 /**
  * Add to ResultBuffer of running SpecItem false result wits exception as details.
- * @throws \spectrum\builders\Exception If called not at running state
+ * @throws \spectrum\Exception If called not at running state
  * @param string|null $message
  */
 function fail($message = null)
 {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
 	if (!$isRunningStateFunction())
-		throw new \spectrum\builders\Exception('Builder "fail" should be call only at running state');
+		throw new Exception('Builder "fail" should be call only at running state');
 
 	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');
 	$userFailDetailsClass = config::getClassReplacement('\spectrum\core\details\UserFail');

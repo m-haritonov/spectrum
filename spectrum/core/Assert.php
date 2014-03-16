@@ -6,9 +6,11 @@ distributed with this source code.
 */
 
 namespace spectrum\core;
+
 use spectrum\config;
 use spectrum\core\SpecInterface;
 use spectrum\core\Spec;
+use spectrum\Exception;
 
 /**
  * @property Assert $not

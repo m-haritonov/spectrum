@@ -6,8 +6,6 @@ distributed with this source code.
 */
 
 namespace spectrum\core\plugins;
-use spectrum\config;
-use spectrum\core\plugins\Exception;
 
 class Matchers extends \spectrum\core\plugins\Plugin
 {

@@ -63,7 +63,7 @@ class BeforeTest extends \spectrum\tests\Test
 		
 		\spectrum\_internal\getRootSpec()->run();
 		
-		$this->assertInstanceOf('\spectrum\builders\Exception', \spectrum\tests\Test::$temp["exception"]);
+		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Builder "before" should be call only at building state', \spectrum\tests\Test::$temp["exception"]->getMessage());
 	}
 }

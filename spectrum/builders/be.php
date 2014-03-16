@@ -8,9 +8,10 @@ distributed with this source code.
 namespace spectrum\builders;
 
 use spectrum\config;
+use spectrum\Exception;
 
 /**
- * @throws \spectrum\builders\Exception If called not at running state
+ * @throws \spectrum\Exception If called not at running state
  * @param  mixed $testedValue
  * @return \spectrum\core\Assert
  */
@@ -18,7 +19,7 @@ function be($testedValue)
 {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
 	if (!$isRunningStateFunction())
-		throw new \spectrum\builders\Exception('Builder "be" should be call only at running state');
+		throw new Exception('Builder "be" should be call only at running state');
 
 	$assertClass = config::getClassReplacement('\spectrum\core\Assert');
 	$getRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getRunningEndingSpec');

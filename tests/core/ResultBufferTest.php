@@ -79,7 +79,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 	{
 		$resultBuffer = new ResultBuffer(new Spec());
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'ResultBuffer is accept only "true", "false" or "null"', function() use($resultBuffer, $badResultValue){
+		$this->assertThrowsException('\spectrum\Exception', 'ResultBuffer is accept only "true", "false" or "null"', function() use($resultBuffer, $badResultValue){
 			$resultBuffer->addResult($badResultValue);
 		});
 		
@@ -91,7 +91,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->lock();
 		
-		$this->assertThrowsException('\spectrum\core\Exception', 'ResultBuffer is locked', function() use($resultBuffer){
+		$this->assertThrowsException('\spectrum\Exception', 'ResultBuffer is locked', function() use($resultBuffer){
 			$resultBuffer->addResult(true);
 		});
 		
@@ -183,7 +183,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 		$resultBuffer = new $resultBufferClass(new Spec());
 		$resultBuffer->addResult('aaa');
 
-		$this->assertThrowsException('\spectrum\core\Exception', 'ResultBuffer should be contain "true", "false" or "null" values only (now it is contain value of "string" type)', function() use($resultBuffer){
+		$this->assertThrowsException('\spectrum\Exception', 'ResultBuffer should be contain "true", "false" or "null" values only (now it is contain value of "string" type)', function() use($resultBuffer){
 			$resultBuffer->getTotalResult();
 		});
 	}

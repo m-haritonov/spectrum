@@ -216,7 +216,7 @@ class ReportsTest extends \spectrum\tests\Test
 	{
 		config::setOutputFormat('aaa');
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\core\plugins\Exception', 'Output format "aaa" is not supported by "Reports" plugin', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Output format "aaa" is not supported by "Reports" plugin', function() use($spec){
 			$spec->run();
 		});
 	}
