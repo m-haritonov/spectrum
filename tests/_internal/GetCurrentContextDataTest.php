@@ -5,11 +5,11 @@ For the copyright and license information, see the LICENSE.txt file that was
 distributed with this source code.
 */
 
-namespace spectrum\tests\builders;
+namespace spectrum\tests\_internal;
 
 require_once __DIR__ . '/../init.php';
 
-class ThisTest extends \spectrum\tests\Test
+class GetCurrentContextDataTest extends \spectrum\tests\Test
 {
 	public function testCallsAtRunningState_ReturnsContextDataOfCurrentRunningSpec()
 	{
@@ -29,18 +29,11 @@ class ThisTest extends \spectrum\tests\Test
 		{
 			$spec->test->setFunction(function() use(&$contextDataObjects, &$returnValues, $spec){
 				$contextDataObjects[] = $spec->test->getContextData();
-				$returnValues[] = \spectrum\builders\this();
+				$returnValues[] = \spectrum\_internal\getCurrentContextData();
 			});
 		}
 		
 		\spectrum\_internal\getRootSpec()->run();
 		$this->assertSame($contextDataObjects, $returnValues);
-	}
-	
-	public function testCallsAtBuildingState_ThrowsException()
-	{
-		$this->assertThrowsException('\spectrum\Exception', 'Builder "this" should be call only at running state', function(){
-			\spectrum\builders\this();
-		});
 	}
 }
