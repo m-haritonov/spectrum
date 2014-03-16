@@ -49,11 +49,11 @@ class specList extends component
 			.c-specList>li.noContent>.head>.point>a.expand { display: none; }
 			.c-specList>li.noContent>.head>.point { padding-right: 6px; }
 
-			.c-specList>li.expand.notEnding>.head { position: relative; }
-			.c-specList>li.expand.notEnding>.head:before { content: "\\0020"; display: block; position: absolute; top: 0; bottom: 0; left: 12px; width: 1px; background: #ccc; }
-			.c-specList>li.expand.notEnding>.c-specList { display: block; }
-			.c-specList>li.expand.ending>.body>.runDetails { display: block; }
-			.c-specList>li.expand>.head>.point>a.expand span:after { display: none; }
+			.c-specList>li.expanded.notEnding>.head { position: relative; }
+			.c-specList>li.expanded.notEnding>.head:before { content: "\\0020"; display: block; position: absolute; top: 0; bottom: 0; left: 12px; width: 1px; background: #ccc; }
+			.c-specList>li.expanded.notEnding>.c-specList { display: block; }
+			.c-specList>li.expanded.ending>.body>.runDetails { display: block; }
+			.c-specList>li.expanded>.head>.point>a.expand span:after { display: none; }
 		/*]]>*/</style>', 2);
 	}
 
@@ -74,10 +74,10 @@ class specList extends component
 						e.preventDefault();
 						var liNode = e.currentTarget.parentNode.parentNode.parentNode;
 
-						if (spectrum.tools.hasClass(liNode, "expand"))
-							spectrum.tools.removeClass(liNode, "expand");
+						if (spectrum.tools.hasClass(liNode, "expanded"))
+							spectrum.tools.removeClass(liNode, "expanded");
 						else
-							spectrum.tools.addClass(liNode, "expand");
+							spectrum.tools.addClass(liNode, "expanded");
 					});
 				}
 			});
@@ -100,7 +100,7 @@ class specList extends component
 			
 			static::$numbers[static::$depth]++;
 
-			$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '<li class="' . ($spec->getChildSpecs() ? 'notEnding' : 'ending') . ' expand" id="' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline();
+			$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '<li class="' . ($spec->getChildSpecs() ? 'notEnding' : 'ending') . ' expanded" id="' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline();
 			
 			if ($spec->getChildSpecs())
 			{

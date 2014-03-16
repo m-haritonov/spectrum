@@ -20,8 +20,8 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 			.c-details-phpError>*>h1 { margin-bottom: 0.2em; font-size: 1em; }
 			.c-details-phpError>.source>p .file .prefix:before { content: "\2026"; }
 			.c-details-phpError>.source>p .file .prefix>span { display: none; }
-			.c-resultBuffer>.results>.result.expand .c-details-phpError>.source>p .file .prefix:before { display: none; }
-			.c-resultBuffer>.results>.result.expand .c-details-phpError>.source>p .file .prefix>span { display: inline; }
+			.c-resultBuffer>.results>.result.expanded .c-details-phpError>.source>p .file .prefix:before { display: none; }
+			.c-resultBuffer>.results>.result.expanded .c-details-phpError>.source>p .file .prefix>span { display: inline; }
 		/*]]>*/</style>', 2);
 	}
 

@@ -54,7 +54,7 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 			.c-resultBuffer>.results>.result.null>.failType { background: #e0d9b6; color: #3b3930; }
 			.c-resultBuffer>.results>.result.null>a.expand { background: #d9ce9a; color: #fdffdb; }
 			
-			.c-resultBuffer>.results>.result.expand>a.expand:after { display: none; }
+			.c-resultBuffer>.results>.result.expanded>a.expand:after { display: none; }
 		/*]]>*/</style>', 2);
 	}
 
@@ -64,10 +64,10 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 			(function(){
 				function toggleExpand(resultBufferNode)
 				{
-					if (spectrum.tools.hasClass(resultBufferNode, "expand"))
-						spectrum.tools.removeClass(resultBufferNode, "expand");
+					if (spectrum.tools.hasClass(resultBufferNode, "expanded"))
+						spectrum.tools.removeClass(resultBufferNode, "expanded");
 					else
-						spectrum.tools.addClass(resultBufferNode, "expand");
+						spectrum.tools.addClass(resultBufferNode, "expanded");
 				}
 				
 				spectrum.tools.addEventListener(document, "DOMContentLoaded", function()
@@ -101,7 +101,7 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		
 		$output = '';
 		$output .= '<div class="c-resultBuffer c-clearFix">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Run results buffer contains') . ':</h1>' . static::getHtmlEscapedOutputNewline();
+		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Result buffer') . ':</h1>' . static::getHtmlEscapedOutputNewline();
 		$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForResults($results)) . static::getHtmlEscapedOutputNewline();
 		$output .= '</div>';
 		return $output;

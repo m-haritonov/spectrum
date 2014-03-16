@@ -22,11 +22,11 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			.c-code-variables-object>.elements>.element>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
 			.c-code-variables-object .c-code-variables-object { display: inline; vertical-align: baseline; background: transparent; }
 			
-			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.c-code-operator.curlyBrace { display: inline; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.elements:before { display: none; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-object>.elements>.element { display: block; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.c-code-operator.curlyBrace { display: inline; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.elements:before { display: none; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.elements>.element { display: block; }
 		/*]]>*/</style>', 2);
 	}
 	

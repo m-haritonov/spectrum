@@ -5,8 +5,6 @@ TODO: MOVE PROJECT TO GITHUB.COM
 TODO: create big example (with anonymous specs, matchers, with all errors, long spec names)
 TODO: add tests for charset usages
 
-TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
-
 TODO: add abstract/final/static/private/protected/public string to report output in "objectVar" component
 
 TODO: array context group:
@@ -48,8 +46,7 @@ TODO: написать doc комментарии к методам и функ�
 TODO: заменить call_user_func_array в глобальных алиасах билдеров на прямой вызов с передачей аргументов
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
 TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
-TODO: change text "Run results buffer contains" and etc.
-	
+
 TODO: добавить возможность перевода??? Пример: 
 test('Makes something', function(){}, function(){
 	// ...

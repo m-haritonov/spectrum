@@ -49,47 +49,47 @@ class detailsControl extends component
 								spectrum.tools.dispatchEvent(previousState, "click");
 						});
 	
-						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".next"), "click", function(e){
-							e.preventDefault();
-							var nextState = e.currentTarget.parentNode.querySelector("a.state.selected").nextSibling;
-							if (spectrum.tools.hasClass(nextState, "state"))
-								spectrum.tools.dispatchEvent(nextState, "click");
-						});
-	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state1"), "click", function(e){
 							e.preventDefault();
 							changeDetailsControlStates(1);
 	
-							spectrum.tools.removeClass(".c-specList>li.notEnding", "expand");
-							spectrum.tools.removeClass(".c-specList>li.ending", "expand");
-							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expand");
+							spectrum.tools.removeClass(".c-specList>li.notEnding", "expanded");
+							spectrum.tools.removeClass(".c-specList>li.ending", "expanded");
+							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state2"), "click", function(e){
 							e.preventDefault();
 							changeDetailsControlStates(2);
 	
-							spectrum.tools.addClass(".c-specList>li.notEnding", "expand");
-							spectrum.tools.removeClass(".c-specList>li.ending", "expand");
-							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expand");
+							spectrum.tools.addClass(".c-specList>li.notEnding", "expanded");
+							spectrum.tools.removeClass(".c-specList>li.ending", "expanded");
+							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state3"), "click", function(e){
 							e.preventDefault();
 							changeDetailsControlStates(3);
 	
-							spectrum.tools.addClass(".c-specList>li.notEnding", "expand");
-							spectrum.tools.addClass(".c-specList>li.ending", "expand");
-							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expand");
+							spectrum.tools.addClass(".c-specList>li.notEnding", "expanded");
+							spectrum.tools.addClass(".c-specList>li.ending", "expanded");
+							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state4"), "click", function(e){
 							e.preventDefault();
 							changeDetailsControlStates(4);
 	
-							spectrum.tools.addClass(".c-specList>li.notEnding", "expand");
-							spectrum.tools.addClass(".c-specList>li.ending", "expand");
-							spectrum.tools.addClass(".c-resultBuffer>.results>.result", "expand");
+							spectrum.tools.addClass(".c-specList>li.notEnding", "expanded");
+							spectrum.tools.addClass(".c-specList>li.ending", "expanded");
+							spectrum.tools.addClass(".c-resultBuffer>.results>.result", "expanded");
+						});
+						
+						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".next"), "click", function(e){
+							e.preventDefault();
+							var nextState = e.currentTarget.parentNode.querySelector("a.state.selected").nextSibling;
+							if (spectrum.tools.hasClass(nextState, "state"))
+								spectrum.tools.dispatchEvent(nextState, "click");
 						});
 					}
 				});

@@ -14,7 +14,7 @@ class nullVar extends \spectrum\core\plugins\reports\drivers\html\components\com
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-code-variables-null { font-size: 12px; }
 			.c-code-variables-null .value { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; border-radius: 4px; background: rgba(255, 255, 255, 0.5); white-space: nowrap; vertical-align: text-top; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-null .value { overflow: visible; max-width: none; white-space: normal; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-null .value { overflow: visible; max-width: none; white-space: normal; }
 		/*]]>*/</style>', 2);
 	}
 

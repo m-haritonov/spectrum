@@ -21,10 +21,10 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 			.c-code-variables-array>.elements>.element>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
 			.c-code-variables-array .c-code-variables-array { display: inline; vertical-align: baseline; background: transparent; }
 		
-			.c-resultBuffer>.results>.result.expand .c-code-variables-array>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-array>.c-code-operator.curlyBrace { display: inline; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-array>.elements:before { display: none; }
-			.c-resultBuffer>.results>.result.expand .c-code-variables-array>.elements>.element { display: block; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-array>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-array>.c-code-operator.curlyBrace { display: inline; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-array>.elements:before { display: none; }
+			.c-resultBuffer>.results>.result.expanded .c-code-variables-array>.elements>.element { display: block; }
 		/*]]>*/</style>', 2);
 	}
 
