@@ -8,16 +8,20 @@ distributed with this source code.
 namespace spectrum\_internal;
 
 use spectrum\config;
+use spectrum\Exception;
 
 function convertArrayWithContextsToSpecs(array $contexts)
 {
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
 	$specs = array();
 	
+	$num = 0;
 	foreach ($contexts as $title => $values)
 	{
+		$num++;
+		
 		if (!is_array($values))
-			$values = array($values);
+			throw new Exception('The context row #' . $num . ' should be an array');
 
 		$firstValue = reset($values);
 		if ((!is_string($title) || $title === '') && count($values) >= 1 && is_scalar($firstValue))

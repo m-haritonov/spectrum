@@ -17,7 +17,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 			array(),
 			array('aaa'),
 			array('bbb', 'ccc'),
-		), null);
+		));
 		
 		$this->assertSame(3, count($specs));
 		
@@ -40,7 +40,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 			array('aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'),
 			array('bbb1', 'bbb2' => 'bbb3', 'bbb4' => 'bbb5'),
 			array('ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'),
-		), null);
+		));
 		
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[0]);
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[1]);
@@ -61,35 +61,14 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$this->assertSame(array('ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'), get_object_vars($contextDataObjects[2]));
 	}
 	
-	public function testCallsAtBuildingState_ElementIsNotArray_UsesElementAsArraysWithOneElement()
+	public function testCallsAtBuildingState_ElementIsNotArray_ThrowsException()
 	{
-		$specs = \spectrum\_internal\convertArrayWithContextsToSpecs(array(
-			'some name 1' => 'aaa',
-			'some name 2' => 'bbb',
-			null,
-		), null);
-		
-		$this->assertSame('some name 1', $specs[0]->getName());
-		$this->assertSame('some name 2', $specs[1]->getName());
-		$this->assertSame(0, $specs[2]->getName());
-		
-		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[0]);
-		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[1]);
-		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[2]);
-		
-		$contextDataObjects = array();
-		foreach ($specs as $spec)
-		{
-			$spec->test->setFunction(function() use(&$contextDataObjects, $spec){
-				$contextDataObjects[] = $spec->test->getContextData();
-			});
-		}
-		
-		\spectrum\_internal\getRootSpec()->run();
-
-		$this->assertSame(array(0 => 'aaa'), get_object_vars($contextDataObjects[0]));
-		$this->assertSame(array(0 => 'bbb'), get_object_vars($contextDataObjects[1]));
-		$this->assertSame(array(0 => null), get_object_vars($contextDataObjects[2]));
+		$this->assertThrowsException('\spectrum\Exception', 'The context row #2 should be an array', function(){
+			\spectrum\_internal\convertArrayWithContextsToSpecs(array(
+				'some name 1' => array('a' => 'aaa'),
+				'some name 2' => 'aaa',
+			));
+		});
 	}
 	
 	public function provider()
@@ -118,7 +97,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_SetsToSpecProperName($expectedName, $contexts)
 	{
-		$specs = \spectrum\_internal\convertArrayWithContextsToSpecs($contexts, null);
+		$specs = \spectrum\_internal\convertArrayWithContextsToSpecs($contexts);
 		$this->assertSame($expectedName, $specs[0]->getName());
 	}
 }
