@@ -11,11 +11,10 @@ use spectrum\config;
 use spectrum\Exception;
 
 /**
- * @throws \spectrum\Exception If called not at building state or if data provider is bad
  * @param  string|int|null $name
  * @param  \Closure|array|null $contexts
  * @param  \Closure|null $body
- * @return \spectrum\core\Spec
+ * @return \spectrum\core\SpecInterface
  */
 function test($name = null, $contexts = null, $body = null, $settings = null)
 {
@@ -23,69 +22,41 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($isRunningStateFunction())
 		throw new Exception('Builder "test" should be call only at building state');
 
-	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArguments');
-	$arguments = $convertArgumentsFunction(func_get_args(), array(
-		array('closure:body'),                                                                                  // function(\Closure $body)
-		array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
-		array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
-		array('array|closure:contexts', 'closure:body', 'null|scalar|array:settings'),                          // function(array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
-		array('null|scalar:name', 'closure:body'),                                                              // function(null|scalar $name, \Closure $body)
-		array('null|scalar:name', 'closure:body', 'null|scalar|array:settings'),                                // function(null|scalar $name, \Closure $body, null|scalar|array $settings)
-		array('null|scalar:name', 'null|array|closure:contexts', 'closure:body'),                               // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body)
-		array('null|scalar:name', 'null|array|closure:contexts', 'closure:body', 'null|scalar|array:settings'), // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
-	), array(
-		'name' => null,
-		'contexts' => null,
-		'body' => null,
-		'settings' => null,
-	));
-	
-	if ($arguments === null)
-		throw new Exception('Incorrect arguments in "test" builder');
-	else
-		list($name, $contexts, $body, $settings) = $arguments;
+	$convertArgumentsForSpecFunction = config::getFunctionReplacement('\spectrum\_internal\convertArgumentsForSpec');
+	list($name, $contexts, $body, $settings) = $convertArgumentsForSpecFunction(func_get_args(), 'test');
 	
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
-	$testSpec = new $specClass();
+	$builderSpec = new $specClass();
 	
 	if ($name !== null)
-		$testSpec->setName($name);
+		$builderSpec->setName($name);
 	
 	if ($body)
-		$testSpec->test->setFunction($body);
+		$builderSpec->test->setFunction($body);
 	
-	$normalizeSettingsFunction = config::getFunctionReplacement('\spectrum\_internal\normalizeSettings');
-	$settings = $normalizeSettingsFunction($settings);
-	
-	if ($settings['catchPhpErrors'] !== null)
-		$testSpec->errorHandling->setCatchPhpErrors($settings['catchPhpErrors']);
-	
-	if ($settings['breakOnFirstPhpError'] !== null)
-		$testSpec->errorHandling->setBreakOnFirstPhpError($settings['breakOnFirstPhpError']);
-	
-	if ($settings['breakOnFirstMatcherFail'] !== null)
-		$testSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
+	$setSettingsToSpecFunction = config::getFunctionReplacement('\spectrum\_internal\setSettingsToSpec');
+	$setSettingsToSpecFunction($builderSpec, $settings);
 	
 	$addTestSpecFunction = config::getFunctionReplacement('\spectrum\_internal\addTestSpec');
-	$addTestSpecFunction($testSpec);
+	$addTestSpecFunction($builderSpec);
 	
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');
-	$getCurrentBuildingSpecFunction()->bindChildSpec($testSpec);
+	$getCurrentBuildingSpecFunction()->bindChildSpec($builderSpec);
 	
 	if ($contexts)
 	{
 		if (is_array($contexts))
 		{
 			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArrayWithContextsToSpecs');
-			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $spec)
-				$testSpec->bindChildSpec($spec);
+			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $contextSpec)
+				$builderSpec->bindChildSpec($contextSpec);
 		}
 		else
 		{
 			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnCurrentBuildingSpec');
-			$callFunctionOnCurrentBuildingSpecFunction($contexts, $testSpec);
+			$callFunctionOnCurrentBuildingSpecFunction($contexts, $builderSpec);
 		}	
 	}
 	
-	return $testSpec;
+	return $builderSpec;
 }

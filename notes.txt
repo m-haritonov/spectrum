@@ -6,8 +6,6 @@ TODO: create big example (with anonymous specs, matchers, with all errors, long 
 TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
-TODO: вынести общую часть из group и test в функцию createSpec
-TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
 
 TODO: add abstract/final/static/private/protected/public string to report output in "objectVar" component
 
@@ -25,7 +23,6 @@ TODO: array context group:
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 TODO: добавить информацию о фреймворке (название, версию и адрес сайта): либо при нажатии на иконку [i] либо в конце нижнего блока totalResult (<a href="http://spectrum-framework.org/">Spectrum 1.0</a>)
 
-TODO: change text "Run results buffer contains" and etc.
 TODO: добавить всплывающие подсказки и текст ссылок с разъяснениями к элементам ползунка "detailsControl"
 TODO: success ("has empty" or "success, has empty")
 TODO: плагин "Report": добавить title к резальтату или выводить "success", если есть "success" и "empty" дети
@@ -51,9 +48,8 @@ TODO: написать doc комментарии к методам и функ�
 TODO: заменить call_user_func_array в глобальных алиасах билдеров на прямой вызов с передачей аргументов
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
 TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
+TODO: change text "Run results buffer contains" and etc.
 	
-TODO: create "\spectrum\tools\createTree" function and similar auxiliary functions and classes?
-
 TODO: добавить возможность перевода??? Пример: 
 test('Makes something', function(){}, function(){
 	// ...
@@ -84,11 +80,9 @@ TODO: add parameters to \spectrum\run function:
 
 TODO: add "run this test in this context" and "run this test in all contexts" links to "Reports" plugin
 
-TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generate)
-TODO: assert, счетчик вызовов
-	Command::expectCount();
-	incrementCount()
-	count(getRunningInstance()->getResultStack())
+TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generateContexts; в "\spectrum\tools\*" или в "\spectrum\builders\*")
+TODO: create "\spectrum\tools\createTree" function and similar auxiliary functions and classes?
+TODO: create "\spectrum\tools\incrementCounter($counterName)" and "\spectrum\tools\getCounterValue($counterName)" functions?
 
 === Documentation ===
 

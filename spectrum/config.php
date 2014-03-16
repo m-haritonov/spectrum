@@ -59,6 +59,7 @@ final class config
 		'\spectrum\_internal\callFunctionOnContextData' => '\spectrum\_internal\callFunctionOnContextData',
 		'\spectrum\_internal\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internal\callFunctionOnCurrentBuildingSpec',
 		'\spectrum\_internal\convertArguments' => '\spectrum\_internal\convertArguments',
+		'\spectrum\_internal\convertArgumentsForSpec' => '\spectrum\_internal\convertArgumentsForSpec',
 		'\spectrum\_internal\convertArrayWithContextsToSpecs' => '\spectrum\_internal\convertArrayWithContextsToSpecs',
 		'\spectrum\_internal\convertCharset' => '\spectrum\_internal\convertCharset',
 		'\spectrum\_internal\convertLatinCharsToLowerCase' => '\spectrum\_internal\convertLatinCharsToLowerCase',
@@ -72,6 +73,7 @@ final class config
 		'\spectrum\_internal\loadBaseMatchers' => '\spectrum\_internal\loadBaseMatchers',
 		'\spectrum\_internal\normalizeSettings' => '\spectrum\_internal\normalizeSettings',
 		'\spectrum\_internal\setCurrentBuildingSpec' => '\spectrum\_internal\setCurrentBuildingSpec',
+		'\spectrum\_internal\setSettingsToSpec' => '\spectrum\_internal\setSettingsToSpec',
 		'\spectrum\_internal\translate' => '\spectrum\_internal\translate',
 		
 		'\spectrum\builders\addMatcher' => '\spectrum\builders\addMatcher',

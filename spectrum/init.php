@@ -23,6 +23,7 @@ require_once __DIR__ . '/_internal/addTestSpec.php';
 require_once __DIR__ . '/_internal/callFunctionOnContextData.php';
 require_once __DIR__ . '/_internal/callFunctionOnCurrentBuildingSpec.php';
 require_once __DIR__ . '/_internal/convertArguments.php';
+require_once __DIR__ . '/_internal/convertArgumentsForSpec.php';
 require_once __DIR__ . '/_internal/convertArrayWithContextsToSpecs.php';
 require_once __DIR__ . '/_internal/convertCharset.php';
 require_once __DIR__ . '/_internal/convertLatinCharsToLowerCase.php';
@@ -36,6 +37,7 @@ require_once __DIR__ . '/_internal/isRunningState.php';
 require_once __DIR__ . '/_internal/loadBaseMatchers.php';
 require_once __DIR__ . '/_internal/normalizeSettings.php';
 require_once __DIR__ . '/_internal/setCurrentBuildingSpec.php';
+require_once __DIR__ . '/_internal/setSettingsToSpec.php';
 require_once __DIR__ . '/_internal/translate.php';
 
 if (!function_exists('addMatcher')) { function addMatcher() { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\addMatcher'), func_get_args()); }}
