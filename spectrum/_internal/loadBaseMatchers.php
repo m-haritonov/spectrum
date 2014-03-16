@@ -7,37 +7,37 @@ distributed with this source code.
 
 namespace spectrum\_internal;
 
-use spectrum\core\SpecInterface;
-
-function loadBaseMatchers(SpecInterface $spec)
+function loadBaseMatchers()
 {
 	$matchers = array(
-		'eq',
-		'false',
-		'gt',
-		'gte',
-		'ident',
-		'instanceof',
-		'lt',
-		'lte',
-		'null',
-		'throwsException',
-		'true',
+		'eq' => null,
+		'false' => null,
+		'gt' => null,
+		'gte' => null,
+		'ident' => null,
+		'instanceof' => null,
+		'lt' => null,
+		'lte' => null,
+		'null' => null,
+		'throwsException' => null,
+		'true' => null,
 	);
 	
-	foreach ($matchers as $matcherName)
+	foreach ($matchers as $matcherName => $functionName)
 	{
-		$matcherFileName = __DIR__ . '/../matchers/' . $matcherName . '.php';
-		$matcherFunctionName = '\spectrum\matchers\\' .$matcherName;
+		$fileName = __DIR__ . '/../matchers/' . $matcherName . '.php';
+		$functionName = '\spectrum\matchers\\' . $matcherName;
 		
 		// "instanceof" is reserved word and forbidden to use as function name (but allowed to use as property name)
 		if ($matcherName == 'instanceof')
 		{
-			$matcherFileName = __DIR__ . '/../matchers/instanceofMatcher.php';
-			$matcherFunctionName = '\spectrum\matchers\instanceofMatcher';
+			$fileName = __DIR__ . '/../matchers/instanceofMatcher.php';
+			$functionName = '\spectrum\matchers\instanceofMatcher';
 		}
 		
-		require_once $matcherFileName;
-		$spec->matchers->add($matcherName, $matcherFunctionName);
+		require_once $fileName;
+		$matchers[$matcherName] = $functionName;
 	}
+	
+	return $matchers;
 }

@@ -9,12 +9,7 @@ TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange
 
 TODO: вынести общую часть из group и test в функцию createSpec
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
-TODO: loadBaseMatchers — возвращать массив загруженных матчеров вместо добавления из в передаваемую спеку
-TODO: перенести функции setBuildingSpec, getBuildingSpec, getExclusionSpecs, addExclusionSpec в пространство имён internal/storage ???
-	или создать объект Storage и билдер getStorageOnce()
-	или переименовать функции в функции вида setBuildingSpecInStorage
-	или просто сделать функцию getPermanentStorage(), возвращающую \stdClass
-	добавить слово current к имени переменных в хранилище
+TODO: добавить слово current к имени переменных в хранилище
 	callFunctionOnBuildingSpec -> callFunctionOnCurrentBuildingSpec
 	filterOutExclusionSpecs -> filterOutCurrentExclusionSpecs
 

@@ -7,18 +7,13 @@ distributed with this source code.
 
 namespace spectrum\tests\_internal;
 
-use spectrum\core\Spec;
-
 require_once __DIR__ . '/../init.php';
 
 class LoadBaseMatchersTest extends \spectrum\tests\Test
 {
-	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsAndAddsBaseMatchersToPassedSpec()
+	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsAndReturnsBaseMatchers()
 	{
-		$spec = new Spec();
-		$this->assertSame(array(), $spec->matchers->getAll());
-		
-		\spectrum\_internal\loadBaseMatchers($spec);
+		$matchers = \spectrum\_internal\loadBaseMatchers();
 		
 		$this->assertTrue(function_exists('\spectrum\matchers\eq'));
 		$this->assertTrue(function_exists('\spectrum\matchers\false'));
@@ -44,13 +39,12 @@ class LoadBaseMatchersTest extends \spectrum\tests\Test
 			'null' => '\spectrum\matchers\null',
 			'throwsException' => '\spectrum\matchers\throwsException',
 			'true' => '\spectrum\matchers\true',
-		), $spec->matchers->getAll());
+		), $matchers);
 	}
 	
 	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsOnce()
 	{
-		$spec = new Spec();
-		\spectrum\_internal\loadBaseMatchers($spec);
-		\spectrum\_internal\loadBaseMatchers($spec);
+		\spectrum\_internal\loadBaseMatchers();
+		\spectrum\_internal\loadBaseMatchers();
 	}
 }
