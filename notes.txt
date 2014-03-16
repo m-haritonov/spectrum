@@ -6,8 +6,6 @@ TODO: create big example (with anonymous specs, matchers, with all errors, long 
 TODO: add tests for charset usages
 
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
-
-TODO: getEndingSpecs -> getDescendantEndingSpecs, getRunningEndingSpec -> getDescendantRunningEndingSpec
 TODO: create tests for "getCurrentContextData"
 
 TODO: вынести общую часть из group и test в функцию createSpec

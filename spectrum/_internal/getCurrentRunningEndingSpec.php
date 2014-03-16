@@ -18,5 +18,5 @@ function getCurrentRunningEndingSpec()
 	if ($rootSpec->isRunning() && !$rootSpec->getChildSpecs())
 		return $rootSpec;
 	else
-		return $rootSpec->getRunningEndingSpec();
+		return $rootSpec->getRunningDescendantEndingSpec();
 }

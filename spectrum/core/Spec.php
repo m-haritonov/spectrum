@@ -289,17 +289,16 @@ class Spec implements SpecInterface
 
 /**/
 	
-	public function getRootSpecs()
+	public function getAncestorRootSpecs()
 	{
 		$rootSpecs = array();
 		
-		$parentSpecs = $this->parentSpecs;
-		foreach ($parentSpecs as $parentSpec)
+		foreach ($this->parentSpecs as $parentSpec)
 		{
 			if (!$parentSpec->getParentSpecs() && !in_array($parentSpec, $rootSpecs, true))
 				$rootSpecs[] = $parentSpec;
 			
-			foreach ($parentSpec->getRootSpecs() as $spec)
+			foreach ($parentSpec->getAncestorRootSpecs() as $spec)
 			{
 				if (!in_array($spec, $rootSpecs, true))
 					$rootSpecs[] = $spec;
@@ -309,13 +308,13 @@ class Spec implements SpecInterface
 		return $rootSpecs;
 	}
 	
-	public function getEndingSpecs()
+	public function getDescendantEndingSpecs()
 	{
 		$endingSpecs = array();
 		foreach ($this->childSpecs as $childSpec)
 		{
 			if ($childSpec->getChildSpecs())
-				$endingSpecs = array_merge($endingSpecs, $childSpec->getEndingSpecs());
+				$endingSpecs = array_merge($endingSpecs, $childSpec->getDescendantEndingSpecs());
 			else
 				$endingSpecs[] = $childSpec;
 		}
@@ -359,14 +358,14 @@ class Spec implements SpecInterface
 		return null;
 	}
 	
-	public function getRunningEndingSpec()
+	public function getRunningDescendantEndingSpec()
 	{
 		foreach ($this->childSpecs as $childSpec)
 		{
 			if ($childSpec->isRunning())
 			{
 				if ($childSpec->getChildSpecs())
-					return $childSpec->getRunningEndingSpec();
+					return $childSpec->getRunningDescendantEndingSpec();
 				else
 					return $childSpec;
 			}
@@ -456,7 +455,7 @@ class Spec implements SpecInterface
 	
 	public function run()
 	{
-		$rootSpecs = $this->getRootSpecs();
+		$rootSpecs = $this->getAncestorRootSpecs();
 		$runningParentSpec = $this->getRunningParentSpec();
 		
 		if (count($rootSpecs) > 1)
@@ -608,7 +607,7 @@ class Spec implements SpecInterface
 
 	protected function handleModifyDeny($functionName)
 	{
-		foreach (array_merge(array($this), $this->getRootSpecs()) as $spec)
+		foreach (array_merge(array($this), $this->getAncestorRootSpecs()) as $spec)
 		{
 			if ($spec->isRunning())
 				throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');

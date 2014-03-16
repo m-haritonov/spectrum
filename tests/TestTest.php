@@ -91,6 +91,20 @@ class TestTest extends Test
 				'3' => array('parents' => array('0'), 'children' => array()),
 			)),
 			
+			// Unnecessary children
+			
+			array('
+				  0
+				 / \
+				1   2 3 4
+			', array(
+				'0' => array('parents' => array(), 'children' => array('1', '2')),
+				'1' => array('parents' => array('0'), 'children' => array()),
+				'2' => array('parents' => array('0'), 'children' => array()),
+				'3' => array('parents' => array(), 'children' => array()),
+				'4' => array('parents' => array(), 'children' => array()),
+			)),
+			
 			// Three levels
 			
 			array('
@@ -220,6 +234,19 @@ class TestTest extends Test
 				'3' => array('parents' => array('0'), 'children' => array('5')),
 				'4' => array('parents' => array('0'), 'children' => array('5')),
 				'5' => array('parents' => array('1', '2', '3', '4'), 'children' => array()),
+			)),
+			
+			array('
+				0
+				|
+				1   2
+				 \ /
+				  3
+			', array(
+				'0' => array('parents' => array(), 'children' => array('1')),
+				'1' => array('parents' => array('0'), 'children' => array('3')),
+				'2' => array('parents' => array(), 'children' => array('3')),
+				'3' => array('parents' => array('1', '2'), 'children' => array()),
 			)),
 			
 			// Direct and reversed groups together
@@ -496,25 +523,6 @@ class TestTest extends Test
 		catch (\Exception $e)
 		{
 			$this->assertSame('Duplicate name is present on line 3', $e->getMessage());
-			return null;
-		}
-
-		$this->fail('Should be thrown exception');
-	}
-	
-	public function testCreateSpecsByVisualPattern_UnnecessaryChildrenArePresent_ThrowsException()
-	{
-		try
-		{
-			$this->createSpecsByVisualPattern('
-				  0
-				 / \
-				1   2 3
-			');
-		}
-		catch (\Exception $e)
-		{
-			$this->assertSame($e->getMessage(), 'Unnecessary children are present on line 3');
 			return null;
 		}
 

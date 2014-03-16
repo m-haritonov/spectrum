@@ -486,9 +486,6 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 				else
 					throw new \Exception('Unknown relation "' . $relation . '" is present on line ' . ($lineIndex + 1));
 			}
-			
-			if ($currentLowerElementIndex <= $lastLowerElementIndex)
-				throw new \Exception('Unnecessary children are present on line ' . ($lineIndex + 2));
 		}
 		
 		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames)

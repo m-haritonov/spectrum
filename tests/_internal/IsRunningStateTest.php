@@ -58,12 +58,12 @@ class IsRunningStateTest extends \spectrum\tests\Test
 				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
 				
-				public function getRootSpecs(){}
-				public function getEndingSpecs(){}
+				public function getAncestorRootSpecs(){}
+				public function getDescendantEndingSpecs(){}
 				public function getRunningParentSpec(){}
 				public function getRunningAncestorSpecs(){}
 				public function getRunningChildSpec(){}
-				public function getRunningEndingSpec(){}
+				public function getRunningDescendantEndingSpec(){}
 				public function getSpecsByRunId($id){}
 			
 				public function getResultBuffer(){}

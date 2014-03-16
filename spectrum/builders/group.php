@@ -86,7 +86,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 			$getTestSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\getTestSpecs');
 			$testSpecs = $getTestSpecsFunction();
 			$contextEndingSpec = new $specClass();
-			foreach ($groupSpec->getEndingSpecs() as $endingSpec)
+			foreach ($groupSpec->getDescendantEndingSpecs() as $endingSpec)
 			{
 				if (!in_array($endingSpec, $testSpecs, true))
 					$endingSpec->bindChildSpec($contextEndingSpec);

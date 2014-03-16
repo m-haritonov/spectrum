@@ -1147,38 +1147,86 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 
-	public function testGetRootSpecs_ReturnsAllRootSpecs()
+	public function providerGetAncestorRootSpecs()
 	{
-		$specs = $this->createSpecsByListPattern('
-			->Spec
-			->Spec
-			Spec(aaa)
-		');
-		$this->assertSame(array($specs[0], $specs[1]), $specs['aaa']->getRootSpecs());
-		
-		$specs = $this->createSpecsByListPattern('
-			->->Spec
-			->Spec
-			->->Spec
-			->Spec
-			Spec(aaa)
-		');
-		$this->assertSame(array($specs[0], $specs[2]), $specs['aaa']->getRootSpecs());
+		return array(
+			array(
+				'
+					0    1
+					 \  /
+					 spec
+				',
+				array('0', '1'),
+			),
+			
+			array(
+				'
+					0    1
+					|    |
+					2    3
+					 \  /
+					 spec
+				',
+				array('0', '1'),
+			),
+			
+			array(
+				'
+					0
+					|
+					1    2
+					|    |
+					3    4
+					 \  /
+					 spec
+				',
+				array('0', '2'),
+			),
+			
+			array(
+				'
+					0
+					|
+					1  2
+					|  |
+					3  4  5
+					|  |  |
+					6  7  8  9
+					 \ |  | /
+					   spec
+				',
+				array('0', '2', '5', '9'),
+			),
+		);
 	}
 	
-	public function testGetRootSpecs_SpecHasNoParents_ReturnsEmptyArray()
+	/**
+	 * @dataProvider providerGetAncestorRootSpecs
+	 */
+	public function testGetAncestorRootSpecs_ReturnsAllRootSpecs($pattern, $expectedSpecKeys)
+	{
+		$specs = $this->createSpecsByVisualPattern($pattern);
+		
+		$expectedSpecs = array();
+		foreach ($expectedSpecKeys as $specKey)
+			$expectedSpecs[] = $specs[$specKey];
+		
+		$this->assertSame($expectedSpecs, $specs['spec']->getAncestorRootSpecs());
+	}
+	
+	public function testGetAncestorRootSpecs_SpecHasNoParents_ReturnsEmptyArray()
 	{
 		$spec = new Spec();
-		$this->assertSame(array(), $spec->getRootSpecs());
+		$this->assertSame(array(), $spec->getAncestorRootSpecs());
 		
 		$spec = new Spec();
 		$spec->bindChildSpec(new Spec());
-		$this->assertSame(array(), $spec->getRootSpecs());
+		$this->assertSame(array(), $spec->getAncestorRootSpecs());
 	}
 	
 /**/
 	
-	public function testGetEndingSpecs_ReturnsAllEndingSpecs()
+	public function testGetDescendantEndingSpecs_ReturnsAllEndingSpecs()
 	{
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -1190,17 +1238,17 @@ class SpecTest extends \spectrum\tests\Test
 			->->->Spec(endingSpec3)
 			->->->Spec(endingSpec4)
 		');
-		$this->assertSame(array($specs['endingSpec1'], $specs['endingSpec2'], $specs['endingSpec3'], $specs['endingSpec4']), $specs[0]->getEndingSpecs());
+		$this->assertSame(array($specs['endingSpec1'], $specs['endingSpec2'], $specs['endingSpec3'], $specs['endingSpec4']), $specs[0]->getDescendantEndingSpecs());
 	}
 	
-	public function testGetEndingSpecs_SpecHasNoChildren_ReturnsEmptyArray()
+	public function testGetDescendantEndingSpecs_SpecHasNoChildren_ReturnsEmptyArray()
 	{
 		$spec = new Spec();
-		$this->assertSame(array(), $spec->getEndingSpecs());
+		$this->assertSame(array(), $spec->getDescendantEndingSpecs());
 		
 		$spec = new Spec();
 		$spec->bindParentSpec(new Spec());
-		$this->assertSame(array(), $spec->getEndingSpecs());
+		$this->assertSame(array(), $spec->getDescendantEndingSpecs());
 	}
 	
 /**/
@@ -1282,10 +1330,10 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 	
-	public function testGetRunningEndingSpec_ReturnsRunningEndingSpec()
+	public function testGetRunningDescendantEndingSpec_ReturnsRunningEndingSpec()
 	{
 		\spectrum\tests\Test::$temp["runningEndingSpecs"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runningEndingSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningEndingSpec();');
+		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runningEndingSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningDescendantEndingSpec();');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
 			Spec
@@ -1302,19 +1350,19 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["runningEndingSpecs"]);
 	}
 	
-	public function testGetRunningEndingSpec_NoRunningChildren_ReturnsNull()
+	public function testGetRunningDescendantEndingSpec_NoRunningChildren_ReturnsNull()
 	{
 		$spec = new Spec();
-		$this->assertSame(null, $spec->getRunningEndingSpec());
+		$this->assertSame(null, $spec->getRunningDescendantEndingSpec());
 	}
 	
-	public function testGetRunningEndingSpec_NoRunningChildrenAndSelfIsRunning_ReturnsNull()
+	public function testGetRunningDescendantEndingSpec_NoRunningChildrenAndSelfIsRunning_ReturnsNull()
 	{
 		\spectrum\tests\Test::$temp["runningEndingSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
 			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
-				\spectrum\tests\Test::$temp["runningEndingSpecs"][] = $this->getOwnerSpec()->getRunningEndingSpec();
+				\spectrum\tests\Test::$temp["runningEndingSpecs"][] = $this->getOwnerSpec()->getRunningDescendantEndingSpec();
 		');
 		
 		$specs = $this->createSpecsByListPattern('
