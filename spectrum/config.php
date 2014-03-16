@@ -55,20 +55,19 @@ final class config
 	);
 	
 	static private $functionReplacements = array(
-		'\spectrum\_internal\addExclusionSpec' => '\spectrum\_internal\addExclusionSpec',
-		'\spectrum\_internal\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internal\callFunctionOnCurrentBuildingSpec',
+		'\spectrum\_internal\addTestSpec' => '\spectrum\_internal\addTestSpec',
 		'\spectrum\_internal\callFunctionOnContextData' => '\spectrum\_internal\callFunctionOnContextData',
+		'\spectrum\_internal\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internal\callFunctionOnCurrentBuildingSpec',
 		'\spectrum\_internal\convertArguments' => '\spectrum\_internal\convertArguments',
 		'\spectrum\_internal\convertArrayWithContextsToSpecs' => '\spectrum\_internal\convertArrayWithContextsToSpecs',
 		'\spectrum\_internal\convertCharset' => '\spectrum\_internal\convertCharset',
 		'\spectrum\_internal\convertLatinCharsToLowerCase' => '\spectrum\_internal\convertLatinCharsToLowerCase',
-		'\spectrum\_internal\filterOutExclusionSpecs' => '\spectrum\_internal\filterOutExclusionSpecs',
 		'\spectrum\_internal\formatTextForOutput' => '\spectrum\_internal\formatTextForOutput',
 		'\spectrum\_internal\getCurrentBuildingSpec' => '\spectrum\_internal\getCurrentBuildingSpec',
 		'\spectrum\_internal\getCurrentContextData' => '\spectrum\_internal\getCurrentContextData',
-		'\spectrum\_internal\getExclusionSpecs' => '\spectrum\_internal\getExclusionSpecs',
-		'\spectrum\_internal\getRootSpec' => '\spectrum\_internal\getRootSpec',
 		'\spectrum\_internal\getCurrentRunningEndingSpec' => '\spectrum\_internal\getCurrentRunningEndingSpec',
+		'\spectrum\_internal\getRootSpec' => '\spectrum\_internal\getRootSpec',
+		'\spectrum\_internal\getTestSpecs' => '\spectrum\_internal\getTestSpecs',
 		'\spectrum\_internal\isRunningState' => '\spectrum\_internal\isRunningState',
 		'\spectrum\_internal\loadBaseMatchers' => '\spectrum\_internal\loadBaseMatchers',
 		'\spectrum\_internal\normalizeSettings' => '\spectrum\_internal\normalizeSettings',
@@ -87,9 +86,9 @@ final class config
 	);
 	
 	static private $registeredSpecPlugins = array(
+		'\spectrum\core\plugins\reports\Reports',
 		'\spectrum\core\plugins\ContextModifiers',
 		'\spectrum\core\plugins\ErrorHandling',
-		'\spectrum\core\plugins\reports\Reports',
 		'\spectrum\core\plugins\Matchers',
 		'\spectrum\core\plugins\Messages',
 		'\spectrum\core\plugins\Test',

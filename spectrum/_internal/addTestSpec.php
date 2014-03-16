@@ -9,8 +9,8 @@ namespace spectrum\_internal;
 
 use spectrum\core\SpecInterface;
 
-function addExclusionSpec(SpecInterface $spec)
+function addTestSpec(SpecInterface $spec)
 {
-	static $exclusionSpecs = array();
-	$exclusionSpecs[] = $spec;
+	static $specs = array();
+	$specs[] = $spec;
 }

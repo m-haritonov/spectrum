@@ -9,13 +9,13 @@ namespace spectrum\_internal;
 
 use spectrum\config;
 
-function getExclusionSpecs()
+function getTestSpecs()
 {
-	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internal\addExclusionSpec'));
+	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internal\addTestSpec'));
 	$staticVariables = $reflection->getStaticVariables();
 	
-	if (isset($staticVariables['exclusionSpecs']))
-		return $staticVariables['exclusionSpecs'];
+	if (isset($staticVariables['specs']))
+		return $staticVariables['specs'];
 	else
 		return array();
 }

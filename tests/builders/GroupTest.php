@@ -264,9 +264,10 @@ class GroupTest extends \spectrum\tests\Test
 	public function providerVariantsOfArguments_ContextsArgumentIsFunction3()
 	{
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){
-			\spectrum\builders\group('aaa', null, function(){}, null);
+			\spectrum\builders\test('aaa', null, function(){}, null);
 			\spectrum\builders\group('bbb', null, function(){}, null);
-			\spectrum\builders\test('ccc', null, function(){}, null);
+			\spectrum\builders\group('ccc', null, function(){}, null);
+			\spectrum\builders\test('ddd', null, function(){}, null);
 		}, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
@@ -276,7 +277,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsFunction3
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_DoesNotAddAnySpecsToTestContextSpecs($arguments)
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_DoesNotAddSpecsToTestSpecOfContext($arguments)
 	{
 		\spectrum\_internal\setCurrentBuildingSpec(new Spec());
 		
@@ -284,16 +285,18 @@ class GroupTest extends \spectrum\tests\Test
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		
 		$contextSpecs = $groupSpec->getChildSpecs();
-		$this->assertSame(3, count($contextSpecs));
+		$this->assertSame(4, count($contextSpecs));
 		$this->assertSame('aaa', $contextSpecs[0]->getName());
 		$this->assertSame('bbb', $contextSpecs[1]->getName());
 		$this->assertSame('ccc', $contextSpecs[2]->getName());
+		$this->assertSame('ddd', $contextSpecs[3]->getName());
 		
-		$this->assertSame(0, count($contextSpecs[2]->getChildSpecs()));
+		$this->assertSame(0, count($contextSpecs[0]->getChildSpecs()));
+		$this->assertSame(0, count($contextSpecs[3]->getChildSpecs()));
 		
 		$contextEndingSpecs = array_merge(
-			$contextSpecs[0]->getChildSpecs(),
-			$contextSpecs[1]->getChildSpecs()
+			$contextSpecs[1]->getChildSpecs(),
+			$contextSpecs[2]->getChildSpecs()
 		);
 		
 		$this->assertSame(2, count($contextEndingSpecs));

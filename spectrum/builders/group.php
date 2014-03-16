@@ -83,10 +83,14 @@ function group($name = null, $contexts = null, $body = null, $settings = null)
 			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnCurrentBuildingSpec');
 			$callFunctionOnCurrentBuildingSpecFunction($contexts, $groupSpec);
 			
+			$getTestSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\getTestSpecs');
+			$testSpecs = $getTestSpecsFunction();
 			$contextEndingSpec = new $specClass();
-			$filterOutExclusionSpecsFunction = config::getFunctionReplacement('\spectrum\_internal\filterOutExclusionSpecs');
-			foreach ($filterOutExclusionSpecsFunction($groupSpec->getEndingSpecs()) as $endingSpec)
-				$endingSpec->bindChildSpec($contextEndingSpec);
+			foreach ($groupSpec->getEndingSpecs() as $endingSpec)
+			{
+				if (!in_array($endingSpec, $testSpecs, true))
+					$endingSpec->bindChildSpec($contextEndingSpec);
+			}
 		}
 	}
 	else

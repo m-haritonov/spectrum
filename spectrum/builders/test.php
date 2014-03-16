@@ -66,8 +66,8 @@ function test($name = null, $contexts = null, $body = null, $settings = null)
 	if ($settings['breakOnFirstMatcherFail'] !== null)
 		$testSpec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	
-	$addExclusionSpecFunction = config::getFunctionReplacement('\spectrum\_internal\addExclusionSpec');
-	$addExclusionSpecFunction($testSpec);
+	$addTestSpecFunction = config::getFunctionReplacement('\spectrum\_internal\addTestSpec');
+	$addTestSpecFunction($testSpec);
 	
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');
 	$getCurrentBuildingSpecFunction()->bindChildSpec($testSpec);
