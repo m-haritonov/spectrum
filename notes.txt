@@ -8,6 +8,7 @@ TODO: add tests for charset usages
 TODO: add href="#state1/2/etc." to "detailsControl" links, register onhashchange listener (add "stateX" class to body in listener), use body class for fonding/expand components
 
 TODO: в matchers используются исключения из core, в _internal используются исключения из core и из builders. Удалить все классы исключений, кроме \spectrum\Exception
+TODO: \Closure -> function(){}
 
 TODO: вынести общую часть из group и test в функцию createSpec
 TODO: перенести testedValue из setTestedValue в setMatcherArguments в MatcherCallDetails???
@@ -32,10 +33,6 @@ TODO: array context group:
 	), function(){
 		test('bbb', function(){});
 	});
-TODO: добавить поддержку функций в array контекстах: test(array(
-	'aaa aaa' => array('a1' => 'aaa'),
-	'aaa aaa' => function(){ $this->a1 = 'aaa'; },
-), function(){});
 
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 TODO: добавить информацию о фреймворке (название, версию и адрес сайта): либо при нажатии на иконку [i] либо в конце нижнего блока totalResult (<a href="http://spectrum-framework.org/">Spectrum 1.0</a>)
