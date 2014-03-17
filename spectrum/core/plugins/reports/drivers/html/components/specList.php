@@ -25,7 +25,7 @@ class specList extends component
 			.c-specList>li>.head>.point>.number { font-size: 0.9em; }
 			.c-specList>li>.head>.point>.number .dot { display: inline-block; width: 0; color: transparent; }
 			.c-specList>li>.head>.point>a.expand { display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-right: 2px; text-decoration: none; text-align: right; }
-			.c-specList>li>.head>.point>a.expand span { display: inline-block; position: relative; width: 8px; height: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: middle; }
+			.c-specList>li>.head>.point>a.expand span { display: inline-block; overflow: hidden; position: relative; width: 8px; height: 0; padding-top: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: middle; }
 			.c-specList>li>.head>.point>a.expand span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
 			.c-specList>li>.head>.point>a.expand span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }
 			.c-specList>li>.head>.title { display: inline-block; vertical-align: text-top; white-space: normal; }
@@ -164,7 +164,7 @@ class specList extends component
 					static::escapeHtml(isset(static::$numbers[static::$depth]) ? static::$numbers[static::$depth] : '') .
 					'<span class="dot">.</span>' .
 				'</span>' .
-				'<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Expand/collapse child content') . '"><span></span></a>' .
+				'<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Expand/collapse child content') . '"><span>' . static::translateAndEscapeHtml('Expand/collapse') . '</span></a>' .
 			'</span> ';
 	}
 

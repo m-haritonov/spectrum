@@ -22,7 +22,7 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 
 			.c-resultBuffer>.results { clear: both; }
 			.c-resultBuffer>.results>.result { float: left; position: relative; margin: 0 2px 2px 0; border: 1px solid; border-left: 0; border-top: 0; border-radius: 4px; white-space: nowrap; }
-			.c-resultBuffer>.results>.result>a.expand { float: left; position: relative; width: 19px; height: 1.6em; margin-right: 2px; border-radius: 4px 0 4px 0; font-size: 0.9em; font-weight: bold; text-decoration: none; text-align: center; }
+			.c-resultBuffer>.results>.result>a.expand { float: left; position: relative; overflow: hidden; width: 19px; height: 0; padding-top: 1.6em; margin-right: 2px; border-radius: 4px 0 4px 0; font-size: 0.9em; font-weight: bold; text-decoration: none; text-align: center; }
 			.c-resultBuffer>.results>.result>a.expand:before { content: "\\0020"; display: block; position: absolute; top: 8px; left: 6px; width: 8px; height: 2px; background: #fff; }
 			.c-resultBuffer>.results>.result>a.expand:after { content: "\\0020"; display: block; position: absolute; top: 5px; left: 9px; width: 2px; height: 8px; background: #fff; }
 			.c-resultBuffer>.results>.result>.num { float: left; margin-right: 2px; padding: 2px 5px; border-radius: 0 0 4px 4px; font-size: 0.9em; }
@@ -117,7 +117,7 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		{
 			$num++;
 			$output .= static::getHtmlEscapedOutputIndention() . '<div class="result ' . static::getResultValueName($result['result']) . '">' . static::getHtmlEscapedOutputNewline();
-			$output .= static::getHtmlEscapedOutputIndention(2) . '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show full details (also available by mouse middle click on the card)') . '"></a>' . static::getHtmlEscapedOutputNewline();
+			$output .= static::getHtmlEscapedOutputIndention(2) . '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>' . static::getHtmlEscapedOutputNewline();
 			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="num" title="' . static::translateAndEscapeHtml('Order in run results buffer') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>' . static::getHtmlEscapedOutputNewline();
 			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="value" title="' . static::translateAndEscapeHtml('Result, contains in run results buffer') . '">' . static::escapeHtml(static::getResultValueName($result['result'])) . '</div>' . static::getHtmlEscapedOutputNewline();
 			

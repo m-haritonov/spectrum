@@ -17,7 +17,7 @@ class detailsControl extends component
 			.c-detailsControl { display: inline-block; }
 
 			.c-detailsControl a { display: inline-block; padding: 0 2px; }
-			.c-detailsControl a span { display: inline-block; position: relative; width: 8px; height: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: -1px; }
+			.c-detailsControl a span { display: inline-block; overflow: hidden; position: relative; width: 8px; height: 0; padding-top: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: -1px; }
 			.c-detailsControl a.state.selected span { background: #e6932f; border-color: #d4872a; }
 
 			.c-detailsControl a.previous span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
@@ -101,15 +101,15 @@ class detailsControl extends component
 	{
 		if ($spec->getParentSpecs())
 			return null;
-
+		
 		return
 			'<div class="c-detailsControl">' .
-				'<a href="#" class="previous"><span></span></a>' .
-				'<a href="#" class="state state1" title="' . static::translateAndEscapeHtml('Collapse all') . '"><span></span></a>' .
-				'<a href="#" class="state state2" title="' . static::translateAndEscapeHtml('Expand groups, collapse tests and results') . '"><span></span></a>' .
-				'<a href="#" class="state state3 selected" title="' . static::translateAndEscapeHtml('Expand groups and tests, collapse results') . '"><span></span></a>' .
-				'<a href="#" class="state state4" title="' . static::translateAndEscapeHtml('Expand groups, tests and results') . '"><span></span></a>' .
-				'<a href="#" class="next"><span></span></a>' .
+				'<a href="#" class="previous"><span>' . static::translateAndEscapeHtml('Previous') . '</span></a>' .
+				'<a href="#" class="state state1" title="' . static::translateAndEscapeHtml('Collapse all') . '"><span>' . static::translateAndEscapeHtml('State 1') . '</span></a>' .
+				'<a href="#" class="state state2" title="' . static::translateAndEscapeHtml('Expand groups, collapse tests and results') . '"><span>' . static::translateAndEscapeHtml('State 2') . '</span></a>' .
+				'<a href="#" class="state state3 selected" title="' . static::translateAndEscapeHtml('Expand groups and tests, collapse results') . '"><span>' . static::translateAndEscapeHtml('State 3') . '</span></a>' .
+				'<a href="#" class="state state4" title="' . static::translateAndEscapeHtml('Expand all') . '"><span>' . static::translateAndEscapeHtml('State 4') . '</span></a>' .
+				'<a href="#" class="next"><span>' . static::translateAndEscapeHtml('Next') . '</span></a>' .
 			'</div>';
 	}
 }
