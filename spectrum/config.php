@@ -38,6 +38,7 @@ final class config
 		'\spectrum\core\plugins\reports\drivers\html\components\details\phpError'           => '\spectrum\core\plugins\reports\drivers\html\components\details\phpError',
 		'\spectrum\core\plugins\reports\drivers\html\components\details\unknown'            => '\spectrum\core\plugins\reports\drivers\html\components\details\unknown',
 		'\spectrum\core\plugins\reports\drivers\html\components\details\userFail'           => '\spectrum\core\plugins\reports\drivers\html\components\details\userFail',
+		'\spectrum\core\plugins\reports\drivers\html\components\code\keyword'               => '\spectrum\core\plugins\reports\drivers\html\components\code\keyword',
 		'\spectrum\core\plugins\reports\drivers\html\components\code\method'                => '\spectrum\core\plugins\reports\drivers\html\components\code\method',
 		'\spectrum\core\plugins\reports\drivers\html\components\code\operator'              => '\spectrum\core\plugins\reports\drivers\html\components\code\operator',
 		'\spectrum\core\plugins\reports\drivers\html\components\code\property'              => '\spectrum\core\plugins\reports\drivers\html\components\code\property',

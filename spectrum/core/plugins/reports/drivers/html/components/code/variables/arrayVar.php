@@ -19,7 +19,8 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 			.c-code-variables-array>.elements:before { content: "\\007B\\2026\\007D"; color: rgba(0, 0, 0, 0.6); }
 			.c-code-variables-array>.elements>.element { display: none; }
 			.c-code-variables-array>.elements>.element>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
-			.c-code-variables-array .c-code-variables-array { display: inline; vertical-align: baseline; background: transparent; }
+			.c-code-variables-array .c-code-variables-array,
+			.c-code-variables-array .c-code-variables-object { display: inline; vertical-align: baseline; background: transparent; }
 		
 			.c-resultBuffer>.results>.result.expanded .c-code-variables-array>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
 			.c-resultBuffer>.results>.result.expanded .c-code-variables-array>.c-code-operator.curlyBrace { display: inline; }
@@ -35,8 +36,10 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		$output .= static::getHtmlForType($variable);
 		$output .= static::callComponentMethod('code\operator', 'getHtml', array('{', 'us-ascii'));
 		$output .= static::getHtmlForElements($variable, $depth, $inputCharset);
-		// Indention should be copied to buffer
-		$output .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth);
+		
+		if (count($variable))
+			$output .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth); // Indention should be copied to buffer
+		
 		$output .= static::callComponentMethod('code\operator', 'getHtml', array('}', 'us-ascii'));
 		$output .= '</span>';
 		return $output;

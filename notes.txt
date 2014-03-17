@@ -1,11 +1,10 @@
 TODO: MERGE BRANCH
 TODO: добавить старые версии проекта в начало истории репозитория
 TODO: MOVE PROJECT TO GITHUB.COM
-	
+
+TODO: replace "==" to "(string) === (string)"
 TODO: create big example (with anonymous specs, matchers, with all errors, long spec names)
 TODO: add tests for charset usages
-
-TODO: add abstract/final/static/private/protected/public string to report output in "objectVar" component
 
 TODO: array context group:
 	group('aaa', array(
