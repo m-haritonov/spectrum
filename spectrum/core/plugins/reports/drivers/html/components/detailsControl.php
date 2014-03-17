@@ -105,10 +105,10 @@ class detailsControl extends component
 		return
 			'<div class="c-detailsControl">' .
 				'<a href="#" class="previous"><span></span></a>' .
-				'<a href="#" class="state state1"><span></span></a>' .
-				'<a href="#" class="state state2"><span></span></a>' .
-				'<a href="#" class="state state3 selected"><span></span></a>' .
-				'<a href="#" class="state state4"><span></span></a>' .
+				'<a href="#" class="state state1" title="' . static::translateAndEscapeHtml('Collapse all') . '"><span></span></a>' .
+				'<a href="#" class="state state2" title="' . static::translateAndEscapeHtml('Expand groups, collapse tests and results') . '"><span></span></a>' .
+				'<a href="#" class="state state3 selected" title="' . static::translateAndEscapeHtml('Expand groups and tests, collapse results') . '"><span></span></a>' .
+				'<a href="#" class="state state4" title="' . static::translateAndEscapeHtml('Expand groups, tests and results') . '"><span></span></a>' .
 				'<a href="#" class="next"><span></span></a>' .
 			'</div>';
 	}

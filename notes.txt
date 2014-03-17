@@ -20,14 +20,6 @@ TODO: array context group:
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 TODO: добавить информацию о фреймворке (название, версию и адрес сайта): либо при нажатии на иконку [i] либо в конце нижнего блока totalResult (<a href="http://spectrum-framework.org/">Spectrum 1.0</a>)
 
-TODO: добавить всплывающие подсказки и текст ссылок с разъяснениями к элементам ползунка "detailsControl"
-TODO: success ("has empty" or "success, has empty")
-TODO: плагин "Report": добавить title к резальтату или выводить "success", если есть "success" и "empty" дети
-		empty title — "empty or has empty", "all or one of children was empty"
-		all specs is "success"
-		one or more specs is "fail"
-		one or more specs is "empty" and has no "fail"
-		
 TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
 TODO: реализовать проверку *RECURSION* в ArrayVar и ObjectVar (в элементе массива тоже может содержаться объект)
 
