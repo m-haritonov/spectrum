@@ -27,7 +27,7 @@ class operator extends \spectrum\core\plugins\reports\drivers\html\components\co
 
 	static protected function getOperatorName($operator)
 	{
-		if ($operator == '{' || $operator == '}')
+		if ((string) $operator === '{' || (string) $operator === '}')
 			return 'curlyBrace';
 		else
 			return null;

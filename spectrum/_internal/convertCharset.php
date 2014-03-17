@@ -17,7 +17,7 @@ function convertCharset($string, $inputCharset = null, $outputCharset = null)
 	if ($outputCharset === null)
 		$outputCharset = config::getOutputCharset();
 	
-	if ($inputCharset == $outputCharset)
+	if ((string) $inputCharset === (string) $outputCharset)
 		return $string;
 	else
 		return mb_convert_encoding($string, $outputCharset, $inputCharset);

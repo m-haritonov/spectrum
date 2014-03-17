@@ -29,7 +29,7 @@ function loadBaseMatchers()
 		$functionName = '\spectrum\matchers\\' . $matcherName;
 		
 		// "instanceof" is reserved word and forbidden to use as function name (but allowed to use as property name)
-		if ($matcherName == 'instanceof')
+		if ((string) $matcherName === 'instanceof')
 		{
 			$fileName = __DIR__ . '/../matchers/instanceofMatcher.php';
 			$functionName = '\spectrum\matchers\instanceofMatcher';

@@ -174,7 +174,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		{
 			$actualClass = '\\' . get_class($e);
 			// Class found
-			if ($actualClass == $expectedClass || is_subclass_of($actualClass, $expectedClass))
+			if ((string) $actualClass === (string) $expectedClass || is_subclass_of($actualClass, $expectedClass))
 			{
 				if ($message !== null)
 					$this->assertSame($message, $e->getMessage());
@@ -430,21 +430,21 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			
 			for ($i = 0; $i < $relationLength; $i++)
 			{
-				$relation = $relations[$i];
-				if ($relation == '+')
+				$relation = (string) $relations[$i];
+				if ($relation === '+')
 					$currentLowerElementIndex--;
 				else if ($currentUpperElementIndex > $lastUpperElementIndex || $currentLowerElementIndex > $lastLowerElementIndex)
 					break;
-				else if ($relation == '.')
+				else if ($relation === '.')
 					$currentUpperElementIndex++;
-				else if ($relation == '/')
+				else if ($relation === '/')
 				{
 					if (!$openedGroup)
 						$openedGroup = 'direct';
 					
 					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
 					
-					if ($openedGroup == 'direct')
+					if ($openedGroup === 'direct')
 						$currentLowerElementIndex++;
 					else
 					{
@@ -453,13 +453,13 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 						$openedGroup = null;
 					}
 				}
-				else if ($relation == '|')
+				else if ($relation === '|')
 				{
 					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
 					
-					if ($openedGroup == 'direct')
+					if ($openedGroup === 'direct')
 						$currentLowerElementIndex++;
-					else if ($openedGroup == 'reversed')
+					else if ($openedGroup === 'reversed')
 						$currentUpperElementIndex++;
 					else
 					{
@@ -467,14 +467,14 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 						$currentLowerElementIndex++;
 					}
 				}
-				else if ($relation == '\\')
+				else if ($relation === '\\')
 				{
 					if (!$openedGroup)
 						$openedGroup = 'reversed';
 					
 					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
 					
-					if ($openedGroup == 'reversed')
+					if ($openedGroup === 'reversed')
 						$currentUpperElementIndex++;
 					else
 					{

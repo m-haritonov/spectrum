@@ -330,7 +330,7 @@ final class config
 				foreach ($classes as $class)
 				{
 					// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
-					if (static::convertLatinCharsToLowerCase($class) == static::convertLatinCharsToLowerCase($registeredPluginClass))
+					if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass))
 						unset(static::$registeredSpecPlugins[$key]);
 				}
 			}
@@ -348,7 +348,7 @@ final class config
 	{
 		foreach (static::getRegisteredSpecPlugins() as $pluginClass)
 		{
-			if ($pluginClass::getAccessName() == $pluginAccessName)
+			if ((string) $pluginClass::getAccessName() === (string) $pluginAccessName)
 				return $pluginClass;
 		}
 		
@@ -360,7 +360,7 @@ final class config
 		foreach (static::$registeredSpecPlugins as $registeredPluginClass)
 		{
 			// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
-			if (static::convertLatinCharsToLowerCase($class) == static::convertLatinCharsToLowerCase($registeredPluginClass))
+			if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass))
 				return true;
 		}
 		

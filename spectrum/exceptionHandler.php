@@ -18,7 +18,7 @@ set_exception_handler(function(\Exception $exception)
 	$exceptionLine = mb_convert_encoding($exception->getLine(), $outputCharset, $inputCharset);
 	$exceptionTrace = mb_convert_encoding($exception->getTraceAsString(), $outputCharset, 'utf-8');
 	
-	if (\spectrum\config::getOutputFormat() == 'html')
+	if ((string) \spectrum\config::getOutputFormat() === 'html')
 	{
 		$outputNewline = '<br />' . $outputNewline;
 		

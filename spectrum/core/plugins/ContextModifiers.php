@@ -48,7 +48,7 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 			$resultItems = array();
 			foreach ($this->items as $index => $item)
 			{
-				if ($item['type'] == $type)
+				if ((string) $item['type'] === (string) $type)
 					$resultItems[$index] = $item;
 			}
 			
@@ -72,7 +72,7 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 		$result = array();
 		foreach ($ancestorSpecs as $spec)
 		{
-			if ($type == 'before')
+			if ((string) $type === 'before')
 				$result = array_merge($spec->{static::getAccessName()}->getAll('before'), $result);
 			else
 				$result = array_merge($result, array_reverse($spec->{static::getAccessName()}->getAll('after')));

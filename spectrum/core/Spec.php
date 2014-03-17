@@ -74,7 +74,7 @@ class Spec implements SpecInterface
 
 	protected function activatePluginByAccess($pluginClass)
 	{
-		if (!array_key_exists($pluginClass, $this->activatedPlugins) || $pluginClass::getActivateMoment() == 'everyAccess')
+		if (!array_key_exists($pluginClass, $this->activatedPlugins) || (string) $pluginClass::getActivateMoment() === 'everyAccess')
 			$this->activatedPlugins[$pluginClass] = new $pluginClass($this);
 		
 		return $this->activatedPlugins[$pluginClass];
@@ -98,7 +98,7 @@ class Spec implements SpecInterface
 		{
 			foreach ((array) $pluginClass::getEventListeners() as $eventListener)
 			{
-				if ($eventListener['event'] == $eventName)
+				if ((string) $eventListener['event'] === (string) $eventName)
 				{
 					$methods[] = array(
 						'class' => $pluginClass,

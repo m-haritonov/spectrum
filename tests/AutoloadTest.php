@@ -32,7 +32,7 @@ class AutoloadTest extends Test
 			{
 				$foundEntitiesCount++;
 				
-				if ($entity['type'] == 'function')
+				if ((string) $entity['type'] === 'function')
 					$reflection = new \ReflectionFunction($entity['name']);
 				else
 					$reflection = new \ReflectionClass($entity['name']);
@@ -90,7 +90,7 @@ class AutoloadTest extends Test
 		{
 			foreach (scandir($paths) as $file)
 			{
-				if (mb_substr($file, 0, 1, 'us-ascii') == '.')
+				if (mb_substr($file, 0, 1, 'us-ascii') === '.')
 					continue;
 
 				$file = $paths . '/' . $file;

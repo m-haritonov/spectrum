@@ -87,7 +87,7 @@ class Assert implements AssertInterface
 	
 	public function __get($name)
 	{
-		if ($name == 'not')
+		if ((string) $name === 'not')
 		{
 			$this->notFlag = !$this->notFlag;
 			return $this;

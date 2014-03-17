@@ -73,7 +73,7 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			foreach ($properties as $key => $value)
 			{
 				// Replace full exception trace to light text representation for resource saving
-				if ($variable instanceof \Exception && $key == 'trace')
+				if ($variable instanceof \Exception && (string) $key === 'trace')
 					$value['value'] = static::convertToOutputCharset($variable->getTraceAsString(), 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")
 				
 				$output .= static::getHtmlForElement($key, $value, $depth, $inputCharset);
