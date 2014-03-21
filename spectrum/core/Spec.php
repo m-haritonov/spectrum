@@ -182,7 +182,7 @@ class Spec implements SpecInterface
 
 	public function isAnonymous()
 	{
-		return ((string) $this->getName() === '' && $this->childSpecs);
+		return ($this->getName() === null && $this->childSpecs);
 	}
 
 /**/

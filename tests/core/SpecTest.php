@@ -675,40 +675,76 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testIsAnonymous_ReturnsTrueForSpecWithEmptyNameAndWithChildren()
+	public function testIsAnonymous_NameIsNotSetAndSpecHasChildren_ReturnsTrue()
 	{
 		$spec = new Spec();
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(true, $spec->isAnonymous());
-		
+	}
+	
+	public function testIsAnonymous_NameIsNotSetAndSpecHasNoChildren_ReturnsFalse()
+	{
+		$spec = new Spec();
+		$this->assertSame(false, $spec->isAnonymous());
+	}
+	
+	public function testIsAnonymous_NameIsNullAndSpecHasChildren_ReturnsTrue()
+	{
+		$spec = new Spec();
 		$spec->setName(null);
-		$this->assertSame(true, $spec->isAnonymous());
-		
-		$spec->setName('');
+		$spec->bindChildSpec(new Spec());
 		$this->assertSame(true, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_ReturnsFalseForSpecWithNoEmptyNameOrWithoutChildren()
+	public function testIsAnonymous_NameIsNullAndSpecHasNoChildren_ReturnsFalse()
 	{
 		$spec = new Spec();
-		$spec->setName('aaa');
+		$spec->setName(null);
 		$this->assertSame(false, $spec->isAnonymous());
-		
-		$spec = new Spec();
-		$this->assertSame(false, $spec->isAnonymous());
-		
+	}
+
+	public function testIsAnonymous_NameIsNotEmptyStringAndSpecHasChildren_ReturnsFalse()
+	{
 		$spec = new Spec();
 		$spec->setName('aaa');
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_UsesStrictComparison()
+	public function testIsAnonymous_NameIsNotEmptyStringAndSpecHasNoChildren_ReturnsFalse()
+	{
+		$spec = new Spec();
+		$spec->setName('aaa');
+		$this->assertSame(false, $spec->isAnonymous());
+	}
+	
+	public function testIsAnonymous_NameIsEmptyStringAndSpecHasChildren_ReturnsFalse()
+	{
+		$spec = new Spec();
+		$spec->setName('');
+		$spec->bindChildSpec(new Spec());
+		$this->assertSame(false, $spec->isAnonymous());
+	}
+	
+	public function testIsAnonymous_NameIsEmptyStringAndSpecHasNoChildren_ReturnsFalse()
+	{
+		$spec = new Spec();
+		$spec->setName('');
+		$this->assertSame(false, $spec->isAnonymous());
+	}
+	
+	public function testIsAnonymous_NameIsZeroNumberAndSpecHasChildren_ReturnsFalse()
 	{
 		$spec = new Spec();
 		$spec->setName(0);
 		$spec->bindChildSpec(new Spec());
-		
+		$this->assertSame(false, $spec->isAnonymous());
+	}
+	
+	public function testIsAnonymous_NameIsZeroNumberAndSpecHasNoChildren_ReturnsFalse()
+	{
+		$spec = new Spec();
+		$spec->setName(0);
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
