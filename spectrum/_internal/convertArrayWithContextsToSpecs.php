@@ -34,10 +34,10 @@ function convertArrayWithContextsToSpecs(array $contexts)
 			}
 			
 			$contextModifierFunction = function() use($values){
-				$getCurrentContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentContextData');
-				$contextData = $getCurrentContextDataFunction();
+				$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentData');
+				$data = $getCurrentDataFunction();
 				foreach ($values as $propertyName => $value)
-					$contextData->$propertyName = $value;
+					$data->$propertyName = $value;
 			};
 		}
 		else if ($values instanceof $closure)

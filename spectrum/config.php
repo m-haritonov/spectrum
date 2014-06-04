@@ -17,7 +17,7 @@ final class config
 
 	static private $classReplacements = array(
 		'\spectrum\core\Assert' => '\spectrum\core\Assert',
-		'\spectrum\core\ContextData' => '\spectrum\core\ContextData',
+		'\spectrum\core\Data' => '\spectrum\core\Data',
 		'\spectrum\core\ResultBuffer' => '\spectrum\core\ResultBuffer',
 		'\spectrum\core\Spec' => '\spectrum\core\Spec',
 		
@@ -56,7 +56,6 @@ final class config
 	
 	static private $functionReplacements = array(
 		'\spectrum\_internal\addTestSpec' => '\spectrum\_internal\addTestSpec',
-		'\spectrum\_internal\callFunctionOnContextData' => '\spectrum\_internal\callFunctionOnContextData',
 		'\spectrum\_internal\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internal\callFunctionOnCurrentBuildingSpec',
 		'\spectrum\_internal\convertArguments' => '\spectrum\_internal\convertArguments',
 		'\spectrum\_internal\convertArgumentsForSpec' => '\spectrum\_internal\convertArgumentsForSpec',
@@ -65,7 +64,7 @@ final class config
 		'\spectrum\_internal\convertLatinCharsToLowerCase' => '\spectrum\_internal\convertLatinCharsToLowerCase',
 		'\spectrum\_internal\formatTextForOutput' => '\spectrum\_internal\formatTextForOutput',
 		'\spectrum\_internal\getCurrentBuildingSpec' => '\spectrum\_internal\getCurrentBuildingSpec',
-		'\spectrum\_internal\getCurrentContextData' => '\spectrum\_internal\getCurrentContextData',
+		'\spectrum\_internal\getCurrentData' => '\spectrum\_internal\getCurrentData',
 		'\spectrum\_internal\getCurrentRunningEndingSpec' => '\spectrum\_internal\getCurrentRunningEndingSpec',
 		'\spectrum\_internal\getRootSpec' => '\spectrum\_internal\getRootSpec',
 		'\spectrum\_internal\getTestSpecs' => '\spectrum\_internal\getTestSpecs',

@@ -9,12 +9,12 @@ namespace spectrum\builders;
 use spectrum\config;
 use spectrum\Exception;
 
-function this()
+function data()
 {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
 	if (!$isRunningStateFunction())
-		throw new Exception('Builder "this" should be call only at running state');
+		throw new Exception('Builder "data" should be call only at running state');
 
-	$getCurrentContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentContextData');
-	return $getCurrentContextDataFunction();
+	$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentData');
+	return $getCurrentDataFunction();
 }

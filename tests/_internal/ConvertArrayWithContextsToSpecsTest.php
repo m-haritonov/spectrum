@@ -10,7 +10,7 @@ require_once __DIR__ . '/../init.php';
 
 class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 {
-	public function testCallsAtBuildingState_ElementIsArray_ReturnsSpecsWithBeforeContextFunctionsThatSetsValuesToContextData()
+	public function testCallsAtBuildingState_ElementIsArray_ReturnsSpecsWithBeforeContextFunctionsThatSetsValuesToData()
 	{
 		$specs = \spectrum\_internal\convertArrayWithContextsToSpecs(array(
 			array(),
@@ -48,23 +48,23 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$this->assertSame('before', $contexts[0]['type']);
 		
 		
-		$contextDataObjects = array();
+		$dataObjects = array();
 		foreach ($specs as $spec)
 		{
 			\spectrum\_internal\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$contextDataObjects, $spec){
-				$contextDataObjects[] = $spec->test->getContextData();
+			$spec->test->setFunction(function() use(&$dataObjects, $spec){
+				$dataObjects[] = $spec->test->getData();
 			});
 		}
 		
 		\spectrum\_internal\getRootSpec()->run();
 
-		$this->assertSame(array(), get_object_vars($contextDataObjects[0]));
-		$this->assertSame(array(0 => 'aaa'), get_object_vars($contextDataObjects[1]));
-		$this->assertSame(array(0 => 'bbb', 1 => 'ccc'), get_object_vars($contextDataObjects[2]));
-		$this->assertSame(array(0 => 'aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'), get_object_vars($contextDataObjects[3]));
-		$this->assertSame(array(0 => 'bbb1', 'bbb2' => 'bbb3', 'bbb4' => 'bbb5'), get_object_vars($contextDataObjects[4]));
-		$this->assertSame(array(0 => 'ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'), get_object_vars($contextDataObjects[5]));
+		$this->assertSame(array(), get_object_vars($dataObjects[0]));
+		$this->assertSame(array(0 => 'aaa'), get_object_vars($dataObjects[1]));
+		$this->assertSame(array(0 => 'bbb', 1 => 'ccc'), get_object_vars($dataObjects[2]));
+		$this->assertSame(array(0 => 'aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'), get_object_vars($dataObjects[3]));
+		$this->assertSame(array(0 => 'bbb1', 'bbb2' => 'bbb3', 'bbb4' => 'bbb5'), get_object_vars($dataObjects[4]));
+		$this->assertSame(array(0 => 'ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'), get_object_vars($dataObjects[5]));
 	}
 	
 	public function providerElementIsArray_KeysAsNames()
@@ -138,7 +138,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$specs = \spectrum\_internal\convertArrayWithContextsToSpecs(array(
 			function(){},
 			function() use(&$isCalled) { $isCalled = true; },
-			function(){ \spectrum\builders\this()->aaa = 'bbb'; },
+			function(){ \spectrum\builders\data()->aaa = 'bbb'; },
 		));
 		
 		$this->assertSame(3, count($specs));
@@ -157,21 +157,21 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		
 		$this->assertSame(null, $isCalled);
 		
-		$contextDataObjects = array();
+		$dataObjects = array();
 		foreach ($specs as $spec)
 		{
 			\spectrum\_internal\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$contextDataObjects, $spec){
-				$contextDataObjects[] = $spec->test->getContextData();
+			$spec->test->setFunction(function() use(&$dataObjects, $spec){
+				$dataObjects[] = $spec->test->getData();
 			});
 		}
 		
 		\spectrum\_internal\getRootSpec()->run();
 		
 		$this->assertSame(true, $isCalled);
-		$this->assertSame(array(), get_object_vars($contextDataObjects[0]));
-		$this->assertSame(array(), get_object_vars($contextDataObjects[1]));
-		$this->assertSame(array('aaa' => 'bbb'), get_object_vars($contextDataObjects[2]));
+		$this->assertSame(array(), get_object_vars($dataObjects[0]));
+		$this->assertSame(array(), get_object_vars($dataObjects[1]));
+		$this->assertSame(array('aaa' => 'bbb'), get_object_vars($dataObjects[2]));
 	}
 	
 	public function providerElementIsFunction_KeysAsNames()
@@ -213,7 +213,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 			function() use(&$isCalled) { $isCalled = true; },
 			array('bbb', 'ccc'),
 			function(){},
-			function(){ \spectrum\builders\this()->aaa = 'bbb'; },
+			function(){ \spectrum\builders\data()->aaa = 'bbb'; },
 			array('aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'),
 		));
 		
@@ -245,24 +245,24 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		
 		$this->assertSame(null, $isCalled);
 		
-		$contextDataObjects = array();
+		$dataObjects = array();
 		foreach ($specs as $spec)
 		{
 			\spectrum\_internal\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$contextDataObjects, $spec){
-				$contextDataObjects[] = $spec->test->getContextData();
+			$spec->test->setFunction(function() use(&$dataObjects, $spec){
+				$dataObjects[] = $spec->test->getData();
 			});
 		}
 		
 		\spectrum\_internal\getRootSpec()->run();
 		
 		$this->assertSame(true, $isCalled);
-		$this->assertSame(array(), get_object_vars($contextDataObjects[0]));
-		$this->assertSame(array(), get_object_vars($contextDataObjects[1]));
-		$this->assertSame(array(0 => 'bbb', 1 => 'ccc'), get_object_vars($contextDataObjects[2]));
-		$this->assertSame(array(), get_object_vars($contextDataObjects[3]));
-		$this->assertSame(array('aaa' => 'bbb'), get_object_vars($contextDataObjects[4]));
-		$this->assertSame(array(0 => 'aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'), get_object_vars($contextDataObjects[5]));
+		$this->assertSame(array(), get_object_vars($dataObjects[0]));
+		$this->assertSame(array(), get_object_vars($dataObjects[1]));
+		$this->assertSame(array(0 => 'bbb', 1 => 'ccc'), get_object_vars($dataObjects[2]));
+		$this->assertSame(array(), get_object_vars($dataObjects[3]));
+		$this->assertSame(array('aaa' => 'bbb'), get_object_vars($dataObjects[4]));
+		$this->assertSame(array(0 => 'aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'), get_object_vars($dataObjects[5]));
 	}
 	
 /**/

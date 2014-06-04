@@ -7,12 +7,12 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins;
 
 use spectrum\config;
-use spectrum\core\ContextDataInterface;
+use spectrum\core\DataInterface;
 
 class Test extends \spectrum\core\plugins\Plugin
 {
-	/** @var ContextDataInterface */
-	protected $contextData;
+	/** @var DataInterface */
+	protected $data;
 	
 	/**
 	 * @var \Closure
@@ -49,9 +49,9 @@ class Test extends \spectrum\core\plugins\Plugin
 
 /**/
 	
-	public function getContextData()
+	public function getData()
 	{
-		return $this->contextData;
+		return $this->data;
 	}
 	
 /**/
@@ -61,26 +61,23 @@ class Test extends \spectrum\core\plugins\Plugin
 		$function = $this->getFunctionThroughRunningAncestors();
 		if ($function)
 		{
-			$this->contextData = $this->createContextData();
+			$this->data = $this->createData();
 			
-			$callFunctionOnContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnContextData');
 			foreach ($this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors('before') as $context)
-				$callFunctionOnContextDataFunction($context['function'], array(), $this->contextData);
+				$context['function']();
 			
-			$callFunctionOnContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnContextData');
-			$callFunctionOnContextDataFunction($function, array(), $this->contextData);
+			$function();
 			
-			$callFunctionOnContextDataFunction = config::getFunctionReplacement('\spectrum\_internal\callFunctionOnContextData');
 			foreach ($this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors('after') as $context)
-				$callFunctionOnContextDataFunction($context['function'], array(), $this->contextData);
+				$context['function']();
 			
-			$this->contextData = null;
+			$this->data = null;
 		}
 	}
 	
-	protected function createContextData()
+	protected function createData()
 	{
-		$contextClass = config::getClassReplacement('\spectrum\core\ContextData');
+		$contextClass = config::getClassReplacement('\spectrum\core\Data');
 		return new $contextClass();
 	}
 }

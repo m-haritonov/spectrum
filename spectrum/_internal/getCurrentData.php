@@ -11,8 +11,8 @@ use spectrum\config;
 /**
  * @access private
  */
-function getCurrentContextData()
+function getCurrentData()
 {
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');
-	return $getCurrentRunningEndingSpecFunction()->test->getContextData();
+	return $getCurrentRunningEndingSpecFunction()->test->getData();
 }

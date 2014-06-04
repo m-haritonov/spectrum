@@ -8,32 +8,30 @@ Framework files are in the "US-ASCII" charset (file "notes.txt" is in the "UTF-8
 ###System requirements
 The framework requires PHP 5.3 or later.
 
-In PHP 5.4 and later "$this" is available instead of "this()" ? it is only one PHP version related feature in the framework.
-
 ###Example usage
 	<?php
 	require_once __DIR__ . '/spectrum/spectrum/init.php';
 
 	group('"AddressBook" class', function(){
 		before(function(){
-			this()->addressBook = new AddressBook();
+			data()->addressBook = new AddressBook();
 		});
 		
 		group('"MySql" driver', function(){
 			before(function(){
-				this()->addressBook->setDriver(new drivers\MySql());
+				data()->addressBook->setDriver(new drivers\MySql());
 			});
 		});
 	
 		group('"FileSystem" driver', function(){
 			before(function(){
-				this()->addressBook->setDriver(new drivers\FileSystem());
+				data()->addressBook->setDriver(new drivers\FileSystem());
 			});
 		});
 	}, function(){
 		group('"findPerson" method', function(){
 			test('Returns person by first name', function(){
-				$person = this()->addressBook->findPerson('Bob');
+				$person = data()->addressBook->findPerson('Bob');
 				be($person->firstName)->eq('Bob');
 			});
 		
@@ -42,7 +40,7 @@ In PHP 5.4 and later "$this" is available instead of "this()" ? it is only one P
 				array('phoneNumber' => '(495) 123-456-7'),
 				array('phoneNumber' => '123-456-7'),
 			), function(){
-				$person = this()->addressBook->findPerson(this()->phoneNumber);
+				$person = data()->addressBook->findPerson(data()->phoneNumber);
 				be($person->phoneNumber)->eq('+74951234567');
 			});
 		});

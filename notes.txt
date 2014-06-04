@@ -20,15 +20,6 @@ http://spectrum-framework.org/) -> http://mkharitonov.net/projects/spectrum/
 TODO: убрать форматирование
 TODO: выделять цветом всю строку и point, fail/success оставить только для копирования в буфер
 
-TODO: rename "this()" to "data()"??? remove "$this" support (data() is available in eval and etc., $this is not)???
-	remove "System requirements" notes from "README.md"
-	remove callFunctionOnContextData
-	remove tests for php 5.4
-	ContextData -> Data 
-	getCurrentContextData -> getCurrentData
-	search "context" string in project
-	
-
 TODO: "Spectrum framework report" -> "Spectrum Framework"
 TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров с обрезанием для 100 символов вместо использования только первого параметра
 TODO: test('', array(

@@ -6,15 +6,15 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\core;
 
-use spectrum\core\ContextData;
+use spectrum\core\Data;
 
 require_once __DIR__ . '/../init.php';
 
-class ContextDataTest extends \spectrum\tests\Test
+class DataTest extends \spectrum\tests\Test
 {
 	public function testSupportsAccessToPropertiesThroughObjectAccessStyle()
 	{
-		$context = new ContextData();
+		$context = new Data();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 		$context->ccc = 'cccVal';
@@ -26,7 +26,7 @@ class ContextDataTest extends \spectrum\tests\Test
 
 	public function testSupportsAccessToPropertiesThroughArrayAccessStyle()
 	{
-		$context = new ContextData();
+		$context = new Data();
 		$context['aaa-aaa'] = 'aaaVal';
 		$context['bbb-bbb'] = 'bbbVal';
 		$context['ccc-ccc'] = 'cccVal';
@@ -38,7 +38,7 @@ class ContextDataTest extends \spectrum\tests\Test
 
 	public function testSupportsPropertyExistCheck()
 	{
-		$context = new ContextData();
+		$context = new Data();
 		$this->assertFalse(isset($context->aaa));
 		$context->aaa = 'aaaVal';
 		$this->assertTrue(isset($context->aaa));
@@ -46,7 +46,7 @@ class ContextDataTest extends \spectrum\tests\Test
 
  	public function testSupportsPropertyUnset()
 	{
-		$context = new ContextData();
+		$context = new Data();
 		$context->aaa = 'aaaVal';
 		unset($context->aaa);
 		$this->assertFalse(property_exists($context, 'aaa'));
@@ -54,7 +54,7 @@ class ContextDataTest extends \spectrum\tests\Test
 
  	public function testSupportsPropertyCountCheck()
 	{
-		$context = new ContextData();
+		$context = new Data();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 
@@ -63,7 +63,7 @@ class ContextDataTest extends \spectrum\tests\Test
 
 	public function testSupportsForeachTraverse()
 	{
-		$context = new ContextData();
+		$context = new Data();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 		$context->ccc = 'cccVal';

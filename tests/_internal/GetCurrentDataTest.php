@@ -8,9 +8,9 @@ namespace spectrum\tests\_internal;
 
 require_once __DIR__ . '/../init.php';
 
-class GetCurrentContextDataTest extends \spectrum\tests\Test
+class GetCurrentDataTest extends \spectrum\tests\Test
 {
-	public function testCallsAtRunningState_ReturnsContextDataOfCurrentRunningSpec()
+	public function testCallsAtRunningState_ReturnsDataOfCurrentRunningSpec()
 	{
 		$specs = $this->createSpecsByVisualPattern('
 			  __0__
@@ -22,17 +22,17 @@ class GetCurrentContextDataTest extends \spectrum\tests\Test
 		
 		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[0]);
 		
-		$contextDataObjects = array();
+		$dataObjects = array();
 		$returnValues = array();
 		foreach ($specs as $spec)
 		{
-			$spec->test->setFunction(function() use(&$contextDataObjects, &$returnValues, $spec){
-				$contextDataObjects[] = $spec->test->getContextData();
-				$returnValues[] = \spectrum\_internal\getCurrentContextData();
+			$spec->test->setFunction(function() use(&$dataObjects, &$returnValues, $spec){
+				$dataObjects[] = $spec->test->getData();
+				$returnValues[] = \spectrum\_internal\getCurrentData();
 			});
 		}
 		
 		\spectrum\_internal\getRootSpec()->run();
-		$this->assertSame($contextDataObjects, $returnValues);
+		$this->assertSame($dataObjects, $returnValues);
 	}
 }

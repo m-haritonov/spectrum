@@ -16,10 +16,9 @@ require_once __DIR__ . '/builders/fail.php';
 require_once __DIR__ . '/builders/group.php';
 require_once __DIR__ . '/builders/message.php';
 require_once __DIR__ . '/builders/test.php';
-require_once __DIR__ . '/builders/this.php';
+require_once __DIR__ . '/builders/data.php';
 
 require_once __DIR__ . '/_internal/addTestSpec.php';
-require_once __DIR__ . '/_internal/callFunctionOnContextData.php';
 require_once __DIR__ . '/_internal/callFunctionOnCurrentBuildingSpec.php';
 require_once __DIR__ . '/_internal/convertArguments.php';
 require_once __DIR__ . '/_internal/convertArgumentsForSpec.php';
@@ -28,7 +27,7 @@ require_once __DIR__ . '/_internal/convertCharset.php';
 require_once __DIR__ . '/_internal/convertLatinCharsToLowerCase.php';
 require_once __DIR__ . '/_internal/formatTextForOutput.php';
 require_once __DIR__ . '/_internal/getCurrentBuildingSpec.php';
-require_once __DIR__ . '/_internal/getCurrentContextData.php';
+require_once __DIR__ . '/_internal/getCurrentData.php';
 require_once __DIR__ . '/_internal/getCurrentRunningEndingSpec.php';
 require_once __DIR__ . '/_internal/getRootSpec.php';
 require_once __DIR__ . '/_internal/getTestSpecs.php';
@@ -47,4 +46,4 @@ if (!function_exists('fail'))       { function fail()       { return call_user_f
 if (!function_exists('group'))      { function group()      { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\group'),      func_get_args()); }}
 if (!function_exists('message'))    { function message()    { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\message'),    func_get_args()); }}
 if (!function_exists('test'))       { function test()       { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\test'),       func_get_args()); }}
-if (!function_exists('this'))       { function this()       { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\this'),       func_get_args()); }}
+if (!function_exists('data'))       { function data()       { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\data'),       func_get_args()); }}
