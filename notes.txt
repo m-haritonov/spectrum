@@ -5,14 +5,8 @@ TODO: MOVE PROJECT TO GITHUB.COM
 TODO: "Expand/collapse" should not copied to clipboard
 TODO: remove false/true/null matchers
 TODO: remove instanceof matcher to instanceOf/is
-TODO: replace ob_get_contents in tests to:
-		ob_start(function($buffer) use(&$output){
-			$output .= $buffer;
-			return ''; 
-		});
 
-" (http://spectrum-framework.org/)" -> "", отформатировать шапку-комментарий в две строки
-http://spectrum-framework.org/) -> http://mkharitonov.net/projects/spectrum/ 
+TODD: http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
 

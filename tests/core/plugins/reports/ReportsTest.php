@@ -21,14 +21,16 @@ class ReportsTest extends \spectrum\tests\Test
 	
 	public function testOutputFormatIsHtml_AllowsOutputDataBuffering()
 	{
-		ob_start();
+		ob_start(function($buffer) use(&$html){
+			$html .= $buffer;
+			return ''; 
+		});
 		
 		config::setOutputFormat('html');
 		$spec = new Spec();
 		$spec->test->setFunction(function(){ throw new \Exception('<>&"\''); });
 		$spec->run();
 		
-		$html = ob_get_contents();
 		ob_end_clean();
 		
 		$this->assertNotEquals('', $html);
@@ -40,7 +42,11 @@ class ReportsTest extends \spectrum\tests\Test
 	
 	public function testOutputFormatIsHtml_GeneratesValidXhtml1StrictCode()
 	{
-		ob_start();
+		ob_start(function($buffer) use(&$html){
+			$html .= $buffer;
+			return ''; 
+		});
+		
 		config::setOutputFormat('html');
 		config::setOutputIndention("\t");
 		config::setOutputNewline("\r\n");
@@ -198,7 +204,6 @@ class ReportsTest extends \spectrum\tests\Test
 		
 		$groupSpec->run();
 		
-		$html = ob_get_contents();
 		ob_end_clean();
 		
 		libxml_clear_errors();
