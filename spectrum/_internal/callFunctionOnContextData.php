@@ -8,6 +8,9 @@ namespace spectrum\_internal;
 
 use spectrum\Exception;
 
+/**
+ * @access private
+ */
 function callFunctionOnContextData($function, array $arguments, $contextData)
 {
 	// Access to context through "$this" variable, available in php >= 5.4

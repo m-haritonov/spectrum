@@ -9,6 +9,7 @@ namespace spectrum\_internal;
 use spectrum\core\SpecInterface;
 
 /**
+ * @access private
  * @see getCurrentBuildingSpec()
  */
 function setCurrentBuildingSpec(SpecInterface $spec = null)

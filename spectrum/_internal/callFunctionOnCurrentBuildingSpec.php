@@ -9,6 +9,9 @@ namespace spectrum\_internal;
 use spectrum\config;
 use spectrum\core\SpecInterface;
 
+/**
+ * @access private
+ */
 function callFunctionOnCurrentBuildingSpec($function, SpecInterface $spec)
 {
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');

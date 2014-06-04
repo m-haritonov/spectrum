@@ -10,6 +10,7 @@ use spectrum\core\SpecInterface;
 
 /**
  * Available at building and running state.
+ * @access private
  * @return bool
  */
 function isRunningState()

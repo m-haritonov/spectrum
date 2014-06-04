@@ -9,6 +9,9 @@ namespace spectrum\_internal;
 use spectrum\config;
 use spectrum\Exception;
 
+/**
+ * @access private
+ */
 function convertArgumentsForSpec(array $arguments, $builderName)
 {
 	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\_internal\convertArguments');

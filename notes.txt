@@ -2,6 +2,7 @@ TODO: MERGE BRANCH
 TODO: добавить старые версии проекта в начало истории репозитория
 TODO: MOVE PROJECT TO GITHUB.COM
 
+TODO: _internal -> _internals
 TODO: "Expand/collapse" should not copied to clipboard
 TODO: remove false/true/null matchers
 TODO: remove instanceof matcher to instanceOf/is

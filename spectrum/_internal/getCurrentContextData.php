@@ -8,6 +8,9 @@ namespace spectrum\_internal;
 
 use spectrum\config;
 
+/**
+ * @access private
+ */
 function getCurrentContextData()
 {
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');

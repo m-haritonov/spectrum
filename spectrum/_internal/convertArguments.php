@@ -6,6 +6,9 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_internal;
 
+/**
+ * @access private
+ */
 function convertArguments(array $arguments, array $inputArgumentPattern, array $outputArgumentPattern)
 {
 	$arguments = array_values($arguments);

@@ -6,6 +6,9 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_internal;
 
+/**
+ * @access private
+ */
 function loadBaseMatchers()
 {
 	$matchers = array(

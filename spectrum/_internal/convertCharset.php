@@ -8,6 +8,9 @@ namespace spectrum\_internal;
 
 use spectrum\config;
 
+/**
+ * @access private
+ */
 function convertCharset($string, $inputCharset = null, $outputCharset = null)
 {
 	if ($inputCharset === null)

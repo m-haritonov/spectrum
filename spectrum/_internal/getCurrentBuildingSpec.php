@@ -8,6 +8,7 @@ namespace spectrum\_internal;
 use spectrum\config;
 
 /**
+ * @access private
  * @return \spectrum\core\SpecInterface|null
  */
 function getCurrentBuildingSpec()

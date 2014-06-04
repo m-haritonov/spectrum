@@ -8,6 +8,9 @@ namespace spectrum\_internal;
 
 use spectrum\config;
 
+/**
+ * @access private
+ */
 function getRootSpec()
 {
 	static $rootSpec = null;

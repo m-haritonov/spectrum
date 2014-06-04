@@ -8,6 +8,9 @@ namespace spectrum\_internal;
 
 use spectrum\core\SpecInterface;
 
+/**
+ * @access private
+ */
 function addTestSpec(SpecInterface $spec)
 {
 	static $specs = array();

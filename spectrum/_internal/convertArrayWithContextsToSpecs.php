@@ -9,6 +9,9 @@ namespace spectrum\_internal;
 use spectrum\config;
 use spectrum\Exception;
 
+/**
+ * @access private
+ */
 function convertArrayWithContextsToSpecs(array $contexts)
 {
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');

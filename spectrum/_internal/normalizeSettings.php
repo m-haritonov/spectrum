@@ -20,6 +20,7 @@ use spectrum\Exception;
  * \spectrum\_internal\normalizeSettings(E_ALL); // see \spectrum\core\plugins\ErrorHandling::setCatchPhpErrors()
  * \spectrum\_internal\normalizeSettings(true);  // see \spectrum\core\plugins\ErrorHandling::setCatchPhpErrors()
  *
+ * @access private
  * @param mixed $settings
  */
 function normalizeSettings($settings)

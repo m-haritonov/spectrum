@@ -8,6 +8,9 @@ namespace spectrum\_internal;
 
 use spectrum\config;
 
+/**
+ * @access private
+ */
 function formatTextForOutput($text, $indentionToRemoveCount = 0, $inputIndention = "\t", $inputNewline = "\n", $outputIndention = null, $outputNewline = null)
 {
 	if ($outputIndention === null)

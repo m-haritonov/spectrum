@@ -6,6 +6,9 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_internal;
 
+/**
+ * @access private
+ */
 function convertLatinCharsToLowerCase($string)
 {
 	return strtr($string, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
