@@ -1,513 +1,289 @@
+TODO: добавить старые версии проекта в начало истории репозитория
+TODO: MOVE PROJECT TO GITHUB.COM
 
-success ("has empty" or "success, has empty")
-реализовать проверку *RECURSION* в VariableHierarchical (в элементе массива тоже может содержаться объект)
+TODO: "Expand/collapse" should not copied to clipboard
+TODO: remove false/true/null matchers
+TODO: remove instanceof matcher to instanceOf/is
 
-добавить title к элементам ползунка "Details"
-синхронизировать переключатели элемента ползунка
-BreakOnFirstMatcherFail rename to BreakOnFirstVerificationFail
-вернуть отображение trace в оъектах exception, сделав сворачивание списка/разворачивание элементов дерева
-
-getOnceInstance rename to getInstance?
-
-Assert($actualValue) rename to $value?
-
-RunResultsBuffer: rename $result['result'] to $result['value/flag']
-RunResultsBuffer: rename RunResultsBuffer to RunResultBuffer or ResultBuffer or VerificationBuffer (буффер может использоваться не только для хранения результатов запуска)?
-Config::setClassFor();
-translate throwException messages
-Matchers - add reserved word "should", "shouldbe", "should_be"
-
-/**
- * @lang ru Делает что-нибудь
- */
-it('Makes something', function(){});
-
-rename argumentProviders feature to dataSets
-if test callback return false — throw exception: test callback return not null
-в классе Spec предусмотреть возможность создания тестов, где разделено объявление тестов и проверка (verify) результатов выполнения
-в core отойти от именования классов согласно constructionCommands, возможно переименовать класс It в Test
-см. заметку на ipad про контексты
-назвать контексты и провайдеры аргументов одним термином (например, генераторы или комбинаторы) - ???
+TODD: http://mkharitonov.net/projects/spectrum/ 
+добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
 
-it('Register "$componentId" with ', array(
-	'g-foo-bar',
-	row('Returns foo', 'arg1', 'arg2'),
-	group('Foreign phone', [ 
-		row('Nested foo', array('arg1', 'arg2')),
-		row('Nested foo', array('arg1', 'arg2')),
-	]),
-	array('arg1', 'agr2'), // такой синтаксис убрать, возможно запретить массивы в качестве единичного аргумента
-), function($componentId, $componentElementsRoutes, $useForDescendantComponentsSearch){
+TODO: убрать форматирование
+TODO: выделять цветом всю строку и point, fail/success оставить только для копирования в буфер
+
+TODO: "Spectrum framework report" -> "Spectrum Framework"
+TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров с обрезанием для 100 символов вместо использования только первого параметра
+TODO: test('', array(
+	array('name', 'name', 'name),
+	array('value', 'value', 'value'),
+	array('value', 'value', 'value'),
+	array('value', 'value', 'value'),
+	array('value', 'value', 'value'),
+), function(){}); ???
+
+TODO: create big example (with anonymous specs, matchers, with all errors, long spec names)
+TODO: add tests for charset usages
+
+TODO: array context group:
+	group('aaa', array(
+		'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
+		'group: Межгород' => array(
+			'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
+			'Номер МТС' => array('code' => '495', 'phone' => '35861923'),
+		),
+	), function(){
+		test('bbb', function(){});
+	});
+
+TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
+TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
+TODO: реализовать проверку *RECURSION* в ArrayVar и ObjectVar (в элементе массива тоже может содержаться объект)
+
+TODO: fix reports in all browsers 
+
+TODO: rename throwsException to throws ???
+TODO: create be()->triggersError($errorType = null, $errorMessage = null)  ???
+TODO: create plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
+TODO: create plugin BackupGlobalVariables ???
+TODO: matchers: be(function(){})->outputs/prints('aaa a aaaaa ');
+
+TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
+TODO: добавить setCatchPhpErrors(true/false) ???
+TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
+
+TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
+TODO: написать doc комментарии к методам и функциям (глобальным, расположенным в init.php, в частности)
+TODO: заменить call_user_func_array в глобальных алиасах билдеров на прямой вызов с передачей аргументов
+TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
+TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
+TODO: be()->throws() vs be()->throwing() vs be()->throw() vs the()->throws()
+TODO: set breakOnFirstMatcherFail to true by default
+
+TODO: change context declaration style???
+
+// from:
+group('', function(){}, function(){});
+
+// to:
+contexts(function(){});
+group('', function(){});
+
+
+// from:
+test('', function(){}, function(){});
+
+// to:
+group(function(){
+	contexts(function(){});
+	test('', function(){});
+});
+
+
+// from:
+test('', array(
+	array('aaa' => 'bbb'),
+	array('aaa' => 'bbb'),
+	array('aaa' => 'bbb'),
+	array('aaa' => 'bbb'),
+), function(){});
+
+// to:
+group(function(){
+	contexts(array(
+		array('aaa' => 'bbb'),
+    	array('aaa' => 'bbb'),
+    	array('aaa' => 'bbb'),
+    	array('aaa' => 'bbb'),
+	), $addType = null);
+	
+	// Values: null, "up/wrap", "down/inject", "next"
+	// When $addType is "up", then specs is bound to contexts as children (to all descendant ending contexts)
+	// When $addType is "down", then contexts is bound to specs as children (to all descendant ending specs)
+	// When $addType is "next", then contexts is bound to next spec as children (to all descendant ending specs)
+	// When $addType is null, then:
+	// When there are many specs in group, then uses "up" type
+	// When there is one spec in group, then uses "down" type
+	test('', function(){});
+});
+
+
+
+
+
+
+TODO: добавить возможность перевода??? Пример: 
+test('Makes something', function(){}, function(){
 	// ...
-});
+	// ...
+	// ...
+	// ...
+	// ...
+}, array(
+	'translations/langs' => array(
+		'ru' => 'Делает что-либо',
+	)
+));
 
-vs
+или:
+translate('Делает что-либо', 'ru');
+it('Makes something'), function(){});
 
-// этот вариант лучше, т.к. больше возможностей (контексты и т.п. и не вводит нового синтаксиса для групп)
-it('Return declared in current component params', function(){
-	describe('Repeat call', function(){
-		beforeEach(function(){ });
-	});
-}, function(){ /* test code */ });
+установка используемого для отображения языка:
+config::setOutputLanguage('ru');
 
-объединить Spec* классы в один Spec класс, сделав возможным добавлять дочерние узлы для классов вида it
-добавить в класс Spec методы set/getType/IdentityString/ConstructionCommand
-Context — сделать поведение по умолчанию аналогичное Describe, но добавить параметр runParentSpecs ??? 
-context - команду конструирования context заменить на group/describe, добавив параметр "selector": group('Some name', 'selector', function(){})
-describe()/it()/context() vs group()/test()/combine()
+TODO: add parameters to \spectrum\run function:
+	$paths/$files — for example, "/aaa.php", "/abc/*.php", "/abc/**.php", array("./aaa.php", "./abc/*.php") 
+	$specId — for example, spec1_1_1
+	$runInAllContexts = false
+	??? $disableOutputBuffers — while (ob_get_level()){ ob_end_flush(); }
+	$showFileNameAsGroup
+	$fileNameAsGroupType = linear (all files as root groups), hierarchical (each file group as child of folder group) 
 
-на главной закрепить образец использования:
-test('ожидаемый результат', function(){
-	// код для проверки ожидаемого результата
-})
+TODO: add "run this test in this context" and "run this test in all contexts" links to "Reports" plugin
 
+TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generateContexts; в "\spectrum\tools\*" или в "\spectrum\builders\*")
+TODO: create "\spectrum\tools\createTree" function and similar auxiliary functions and classes?
+TODO: create "\spectrum\tools\incrementCounter($counterName)" and "\spectrum\tools\getCounterValue($counterName)" functions?
 
-describe('Some specification', function(){
-	beforeEach(function(){
-		world()->abc = 123;
-	});
-	
-	afterEach(function(){
-		world()->abc = null;
-	});
-	
-	it('Some test', function(){
-		setSomeNumber(world()->abc);
-	});
-});
+=== Documentation ===
 
-vs
-
-describe('Some specification', function(){
-	beforeEach(function($world){
-		$world->abc = 123;
-	});
-	
-	afterEach(function($world){
-		$world->abc = null;
-	});
-	
-	it('Some test', array('aaa', 'bbb'), function($argument1, $world){
-		setSomeNumber($world->abc);
-	});
-});
-
-
----
-describe('') use($foo, $bar)
-{
-	it('', array())
-	{
+TODO: example for creation of describe/it/case functions
+TODO: кодировка влияет только на вывод данных и не влияет на работу тестов
+TODO: выводимые в формате HTML данные адаптированы для копирования в буфер обмена в текстовом виде
+TODO: Убрать лишние условия дя примеров, пускай пучше бутлут одни суккесы в результатах
+TODO: Убрать из примера files, оставив только базы данных
+TODO: Для примеров использовать скриншоты и ссылку на живое выполнение ???
+TODO: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
+TODO: заменить "Spectrum is a PHP framework for BDD specification test" на "Spectrum is a PHP framework for test automation"
+TODO: поддерживаются кодировки, являющиеся надмножеством ASCII
+TODO: add "output to file" example to documentation:
+	ob_start(function($buffer){
+		static $handler;
+		if (!$handler)
+			$handler = fopen(__DIR__ . '/tmp.txt', 'w');
 		
+		fwrite($handler, $buffer);
+		return false; // Use "return '';" to disable displaying 
+	});
+	
+TODO: на главной закрепить образец использования:
+	test('ожидаемый результат', function(){
+		// код для проверки ожидаемого результата
+	})
+TODO: пример добавления своего драйвера для отчётов
+	class MyReports extends \spectrum\core\plugins
+	{
+		protected function getDriverClass()
+		{
+			if (mb_strtolower(config::getOutputFormat(), 'us-ascii') == 'html')
+				return 'myDriverClass';
+			else
+				return parent::getDriverClass();
+		}
 	}
-}
 
-Matchers plugin:
----Плагин report
-	flush
+config::registerSpecPlugin('MyReports');
 
-	DetailsControl — изменять state глобально - для всех экземпляров на странице
-		По умолчанию — state3
+=== Multi-charset support problems ===
 
-	сделать run.php
-	run.php?path=qwe.php&id=spec1_1_1
-	добавить ссылку "выполнить только этот тест" — в текущем контексте, во всех контекстах
+group(function(){
+	before(function(){ $this->aaa = 'text in utf-8'; });
+	group(function(){
+		before(function(){ $this->bbb = 'text in cp1251'; });
+		test(function(){
+			// What is result must be added to ResultBuffer (true or false)?
+			// How to detect correct charset for output and compare variables?
+			be($this->aaa)->eq($this->bbb);
+		});
+	}, 'cp1251');
+}, 'utf-8');
 
----рефакторинг core
-	исправить TODO
+group(function(){
+	before(function(){ $this->aaa = 'text in utf-8'; });
+	test(function(){
+		message($this->aaa); // Now message contains utf-8 text, but test charset is set to cp1251
+		message('aaa is: ' . $this->aaa); // Now message contains incorrect string (in mixed charsets)
+	}, 'cp1251');
+}, 'utf-8');
 
-	SpecContainerDescribe -> SpecContainerGroup
-	SpecContainerContext -> SpecContainerContext
-	SpecContainerPattern -> SpecContainerPattern
-	SpecContainerArgumentsProvider -> SpecContainer
-	SpecItemIt -> SpecItem
+group(function(){
+	before(function(){ \projectName\SomeClass::setText('text in utf-8'); });
+	test(function(){
+		// What behaviour is expected?
+		if (\projectName\SomeClass::getText() != 'text in cp1251')
+			fail();
+	}, 'cp1251');
+}, 'utf-8');
 
-	Spec->setDetails()
-		Details->createdConstructionCommand
-	// формироваться должно по правилам формирования идентификаторов
-	Spec->setAlias();
-	Spec->setSystemName();
-	Spec->setSystemAlias();
-	Spec->setCreatsConstructionCommand();
+group(function(){
+	addMatcher('something', function($text){
+		return in_array($text, array('text in utf-8', 'text in utf-8', 'text in utf-8'));
+	});
+	test(function(){
+		// What result is expected (true or false)?
+		// Pass charset to matcher function (and to "before/after" functions by analogy)? 
+		be('text in cp1251')->something();
+	}, 'cp1251');
+}, 'utf-8');
 
+group(function(){
+	addMatcher('matcherNameInUtf8', function(){});
+	test(function(){
+		be()->matcherNameInCp1251(); // Is matcher call handling (in "Assert" class) need converting for matcher name?
+	}, 'cp1251');
+}, 'utf-8');
 
----Плагин report
-	report->highlightSpecNameWithSameFileName
-	время выполнения каждого теста и группы тестов
-	кол-во выполненных тестов
-	feature: report->setWriteToFile()
+TODO: add limited multi-charset support (with using input charset of each test/group for output/etc. and without using input charset for inner string transformation)???
 
-	дотавить title к резальтату или выводить "success", если есть "success" и "empty" дети
-		empty title — "empty or has empty", "all or one of children was empty"
-		all specs is "success"
-		one or more specs is "fail"
-		one or more specs is "empty" and has no "fail"
+=== Mocks ===
 
-	написать тесты только для правильности вывода результата - fail и т.п.
-	testShouldBeGenerateValidXhtml 
-
-
-Doc: Расширение и конфигурация
-Дописать и перезалить документацию по setSettings
-результат выполнения: написать про результат выполнения запуска контекстов и откдюченных спеков
-
-Структура отлова исключения
-после выброса исключения дальнейшее исполбзование объекта не предполагается
-
-SpecItemIt (команда конструирования it()) ловит следующие исключения и php ошибки:
-Execution - отлов исключений, выброшенных в любом из нижеперечисленных мест
-	WorldBuilding
-		onTestCallbackCallBefore
-			TestCallback
-		onTestCallbackCallAfter
-	WorldDestroying
-
-Assert->CallMatcher (в любом из мест Execution)
-Притом, отлов исключений, выброшенных матчерами происходит непосредственно в функции вызова матчера класса Assert (что позволяет продолжатб выполнение теста после исключения матчера)
-
-Переписать примеры в документации на AddressBook
-
---- Написать PHPDOC комментарии
---- Доработать тесты
-	constrctionCommands\IncludeTest — может разместить в тестах соответствующих спеков?
-	ErrorHandlingTest
-
---- assert, счетчик вызовов
-Command::expectCount();
-incrementCount()
-count(getRunningInstance()->getResultStack())
-
-
---- argumentsProviders
-	провайдеры аргументов — возможность использования combine?
-
----worldCreators
-Добавить дополнительных творцов: beforeAll(), afterAll() и т.п.
-beforeAll - выполняется перед всеми в nearestDescribe всех его контекстов
-beforeOnce
-ifFirstChild()
-beforeAll() vs beforeGroup()
-
----extensions
-Spec->loadExtension()
-LoadExtensionPatterns
-loadExtensionWorld
-spec->addExtensionPath
-spec->addExtensionDir
-
---- mock
 Spy
 FileSystemMockReal
 FileSystemMockVirtual
 
---- events
-	Добавить события onMatcherCall в callMatcher()
-		$it->dispatchEvent('onMatcherCallBefore', $onMatcherCallEvent);
-		$it->dispatchEvent('onMatcherCallAfter', $onMatcherCallEvent); — вызывать в конце и в случае выброса исключения
-		сделать метод Spec->dispatchEvent() публичным
-		добавить проверку на Config::allowAlienEventDispatching() в Spec->dispatchEvent()
-		OnMatcherCallEvent
-			Assert $owner
-			$matcherName
-			$expectedArgs
-			MatcherCallDetails $matcherCallDetails
-			Spec $specItem
-			$matcherReturnValue
-			$result
-			$exception
-			$isBreak
-
---- world
-	Вопрос: Что лучше: constructionCommands\Manager::world() или параметр $world в тестовой функции
-	Ответ:
-		Лучше $world, т.к.:
-		- обеспечивает защиту мира (ф-я world() может быть вызвана из глубин тестируемого кода)
-		- будет стимулировать не использовать мир в матчерах
-		- в examples мир по любому не может быть вызван
-
-
---- output:
-	Вопрос: if ($spec->getName() == $name) — перекодировать надо или лучше хранить данные внутри обьектов в UTF-8?
-	Ответ:
-		Нет, т.к. тогда надо будет перекодировать данные в:
-			Spec->setName(),
-			SpecContainerPattern->setArguments(),
-			SpecContainerPattern->getArguments() — при передаче callback функции в itLikePattern()
-			SpecItemIt->setTestCallbackArguments(),
-			SpecItemIt->getTestCallbackArguments() — при передаче testCallback функции
-		Плюс плагины будут видеть данные world в исходной кодировке, т.к. полностью (включая данные их возможных в нем
-		методов) перекодировать его будет проблематично.
-
-		И если внутри кода тестов, написанного в одной кодировке будет вызван один из этих методов, то ему придется
-		знать о том, что созданные им данные хранятся в обьектной структуре в другой кодировке и перекодировать.
-
-		Вывод: оставляем хранение данных в обьектной структуре в исходной кодировке, отдавая таким образом предпочтение
-		более прозрачной работе с кодировками из тестов, нежели из дополнительных обработчиков вне кода тестов (плагинов,
-		кода обработки в runner'е и т.п.)
-
-//spectrum_DefaultMatchers_Base_beInstanceOf
-beTriggerError(level)/bePhpError
-
-//spectrum_DefaultMatchers_Base_BeTypeBool
-//spectrum_DefaultMatchers_Base_BeTypeInt
-//spectrum_DefaultMatchers_Base_BeTypeFloat
-//spectrum_DefaultMatchers_Base_BeTypeNumber
-//spectrum_DefaultMatchers_Base_BeTypeString
-//spectrum_DefaultMatchers_Base_BeTypeScalar
-//spectrum_DefaultMatchers_Base_BeTypeArray
-//spectrum_DefaultMatchers_Base_BeTypeObject
-//spectrum_DefaultMatchers_Base_BeTypeCallback
-//spectrum_DefaultMatchers_Base_BeTypeClosure
-//spectrum_DefaultMatchers_Base_BeTypeResource
-/*
-* spectrum_DefaultMatchers_File_BeFileExists
-* spectrum_DefaultMatchers_File_BeFileContentEqual
-* spectrum_DefaultMatchers_File_BeFileIsDir
-* spectrum_DefaultMatchers_File_BeFileIsFile
-* spectrum_DefaultMatchers_File_BeFileIsLink
-* spectrum_DefaultMatchers_File_BeFileIsExecutable
-* spectrum_DefaultMatchers_File_BeFileIsReadable
-* spectrum_DefaultMatchers_File_BeFileIsUploaded
-* spectrum_DefaultMatchers_File_BeFileIsWritable
- *
- *
- *
-* spectrum_DefaultMatchers_Array_BeArrayHasKey
-* spectrum_DefaultMatchers_Array_BeArrayHasValue
-* spectrum_DefaultMatchers_Array_BeArrayHasAllKeys
-* spectrum_DefaultMatchers_Array_BeArrayHasAllValues
-* spectrum_DefaultMatchers_Array_BeArrayHasAnyKey
-* spectrum_DefaultMatchers_Array_BeArrayHasAnyValue
-* spectrum_DefaultMatchers_Array_BeArrayUnsortedEqual
-* spectrum_DefaultMatchers_Array_BeArrayUnsortedEqualRecursive
-* spectrum_DefaultMatchers_Array_BeArrayUnsortedIdentical
-* spectrum_DefaultMatchers_Array_BeArrayUnsortedIdenticalRecursive
-* spectrum_DefaultMatchers_Array_BeArrayCountEqual
- *
-*
-* spectrum_DefaultMatchers_String_BeStringContain
-* spectrum_DefaultMatchers_String_BeStringContainInPosition
-* spectrum_DefaultMatchers_String_BeStringStartWith
-* spectrum_DefaultMatchers_String_BeStringEndWith
-* spectrum_DefaultMatchers_File_BeStringEndWithAnySlash
-* spectrum_DefaultMatchers_File_BeStringStartWithAnySlash
-*
-* spectrum_DefaultMatchers_RegExp_BePregMatch
- *
- * spectrum_DefaultMatchers_Xml_BeXmlWellFormed
- * spectrum_DefaultMatchers_Xml_BeXmlValid
- *
- * spectrum_DefaultMatchers_Html_BeHtmlAttributeEqual
- * spectrum_DefaultMatchers_Html_BeHtmlContainTag
- * spectrum_DefaultMatchers_Html_BeHtmlCorrect
- * spectrum_DefaultMatchers_Html_BeHtmlWellFormed
- * spectrum_DefaultMatchers_Html_BeHtmlValid
- *
- *
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-describe(function(){
-	context('context 2', function(){
-	  -> describe(function(){
-		 -> context('context 2', function(){
-				it('test 2');
-			 -> context('context 1', function(){
-					it('test 2');
-				});
-			});
-
-			context('context 1', function(){});
-
-			it('test 2');
-		}
-
-		it('test 2');
-	});
-});
-
-  -> describe(function(){
-		context('context 1', function(){});
-	 -> context('context 2', function(){
-		 -> context('context 1', function(){});
-		});
-
-	  -> describe(function(){
-		 -> context('context 2', function(){
-				it('test 2');
-			 -> context('context 1', function(){
-					it('test 2');
-				});
-
-			 context('context 1', function(){
-					it('test 2');
-				});
-			});
-
-			context('context 1', function(){});
-
-			it('test 2', function($w){
-				world()->foo = bar
-				getRunningInstance()::getWorld()
-			});
-		}
-	})
-
-
-
-
-describe(function(){
-	context('context 1', function(){});
-	context('context 2', function(){});
-
-	describe(function(){
-		context('context 2', function(){
-			it('test 1');
-		 -> context('context 4', function(){});
-			context('context 3', function(){});
-		});
-
-		context('context 1', function(){});
-
-		it('test 2');
-	}
-})
-
-
-describe(function(){
-	beforeEach(1);
-	beforeEach(2);
-
-	afterEach(33);
-	afterEach(44);
-	
-	describe(function(){
-		beforeEach(3);
-		beforeEach(4);
-		it()
-		afterEach(11);
-		afterEach(22);
-
-		context('context 0', function(){
-			context('context 1', function(){
-				beforeEach();
-			});
-
-			context('context 2', function(){
-				beforeEach();
-
-				it('test 1');
-
-			});
-		});
-
-		context('context 3', function(){
-			beforeEach();
-		});
-
-		it('test 1');
-		it('test 2');
-		it('test 3');
-	})
-
-	it('test 1');
-	it('test 2');
-	it('test 3');
-})
-
-
-describe(function(){
-	beforeEach();
-
-	context('context 2', function(){
-		beforeEach();
-
-		context('context 1', function(){
-			beforeEach();
-		});
-
-        it('test 1');
-
-	});
-
-	describe('test 1');
-	it('test 2');
-	it('test 3');
-})
-
-
-describe(function(){
-	describe('context 1', function(){
-		beforeEach();
-
-		it('test 1');
-		it('test 2');
-		it('test 3');
-	});
-
-	describe('context 2', function(){
-		beforeEach();
-
-		it('test 1');
-		it('test 2');
-		it('test 3'); // Ohh... one more copy/paste
-	});
-})
-
-
-
-
-
-describe(function(){
-
-	context('', function(){
-		beforeEach();
-	});
-
-	context('context 2', function(){
-		beforeEach();
-	});
-
-	it('test 1');
-	it('test 2');
-	it('test 3');
-})
-
-
-describe(function(){
-	describe('context group', function(){
-		beforeEach();
-
-		it('test 1');
-		it('test 2');
-		it('test 3');
-
-		describe('context 1', function(){
-			beforeEach();
-
-			it('test 1');
-			it('test 2');
-			it('test 3');
-		});
-
-		describe('context 2', function(){
-			beforeEach();
-
-			it('test 1');
-			it('test 2');
-			it('test 3');
-		});
-	});
-})
+=== Additional matchers ===
+
+TODO: create additional matchers? List:
+
+spectrum_DefaultMatchers_Base_BePhpError(level)
+
+spectrum_DefaultMatchers_File_BeFileExists
+spectrum_DefaultMatchers_File_BeFileContentEqual
+spectrum_DefaultMatchers_File_BeFileIsDir
+spectrum_DefaultMatchers_File_BeFileIsFile
+spectrum_DefaultMatchers_File_BeFileIsLink
+spectrum_DefaultMatchers_File_BeFileIsExecutable
+spectrum_DefaultMatchers_File_BeFileIsReadable
+spectrum_DefaultMatchers_File_BeFileIsUploaded
+spectrum_DefaultMatchers_File_BeFileIsWritable
+
+spectrum_DefaultMatchers_Array_BeArrayHasKey
+spectrum_DefaultMatchers_Array_BeArrayHasValue
+spectrum_DefaultMatchers_Array_BeArrayHasAllKeys
+spectrum_DefaultMatchers_Array_BeArrayHasAllValues
+spectrum_DefaultMatchers_Array_BeArrayHasAnyKey
+spectrum_DefaultMatchers_Array_BeArrayHasAnyValue
+spectrum_DefaultMatchers_Array_BeArrayUnsortedEqual
+spectrum_DefaultMatchers_Array_BeArrayUnsortedEqualRecursive
+spectrum_DefaultMatchers_Array_BeArrayUnsortedIdentical
+spectrum_DefaultMatchers_Array_BeArrayUnsortedIdenticalRecursive
+spectrum_DefaultMatchers_Array_BeArrayCountEqual
+
+spectrum_DefaultMatchers_String_BeStringContain
+spectrum_DefaultMatchers_String_BeStringContainInPosition
+spectrum_DefaultMatchers_String_BeStringStartWith
+spectrum_DefaultMatchers_String_BeStringEndWith
+spectrum_DefaultMatchers_File_BeStringEndWithAnySlash
+spectrum_DefaultMatchers_File_BeStringStartWithAnySlash
+
+spectrum_DefaultMatchers_RegExp_BePregMatch
+
+spectrum_DefaultMatchers_Xml_BeXmlWellFormed
+spectrum_DefaultMatchers_Xml_BeXmlValid
+
+spectrum_DefaultMatchers_Html_BeHtmlAttributeEqual
+spectrum_DefaultMatchers_Html_BeHtmlContainTag
+spectrum_DefaultMatchers_Html_BeHtmlCorrect
+spectrum_DefaultMatchers_Html_BeHtmlWellFormed
+spectrum_DefaultMatchers_Html_BeHtmlValid

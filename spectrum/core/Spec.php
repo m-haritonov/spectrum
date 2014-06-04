@@ -1,88 +1,175 @@
 <?php
 /*
- * (c) Mikhail Kharitonov <mail@mkharitonov.net>
- *
- * For the full copyright and license information, see the
- * LICENSE.txt file that was distributed with this source code.
- */
+This file is part of the Spectrum. For the copyright and license information,
+see the "README.md" file that was distributed with this source code.
+*/
 
 namespace spectrum\core;
 
+use spectrum\config;
+use spectrum\Exception;
+
 /**
- * @property \spectrum\core\plugins\basePlugins\Matchers matchers
- * @property \spectrum\core\plugins\basePlugins\worldCreators\Builders builders
- * @property \spectrum\core\plugins\basePlugins\worldCreators\Destroyers destroyers
- * @property \spectrum\core\plugins\basePlugins\Selector selector
- * @property \spectrum\core\plugins\basePlugins\Identify identify
- * @property \spectrum\core\plugins\basePlugins\ErrorHandling errorHandling
- * @property \spectrum\core\plugins\basePlugins\Output output
- * @property \spectrum\core\plugins\basePlugins\Messages messages
- * @property \spectrum\core\plugins\basePlugins\Patterns patterns
- * @property \spectrum\reports\Plugin reports
+ * @property \spectrum\core\plugins\ContextModifiers contextModifiers
+ * @property \spectrum\core\plugins\ErrorHandling errorHandling
+ * @property \spectrum\core\plugins\reports\Reports reports
+ * @property \spectrum\core\plugins\Matchers matchers
+ * @property \spectrum\core\plugins\Messages messages
+ * @property \spectrum\core\plugins\Test test
  */
-abstract class Spec implements SpecInterface
+class Spec implements SpecInterface
 {
-	protected $name;
 	/**
-	 * @var SpecInterface
+	 * @var array
 	 */
-	protected $parent;
-	private $isEnabled = true;
-	private $isEnabledTemporarily = null;
 	protected $activatedPlugins = array();
+
+	/**
+	 * @var bool
+	 */
+	protected $isEnabled = true;
+
+	/**
+	 * @var string
+	 */
+	protected $name;
+	
+	/**
+	 * @var SpecInterface[]
+	 */
+	protected $parentSpecs = array();
+	
+	/**
+	 * @var SpecInterface[]
+	 */
+	protected $childSpecs = array();
+
+	/**
+	 * @var ResultBufferInterface|null
+	 */
+	protected $resultBuffer;
+
+	/**
+	 * @var bool
+	 */
 	protected $isRunning = false;
 
 	public function __construct()
 	{
-		$class = Config::getPluginsManagerClass();
-		foreach ($class::getRegisteredPlugins() as $pluginAccessName => $plugin)
-		{
-			if ($plugin['activateMoment'] == 'specConstruct')
-				$this->activatePlugin($pluginAccessName);
-		}
+		$this->dispatchPluginEvent('onSpecConstruct');
 	}
 
 	public function __get($pluginAccessName)
 	{
-		return $this->getPlugin($pluginAccessName);
+		if ($pluginAccessName == '')
+			throw new Exception('Access to plugins by empty access name is denied');
+		
+		$pluginClass = config::getRegisteredSpecPluginClassByAccessName($pluginAccessName);
+		if ($pluginClass)
+			return $this->activatePluginByAccess($pluginClass);
+		
+		throw new Exception('Undefined plugin with access name "' . $pluginAccessName . '" in "' . __CLASS__ . '" class');
+	}
+
+	protected function activatePluginByAccess($pluginClass)
+	{
+		if (!array_key_exists($pluginClass, $this->activatedPlugins) || (string) $pluginClass::getActivateMoment() === 'everyAccess')
+			$this->activatedPlugins[$pluginClass] = new $pluginClass($this);
+		
+		return $this->activatedPlugins[$pluginClass];
 	}
 	
-	public function getPlugin($pluginAccessName)
+	protected function dispatchPluginEvent($eventName, array $arguments = array())
 	{
-		$manager = Config::getPluginsManagerClass();
-		$plugin = $manager::getRegisteredPlugin($pluginAccessName);
-
-		if ($plugin['activateMoment'] == 'everyAccess' || !array_key_exists($pluginAccessName, $this->activatedPlugins))
-			$this->activatePlugin($pluginAccessName);
-
-		return $this->activatedPlugins[$pluginAccessName];
-	}
-
-	protected function activatePlugin($pluginAccessName)
-	{
-		$manager = Config::getPluginsManagerClass();
-		$this->activatedPlugins[$pluginAccessName] = $manager::createPluginInstance($this, $pluginAccessName);
-	}
-
-	protected function dispatchEvent($eventName)
-	{
-		$args = func_get_args();
-		unset($args[0]);
-		$args = array_values($args);
-
-		$manager = Config::getPluginsManagerClass();
-		foreach ($manager::getAccessNamesForEventPlugins($eventName) as $pluginAccessName)
+		foreach ($this->getPluginEventMethods($eventName) as $method)
 		{
-			$pluginInstance = $this->getPlugin($pluginAccessName);
-			call_user_func_array(array($pluginInstance, $eventName), $args);
+			$reflectionClass = new \ReflectionClass($method['class']);
+			$reflectionMethod = $reflectionClass->getMethod($method['method']);
+			$reflectionMethod->setAccessible(true);
+			$reflectionMethod->invokeArgs($this->activatePluginByAccess($method['class']), $arguments);
 		}
+	}
+	
+	protected function getPluginEventMethods($eventName)
+	{
+		$methods = array();
+		foreach (config::getRegisteredSpecPlugins() as $pluginClass)
+		{
+			foreach ((array) $pluginClass::getEventListeners() as $eventListener)
+			{
+				if ((string) $eventListener['event'] === (string) $eventName)
+				{
+					$methods[] = array(
+						'class' => $pluginClass,
+						'method' => $eventListener['method'],
+						'order' => $eventListener['order'],
+					);
+				}
+			}
+		}
+		
+		$this->usortWithOriginalSequencePreserving($methods, function($a, $b){
+			if ($a['order'] == $b['order'])
+				return 0; 
+			
+			return ($a['order'] < $b['order'] ? -1 : 1);
+		});
+		
+		return $methods;
+	}
+	
+	protected function usortWithOriginalSequencePreserving(&$array, $cmpFunction, $reverseEqualElementSequence = false)
+	{
+		$indexes = array();
+		$num = 0;
+		foreach ($array as $key => $value)
+		{
+			$indexes[$key] = $num;
+			$num++;
+		}
+		
+		uksort($array, function($keyA, $keyB) use($array, &$indexes, &$cmpFunction, &$reverseEqualElementSequence)
+		{
+			$result = $cmpFunction($array[$keyA], $array[$keyB]);
+			
+			// Keep equal elements in original sequence
+			if ($result == 0)
+			{
+				// Equal indexes are not existed
+				if ($reverseEqualElementSequence)
+					return ($indexes[$keyA] < $indexes[$keyB] ? 1 : -1);
+				else
+					return ($indexes[$keyA] < $indexes[$keyB] ? -1 : 1);
+			}
+			
+			return $result;
+		});
 	}
 
 /**/
 
+	public function enable()
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		$this->isEnabled = true;
+	}
+
+	public function disable()
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		$this->isEnabled = false;
+	}
+
+	public function isEnabled()
+	{
+		return $this->isEnabled;
+	}
+
+/**/
+	
 	public function setName($name)
 	{
-		$this->handleSpecModifyDeny();
+		$this->handleModifyDeny(__FUNCTION__);
 		$this->name = $name;
 	}
 
@@ -90,155 +177,439 @@ abstract class Spec implements SpecInterface
 	{
 		return $this->name;
 	}
+	
+
+	public function isAnonymous()
+	{
+		return ($this->getName() === null && $this->childSpecs);
+	}
 
 /**/
 
-	public function setParent(SpecContainerInterface $spec = null)
+	public function getParentSpecs()
 	{
-		$this->handleSpecModifyDeny();
-		$this->parent = $spec;
+		return $this->parentSpecs;
+	}
+	
+	public function hasParentSpec(SpecInterface $spec)
+	{
+		if (array_search($spec, $this->parentSpecs, true) !== false)
+			return true;
+		else
+			return false;
+	}
+
+	public function bindParentSpec(SpecInterface $spec)
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		
+		if (!$this->hasParentSpec($spec))
+			$this->parentSpecs[] = $spec;
+		
+		if (!$spec->hasChildSpec($this))
+			$spec->bindChildSpec($this);
+	}
+	
+	public function unbindParentSpec(SpecInterface $spec)
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		
+		$parentSpecKey = array_search($spec, $this->parentSpecs, true);
+		if ($parentSpecKey !== false)
+		{
+			unset($this->parentSpecs[$parentSpecKey]);
+			$this->parentSpecs = array_values($this->parentSpecs);
+		}
+		
+		if ($spec->hasChildSpec($this))
+			$spec->unbindChildSpec($this);
+	}
+
+	public function unbindAllParentSpecs()
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		
+		foreach ($this->parentSpecs as $spec)
+			$this->unbindParentSpec($spec);
+		
+		$this->parentSpecs = array();
+	}
+	
+/**/
+	
+	public function getChildSpecs()
+	{
+		return $this->childSpecs;
+	}
+
+	public function hasChildSpec(SpecInterface $spec)
+	{
+		if (array_search($spec, $this->childSpecs, true) !== false)
+			return true;
+		else
+			return false;
+	}
+	
+	public function bindChildSpec(SpecInterface $spec)
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		
+		if (!$this->hasChildSpec($spec))
+			$this->childSpecs[] = $spec;
+		
+		if (!$spec->hasParentSpec($this))
+			$spec->bindParentSpec($this);
+	}
+	
+	public function unbindChildSpec(SpecInterface $spec)
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		
+		$childSpecKey = array_search($spec, $this->childSpecs, true);
+		if ($childSpecKey !== false)
+		{
+			unset($this->childSpecs[$childSpecKey]);
+			$this->childSpecs = array_values($this->childSpecs);
+		}
+		
+		if ($spec->hasParentSpec($this))
+			$spec->unbindParentSpec($this);
+	}
+
+	public function unbindAllChildSpecs()
+	{
+		$this->handleModifyDeny(__FUNCTION__);
+		
+		foreach ($this->childSpecs as $spec)
+			$this->unbindChildSpec($spec);
+		
+		$this->childSpecs = array();
+	}
+
+/**/
+	
+	public function getAncestorRootSpecs()
+	{
+		$rootSpecs = array();
+		
+		foreach ($this->parentSpecs as $parentSpec)
+		{
+			if (!$parentSpec->getParentSpecs() && !in_array($parentSpec, $rootSpecs, true))
+				$rootSpecs[] = $parentSpec;
+			
+			foreach ($parentSpec->getAncestorRootSpecs() as $spec)
+			{
+				if (!in_array($spec, $rootSpecs, true))
+					$rootSpecs[] = $spec;
+			}
+		}
+		
+		return $rootSpecs;
+	}
+	
+	public function getDescendantEndingSpecs()
+	{
+		$endingSpecs = array();
+		foreach ($this->childSpecs as $childSpec)
+		{
+			if ($childSpec->getChildSpecs())
+				$endingSpecs = array_merge($endingSpecs, $childSpec->getDescendantEndingSpecs());
+			else
+				$endingSpecs[] = $childSpec;
+		}
+		
+		return $endingSpecs;
+	}
+	
+	public function getRunningParentSpec()
+	{
+		foreach ($this->parentSpecs as $parentSpec)
+		{
+			if ($parentSpec->isRunning())
+				return $parentSpec;
+		}
+		
+		return null;
 	}
 
 	/**
-	 * @return SpecContainerInterface
+	 * Return running ancestor specs from parent to root
 	 */
-	public function getParent()
+	public function getRunningAncestorSpecs()
 	{
-		return $this->parent;
-	}
+		$ancestorSpecs = array();
 
-	public function removeFromParent()
+		$parent = $this;
+		while ($parent = $parent->getRunningParentSpec())
+			$ancestorSpecs[] = $parent;
+
+		return $ancestorSpecs;
+	}
+	
+	public function getRunningChildSpec()
 	{
-		$this->handleSpecModifyDeny();
-		if ($this->getParent())
+		foreach ($this->childSpecs as $childSpec)
 		{
-			$this->getParent()->removeSpec($this);
-			$this->setParent(null);
+			if ($childSpec->isRunning())
+				return $childSpec;
 		}
+		
+		return null;
+	}
+	
+	public function getRunningDescendantEndingSpec()
+	{
+		foreach ($this->childSpecs as $childSpec)
+		{
+			if ($childSpec->isRunning())
+			{
+				if ($childSpec->getChildSpecs())
+					return $childSpec->getRunningDescendantEndingSpec();
+				else
+					return $childSpec;
+			}
+		}
+		
+		return null;
+	}
+	
+	public function getSpecsByRunId($runId)
+	{
+		if ($this->getParentSpecs())
+			throw new Exception('Method "\\' . get_class($this) . '::' . __FUNCTION__ . '" should be called from root spec only');
+		
+		$runId = trim($runId);
+		
+		if (!preg_match('/^r(_\d+)*$/s', $runId))
+			throw new Exception('Incorrect run id "' . $runId . '" (id should be in format "r_<number>_<number>_...")');
+
+		$specs = array();
+		$currentSpec = $this;
+		$specs[] = $currentSpec;
+		
+		$runIdWithoutRoot = mb_substr($runId, 2, mb_strlen($runId, 'us-ascii'), 'us-ascii');
+		if ($runIdWithoutRoot != '')
+		{
+			foreach (explode('_', $runIdWithoutRoot) as $num => $index)
+			{
+				$childSpecs = $currentSpec->getChildSpecs();
+
+				if (array_key_exists($index, $childSpecs))
+				{
+					$currentSpec = $childSpecs[$index];
+					$specs[] = $currentSpec;
+				}
+				else
+					throw new Exception('Spec with index "' . $index . '" on "' . ($num + 2) . '" position of run id "' . $runId . '" is not exists');
+			}
+		}
+		
+		return $specs;
 	}
 
 /**/
 
-	public function enable()
+	public function getResultBuffer()
 	{
-		$this->handleSpecModifyDeny();
-		$this->isEnabled = true;
-		$this->isEnabledTemporarily = null;
-	}
-
-	public function disable()
-	{
-		$this->handleSpecModifyDeny();
-		$this->isEnabled = false;
-		$this->isEnabledTemporarily = null;
-	}
-
-	public function isEnabled()
-	{
-		if ($this->isEnabledTemporarily !== null)
-			return $this->isEnabledTemporarily;
-		else
-			return $this->isEnabled;
+		return $this->resultBuffer;
 	}
 
 /**/
 
-	protected function enableTemporarily()
+	/*
+	 * format: <ancestor spec index in parent>x<next ancestor spec index in parent>x<etc.>
+	 * example: "0x1x24"
+	 * 
+	 * @return string String in "us-ascii" charset
+	 */
+	public function getRunId()
 	{
-		$this->isEnabledTemporarily = true;
+		if (!$this->isRunning())
+			throw new Exception('Call of "\\' . get_class($this) . '::' . __FUNCTION__ . '" method is available on run only');
+		
+		$runId = '';
+		
+		$spec = $this;
+		while ($runningParentSpec = $spec->getRunningParentSpec())
+		{
+			foreach ($runningParentSpec->getChildSpecs() as $index => $specInParent)
+			{
+				if ($specInParent === $spec)
+				{
+					$runId = '_' . $index . $runId;
+					break;
+				}
+			}
+			
+			$spec = $runningParentSpec;
+		}
+		
+		return 'r' . $runId;
 	}
-
-	protected function disableTemporarily()
-	{
-		$this->isEnabledTemporarily = false;
-	}
-
-	protected function resetEnabledTemporarily()
-	{
-		$this->isEnabledTemporarily = null;
-	}
-
-/**/
 
 	public function isRunning()
 	{
 		return $this->isRunning;
 	}
-
-	protected function startRun()
+	
+	public function run()
 	{
+		$rootSpecs = $this->getAncestorRootSpecs();
+		$runningParentSpec = $this->getRunningParentSpec();
+		
+		if (count($rootSpecs) > 1)
+			throw new Exception('Spec "' . $this->getName() . '" has more than one root ancestors, but for run needs only one general root');
+		
+		if ($this->isRunning())
+			throw new Exception('Spec "' . $this->getName() . '" is already running');
+			
+		if ($runningParentSpec && $runningParentSpec->getRunningChildSpec())
+			throw new Exception('Sibling spec of spec "' . $this->getName() . '" is already running');
+		
+		if ($this->parentSpecs && !$runningParentSpec)
+		{
+			if ($rootSpecs[0]->isRunning())
+				throw new Exception('Root spec of spec "' . $this->getName() . '" is already running');
+			
+			$siblingSpecs = $this->getEnabledSiblingSpecsUpToRoot();
+			
+			foreach ($siblingSpecs as $spec)
+				$spec->disable();
+			
+			$result = $rootSpecs[0]->run();
+			
+			foreach ($siblingSpecs as $spec)
+				$spec->enable();
+			
+			return $result;
+		}
+
+		// Now (after foregoing checks) we knows that this spec is spec without parent or with running parent (and the 
+		// parent for a while has no running children)
+		
+		if (!$this->parentSpecs)
+			$this->dispatchPluginEvent('onRootSpecRunBefore');
+		
 		$this->isRunning = true;
-		$this->messages->clear();
-	}
-
-	protected function stopRun()
-	{
+		$this->dispatchPluginEvent('onSpecRunStart');
+		
+		if ($this->childSpecs)
+			$this->executeAsNotEndingSpec();
+		else
+			$this->executeAsEndingSpec();
+		
+		$this->dispatchPluginEvent('onSpecRunFinish');
 		$this->isRunning = false;
-	}
+		
+		if (!$this->parentSpecs)
+			$this->dispatchPluginEvent('onRootSpecRunAfter');
 
-	protected function runSelfThroughAncestors()
-	{
-		$this->disableSiblingsTemporarily();
-		$this->enableTemporarily();
-
-		$result = $this->getParent()->run();
-
-		$this->resetEnabledTemporarily();
-		$this->resetSiblingsEnabledTemporarily();
-
+		$result = $this->getResultBuffer()->getTotalResult();
+		$this->resultBuffer = null;
 		return $result;
 	}
-
-	protected function disableSiblingsTemporarily()
+	
+	protected function executeAsNotEndingSpec()
 	{
-		foreach ($this->getParent()->getSpecs() as $spec)
+		$resultBuffer = $this->createResultBuffer();
+		
+		foreach ($this->childSpecs as $childSpec)
 		{
-			if ($this->isSibling($spec))
-				$spec->disableTemporarily();
+			if ($childSpec->isEnabled())
+				$resultBuffer->addResult($childSpec->run(), $childSpec);
+		}
+		
+		$resultBuffer->lock();
+		$this->resultBuffer = $resultBuffer;
+	}
+	
+	protected function executeAsEndingSpec()
+	{
+		$this->resultBuffer = $this->createResultBuffer();
+		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteBefore');
+		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecute');
+		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteAfter');
+	}
+	
+	protected function dispatchPluginEventAndCatchExceptions($eventName, array $arguments = array())
+	{
+		foreach ($this->getPluginEventMethods($eventName) as $method)
+		{
+			try
+			{
+				$reflectionClass = new \ReflectionClass($method['class']);
+				$reflectionMethod = $reflectionClass->getMethod($method['method']);
+				$reflectionMethod->setAccessible(true);
+				$reflectionMethod->invokeArgs($this->activatePluginByAccess($method['class']), $arguments);
+			}
+			catch (BreakException $e)
+			{
+				// Just ignore special break exception
+			}
+			catch (\Exception $e)
+			{
+				$this->getResultBuffer()->addResult(false, $e);
+			}
 		}
 	}
 
-	protected function resetSiblingsEnabledTemporarily()
+	/**
+	 * @return ResultBufferInterface
+	 */
+	protected function createResultBuffer()
 	{
-		foreach ($this->getParent()->getSpecs() as $spec)
+		$resultBufferClass = config::getClassReplacement('\spectrum\core\ResultBuffer');
+		return new $resultBufferClass($this);
+	}
+	
+	protected function getEnabledSiblingSpecsUpToRoot()
+	{
+		$siblingSpecs = array();
+		$notSiblingSpecs = array_merge(array($this), $this->getAncestorSpecs());
+		$specsToWalk = array($this);
+		while ($specsToWalk)
 		{
-			if ($this->isSibling($spec))
-				$spec->resetEnabledTemporarily();
+			$spec = array_shift($specsToWalk);
+			foreach ($spec->getParentSpecs() as $parentSpec)
+			{
+				if (!$parentSpec->isEnabled())
+					continue;
+				
+				$specsToWalk[] = $parentSpec;
+				
+				foreach ($parentSpec->getChildSpecs() as $childSpec)
+				{
+					if ($childSpec->isEnabled() && !in_array($childSpec, $siblingSpecs, true) && !in_array($childSpec, $notSiblingSpecs, true))
+						$siblingSpecs[] = $childSpec;
+				}
+			}
 		}
+		
+		return $siblingSpecs;
 	}
-
-	// TODO: rename to more exact name
-	protected function isSibling(SpecInterface $spec)
+	
+	protected function getAncestorSpecs()
 	{
-		return !($spec instanceof SpecContainerContextInterface);
-	}
+		$ancestorSpecs = array();
+		$specsToWalk = $this->getParentSpecs();
+		while ($specsToWalk)
+		{
+			$spec = array_shift($specsToWalk);
+			$specsToWalk = array_merge($specsToWalk, $spec->getParentSpecs());
+			$ancestorSpecs[] = $spec;
+		}
 
+		return $ancestorSpecs;
+	}
+	
 /**/
 
-	protected function calculateFinalResult(array $results)
+	protected function handleModifyDeny($functionName)
 	{
-		$hasEmpty = false;
-		foreach ($results as $result)
+		foreach (array_merge(array($this), $this->getAncestorRootSpecs()) as $spec)
 		{
-			if ($result === false)
-				return false;
-			else if ($result === null)
-				$hasEmpty = true;
+			if ($spec->isRunning())
+				throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
 		}
-
-		if ($hasEmpty)
-			return null;
-		else if (count($results))
-			return true;
-		else
-			return null;
-	}
-
-/**/
-
-	protected function handleSpecModifyDeny()
-	{
-		if (!Config::getAllowSpecsModifyWhenRunning() && $this->selector->getRoot()->isRunning())
-			throw new Exception('Modify specs when running deny in Config');
 	}
 }

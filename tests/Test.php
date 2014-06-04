@@ -1,405 +1,162 @@
 <?php
 /*
- * (c) Mikhail Kharitonov <mail@mkharitonov.net>
- *
- * For the full copyright and license information, see the
- * LICENSE.txt file that was distributed with this source code.
- */
+This file is part of the Spectrum. For the copyright and license information,
+see the "README.md" file that was distributed with this source code.
+*/
 
-namespace spectrum;
+namespace spectrum\tests;
+
+use spectrum\config;
+use spectrum\core\Spec;
 
 require_once __DIR__ . '/init.php';
 
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
-	public static $tmp;
-	private $staticPropertiesBackups = array();
+	static public $temp;
+	static private $classNumber = 0;
+	
+	private $classStaticPropertyBackups = array();
+	private $objectPropertyBackups = array();
 
 	protected function setUp()
 	{
 		parent::setUp();
 		
-		$reflection = new \ReflectionProperty('\spectrum\RootDescribe', 'onceInstance');
-		$reflection->setAccessible(true);
-		$reflection->setValue(null, null);
-
-		$this->backupStaticProperties('\spectrum\core\Config');
-		$this->backupStaticProperties('\spectrum\core\Registry');
-		$this->backupStaticProperties('\spectrum\core\plugins\Manager');
-		$this->backupStaticProperties('\spectrum\constructionCommands\Config');
-		$this->backupStaticProperties('\spectrum\constructionCommands\Manager');
-		$this->backupStaticProperties('\spectrum\reports\Config');
-
-		\spectrum\Test::$tmp = null;
-		\spectrum\core\testEnv\PluginStub::reset();
+		\spectrum\_internals\setCurrentBuildingSpec(null);
+		
+		$this->backupObjectProperties(\spectrum\_internals\getRootSpec());
+		$this->backupClassStaticProperties('\spectrum\config');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
+		
+		config::unregisterSpecPlugins('\spectrum\core\plugins\reports\Reports');
+		\spectrum\tests\Test::$temp = null;
 	}
-
+	
 	protected function tearDown()
 	{
-		$this->restoreStaticProperties('\spectrum\reports\Config');
-		$this->restoreStaticProperties('\spectrum\constructionCommands\Manager');
-		$this->restoreStaticProperties('\spectrum\constructionCommands\Config');
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
-		$this->restoreStaticProperties('\spectrum\core\Registry');
-		$this->restoreStaticProperties('\spectrum\core\Config');
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
+		$this->restoreClassStaticProperties('\spectrum\config');
+		$this->restoreObjectProperties(\spectrum\_internals\getRootSpec());
 
 		parent::tearDown();
 	}
 
-	protected function backupStaticProperties($className)
+	final protected function backupClassStaticProperties($className)
 	{
 		$reflection = new \ReflectionClass($className);
-		$this->staticPropertiesBackups[$className] = $reflection->getStaticProperties();
+		$this->classStaticPropertyBackups[$className] = $reflection->getStaticProperties();
 	}
 
-	protected function restoreStaticProperties($className)
+	final protected function restoreClassStaticProperties($className)
 	{
-		foreach ($this->staticPropertiesBackups[$className] as $name => $value)
+		foreach ($this->classStaticPropertyBackups[$className] as $name => $value)
 		{
 			$propertyReflection = new \ReflectionProperty($className, $name);
 			$propertyReflection->setAccessible(true);
 			$propertyReflection->setValue(null, $value);
 		}
 	}
-
-/**/
-
-	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesOrIndexes()
+	
+	final protected function backupObjectProperties($object)
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
-		$specs = $this->createSpecsTree('
-			Describe
-			->Context(foo)
-			->->It
-			->It(bar)
-		');
-
-		$this->assertEquals(4, count($specs));
-		$this->assertTrue($specs['0'] instanceof \spectrum\core\SpecContainerDescribeInterface);
-		$this->assertTrue($specs['foo'] instanceof \spectrum\core\SpecContainerContextInterface);
-		$this->assertTrue($specs['2'] instanceof \spectrum\core\SpecItemIt);
-		$this->assertTrue($specs['bar'] instanceof \spectrum\core\SpecItemIt);
-		$this->assertNotSame($specs['2'], $specs['bar']);
+		$this->objectPropertyBackups[spl_object_hash($object)] = serialize($object);
 	}
 
-	final public function testCreateSpecsTree_ShouldBeReturnCreatedSpecsWithNamesAndIndexesIfAddIndexNameAlwaysIsTrue()
+	final protected function restoreObjectProperties($object)
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
-		$specs = $this->createSpecsTree('
-			Describe(foo)
-			->It(bar)
-		', array(), true);
-
-		$this->assertEquals(4, count($specs));
-
-		$this->assertTrue($specs['0'] instanceof \spectrum\core\SpecContainerDescribe);
-		$this->assertTrue($specs['foo'] instanceof \spectrum\core\SpecContainerDescribe);
-		$this->assertSame($specs['0'], $specs['foo']);
-
-		$this->assertTrue($specs['1'] instanceof \spectrum\core\SpecItemIt);
-		$this->assertTrue($specs['bar'] instanceof \spectrum\core\SpecItemIt);
-		$this->assertSame($specs['1'], $specs['bar']);
-
-		$this->assertNotSame($specs['0'], $specs['1']);
+		$objectReflection = new \ReflectionClass($object);
+		
+		$backupObject = unserialize($this->objectPropertyBackups[spl_object_hash($object)]);
+		$backupObjectReflection = new \ReflectionClass($backupObject);
+		
+		foreach ($objectReflection->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE) as $objectProperty)
+		{
+			$objectProperty->setAccessible(true);
+			
+			$backupObjectProperty = $backupObjectReflection->getProperty($objectProperty->getName());
+			$backupObjectProperty->setAccessible(true);
+			
+			$objectProperty->setValue($object, $backupObjectProperty->getValue($backupObject));
+		}
 	}
-
-	final public function testCreateSpecsTree_ShouldBeReturnPreparedInstanceIfExists()
+	
+	final protected function getUniqueArrayElements(array $array, $preserveKeys = true)
 	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
-		$describe = new \spectrum\core\SpecContainerDescribe();
-		$it = new \spectrum\core\SpecItemIt();
-
-		$specs = $this->createSpecsTree('
-			Describe
-			->It(foo)
-			->It
-			->It(bar)
-		', array(
-			'0' => $describe,
-			'foo' => $it,
-		));
-
-		$this->assertEquals(4, count($specs));
-
-		$this->assertSame($specs['0'], $describe);
-		$this->assertSame($specs['foo'], $it);
-
-		$this->assertNotSame($specs['2'], $describe);
-		$this->assertNotSame($specs['2'], $it);
-
-		$this->assertNotSame($specs['bar'], $describe);
-		$this->assertNotSame($specs['bar'], $it);
-	}
-
-	final public function testCreateSpecsTree_ShouldBeThrowExceptionIfHasNotUsefulPreparedInstances()
-	{
-		try
+		$newArray = array();
+		foreach ($array as $key => $element)
 		{
-			$this->createSpecsTree('
-				Describe
-				It
-			', array(
-				0 => new \spectrum\core\SpecContainerDescribe(),
-				1 => new \spectrum\core\SpecContainerDescribe(),
-				2 => new \spectrum\core\SpecContainerDescribe(),
-			));
+			if (!in_array($element, $newArray, true))
+			{
+				if ($preserveKeys)
+					$newArray[$key] = $element;
+				else
+					$newArray[] = $element;
+			}
 		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$this->fail('Should be thrown exception');
-	}
-
-	final public function testCreateSpecsTree_ShouldBeThrowExceptionIfPreparedInstanceNotInstanceOfDeclaredClass()
-	{
-		try
-		{
-			$this->createSpecsTree('
-				Describe
-			', array(
-				0 => new \spectrum\core\SpecItemIt(),
-			));
-		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$this->fail('Should be thrown exception');
-	}
-
-	final public function testCreateSpecsTree_ShouldBeThrowExceptionWhenDuplicateNames()
-	{
-		try
-		{
-			$this->createSpecsTree('
-				Describe(foo)
-				->It(foo)
-			');
-		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$this->fail('Should be thrown exception');
-	}
-
-	final public function testCreateSpecsTree_ShouldBeAddChildSpecsToParent()
-	{
-		$this->restoreStaticProperties('\spectrum\core\plugins\Manager');
-		$specs = $this->createSpecsTree('
-			Describe
-			->Context
-			->->Describe
-			->->->It
-			->It
-			Describe
-		');
-
-		$this->assertNull($specs['0']->getParent());
-		$this->assertSame($specs['0'], $specs['1']->getParent());
-		$this->assertSame($specs['1'], $specs['2']->getParent());
-		$this->assertSame($specs['2'], $specs['3']->getParent());
-		$this->assertSame($specs['0'], $specs['4']->getParent());
-		$this->assertNull($specs['5']->getParent());
-	}
-
-	final public function testCreateSpecsTree_ShouldBeThrowExceptionIfLevelBreakMoreThenOne()
-	{
-		try
-		{
-			$this->createSpecsTree('
-				Describe
-				->->It
-			');
-		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$this->fail('Should be thrown exception');
+		
+		return $newArray;
 	}
 
 	/**
-	 * $treePattern example:
-	 * Describe(root_spec)
-	 * ->Context(name)
-	 * ->->It
-	 * ->Context
-	 * Describe
-	 *
-	 * @return array
+	 * @return string Class name string in "us-ascii" charset
 	 */
-	protected function createSpecsTree($treePattern, array $preparedInstances = array(), $addIndexNameAlways = false)
+	final protected function createClass($code)
 	{
-		$treePattern = trim($treePattern);
-
-		$specs = array();
-		$prevLevel = 0;
-		foreach (preg_split("/\r?\n/s", $treePattern) as $key => $row)
-		{
-			list($level, $shortClass, $name) = $this->parseSpecTreeRow($row, $key);
-
-			if (array_key_exists($name, $specs))
-				throw new \Exception('Name "' . $name . '" already exists');
-
-			$spec = $this->createSpecOrGetExists($name, $preparedInstances, $shortClass);
-			$specs[$name] = $spec;
-
-			if ($addIndexNameAlways && $name != (string) $key)
-			{
-				if (array_key_exists($key, $specs))
-					throw new \Exception('Name "' . $key . '" already exists');
-
-				$specs[$key] = $spec;
-			}
-
-			$specsOnLevels[$level] = $spec;
-
-			$parentSpec = $this->getParentSpec($specsOnLevels, $level, $prevLevel);
-			if ($parentSpec)
-				$parentSpec->addSpec($spec);
-
-			$prevLevel = $level;
-		}
-
-		$diff = array_diff_key($preparedInstances, $specs);
-		if ($diff)
-			throw new \Exception('PreparedInstances has not useful instances: ' . print_r(array_keys($diff)));
-
-		return $specs;
-	}
-
-	private function parseSpecTreeRow($row, $defaultName)
-	{
-		$level = null;
-		$row = str_replace('->', '', $row, $level);
-
-		$parts = explode('(', $row);
-		$shortClass = $parts[0];
-		if (isset($parts[1]))
-			$name = $parts[1];
-		else
-			$name = '';
-
-		$shortClass = trim($shortClass);
-
-		$name = str_replace(')', '', $name);
-		$name = trim($name);
-
-		if ($name == '')
-			$name = $defaultName;
-
-		return array($level, $shortClass, $name);
-	}
-
-	private function createSpecOrGetExists($name, $preparedInstances, $shortClass)
-	{
-		$newSpecClass = $this->getFullClassName($shortClass);
-
-		if (array_key_exists($name, $preparedInstances))
-		{
-			if (!is_a($preparedInstances[$name], $newSpecClass))
-				throw new \Exception('PreparedInstances should be instance of declared class');
-
-			$instance = $preparedInstances[$name];
-		}
-		else
-			$instance = new $newSpecClass();
-
-		$instance->setName($name);
-		return $instance;
-	}
-
-	private function getFullClassName($shortClassName)
-	{
-		$shortClassName = preg_replace('/^\\\\spectrum\\\\core\\\\testEnv\\\\/s', '', $shortClassName);
-		$shortClassName = preg_replace('/^\\\\spectrum\\\\core\\\\/s', '', $shortClassName);
-		$shortClassName = preg_replace('/^SpecContainer/s', '', $shortClassName);
-		$shortClassName = preg_replace('/^SpecItem/s', '', $shortClassName);
+		$namespace = 'spectrum\tests\_testware\_dynamicClasses_';
+		$className = 'DynamicClass' . self::$classNumber;
+		self::$classNumber++;
 		
-		$shortToFull = array(
-			'ArgumentsProvider' => '\spectrum\core\SpecContainerArgumentsProvider',
-			'Pattern' => '\spectrum\core\SpecContainerPattern',
-			'Describe' => '\spectrum\core\SpecContainerDescribe',
-			'Context' => '\spectrum\core\SpecContainerContext',
-			'It' => '\spectrum\core\SpecItemIt',
-
-			'ArgumentsProviderMock' => '\spectrum\core\testEnv\SpecContainerArgumentsProviderMock',
-			'PatternMock' => '\spectrum\core\testEnv\SpecContainerPatternMock',
-			'DescribeMock' => '\spectrum\core\testEnv\SpecContainerDescribeMock',
-			'ContextMock' => '\spectrum\core\testEnv\SpecContainerContextMock',
-			'ItMock' => '\spectrum\core\testEnv\SpecItemItMock',
+		$code = preg_replace(
+			'/^((\s*abstract|\s*final)+)*\s*class\s*\.\.\./is',
+			'namespace ' . $namespace . '; $1 class ' . $className . ' ',
+			$code
 		);
-
-		if ($shortToFull[$shortClassName])
-			return $shortToFull[$shortClassName];
-		else
-			throw new Exception('Undefined spec class');
+		
+		eval($code);
+		return '\\' . $namespace . '\\' . $className;
 	}
-
-	private function getParentSpec($specsOnLevels, $level, $prevLevel)
+	
+	final protected function createInterface($code)
 	{
-		if ($level - $prevLevel > 1)
-			throw new \Exception('Next level can\'t jump more that one');
-
-		if ($level > 0)
-			return $specsOnLevels[$level - 1];
-		else
-			return null;
+		$namespace = 'spectrum\tests\_testware\_dynamicClasses_';
+		$className = 'DynamicClass' . self::$classNumber;
+		self::$classNumber++;
+		
+		$code = preg_replace(
+			'/^\s*interface\s*\.\.\./is',
+			'namespace ' . $namespace . '; interface ' . $className . ' ',
+			$code
+		);
+		
+		eval($code);
+		return '\\' . $namespace . '\\' . $className;
 	}
-
-	public function injectToRunStartCallsCounter(\spectrum\core\SpecInterface $spec, $counterName = 'callsCounter')
+	
+	final protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart', $order = 100)
 	{
-		$spec->__injectFunctionToRunStart(function() use($counterName) {
-			\spectrum\Test::$tmp[$counterName] = (int) \spectrum\Test::$tmp[$counterName] + 1;
-		});
+		$pluginClassName = $this->createClass('
+			class ... extends \spectrum\core\plugins\Plugin
+			{
+				static public function getEventListeners()
+				{
+					return array(
+						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => ' . $order . '),
+					);
+				}
+				
+				public function ' . $eventName . '()
+				{
+					' . $code . '
+				}
+			}
+		');
+		
+		\spectrum\config::registerSpecPlugin($pluginClassName);
+		return $pluginClassName;
 	}
-
-	public function injectToRunStartSaveInstanceToCollection(\spectrum\core\SpecInterface $spec)
-	{
-		$spec->__injectFunctionToRunStart(function() use($spec) {
-			\spectrum\Test::$tmp['instancesCollection'][] = $spec;
-		});
-	}
-
-	public function injectToRunStartCallsOrderChecker(\spectrum\core\SpecInterface $spec, $expectedZeroBasedIndex)
-	{
-		$spec->__injectFunctionToRunStart(function() use($spec, $expectedZeroBasedIndex) {
-			\spectrum\Test::$tmp['callsOrderChecker'][] = $expectedZeroBasedIndex;
-		});
-	}
-
-	public function assertCallsCounterEquals($expectedCount, $counterName = 'callsCounter')
-	{
-		$this->assertEquals($expectedCount, (int) @\spectrum\Test::$tmp[$counterName]);
-	}
-
-	public function assertCallsInOrder($expectedCount)
-	{
-		$this->assertEquals($expectedCount, count((array) @\spectrum\Test::$tmp['callsOrderChecker']));
-
-		foreach ((array) \spectrum\Test::$tmp['callsOrderChecker'] as $actualIndex => $expectedIndex)
-		{
-			$this->assertEquals($expectedIndex, $actualIndex);
-		}
-	}
-
-	public function assertInstanceInCollection(\spectrum\core\SpecInterface $spec)
-	{
-		$this->assertTrue(in_array($spec, (array) \spectrum\Test::$tmp['instancesCollection'], true));
-	}
-
-	public function assertInstanceNotInCollection(\spectrum\core\SpecInterface $spec)
-	{
-		$this->assertFalse(in_array($spec, (array) \spectrum\Test::$tmp['instancesCollection'], true));
-	}
-
-	public function assertThrowException($expectedClass, $stringInMessageOrCallback, $callback = null)
+	
+	final protected function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null)
 	{
 		if ($callback === null)
 		{
@@ -410,21 +167,469 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			$message = $stringInMessageOrCallback;
 
 		try {
-			call_user_func($callback);
+			$callback();
 		}
 		catch (\Exception $e)
 		{
 			$actualClass = '\\' . get_class($e);
 			// Class found
-			if ($actualClass == $expectedClass || is_subclass_of($actualClass, $expectedClass))
+			if ((string) $actualClass === (string) $expectedClass || is_subclass_of($actualClass, $expectedClass))
 			{
 				if ($message !== null)
-					$this->assertContains($message, $e->getMessage());
+					$this->assertSame($message, $e->getMessage());
 				
-				return;
+				return null;
 			}
 		}
 
 		$this->fail('Exception "' . $expectedClass . '" not thrown');
+	}
+	
+	final protected function getProviderWithCorrectArgumentsForGroupAndTestBuilders($name = null, $contexts = null, $body = null, $settings = null)
+	{
+		$values = array(
+			'name' => array('some name text', 123),
+			'contexts' => array(array(), array('aaa' => array('bbb', 'ccc')), function(){}, function(){
+				\spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\builders\test(null, null, function(){}, null);
+			}),
+			'body' => array(function(){}, function(){
+				\spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\builders\test(null, null, function(){}, null);
+			}),
+			'settings' => array(true, false, 8, array(), array('breakOnFirstPhpError' => false), array(
+				'catchPhpErrors' => 8,
+				'breakOnFirstPhpError' => true,
+				'breakOnFirstMatcherFail' => true,
+			)),
+		);
+		
+		$patterns = array(
+			array('body'),
+			array('body', 'settings'),
+			
+			array('contexts', 'body'),
+			array('contexts', 'body', 'settings'),
+			
+			array('name', 'body'),
+			array('name', 'body', 'settings'),
+			
+			array('name', 'contexts', 'body'),
+			array('name', 'contexts', 'body', 'settings'),
+			
+			array(null, 'body', null),
+			array(null, 'body', 'settings'),
+			
+			array(null, null, 'body', null),
+			array(null, null, 'body', 'settings'),
+			array(null, 'contexts', 'body', null),
+			array(null, 'contexts', 'body', 'settings'),
+			array('name', null, 'body', null),
+			array('name', null, 'body', 'settings'),
+			array('name', 'contexts', 'body', null),
+		);
+		
+		$rows = array();
+		foreach ($values['name'] as $valueOfName)
+		{
+			foreach ($values['contexts'] as $valueOfContexts)
+			{
+				foreach ($values['body'] as $valueOfBody)
+				{
+					foreach ($values['settings'] as $valueOfSettings)
+					{
+						foreach ($patterns as $pattern)
+						{
+							if ($name !== null)
+							{
+								if (in_array('name', $pattern))
+									$valueOfName = $name;
+								else
+									continue;
+							}
+							
+							if ($contexts !== null)
+							{
+								if (in_array('contexts', $pattern))
+									$valueOfContexts = $contexts;
+								else
+									continue;
+							}
+							
+							if ($body !== null)
+							{
+								if (in_array('body', $pattern))
+									$valueOfBody = $body;
+								else
+									continue;
+							}
+							
+							if ($settings !== null)
+							{
+								if (in_array('settings', $pattern))
+									$valueOfSettings = $settings;
+								else
+									continue;
+							}
+							
+							$row = $pattern;
+							
+							$key = array_search('name', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfName;
+								
+							$key = array_search('contexts', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfContexts;
+								
+							$key = array_search('body', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfBody;
+								
+							$key = array_search('settings', $pattern, true);
+							if ($key !== false)
+								$row[$key] = $valueOfSettings;
+							
+							$row = array($row);
+							if (!in_array($row, $rows, true))
+								$rows[] = $row;
+						}
+					}
+				}
+			}
+		}
+		
+		return $rows;
+	}
+	
+/**/
+
+	/**
+	 * Format:
+	 * elements
+	 * relations
+	 * elements
+	 * relations
+	 * ...
+	 * elements
+	 * 
+	 * Spaces between elements are required (count of spaces is not important).
+	 * Spaces between relations are not required.
+	 * Leading and ending underscore chars ("_") are removed from element names. 
+	 * 
+	 * Relations:
+	 * "/" - open child of direct group or close child of reversed group
+	 * "|" - single child or child in opened group
+	 * "\" - close child of direct group or open child of reversed group
+	 * "." - no children
+	 * "+" - previous child
+	 * 
+	 * Direct group (lower elements is adding to upper elements):
+	 *    0
+	 *  / | \
+	 * 1  2 3
+	 * 
+	 * Reversed group (upper elements is adding to lower elements):
+	 * 0 1  2
+	 * \ | /
+	 *   3
+	 * 
+	 * === Examples ===
+	 * 
+	 * Example 1:
+	 *     __0__
+	 *    /  |  \
+	 *   1   2  3
+	 *  / \  |
+	 * 4  5 aaa
+	 * 
+	 * Returns: array(
+	 *     '0' => new Spec(),
+	 *     '1' => new Spec(),
+	 *     '2' => new Spec(),
+	 *     '3' => new Spec(),
+	 *     '4' => new Spec(),
+	 *     '5' => new Spec(),
+	 *     'aaa' => new Spec(),
+	 * )
+	 * 
+	 * Example 2 (element "2" has no children, element "3" has one child):
+	 *     ___0___
+	 *    / |  |  \
+	 *   1  2  3  4
+	 *  / \ .  |
+	 * 5  6    7
+	 * 
+	 * Example 3 (element "2" has two parents):
+	 * 0   1
+	 * \  /
+	 *  2
+	 * 
+	 * Example 4 (element "5" has three parents, element "3" has no children): 
+	 *     ___0___
+	 *    / |  |  \
+	 *   1  2  3  4
+	 *   \  |  . /
+	 *       5
+	 * 
+	 * Example 5 (element "6" has two parents):
+	 *     ____0___
+	 *    /  |  |  \
+	 *   1   2  3  4
+	 *  / \+/ \
+	 * 5   6  7
+	 * 
+	 * See "self::providerCreateSpecsByVisualPattern" method for more examples.
+	 */
+	final protected function createSpecsByVisualPattern($pattern, array $additionalRelations = array())
+	{
+		$specs = array();
+		$lines = preg_split('/[\r\n]+/s', trim($pattern));
+		
+		// Process element lines
+		foreach ($lines as $lineIndex => $line)
+		{
+			if ($lineIndex % 2 != 0)
+				continue;
+			
+			$elements = preg_split('/\s+/s', trim($line));
+			foreach ($elements as $elementIndex => $elementName)
+			{
+				$elementName = preg_replace('/^_+|_+$/s', '', $elementName);
+				$elements[$elementIndex] = $elementName;
+				
+				if (array_key_exists($elementName, $specs))
+					throw new \Exception('Duplicate name is present on line ' . ($lineIndex + 1));
+
+				$specs[$elementName] = new Spec();
+			}
+			
+			$lines[$lineIndex] = $elements;
+		}
+		
+		// Process relation lines
+		foreach ($lines as $lineIndex => $line)
+		{
+			if ($lineIndex % 2 == 0)
+				continue;
+			
+			$upperElements = $lines[$lineIndex - 1];
+			$lastUpperElementIndex = count($upperElements) - 1;
+			
+			$lowerElements = $lines[$lineIndex + 1];
+			$lastLowerElementIndex = count($lowerElements) - 1;
+			
+			$relations = preg_replace('/\s+/s', '', $line);
+			$relationLength = mb_strlen($relations, 'us-ascii');
+			
+			$currentUpperElementIndex = 0;
+			$currentLowerElementIndex = 0;
+			
+			$openedGroup = null;
+			
+			for ($i = 0; $i < $relationLength; $i++)
+			{
+				$relation = (string) $relations[$i];
+				if ($relation === '+')
+					$currentLowerElementIndex--;
+				else if ($currentUpperElementIndex > $lastUpperElementIndex || $currentLowerElementIndex > $lastLowerElementIndex)
+					break;
+				else if ($relation === '.')
+					$currentUpperElementIndex++;
+				else if ($relation === '/')
+				{
+					if (!$openedGroup)
+						$openedGroup = 'direct';
+					
+					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
+					
+					if ($openedGroup === 'direct')
+						$currentLowerElementIndex++;
+					else
+					{
+						$currentUpperElementIndex++;
+						$currentLowerElementIndex++;
+						$openedGroup = null;
+					}
+				}
+				else if ($relation === '|')
+				{
+					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
+					
+					if ($openedGroup === 'direct')
+						$currentLowerElementIndex++;
+					else if ($openedGroup === 'reversed')
+						$currentUpperElementIndex++;
+					else
+					{
+						$currentUpperElementIndex++;
+						$currentLowerElementIndex++;
+					}
+				}
+				else if ($relation === '\\')
+				{
+					if (!$openedGroup)
+						$openedGroup = 'reversed';
+					
+					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
+					
+					if ($openedGroup === 'reversed')
+						$currentUpperElementIndex++;
+					else
+					{
+						$currentUpperElementIndex++;
+						$currentLowerElementIndex++;
+						$openedGroup = null;
+					}
+				}
+				else
+					throw new \Exception('Unknown relation "' . $relation . '" is present on line ' . ($lineIndex + 1));
+			}
+		}
+		
+		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames)
+		{
+			foreach ((array) $childrenSpecNames as $childSpecName)
+				$specs[$parentSpecName]->bindChildSpec($specs[$childSpecName]);
+		}
+		
+		return $specs;
+	}
+
+	/**
+	 * @deprecated Use "self::createSpecsByVisualPattern" method
+	 * 
+	 * Example 1 (add parent specs):
+	 * ->Spec
+	 * ->->Spec
+	 * ->Spec
+	 * Spec(name)
+	 * 
+	 * Example 2 (add child specs):
+	 * Spec(name)
+	 * ->Spec
+	 * ->->Spec
+	 * ->Spec
+	 * 
+	 * Example 3 (add parent and child specs):
+	 * ->Spec
+	 * ->->Spec
+	 * ->Spec
+	 * Spec(name)
+	 * ->Spec
+	 * ->->Spec
+	 * ->Spec
+	 * 
+	 * @param $additionalRelations Example:
+	 *                      array(
+	 *                          'name' => array(4, 5, 6, 'aaa'),
+	 *                          4 => array('bbb', 'ccc'),
+	 *                          5 => array('zzz'),
+	 *                      );
+	 * 
+	 * @return array
+	 */
+	final protected function createSpecsByListPattern($pattern, array $additionalRelations = array())
+	{
+		$pattern = trim($pattern);
+		
+		if (preg_match('/^\-\>/is', $pattern))
+			$isReverse = true;
+		else
+			$isReverse = false;
+
+		$specsWithNames = array();
+		$specsWithDepths = array();
+		
+		foreach (preg_split("/\r?\n/s", $pattern) as $key => $row)
+		{
+			list($depth, $className, $name) = $this->parseSpecTreeRow($row);
+			
+			if ($depth == 0)
+				$isReverse = false;
+			else if ($isReverse)
+				$depth = -$depth;
+			
+			$className = '\spectrum\core\\' . $className;
+			
+			if ($name == '')
+				$name = $key;
+			
+			if (array_key_exists($name, $specsWithNames))
+				throw new \Exception('Name "' . $name . '" is already used');
+			
+			$spec = new $className();
+			$specsWithNames[$name] = $spec;
+			$specsWithDepths[] = array('spec' => $spec, 'depth' => $depth);
+		}
+
+		foreach ($specsWithDepths as $key => $item)
+		{
+			if ($item['depth'] < 0)
+			{
+				$masterItem = $this->getNextItemWithMasterDepth($key, $specsWithDepths);
+				
+				if (!$masterItem)
+					throw new \Exception('Depth can not jump more than one');
+				
+				$masterItem['spec']->bindParentSpec($item['spec']);
+			}
+			else if ($item['depth'] > 0)
+			{
+				$masterItem = $this->getPrevItemWithMasterDepth($key, $specsWithDepths);
+				
+				if (!$masterItem)
+					throw new \Exception('Depth can not jump more than one');
+				
+				$masterItem['spec']->bindChildSpec($item['spec']);
+			}
+		}
+		
+		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames)
+		{
+			foreach ((array) $childrenSpecNames as $childSpecName)
+				$specsWithNames[$parentSpecName]->bindChildSpec($specsWithNames[$childSpecName]);
+		}
+		
+		return $specsWithNames;
+	}
+	
+	private function getNextItemWithMasterDepth($itemKey, $specsWithDepths)
+	{
+		foreach ($specsWithDepths as $key => $item)
+		{
+			if ($key > $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] + 1)
+				return $item;
+		}
+		
+		return null;
+	}
+	
+	private function getPrevItemWithMasterDepth($itemKey, $specsWithDepths)
+	{
+		$masterItem = null;
+		foreach ($specsWithDepths as $key => $item)
+		{
+			if ($key < $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] - 1)
+				$masterItem = $item;
+		}
+		
+		return $masterItem;
+	}
+	
+	private function parseSpecTreeRow($row)
+	{
+		$depth = null;
+		$row = str_replace('->', '', $row, $depth);
+		$parts = explode('(', $row);
+		
+		$className = trim($parts[0]);
+		
+		if (isset($parts[1]))
+			$name = trim(str_replace(')', '', $parts[1]));
+		else
+			$name = '';
+
+		return array($depth, $className, $name);
 	}
 }

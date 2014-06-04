@@ -1,18 +1,15 @@
 <?php
 /*
- * (c) Mikhail Kharitonov <mail@mkharitonov.net>
- *
- * For the full copyright and license information, see the
- * LICENSE.txt file that was distributed with this source code.
- */
+This file is part of the Spectrum. For the copyright and license information,
+see the "README.md" file that was distributed with this source code.
+*/
 
 spl_autoload_register(function($class)
 {
-	$rootNamespace = 'spectrum\\';
-	if (mb_strpos($class, $rootNamespace) === 0)
+	$baseNamespace = 'spectrum\\';
+	if (mb_stripos($class, $baseNamespace, null, 'us-ascii') === 0)
 	{
-		$file = $class;
-		$file = str_replace($rootNamespace, '', $file);
+		$file = mb_substr($class, mb_strlen($baseNamespace, 'us-ascii'), mb_strlen($class, 'us-ascii'), 'us-ascii');
 		$file = str_replace('\\', '/', $file);
 		$file = __DIR__ . '/' . $file . '.php';
 
