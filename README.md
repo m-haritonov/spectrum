@@ -1,14 +1,14 @@
-###Spectrum
+#Spectrum
 Spectrum is a PHP framework for test automation.
 
 Framework files are in the "US-ASCII" charset (file "notes.txt" is in the "UTF-8" charset).
 
 **Current version is alpha and not stable.**
 
-###System requirements
+##System requirements
 The framework requires PHP 5.3 or later.
 
-###Example usage
+##Example
 	<?php
 	require_once __DIR__ . '/spectrum/spectrum/init.php';
 
@@ -67,7 +67,7 @@ Result:
 				3.  123-456-7 - success
 
 
-###Copyright, contacts and license
+##Copyright, contacts and license
 Copyright (c) 2011-2014 Mikhail Kharitonov (<mail@mkharitonov.net>). All rights reserved.
 
 The project is licensed under the "New BSD License" (see text below).
