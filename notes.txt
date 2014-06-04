@@ -2,6 +2,9 @@ TODO: MERGE BRANCH
 TODO: добавить старые версии проекта в начало истории репозитория
 TODO: MOVE PROJECT TO GITHUB.COM
 
+TODO: "Expand/collapse" should not copied to clipboard
+TODO: remove false/true/null matchers
+TODO: remove instanceof matcher to instanceOf/is
 TODO: replace ob_get_contents in tests to:
 		ob_start(function($buffer) use(&$output){
 			$output .= $buffer;
@@ -12,6 +15,9 @@ TODO: replace ob_get_contents in tests to:
 http://spectrum-framework.org/) -> http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
+
+TODO: убрать форматирование
+TODO: выделять цветом всю строку и point, fail/success оставить только для копирования в буфер
 
 TODO: rename "this()" to "data()"??? remove "$this" support (data() is available in eval and etc., $this is not)???
 	remove "System requirements" notes from "README.md"
@@ -107,9 +113,10 @@ group(function(){
     	array('aaa' => 'bbb'),
 	), $addType = null);
 	
-	// Values: null, "up/wrap", "down/inject"
+	// Values: null, "up/wrap", "down/inject", "next"
 	// When $addType is "up", then specs is bound to contexts as children (to all descendant ending contexts)
 	// When $addType is "down", then contexts is bound to specs as children (to all descendant ending specs)
+	// When $addType is "next", then contexts is bound to next spec as children (to all descendant ending specs)
 	// When $addType is null, then:
 	// When there are many specs in group, then uses "up" type
 	// When there is one spec in group, then uses "down" type
