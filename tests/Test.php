@@ -23,9 +23,9 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	{
 		parent::setUp();
 		
-		\spectrum\_internal\setCurrentBuildingSpec(null);
+		\spectrum\_internals\setCurrentBuildingSpec(null);
 		
-		$this->backupObjectProperties(\spectrum\_internal\getRootSpec());
+		$this->backupObjectProperties(\spectrum\_internals\getRootSpec());
 		$this->backupClassStaticProperties('\spectrum\config');
 		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
 		
@@ -37,7 +37,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	{
 		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
 		$this->restoreClassStaticProperties('\spectrum\config');
-		$this->restoreObjectProperties(\spectrum\_internal\getRootSpec());
+		$this->restoreObjectProperties(\spectrum\_internals\getRootSpec());
 
 		parent::tearDown();
 	}

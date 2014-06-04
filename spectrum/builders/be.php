@@ -16,11 +16,11 @@ use spectrum\Exception;
  */
 function be($testedValue)
 {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
 	if (!$isRunningStateFunction())
 		throw new Exception('Builder "be" should be call only at running state');
 
 	$assertClass = config::getClassReplacement('\spectrum\core\Assert');
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');
+	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentRunningEndingSpec');
 	return new $assertClass($getCurrentRunningEndingSpecFunction(), $testedValue);
 }

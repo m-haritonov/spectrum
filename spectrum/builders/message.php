@@ -14,10 +14,10 @@ use spectrum\Exception;
  */
 function message($message)
 {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
 	if (!$isRunningStateFunction())
 		throw new Exception('Builder "message" should be call only at running state');
 	
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentRunningEndingSpec');
+	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentRunningEndingSpec');
 	$getCurrentRunningEndingSpecFunction()->messages->add($message);
 }

@@ -30,8 +30,8 @@ class MessageTest extends \spectrum\tests\Test
 			->->Spec(ending2)
 		', array('parent1' => 'ending2'));
 		
-		\spectrum\_internal\getRootSpec()->bindChildSpec(\spectrum\tests\Test::$temp["specs"][0]);
-		\spectrum\_internal\getRootSpec()->run();
+		\spectrum\_internals\getRootSpec()->bindChildSpec(\spectrum\tests\Test::$temp["specs"][0]);
+		\spectrum\_internals\getRootSpec()->run();
 
 		$this->assertSame(3, count(\spectrum\tests\Test::$temp["messages"]));
 		

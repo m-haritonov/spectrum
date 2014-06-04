@@ -14,10 +14,10 @@ use spectrum\Exception;
  */
 function before($function)
 {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
 	if ($isRunningStateFunction())
 		throw new Exception('Builder "before" should be call only at building state');
 
-	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentBuildingSpec');
+	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentBuildingSpec');
 	return $getCurrentBuildingSpecFunction()->contextModifiers->add($function, 'before');
 }

@@ -14,7 +14,7 @@ class RunTest extends Test
 {
 	public function testRunsRootSpec()
 	{
-		\spectrum\_internal\getRootSpec()->test->setFunction(function() use(&$isRootSpecRun){
+		\spectrum\_internals\getRootSpec()->test->setFunction(function() use(&$isRootSpecRun){
 			$isRootSpecRun = true;
 		});
 		
@@ -25,20 +25,20 @@ class RunTest extends Test
 	
 	public function testReturnsRootSpecRunResult()
 	{
-		\spectrum\_internal\getRootSpec()->test->setFunction(function(){
-			\spectrum\_internal\getRootSpec()->getResultBuffer()->addResult(false);
+		\spectrum\_internals\getRootSpec()->test->setFunction(function(){
+			\spectrum\_internals\getRootSpec()->getResultBuffer()->addResult(false);
 		});
 		
 		$this->assertFalse(\spectrum\run());
 		
-		\spectrum\_internal\getRootSpec()->test->setFunction(function(){
-			\spectrum\_internal\getRootSpec()->getResultBuffer()->addResult(true);
+		\spectrum\_internals\getRootSpec()->test->setFunction(function(){
+			\spectrum\_internals\getRootSpec()->getResultBuffer()->addResult(true);
 		});
 		
 		$this->assertTrue(\spectrum\run());
 		
-		\spectrum\_internal\getRootSpec()->test->setFunction(function(){
-			\spectrum\_internal\getRootSpec()->getResultBuffer()->addResult(null);
+		\spectrum\_internals\getRootSpec()->test->setFunction(function(){
+			\spectrum\_internals\getRootSpec()->getResultBuffer()->addResult(null);
 		});
 		
 		$this->assertNull(\spectrum\run());
@@ -46,7 +46,7 @@ class RunTest extends Test
 	
 	public function testLocksConfigBeforeRun()
 	{
-		\spectrum\_internal\getRootSpec()->test->setFunction(function() use(&$isLocked){
+		\spectrum\_internals\getRootSpec()->test->setFunction(function() use(&$isLocked){
 			$isLocked = config::isLocked();
 		});
 		

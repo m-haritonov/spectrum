@@ -11,10 +11,10 @@ use spectrum\Exception;
 
 function data()
 {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internal\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
 	if (!$isRunningStateFunction())
 		throw new Exception('Builder "data" should be call only at running state');
 
-	$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_internal\getCurrentData');
+	$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentData');
 	return $getCurrentDataFunction();
 }

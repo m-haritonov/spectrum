@@ -12,7 +12,7 @@ class variable extends \spectrum\core\plugins\reports\drivers\html\components\co
 {
 	static public function getHtml($variable, $depth = 0, $inputCharset = null)
 	{
-		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction(gettype($variable));
 
 		if ($type === 'boolean')

@@ -55,25 +55,25 @@ final class config
 	);
 	
 	static private $functionReplacements = array(
-		'\spectrum\_internal\addTestSpec' => '\spectrum\_internal\addTestSpec',
-		'\spectrum\_internal\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internal\callFunctionOnCurrentBuildingSpec',
-		'\spectrum\_internal\convertArguments' => '\spectrum\_internal\convertArguments',
-		'\spectrum\_internal\convertArgumentsForSpec' => '\spectrum\_internal\convertArgumentsForSpec',
-		'\spectrum\_internal\convertArrayWithContextsToSpecs' => '\spectrum\_internal\convertArrayWithContextsToSpecs',
-		'\spectrum\_internal\convertCharset' => '\spectrum\_internal\convertCharset',
-		'\spectrum\_internal\convertLatinCharsToLowerCase' => '\spectrum\_internal\convertLatinCharsToLowerCase',
-		'\spectrum\_internal\formatTextForOutput' => '\spectrum\_internal\formatTextForOutput',
-		'\spectrum\_internal\getCurrentBuildingSpec' => '\spectrum\_internal\getCurrentBuildingSpec',
-		'\spectrum\_internal\getCurrentData' => '\spectrum\_internal\getCurrentData',
-		'\spectrum\_internal\getCurrentRunningEndingSpec' => '\spectrum\_internal\getCurrentRunningEndingSpec',
-		'\spectrum\_internal\getRootSpec' => '\spectrum\_internal\getRootSpec',
-		'\spectrum\_internal\getTestSpecs' => '\spectrum\_internal\getTestSpecs',
-		'\spectrum\_internal\isRunningState' => '\spectrum\_internal\isRunningState',
-		'\spectrum\_internal\loadBaseMatchers' => '\spectrum\_internal\loadBaseMatchers',
-		'\spectrum\_internal\normalizeSettings' => '\spectrum\_internal\normalizeSettings',
-		'\spectrum\_internal\setCurrentBuildingSpec' => '\spectrum\_internal\setCurrentBuildingSpec',
-		'\spectrum\_internal\setSettingsToSpec' => '\spectrum\_internal\setSettingsToSpec',
-		'\spectrum\_internal\translate' => '\spectrum\_internal\translate',
+		'\spectrum\_internals\addTestSpec' => '\spectrum\_internals\addTestSpec',
+		'\spectrum\_internals\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internals\callFunctionOnCurrentBuildingSpec',
+		'\spectrum\_internals\convertArguments' => '\spectrum\_internals\convertArguments',
+		'\spectrum\_internals\convertArgumentsForSpec' => '\spectrum\_internals\convertArgumentsForSpec',
+		'\spectrum\_internals\convertArrayWithContextsToSpecs' => '\spectrum\_internals\convertArrayWithContextsToSpecs',
+		'\spectrum\_internals\convertCharset' => '\spectrum\_internals\convertCharset',
+		'\spectrum\_internals\convertLatinCharsToLowerCase' => '\spectrum\_internals\convertLatinCharsToLowerCase',
+		'\spectrum\_internals\formatTextForOutput' => '\spectrum\_internals\formatTextForOutput',
+		'\spectrum\_internals\getCurrentBuildingSpec' => '\spectrum\_internals\getCurrentBuildingSpec',
+		'\spectrum\_internals\getCurrentData' => '\spectrum\_internals\getCurrentData',
+		'\spectrum\_internals\getCurrentRunningEndingSpec' => '\spectrum\_internals\getCurrentRunningEndingSpec',
+		'\spectrum\_internals\getRootSpec' => '\spectrum\_internals\getRootSpec',
+		'\spectrum\_internals\getTestSpecs' => '\spectrum\_internals\getTestSpecs',
+		'\spectrum\_internals\isRunningState' => '\spectrum\_internals\isRunningState',
+		'\spectrum\_internals\loadBaseMatchers' => '\spectrum\_internals\loadBaseMatchers',
+		'\spectrum\_internals\normalizeSettings' => '\spectrum\_internals\normalizeSettings',
+		'\spectrum\_internals\setCurrentBuildingSpec' => '\spectrum\_internals\setCurrentBuildingSpec',
+		'\spectrum\_internals\setSettingsToSpec' => '\spectrum\_internals\setSettingsToSpec',
+		'\spectrum\_internals\translate' => '\spectrum\_internals\translate',
 		
 		'\spectrum\builders\addMatcher' => '\spectrum\builders\addMatcher',
 		'\spectrum\builders\after' => '\spectrum\builders\after',
@@ -385,7 +385,7 @@ final class config
 	
 	static private function convertLatinCharsToLowerCase($string)
 	{
-		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		return $convertLatinCharsToLowerCaseFunction($string);
 	}
 }

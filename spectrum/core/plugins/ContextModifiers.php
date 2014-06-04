@@ -22,7 +22,7 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 	{
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction($type);
 		
 		$this->checkType($type);
@@ -39,7 +39,7 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 			return $this->items;
 		else
 		{
-			$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
+			$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 			$type = $convertLatinCharsToLowerCaseFunction($type);
 			
 			$this->checkType($type);
@@ -61,7 +61,7 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 	 */
 	public function getAllThroughRunningAncestors($type = 'before')
 	{
-		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internal\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction($type);
 		
 		$this->checkType($type);

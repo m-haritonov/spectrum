@@ -20,7 +20,7 @@ class DataTest extends \spectrum\tests\Test
 			      4
 		');
 		
-		\spectrum\_internal\getRootSpec()->bindChildSpec($specs[0]);
+		\spectrum\_internals\getRootSpec()->bindChildSpec($specs[0]);
 		
 		$dataObjects = array();
 		$returnValues = array();
@@ -32,7 +32,7 @@ class DataTest extends \spectrum\tests\Test
 			});
 		}
 		
-		\spectrum\_internal\getRootSpec()->run();
+		\spectrum\_internals\getRootSpec()->run();
 		$this->assertSame($dataObjects, $returnValues);
 	}
 	

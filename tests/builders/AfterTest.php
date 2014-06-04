@@ -16,7 +16,7 @@ class AfterTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_AddsContextFunctionWithAfterTypeToCurrentBuildingSpec()
 	{
 		$spec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($spec);
+		\spectrum\_internals\setCurrentBuildingSpec($spec);
 		
 		$function1 = function(){};
 		$function2 = function(){};
@@ -60,7 +60,7 @@ class AfterTest extends \spectrum\tests\Test
 			}
 		', 'onEndingSpecExecute');
 		
-		\spectrum\_internal\getRootSpec()->run();
+		\spectrum\_internals\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Builder "after" should be call only at building state', \spectrum\tests\Test::$temp["exception"]->getMessage());

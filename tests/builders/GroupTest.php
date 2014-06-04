@@ -28,7 +28,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_ReturnsNewGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		$groupSpec1 = call_user_func_array('\spectrum\builders\group', $arguments);
 		$this->assertInstanceOf('\spectrum\core\Spec', $groupSpec1);
@@ -46,9 +46,9 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_RestoreBuildingSpecAfterCall($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		call_user_func_array('\spectrum\builders\group', $arguments);
-		$this->assertSame($parentSpec, \spectrum\_internal\getCurrentBuildingSpec());
+		$this->assertSame($parentSpec, \spectrum\_internals\getCurrentBuildingSpec());
 	}
 	
 	/**
@@ -57,7 +57,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_BuildingSpecIsRoot_AddsGroupSpecToRootSpec($arguments)
 	{
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
-		$this->assertSame(array($groupSpec), \spectrum\_internal\getRootSpec()->getChildSpecs());
+		$this->assertSame(array($groupSpec), \spectrum\_internals\getRootSpec()->getChildSpecs());
 	}
 	
 	/**
@@ -66,7 +66,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_AddsGroupSpecToSpecifySpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		
 		$this->assertSame(array($groupSpec), $parentSpec->getChildSpecs());
@@ -77,10 +77,10 @@ class GroupTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddGroupSpecToRootSpec($arguments)
 	{
-		\spectrum\_internal\setCurrentBuildingSpec(new Spec());
+		\spectrum\_internals\setCurrentBuildingSpec(new Spec());
 		call_user_func_array('\spectrum\builders\group', $arguments);
 		
-		$this->assertSame(array(), \spectrum\_internal\getRootSpec()->getChildSpecs());
+		$this->assertSame(array(), \spectrum\_internals\getRootSpec()->getChildSpecs());
 	}
 	
 	/**
@@ -88,7 +88,7 @@ class GroupTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddGroupSpecToSiblingGroupSpecs($arguments)
 	{
-		\spectrum\_internal\setCurrentBuildingSpec(new Spec());
+		\spectrum\_internals\setCurrentBuildingSpec(new Spec());
 		$groupSpec1 = call_user_func_array('\spectrum\builders\group', $arguments);
 		$groupSpec2 = call_user_func_array('\spectrum\builders\group', $arguments);
 		$groupSpec3 = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -109,7 +109,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_NameArgumentIsString_SetsNameToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
 		$this->assertSame(null, $parentSpec->getName());
@@ -134,7 +134,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsArray_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -180,7 +180,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -228,7 +228,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsBodySpecsToEndingContextSpecsOnly($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -278,7 +278,7 @@ class GroupTest extends \spectrum\tests\Test
 	 */
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_DoesNotAddSpecsToTestSpecOfContext($arguments)
 	{
-		\spectrum\_internal\setCurrentBuildingSpec(new Spec());
+		\spectrum\_internals\setCurrentBuildingSpec(new Spec());
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -365,7 +365,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsDescendantSpecsOfBodySpecsToHisParents($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
 		$this->assertSame(array($groupSpec), $parentSpec->getChildSpecs());
@@ -413,7 +413,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsInteger_SetsErrorHandlingLevelToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -438,7 +438,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsTrue_SetsErrorHandlingLevelToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -463,7 +463,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsFalse_SetsErrorHandlingLevelToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -492,7 +492,7 @@ class GroupTest extends \spectrum\tests\Test
 	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsArray_SetsSettingsToGroupSpec($arguments)
 	{
 		$parentSpec = new Spec();
-		\spectrum\_internal\setCurrentBuildingSpec($parentSpec);
+		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -540,7 +540,7 @@ class GroupTest extends \spectrum\tests\Test
 			}
 		', 'onEndingSpecExecute');
 		
-		\spectrum\_internal\getRootSpec()->run();
+		\spectrum\_internals\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\Test::$temp["exception"]);
 		$this->assertSame('Builder "group" should be call only at building state', \spectrum\tests\Test::$temp["exception"]->getMessage());
