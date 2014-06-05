@@ -68,7 +68,7 @@ Result:
 
 
 ##Copyright, contacts and license
-Copyright (c) 2011-2014 Mikhail Kharitonov (<mail@mkharitonov.net>). All rights reserved.
+Copyright (c) 2011-2014 Mihail Haritonov (<mail@m-haritonov.net>). All rights reserved.
 
 The project is licensed under the "New BSD License" (see text below).
 
