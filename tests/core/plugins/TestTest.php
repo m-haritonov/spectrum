@@ -236,15 +236,22 @@ class TestTest extends \spectrum\tests\Test
 			1
 		');
 		
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '1'; }, 'before');
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '2'; }, 'before');
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '3'; }, 'after');
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '4'; }, 'before');
+		$appendValueToDataVariable = function($value) use(&$specs){
+			if (!isset($specs[1]->test->getData()->aaa))
+				$specs[1]->test->getData()->aaa = '';
+			
+			$specs[1]->test->getData()->aaa .= $value;
+		};
 		
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '5'; }, 'before');
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '6'; }, 'before');
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '7'; }, 'after');
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '8'; }, 'before');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('1'); }, 'before');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('2'); }, 'before');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('3'); }, 'after');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('4'); }, 'before');
+		
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('5'); }, 'before');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('6'); }, 'before');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('7'); }, 'after');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'before');
 		
 		$properties = array();
 		$specs[1]->test->setFunction(function() use(&$properties, $specs){
@@ -264,15 +271,22 @@ class TestTest extends \spectrum\tests\Test
 			1
 		');
 		
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '1'; }, 'after');
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '2'; }, 'after');
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '3'; }, 'before');
-		$specs[0]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '4'; }, 'after');
+		$appendValueToDataVariable = function($value) use(&$specs){
+			if (!isset($specs[1]->test->getData()->aaa))
+				$specs[1]->test->getData()->aaa = '';
+			
+			$specs[1]->test->getData()->aaa .= $value;
+		};
 		
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '5'; }, 'after');
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '6'; }, 'after');
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '7'; }, 'before');
-		$specs[1]->contextModifiers->add(function() use($specs){ $specs[1]->test->getData()->aaa .= '8'; }, 'after');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('1'); }, 'after');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('2'); }, 'after');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('3'); }, 'before');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('4'); }, 'after');
+		
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('5'); }, 'after');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('6'); }, 'after');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('7'); }, 'before');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'after');
 		
 		$properties = array();
 		$dataItems = array();
