@@ -50,21 +50,21 @@ The framework requires PHP 5.3 or later.
 
 Result:
 
-1. "AddressBook" class - success
-	1. "MySql" driver - success
-		1. "findPerson" method - success
-			1.  Returns person by first name - success
-			2. Returns person by phone number - success
-				1.  +7 (495) 123-456-7 - success
-				2.  (495) 123-456-7 - success
-				3.  123-456-7 - success
-	2. "FileSystem" driver - success
-		1. "findPerson" method - success
-			1.  Returns person by first name - success
-			2. Returns person by phone number - success
-				1.  +7 (495) 123-456-7 - success
-				2.  (495) 123-456-7 - success
-				3.  123-456-7 - success
+	1. "AddressBook" class - success
+		1. "MySql" driver - success
+			1. "findPerson" method - success
+				1.  Returns person by first name - success
+				2. Returns person by phone number - success
+					1.  +7 (495) 123-456-7 - success
+					2.  (495) 123-456-7 - success
+					3.  123-456-7 - success
+		2. "FileSystem" driver - success
+			1. "findPerson" method - success
+				1.  Returns person by first name - success
+				2. Returns person by phone number - success
+					1.  +7 (495) 123-456-7 - success
+					2.  (495) 123-456-7 - success
+					3.  123-456-7 - success
 
 
 ##Copyright, contacts and license
