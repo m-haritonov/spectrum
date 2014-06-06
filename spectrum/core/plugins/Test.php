@@ -66,12 +66,23 @@ class Test extends \spectrum\core\plugins\Plugin
 			foreach ($this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors('before') as $context)
 				$context['function']();
 			
-			$function();
+			$exception = null;
+			try
+			{
+				$function();
+			}
+			catch (\Exception $e)
+			{
+				$exception = $e;
+			}
 			
 			foreach ($this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors('after') as $context)
 				$context['function']();
 			
 			$this->data = null;
+			
+			if ($exception)
+				throw $exception;
 		}
 	}
 	

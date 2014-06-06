@@ -341,4 +341,52 @@ class TestTest extends \spectrum\tests\Test
 		$spec->run();
 		$this->assertSame(0, \spectrum\tests\Test::$temp["dataInitializeCount"]);
 	}
+	
+	public function testFunctionCall_FunctionThrowsException_SetsDataToNullAfterFunctionCall()
+	{
+		$spec = new Spec();
+		$spec->test->setFunction(function(){ throw new \Exception(); });
+		$spec->run();
+		
+		$this->assertNull($spec->test->getData());
+	}
+	
+	public function testFunctionCall_FunctionThrowsException_ApplyAfterFunctionsToDataAfterFunctionCallAndInBackwardOrder()
+	{
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+		');
+		
+		$appendValueToDataVariable = function($value) use(&$specs){
+			if (!isset($specs[1]->test->getData()->aaa))
+				$specs[1]->test->getData()->aaa = '';
+			
+			$specs[1]->test->getData()->aaa .= $value;
+		};
+		
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('1'); }, 'after');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('2'); }, 'after');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('3'); }, 'before');
+		$specs[0]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('4'); }, 'after');
+		
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('5'); }, 'after');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('6'); }, 'after');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('7'); }, 'before');
+		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'after');
+		
+		$properties = array();
+		$dataItems = array();
+		$specs[1]->test->setFunction(function() use(&$properties, &$dataItems, $specs){
+			$properties[] = get_object_vars($specs[1]->test->getData());
+			$dataItems[] = $specs[1]->test->getData();
+			throw new \Exception();
+		});
+		
+		$specs[0]->run();
+		
+		$this->assertSame(array(array('aaa' => '37')), $properties);
+		$this->assertSame(array('aaa' => '37865421'), get_object_vars($dataItems[0]));
+	}
 }
