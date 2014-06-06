@@ -83,7 +83,7 @@ final class config
 		'\spectrum\builders\group' => '\spectrum\builders\group',
 		'\spectrum\builders\message' => '\spectrum\builders\message',
 		'\spectrum\builders\test' => '\spectrum\builders\test',
-		'\spectrum\builders\this' => '\spectrum\builders\this',
+		'\spectrum\builders\data' => '\spectrum\builders\data',
 	);
 	
 	static private $registeredSpecPlugins = array(
