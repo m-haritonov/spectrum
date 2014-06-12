@@ -9,8 +9,8 @@ Framework files are in the "US-ASCII" charset (file "notes.txt" is in the "UTF-8
 The framework requires PHP 5.3 or later.
 
 ##Documentation
-English: http://m-haritonov.net/en/projects/spectrum
-Русский: http://m-haritonov.net/ru/projects/spectrum
+  - English: http://m-haritonov.net/en/projects/spectrum
+  - Русский: http://m-haritonov.net/ru/projects/spectrum
 
 ##Example
 	<?php
