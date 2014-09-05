@@ -1,5 +1,3 @@
-TODO: "Expand/collapse" should not copied to clipboard
-
 TODD: http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
@@ -37,7 +35,6 @@ TODO: реализовать проверку *RECURSION* в ArrayVar и ObjectV
 
 TODO: fix reports in all browsers 
 
-TODO: rename throwsException to throws ???
 TODO: create be()->triggersError($errorType = null, $errorMessage = null)  ???
 TODO: create plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 TODO: create plugin BackupGlobalVariables ???

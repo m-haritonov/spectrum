@@ -163,7 +163,7 @@ class specList extends component
 					static::escapeHtml(isset(static::$numbers[static::$depth]) ? static::$numbers[static::$depth] : '') .
 					'<span class="dot">.</span>' .
 				'</span>' .
-				'<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Expand/collapse child content') . '"><span>' . static::translateAndEscapeHtml('Expand/collapse') . '</span></a>' .
+				'<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Expand/collapse child content') . '"><span></span></a>' .
 			'</span> ';
 	}
 
