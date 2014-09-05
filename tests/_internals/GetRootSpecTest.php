@@ -24,16 +24,13 @@ class GetRootSpecTest extends \spectrum\tests\Test
 	{
 		$this->assertSame(array(
 			'eq' => '\spectrum\matchers\eq',
-			'false' => '\spectrum\matchers\false',
 			'gt' => '\spectrum\matchers\gt',
 			'gte' => '\spectrum\matchers\gte',
 			'ident' => '\spectrum\matchers\ident',
 			'instanceof' => '\spectrum\matchers\instanceofMatcher',
 			'lt' => '\spectrum\matchers\lt',
 			'lte' => '\spectrum\matchers\lte',
-			'null' => '\spectrum\matchers\null',
 			'throwsException' => '\spectrum\matchers\throwsException',
-			'true' => '\spectrum\matchers\true',
 		), \spectrum\_internals\getRootSpec()->matchers->getAll());
 	}
 }

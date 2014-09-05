@@ -13,16 +13,13 @@ function loadBaseMatchers()
 {
 	$matchers = array(
 		'eq' => null,
-		'false' => null,
 		'gt' => null,
 		'gte' => null,
 		'ident' => null,
 		'instanceof' => null,
 		'lt' => null,
 		'lte' => null,
-		'null' => null,
 		'throwsException' => null,
-		'true' => null,
 	);
 	
 	foreach ($matchers as $matcherName => $functionName)

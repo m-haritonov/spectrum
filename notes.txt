@@ -1,5 +1,4 @@
 TODO: "Expand/collapse" should not copied to clipboard
-TODO: remove false/true/null matchers
 TODO: remove instanceof matcher to instanceOf/is
 
 TODD: http://mkharitonov.net/projects/spectrum/ 
@@ -142,45 +141,6 @@ TODO: add "run this test in this context" and "run this test in all contexts" li
 TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generateContexts; в "\spectrum\tools\*" или в "\spectrum\builders\*")
 TODO: create "\spectrum\tools\createTree" function and similar auxiliary functions and classes?
 TODO: create "\spectrum\tools\incrementCounter($counterName)" and "\spectrum\tools\getCounterValue($counterName)" functions?
-
-=== Documentation ===
-
-TODO: example for creation of describe/it/case functions
-TODO: кодировка влияет только на вывод данных и не влияет на работу тестов
-TODO: выводимые в формате HTML данные адаптированы для копирования в буфер обмена в текстовом виде
-TODO: Убрать лишние условия дя примеров, пускай пучше бутлут одни суккесы в результатах
-TODO: Убрать из примера files, оставив только базы данных
-TODO: Для примеров использовать скриншоты и ссылку на живое выполнение ???
-TODO: значения порядка вызова событий от -100 до 100 используются при регистрации базовых плагинов
-TODO: заменить "Spectrum is a PHP framework for BDD specification test" на "Spectrum is a PHP framework for test automation"
-TODO: поддерживаются кодировки, являющиеся надмножеством ASCII
-TODO: add "output to file" example to documentation:
-	ob_start(function($buffer){
-		static $handler;
-		if (!$handler)
-			$handler = fopen(__DIR__ . '/tmp.txt', 'w');
-		
-		fwrite($handler, $buffer);
-		return false; // Use "return '';" to disable displaying 
-	});
-	
-TODO: на главной закрепить образец использования:
-	test('ожидаемый результат', function(){
-		// код для проверки ожидаемого результата
-	})
-TODO: пример добавления своего драйвера для отчётов
-	class MyReports extends \spectrum\core\plugins
-	{
-		protected function getDriverClass()
-		{
-			if (mb_strtolower(config::getOutputFormat(), 'us-ascii') == 'html')
-				return 'myDriverClass';
-			else
-				return parent::getDriverClass();
-		}
-	}
-
-config::registerSpecPlugin('MyReports');
 
 === Multi-charset support problems ===
 
