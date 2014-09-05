@@ -18,7 +18,7 @@ class LoadBaseMatchersTest extends \spectrum\tests\Test
 		$this->assertTrue(function_exists('\spectrum\matchers\gt'));
 		$this->assertTrue(function_exists('\spectrum\matchers\gte'));
 		$this->assertTrue(function_exists('\spectrum\matchers\ident'));
-		$this->assertTrue(function_exists('\spectrum\matchers\instanceofMatcher'));
+		$this->assertTrue(function_exists('\spectrum\matchers\is'));
 		$this->assertTrue(function_exists('\spectrum\matchers\lt'));
 		$this->assertTrue(function_exists('\spectrum\matchers\lte'));
 		$this->assertTrue(function_exists('\spectrum\matchers\throwsException'));
@@ -28,7 +28,7 @@ class LoadBaseMatchersTest extends \spectrum\tests\Test
 			'gt' => '\spectrum\matchers\gt',
 			'gte' => '\spectrum\matchers\gte',
 			'ident' => '\spectrum\matchers\ident',
-			'instanceof' => '\spectrum\matchers\instanceofMatcher',
+			'is' => '\spectrum\matchers\is',
 			'lt' => '\spectrum\matchers\lt',
 			'lte' => '\spectrum\matchers\lte',
 			'throwsException' => '\spectrum\matchers\throwsException',

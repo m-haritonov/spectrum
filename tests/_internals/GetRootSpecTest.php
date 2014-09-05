@@ -27,7 +27,7 @@ class GetRootSpecTest extends \spectrum\tests\Test
 			'gt' => '\spectrum\matchers\gt',
 			'gte' => '\spectrum\matchers\gte',
 			'ident' => '\spectrum\matchers\ident',
-			'instanceof' => '\spectrum\matchers\instanceofMatcher',
+			'is' => '\spectrum\matchers\is',
 			'lt' => '\spectrum\matchers\lt',
 			'lte' => '\spectrum\matchers\lte',
 			'throwsException' => '\spectrum\matchers\throwsException',

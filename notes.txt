@@ -1,5 +1,4 @@
 TODO: "Expand/collapse" should not copied to clipboard
-TODO: remove instanceof matcher to instanceOf/is
 
 TODD: http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)

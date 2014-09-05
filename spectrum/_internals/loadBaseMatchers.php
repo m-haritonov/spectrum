@@ -16,7 +16,7 @@ function loadBaseMatchers()
 		'gt' => null,
 		'gte' => null,
 		'ident' => null,
-		'instanceof' => null,
+		'is' => null,
 		'lt' => null,
 		'lte' => null,
 		'throwsException' => null,
@@ -26,13 +26,6 @@ function loadBaseMatchers()
 	{
 		$fileName = __DIR__ . '/../matchers/' . $matcherName . '.php';
 		$functionName = '\spectrum\matchers\\' . $matcherName;
-		
-		// "instanceof" is reserved word and forbidden to use as function name (but allowed to use as property name)
-		if ((string) $matcherName === 'instanceof')
-		{
-			$fileName = __DIR__ . '/../matchers/instanceofMatcher.php';
-			$functionName = '\spectrum\matchers\instanceofMatcher';
-		}
 		
 		require_once $fileName;
 		$matchers[$matcherName] = $functionName;
