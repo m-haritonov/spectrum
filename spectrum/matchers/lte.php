@@ -10,7 +10,6 @@ namespace spectrum\matchers;
  * Matcher for less than or equal operator ($actual <= $expected).
  * @return bool
  */
-function lte($actual, $expected)
-{
+function lte($actual, $expected) {
 	return ($actual <= $expected);
 }

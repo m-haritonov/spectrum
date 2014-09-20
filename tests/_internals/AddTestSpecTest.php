@@ -10,10 +10,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class AddTestSpecTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_SavesSpecsToStaticVariable()
-	{
+class AddTestSpecTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_SavesSpecsToStaticVariable() {
 		$spec1 = new Spec();
 		$spec2 = new Spec();
 		$spec3 = new Spec();

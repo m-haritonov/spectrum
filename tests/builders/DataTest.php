@@ -8,10 +8,8 @@ namespace spectrum\tests\builders;
 
 require_once __DIR__ . '/../init.php';
 
-class DataTest extends \spectrum\tests\Test
-{
-	public function testCallsAtRunningState_ReturnsDataOfCurrentRunningSpec()
-	{
+class DataTest extends \spectrum\tests\Test {
+	public function testCallsAtRunningState_ReturnsDataOfCurrentRunningSpec() {
 		$specs = $this->createSpecsByVisualPattern('
 			  __0__
 			 /  |  \
@@ -24,9 +22,8 @@ class DataTest extends \spectrum\tests\Test
 		
 		$dataObjects = array();
 		$returnValues = array();
-		foreach ($specs as $spec)
-		{
-			$spec->test->setFunction(function() use(&$dataObjects, &$returnValues, $spec){
+		foreach ($specs as $spec) {
+			$spec->test->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
 				$dataObjects[] = $spec->test->getData();
 				$returnValues[] = \spectrum\builders\data();
 			});
@@ -36,8 +33,7 @@ class DataTest extends \spectrum\tests\Test
 		$this->assertSame($dataObjects, $returnValues);
 	}
 	
-	public function testCallsAtBuildingState_ThrowsException()
-	{
+	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Builder "data" should be call only at running state', function(){
 			\spectrum\builders\data();
 		});

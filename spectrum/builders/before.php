@@ -12,11 +12,11 @@ use spectrum\Exception;
  * @throws \spectrum\Exception If called not at building state
  * @param  callback $function
  */
-function before($function)
-{
+function before($function) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
-	if ($isRunningStateFunction())
+	if ($isRunningStateFunction()) {
 		throw new Exception('Builder "before" should be call only at building state');
+	}
 
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentBuildingSpec');
 	return $getCurrentBuildingSpecFunction()->contextModifiers->add($function, 'before');

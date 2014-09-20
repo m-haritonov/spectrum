@@ -8,15 +8,12 @@ namespace spectrum\tests\_internals;
 
 require_once __DIR__ . '/../init.php';
 
-class IsRunningStateTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_ReturnsFalse()
-	{
+class IsRunningStateTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_ReturnsFalse() {
 		$this->assertSame(false, \spectrum\_internals\isRunningState());
 	}
 	
-	public function testCallsAtRunningState_ReturnsTrue()
-	{
+	public function testCallsAtRunningState_ReturnsTrue() {
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -28,13 +25,11 @@ class IsRunningStateTest extends \spectrum\tests\Test
 		$this->assertSame(true, \spectrum\tests\Test::$temp["returnValue"]);
 	}
 	
-	public function testCallsAtRunningState_CallsFromCustomSpecClass_ReturnsTrue()
-	{
+	public function testCallsAtRunningState_CallsFromCustomSpecClass_ReturnsTrue() {
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
 		$specClassName = $this->createClass('
-			class ... implements \spectrum\core\SpecInterface
-			{
+			class ... implements \spectrum\core\SpecInterface {
 				public function __get($pluginAccessName){}
 				
 				public function enable(){}
@@ -68,8 +63,7 @@ class IsRunningStateTest extends \spectrum\tests\Test
 				public function getResultBuffer(){}
 				public function getRunId(){}
 				public function isRunning(){}
-				public function run()
-				{
+				public function run() {
 					\spectrum\tests\Test::$temp["returnValue"] = \spectrum\_internals\isRunningState();
 				}
 			}

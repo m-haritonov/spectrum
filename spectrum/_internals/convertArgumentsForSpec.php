@@ -12,8 +12,7 @@ use spectrum\Exception;
 /**
  * @access private
  */
-function convertArgumentsForSpec(array $arguments, $builderName)
-{
+function convertArgumentsForSpec(array $arguments, $builderName) {
 	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\_internals\convertArguments');
 	$arguments = $convertArgumentsFunction($arguments, array(
 		array('closure:body'),                                                                                  // function(\Closure $body)
@@ -31,8 +30,9 @@ function convertArgumentsForSpec(array $arguments, $builderName)
 		'settings' => null,
 	));
 	
-	if ($arguments === null)
+	if ($arguments === null) {
 		throw new Exception('Incorrect arguments in "' . $builderName . '" builder');
+	}
 	
 	return $arguments;
 }

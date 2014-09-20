@@ -6,10 +6,8 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
-class boolVar extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class boolVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-code-variables-bool { font-size: 12px; }
 			.c-code-variables-bool .type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
@@ -18,8 +16,7 @@ class boolVar extends \spectrum\core\plugins\reports\drivers\html\components\com
 		/*]]>*/</style>', 2);
 	}
 	
-	static public function getHtml($variable)
-	{
+	static public function getHtml($variable) {
 		return
 			'<span class="c-code-variables-bool">' .
 				'<span class="type">' . static::translateAndEscapeHtml('bool') . '</span> ' .

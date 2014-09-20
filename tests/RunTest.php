@@ -10,11 +10,9 @@ use spectrum\config;
 
 require_once __DIR__ . '/init.php';
 
-class RunTest extends Test
-{
-	public function testRunsRootSpec()
-	{
-		\spectrum\_internals\getRootSpec()->test->setFunction(function() use(&$isRootSpecRun){
+class RunTest extends Test {
+	public function testRunsRootSpec() {
+		\spectrum\_internals\getRootSpec()->test->setFunction(function() use(&$isRootSpecRun) {
 			$isRootSpecRun = true;
 		});
 		
@@ -23,8 +21,7 @@ class RunTest extends Test
 		$this->assertTrue($isRootSpecRun);
 	}
 	
-	public function testReturnsRootSpecRunResult()
-	{
+	public function testReturnsRootSpecRunResult() {
 		\spectrum\_internals\getRootSpec()->test->setFunction(function(){
 			\spectrum\_internals\getRootSpec()->getResultBuffer()->addResult(false);
 		});
@@ -44,9 +41,8 @@ class RunTest extends Test
 		$this->assertNull(\spectrum\run());
 	}
 	
-	public function testLocksConfigBeforeRun()
-	{
-		\spectrum\_internals\getRootSpec()->test->setFunction(function() use(&$isLocked){
+	public function testLocksConfigBeforeRun() {
+		\spectrum\_internals\getRootSpec()->test->setFunction(function() use(&$isLocked) {
 			$isLocked = config::isLocked();
 		});
 		

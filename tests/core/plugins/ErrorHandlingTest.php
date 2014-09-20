@@ -11,16 +11,13 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class ErrorHandlingTest extends \spectrum\tests\Test
-{
-	public function setUp()
-	{
+class ErrorHandlingTest extends \spectrum\tests\Test {
+	public function setUp() {
 		parent::setUp();
 		config::setAllowErrorHandlingModify(true);
 	}
 	
-	public function providerSetCatchPhpErrors()
-	{
+	public function providerSetCatchPhpErrors() {
 		return array(
 			array(true, -1),
 			array(false, 0),
@@ -34,24 +31,19 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerSetCatchPhpErrors
 	 */
-	public function testSetCatchPhpErrors_SetsValue($errorLevel, $resultErrorLevel)
-	{
+	public function testSetCatchPhpErrors_SetsValue($errorLevel, $resultErrorLevel) {
 		$spec = new Spec();
 		$spec->errorHandling->setCatchPhpErrors($errorLevel);
 		$this->assertSame($resultErrorLevel, $spec->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function testSetCatchPhpErrors_CallOnRun_ThrowsExceptionAndDoesNotChangeValue()
-	{
+	public function testSetCatchPhpErrors_CallOnRun_ThrowsExceptionAndDoesNotChangeValue() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->errorHandling->setCatchPhpErrors(0);
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -66,8 +58,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(1, $spec->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function testSetCatchPhpErrors_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue()
-	{
+	public function testSetCatchPhpErrors_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setCatchPhpErrors(1);
 		
@@ -82,8 +73,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetCatchPhpErrors_ReturnsSetValue()
-	{
+	public function testGetCatchPhpErrors_ReturnsSetValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setCatchPhpErrors(1);
 		$this->assertSame(1, $spec->errorHandling->getCatchPhpErrors());
@@ -92,16 +82,14 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(2, $spec->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function testGetCatchPhpErrors_ReturnsNullByDefault()
-	{
+	public function testGetCatchPhpErrors_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->errorHandling->getCatchPhpErrors());
 	}
 	
 /**/
 	
-	public function testGetCatchPhpErrorsThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf()
-	{
+	public function testGetCatchPhpErrorsThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -127,8 +115,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(array(2, 3, 4, 1), \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testGetCatchPhpErrorsThroughRunningAncestors_ReturnsNegativeOneWhenValueIsNotSet()
-	{
+	public function testGetCatchPhpErrorsThroughRunningAncestors_ReturnsNegativeOneWhenValueIsNotSet() {
 		$spec = new Spec();
 		$spec->errorHandling->setCatchPhpErrors(null);
 		$this->assertSame(-1, $spec->errorHandling->getCatchPhpErrorsThroughRunningAncestors());
@@ -136,8 +123,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testSetBreakOnFirstPhpError_SetsValue()
-	{
+	public function testSetBreakOnFirstPhpError_SetsValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstPhpError(true);
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstPhpError());
@@ -146,17 +132,13 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstPhpError());
 	}
 	
-	public function testSetBreakOnFirstPhpError_CallOnRun_ThrowsExceptionAndDoesNotChangeValue()
-	{
+	public function testSetBreakOnFirstPhpError_CallOnRun_ThrowsExceptionAndDoesNotChangeValue() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->errorHandling->setBreakOnFirstPhpError(false);
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -171,8 +153,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstPhpError());
 	}
 	
-	public function testSetBreakOnFirstPhpError_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue()
-	{
+	public function testSetBreakOnFirstPhpError_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstPhpError(true);
 		
@@ -187,8 +168,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetBreakOnFirstPhpError_ReturnsSetValue()
-	{
+	public function testGetBreakOnFirstPhpError_ReturnsSetValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstPhpError(true);
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstPhpError());
@@ -197,16 +177,14 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstPhpError());
 	}
 	
-	public function testGetBreakOnFirstPhpError_ReturnsNullByDefault()
-	{
+	public function testGetBreakOnFirstPhpError_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->errorHandling->getBreakOnFirstPhpError());
 	}
 	
 /**/
 	
-	public function testGetBreakOnFirstPhpErrorThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf()
-	{
+	public function testGetBreakOnFirstPhpErrorThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -230,8 +208,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(array(false, false, true), \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testGetBreakOnFirstPhpErrorThroughRunningAncestors_ReturnsFalseWhenValueIsNotSet()
-	{
+	public function testGetBreakOnFirstPhpErrorThroughRunningAncestors_ReturnsFalseWhenValueIsNotSet() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstPhpError(null);
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstPhpErrorThroughRunningAncestors());
@@ -239,8 +216,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testSetBreakOnFirstMatcherFail_SetsValue()
-	{
+	public function testSetBreakOnFirstMatcherFail_SetsValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstMatcherFail(true);
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstMatcherFail());
@@ -249,17 +225,13 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstMatcherFail());
 	}
 	
-	public function testSetBreakOnFirstMatcherFail_CallOnRun_ThrowsExceptionAndDoesNotChangeValue()
-	{
+	public function testSetBreakOnFirstMatcherFail_CallOnRun_ThrowsExceptionAndDoesNotChangeValue() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->errorHandling->setBreakOnFirstMatcherFail(false);
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -274,8 +246,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstMatcherFail());
 	}
 	
-	public function testSetBreakOnFirstMatcherFail_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue()
-	{
+	public function testSetBreakOnFirstMatcherFail_ErrorHandlingModifyIsDeniedInConfig_ThrowsExceptionAndDoesNotChangeValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstMatcherFail(true);
 		
@@ -290,8 +261,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetBreakOnFirstMatcherFail_ReturnsSetValue()
-	{
+	public function testGetBreakOnFirstMatcherFail_ReturnsSetValue() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstMatcherFail(true);
 		$this->assertSame(true, $spec->errorHandling->getBreakOnFirstMatcherFail());
@@ -300,16 +270,14 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstMatcherFail());
 	}
 	
-	public function testGetBreakOnFirstMatcherFail_ReturnsNullByDefault()
-	{
+	public function testGetBreakOnFirstMatcherFail_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->errorHandling->getBreakOnFirstMatcherFail());
 	}
 	
 /**/
 	
-	public function testGetBreakOnFirstMatcherFailThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf()
-	{
+	public function testGetBreakOnFirstMatcherFailThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -333,8 +301,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(array(false, false, true), \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testGetBreakOnFirstMatcherFailThroughRunningAncestors_ReturnsFalseWhenValueIsNotSet()
-	{
+	public function testGetBreakOnFirstMatcherFailThroughRunningAncestors_ReturnsFalseWhenValueIsNotSet() {
 		$spec = new Spec();
 		$spec->errorHandling->setBreakOnFirstMatcherFail(null);
 		$this->assertSame(false, $spec->errorHandling->getBreakOnFirstMatcherFailThroughRunningAncestors());
@@ -342,8 +309,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testErrorHandling_GetsPhpErrorDetailsClassFromConfig()
-	{
+	public function testErrorHandling_GetsPhpErrorDetailsClassFromConfig() {
 		$phpErrorDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\PhpError {}');
 		config::setClassReplacement('\spectrum\core\details\PhpError', $phpErrorDetailsClassName);
 
@@ -368,8 +334,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
 	}
 	
-	public function testErrorHandling_GetsErrorTypeFromAncestorsOrSelf()
-	{
+	public function testErrorHandling_GetsErrorTypeFromAncestorsOrSelf() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -407,8 +372,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_USER_ERROR, $results[0]['details']->getErrorLevel());
 	}
 	
-	public function testErrorHandling_TakesInAccountDefinedOnRunErrorReportingValue()
-	{
+	public function testErrorHandling_TakesInAccountDefinedOnRunErrorReportingValue() {
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -424,8 +388,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(array(), \spectrum\tests\Test::$temp["resultBuffer"]->getResults());
 	}
 	
-	public function testErrorHandling_DoesNotTakeInAccountDefinedBeforeRunErrorReportingValue()
-	{
+	public function testErrorHandling_DoesNotTakeInAccountDefinedBeforeRunErrorReportingValue() {
 		error_reporting(E_USER_WARNING);
 		
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
@@ -447,8 +410,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
 	}
 	
-	public function testErrorHandling_RestoreErrorReportingValueAfterRun()
-	{
+	public function testErrorHandling_RestoreErrorReportingValueAfterRun() {
 		error_reporting(E_NOTICE);
 		
 		$spec = new Spec();
@@ -457,8 +419,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_NOTICE, error_reporting());
 	}
 	
-	public function testErrorHandling_RemovesErrorHandlerAfterRun()
-	{
+	public function testErrorHandling_RemovesErrorHandlerAfterRun() {
 		$errorHandler = function($errorSeverity, $errorMessage){};
 		set_error_handler($errorHandler);
 		
@@ -470,8 +431,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		restore_error_handler();
 	}
 	
-	public function testErrorHandling_RemovesAlienErrorHandlersAddedOnExecute()
-	{
+	public function testErrorHandling_RemovesAlienErrorHandlersAddedOnExecute() {
 		$errorHandler = function($errorSeverity, $errorMessage){};
 		set_error_handler($errorHandler);
 		
@@ -489,8 +449,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		restore_error_handler();
 	}
 	
-	public function testErrorHandling_CatchesPhpErrorsFromContextModifiers()
-	{
+	public function testErrorHandling_CatchesPhpErrorsFromContextModifiers() {
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -518,8 +477,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
 	}
 	
-	public function testErrorHandling_CatchesPhpErrorsFromTestPlugin()
-	{
+	public function testErrorHandling_CatchesPhpErrorsFromTestPlugin() {
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -540,8 +498,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
 	}
 	
-	public function testErrorHandling_ErrorHandlerWasRemovedOnExecute_AddsFalseToResultBufferAndDoesNotRemoveOtherErrorHandlers()
-	{
+	public function testErrorHandling_ErrorHandlerWasRemovedOnExecute_AddsFalseToResultBufferAndDoesNotRemoveOtherErrorHandlers() {
 		$errorHandler1 = function($errorSeverity, $errorMessage){};
 		set_error_handler($errorHandler1);
 		
@@ -575,8 +532,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		restore_error_handler();
 	}
 		
-	public function testErrorHandling_ErrorTypeIsIncludeTriggeredErrorType_CatchesPhpErrorsAndAddsFalseResultToResultBuffer()
-	{
+	public function testErrorHandling_ErrorTypeIsIncludeTriggeredErrorType_CatchesPhpErrorsAndAddsFalseResultToResultBuffer() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -643,8 +599,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
 	}
 	
-	public function testErrorHandling_ErrorTypeIsNotIncludeTriggeredErrorType_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer()
-	{
+	public function testErrorHandling_ErrorTypeIsNotIncludeTriggeredErrorType_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -659,8 +614,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(array(), \spectrum\tests\Test::$temp["resultBuffer"]->getResults());
 	}
 	
-	public function testErrorHandling_ExpressionWithErrorControlOperator_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer()
-	{
+	public function testErrorHandling_ExpressionWithErrorControlOperator_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -676,8 +630,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(array(), \spectrum\tests\Test::$temp["resultBuffer"]->getResults());
 	}
 	
-	public function testErrorHandling_BreakOnFirstPhpErrorIsEnabled_BreaksExecutionOnFirstPhpError()
-	{
+	public function testErrorHandling_BreakOnFirstPhpErrorIsEnabled_BreaksExecutionOnFirstPhpError() {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -693,8 +646,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(false, \spectrum\tests\Test::$temp["isExecuted"]);
 	}
 	
-	public function testErrorHandling_BreakOnFirstPhpErrorIsEnabled_GetsValueFromAncestorsOrSelf()
-	{
+	public function testErrorHandling_BreakOnFirstPhpErrorIsEnabled_GetsValueFromAncestorsOrSelf() {
 		\spectrum\tests\Test::$temp["callCount"] = -1;
 		\spectrum\tests\Test::$temp["isExecuted"] = array();
 		
@@ -730,8 +682,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["isExecuted"]);
 	}
 	
-	public function testErrorHandling_BreakOnFirstMatcherFailIsEnabled_BreaksExecutionOnMatcherFail()
-	{
+	public function testErrorHandling_BreakOnFirstMatcherFailIsEnabled_BreaksExecutionOnMatcherFail() {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -749,8 +700,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(false, \spectrum\tests\Test::$temp["isExecuted"]);
 	}
 	
-	public function testErrorHandling_BreakOnFirstMatcherFailIsEnabled_DoesNotBreakExecutionOnMatcherSuccess()
-	{
+	public function testErrorHandling_BreakOnFirstMatcherFailIsEnabled_DoesNotBreakExecutionOnMatcherSuccess() {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -768,8 +718,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 		$this->assertSame(true, \spectrum\tests\Test::$temp["isExecuted"]);
 	}
 	
-	public function testErrorHandling_BreakOnFirstMatcherFailIsEnabled_GetsValueFromAncestorsOrSelf()
-	{
+	public function testErrorHandling_BreakOnFirstMatcherFailIsEnabled_GetsValueFromAncestorsOrSelf() {
 		\spectrum\tests\Test::$temp["callCount"] = -1;
 		\spectrum\tests\Test::$temp["isExecuted"] = array();
 		
@@ -811,8 +760,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test
 	
 /**/
 	
-	protected function getLastErrorHandler()
-	{
+	protected function getLastErrorHandler() {
 		$lastErrorHandler = set_error_handler(function($errorSeverity, $errorMessage){});
 		restore_error_handler();
 		return $lastErrorHandler;

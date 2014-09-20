@@ -11,16 +11,19 @@ use spectrum\config;
 /**
  * @access private
  */
-function convertCharset($string, $inputCharset = null, $outputCharset = null)
-{
-	if ($inputCharset === null)
+function convertCharset($string, $inputCharset = null, $outputCharset = null) {
+	if ($inputCharset === null) {
 		$inputCharset = config::getInputCharset();
+	}
 	
-	if ($outputCharset === null)
+	if ($outputCharset === null) {
 		$outputCharset = config::getOutputCharset();
+	}
 	
-	if ((string) $inputCharset === (string) $outputCharset)
+	if ((string) $inputCharset === (string) $outputCharset) {
 		return $string;
-	else
+	}
+	else {
 		return mb_convert_encoding($string, $outputCharset, $inputCharset);
+	}
 }

@@ -9,10 +9,8 @@ namespace spectrum\tests\matchers;
 require_once __DIR__ . '/../init.php';
 require_once __DIR__ . '/../../spectrum/matchers/ident.php';
 
-class IdentTest extends \spectrum\tests\Test
-{
-	public function test()
-	{
+class IdentTest extends \spectrum\tests\Test {
+	public function test() {
 		$this->assertSame(true, \spectrum\matchers\ident('aaa', 'aaa'));
 		$this->assertSame(true, \spectrum\matchers\ident(1, 1));
 

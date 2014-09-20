@@ -6,14 +6,10 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\_internals;
 
-use spectrum\core\Spec;
-
 require_once __DIR__ . '/../init.php';
 
-class NormalizeSettingsTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_SettingValueIsNull_ReturnsArrayWithNullSettings()
-	{
+class NormalizeSettingsTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_SettingValueIsNull_ReturnsArrayWithNullSettings() {
 		$this->assertSame(array(
 			'catchPhpErrors' => null,
 			'breakOnFirstPhpError' => null,
@@ -21,8 +17,7 @@ class NormalizeSettingsTest extends \spectrum\tests\Test
 		), \spectrum\_internals\normalizeSettings(null));
 	}
 	
-	public function testCallsAtBuildingState_SettingValueIsInteger_ReturnsArrayWithNullSettingsAndCatchPhpErrors()
-	{
+	public function testCallsAtBuildingState_SettingValueIsInteger_ReturnsArrayWithNullSettingsAndCatchPhpErrors() {
 		$this->assertSame(array(
 			'catchPhpErrors' => 0,
 			'breakOnFirstPhpError' => null,
@@ -54,8 +49,7 @@ class NormalizeSettingsTest extends \spectrum\tests\Test
 		), \spectrum\_internals\normalizeSettings(E_ERROR));
 	}
 	
-	public function testCallsAtBuildingState_SettingValueIsBoolean_ReturnsArrayWithNullSettingsAndCatchPhpErrors()
-	{
+	public function testCallsAtBuildingState_SettingValueIsBoolean_ReturnsArrayWithNullSettingsAndCatchPhpErrors() {
 		$this->assertSame(array(
 			'catchPhpErrors' => true,
 			'breakOnFirstPhpError' => null,
@@ -69,8 +63,7 @@ class NormalizeSettingsTest extends \spectrum\tests\Test
 		), \spectrum\_internals\normalizeSettings(false));
 	}
 	
-	public function testCallsAtBuildingState_SettingValueIsArray_ReturnsArrayWithProperSettings()
-	{
+	public function testCallsAtBuildingState_SettingValueIsArray_ReturnsArrayWithProperSettings() {
 		$this->assertSame(array(
 			'catchPhpErrors' => E_NOTICE,
 			'breakOnFirstPhpError' => true,
@@ -92,15 +85,13 @@ class NormalizeSettingsTest extends \spectrum\tests\Test
 		)));
 	}
 	
-	public function testCallsAtBuildingState_SettingValueIsArrayWithNotSupportedSetting_ThrowsException()
-	{
+	public function testCallsAtBuildingState_SettingValueIsArrayWithNotSupportedSetting_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Invalid setting "someSettingName"', function(){
 			\spectrum\_internals\normalizeSettings(array('someSettingName' => 'windows-1251'));
 		});
 	}
 	
-	public function testCallsAtBuildingState_SettingValueHasNotSupportedType_ThrowsException()
-	{
+	public function testCallsAtBuildingState_SettingValueHasNotSupportedType_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Invalid settings variable type ("object")', function(){
 			\spectrum\_internals\normalizeSettings(new \stdClass());
 		});

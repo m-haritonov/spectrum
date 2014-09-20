@@ -6,8 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-interface SpecInterface
-{
+interface SpecInterface {
 	public function __get($pluginAccessName);
 	
 	public function enable();

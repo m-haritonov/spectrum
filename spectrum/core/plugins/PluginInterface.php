@@ -6,8 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins;
 
-interface PluginInterface
-{
+interface PluginInterface {
 	/**
 	 * @return null|string
 	 */

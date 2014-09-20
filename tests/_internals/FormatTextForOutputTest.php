@@ -10,10 +10,8 @@ use spectrum\config;
 
 require_once __DIR__ . '/../init.php';
 
-class FormatTextForOutputTest extends \spectrum\tests\Test
-{
-	public function test()
-	{
+class FormatTextForOutputTest extends \spectrum\tests\Test {
+	public function test() {
 		config::setOutputIndention('  ');
 		config::setOutputNewline("\r\n");
 		

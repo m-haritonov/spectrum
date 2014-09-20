@@ -8,15 +8,12 @@ namespace spectrum\core\plugins\reports\drivers\text;
 
 use spectrum\core\SpecInterface;
 
-class text
-{
-	static public function getContentBeforeSpec(SpecInterface $spec)
-	{
+class text {
+	static public function getContentBeforeSpec(SpecInterface $spec) {
 		return 'Driver is under development';
 	}
 
-	static public function getContentAfterSpec(SpecInterface $spec)
-	{
+	static public function getContentAfterSpec(SpecInterface $spec) {
 		return 'Driver is under development';
 	}
 }

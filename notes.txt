@@ -1,12 +1,11 @@
 TODD: http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
-
+TODO: text format
 TODO: убрать форматирование
-TODO: выделять цветом всю строку и point, fail/success оставить только для копирования в буфер
 
-TODO: "Spectrum framework report" -> "Spectrum Framework"
-TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров с обрезанием для 100 символов вместо использования только первого параметра
+
+TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров (key => value) с обрезанием для 100 символов вместо использования только первого параметра
 TODO: test('', array(
 	array('name', 'name', 'name),
 	array('value', 'value', 'value'),
@@ -29,20 +28,19 @@ TODO: array context group:
 		test('bbb', function(){});
 	});
 
-TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
+TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
+TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
 TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
 TODO: реализовать проверку *RECURSION* в ArrayVar и ObjectVar (в элементе массива тоже может содержаться объект)
 
 TODO: fix reports in all browsers 
 
+TODO: выделять цветом всю строку и point, fail/success оставить только для копирования в буфер
+TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 TODO: create be()->triggersError($errorType = null, $errorMessage = null)  ???
 TODO: create plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
 TODO: create plugin BackupGlobalVariables ???
 TODO: matchers: be(function(){})->outputs/prints('aaa a aaaaa ');
-
-TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
-TODO: добавить setCatchPhpErrors(true/false) ???
-TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
 
 TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
 TODO: написать doc комментарии к методам и функциям (глобальным, расположенным в init.php, в частности)

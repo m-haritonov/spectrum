@@ -6,10 +6,8 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
-class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-code-variables-array { display: inline-block; vertical-align: text-top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); font-size: 12px; }
 			.c-code-variables-array>.indention { display: none; }
@@ -28,24 +26,23 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml($variable, $depth, $inputCharset = null)
-	{
+	static public function getHtml($variable, $depth, $inputCharset = null) {
 		$output = '';
 		$output .= '<span class="c-code-variables-array">';
 		$output .= static::getHtmlForType($variable);
 		$output .= static::callComponentMethod('code\operator', 'getHtml', array('{', 'us-ascii'));
 		$output .= static::getHtmlForElements($variable, $depth, $inputCharset);
 		
-		if (count($variable))
+		if (count($variable)) {
 			$output .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth); // Indention should be copied to buffer
+		}
 		
 		$output .= static::callComponentMethod('code\operator', 'getHtml', array('}', 'us-ascii'));
 		$output .= '</span>';
 		return $output;
 	}
 	
-	static protected function getHtmlForType($variable)
-	{
+	static protected function getHtmlForType($variable) {
 		return
 			'<span class="type">' .
 				static::translateAndEscapeHtml('array') .
@@ -53,11 +50,9 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 			'</span> ';
 	}
 	
-	static protected function getHtmlForElements($variable, $depth, $inputCharset)
-	{
+	static protected function getHtmlForElements($variable, $depth, $inputCharset) {
 		$output = '';
-		if (count($variable))
-		{
+		if (count($variable)) {
 			$output .= '<span class="elements">';
 			foreach ($variable as $key => $value)
 				$output .= static::getHtmlForElement($key, $value, $depth, $inputCharset);
@@ -68,8 +63,7 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		return $output;
 	}
 	
-	static protected function getHtmlForElement($key, $value, $depth, $inputCharset)
-	{
+	static protected function getHtmlForElement($key, $value, $depth, $inputCharset) {
 		return
 			'<span class="element">' .
 				// Indention should be copied to buffer

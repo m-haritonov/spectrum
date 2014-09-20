@@ -10,7 +10,6 @@ namespace spectrum\matchers;
  * Matcher for greater than or equal operator ($actual >= $expected).
  * @return bool
  */
-function gte($actual, $expected)
-{
+function gte($actual, $expected) {
 	return ($actual >= $expected);
 }

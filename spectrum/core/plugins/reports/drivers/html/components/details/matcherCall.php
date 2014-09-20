@@ -8,10 +8,8 @@ namespace spectrum\core\plugins\reports\drivers\html\components\details;
 use spectrum\config;
 use \spectrum\core\details\MatcherCallInterface;
 
-class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-details-matcherCall { padding: 7px; }
 			.c-details-matcherCall>.evaluatedValues { margin-bottom: 1em; }
@@ -24,8 +22,7 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(MatcherCallInterface $details)
-	{
+	static public function getHtml(MatcherCallInterface $details) {
 		return
 			'<div class="c-details-matcherCall">' . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForEvaluatedValues($details)) . static::getHtmlEscapedOutputNewline() .
@@ -34,16 +31,14 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 			'</div>';
 	}
 
-	static protected function getHtmlForEvaluatedValues(MatcherCallInterface $details)
-	{
+	static protected function getHtmlForEvaluatedValues(MatcherCallInterface $details) {
 		$output = '';
 		$output .= '<div class="evaluatedValues">' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Evaluated values') . '</h1>' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<p>';
 		$output .= static::callComponentMethod('code\method', 'getHtml', array('be', array($details->getTestedValue())));
 
-		if ($details->getNot())
-		{
+		if ($details->getNot()) {
 			$output .= static::callComponentMethod('code\operator', 'getHtml', array('->', 'us-ascii'));
 			$output .= static::callComponentMethod('code\property', 'getHtml', array('not', 'us-ascii'));
 		}
@@ -55,10 +50,10 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		return $output;
 	}
 	
-	static protected function getHtmlForMatcherException(MatcherCallInterface $details)
-	{
-		if ($details->getMatcherException() === null)
+	static protected function getHtmlForMatcherException(MatcherCallInterface $details) {
+		if ($details->getMatcherException() === null) {
 			return null;
+		}
 		
 		return
 			'<div class="matcherException">' . static::getHtmlEscapedOutputNewline() .
@@ -72,8 +67,7 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 			'</div>';
 	}
 	
-	static protected function getHtmlForSource(MatcherCallInterface $details)
-	{
+	static protected function getHtmlForSource(MatcherCallInterface $details) {
 		$filename = $details->getFile();
 		$filenameEndLength = 25;
 		$filenameBegin = mb_substr($filename, 0, -$filenameEndLength, 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")

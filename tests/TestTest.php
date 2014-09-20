@@ -8,10 +8,8 @@ namespace spectrum\tests;
 
 require_once __DIR__ . '/init.php';
 
-class TestTest extends Test
-{
-	public function providerCreateSpecsByVisualPattern()
-	{
+class TestTest extends Test {
+	public function providerCreateSpecsByVisualPattern() {
 		return array(
 			// One element only
 			
@@ -454,24 +452,24 @@ class TestTest extends Test
 	/**
 	 * @dataProvider providerCreateSpecsByVisualPattern
 	 */
-	public function testCreateSpecsByVisualPattern_ReturnsUniqueSpecsWithProperRelations($pattern, array $expectedResult)
-	{
+	public function testCreateSpecsByVisualPattern_ReturnsUniqueSpecsWithProperRelations($pattern, array $expectedResult) {
 		$specs = $this->createSpecsByVisualPattern($pattern);
 		
 		$expectedSpecKeys = array();
-		foreach ($expectedResult as $specKey => $relations)
-		{
+		foreach ($expectedResult as $specKey => $relations) {
 			$expectedSpecKeys[] = $specKey;
 			
 			$parentSpecs = array();
-			foreach ($relations['parents'] as $relatedSpecKey)
+			foreach ($relations['parents'] as $relatedSpecKey) {
 				$parentSpecs[] = $specs[$relatedSpecKey];
+			}
 			
 			$this->assertSame($parentSpecs, $specs[$specKey]->getParentSpecs());
 			
 			$childSpecs = array();
-			foreach ($relations['children'] as $relatedSpecKey)
+			foreach ($relations['children'] as $relatedSpecKey) {
 				$childSpecs[] = $specs[$relatedSpecKey];
+			}
 				
 			$this->assertSame($childSpecs, $specs[$specKey]->getChildSpecs());
 		}
@@ -480,8 +478,7 @@ class TestTest extends Test
 		$this->assertSame($this->getUniqueArrayElements($specs), $specs);
 	}
 	
-	public function testCreateSpecsByVisualPattern_CreatesAdditionalRelations()
-	{
+	public function testCreateSpecsByVisualPattern_CreatesAdditionalRelations() {
 		$specs = $this->createSpecsByVisualPattern('
 			  0
 			 / \
@@ -509,18 +506,14 @@ class TestTest extends Test
 		$this->assertSame(array(), $specs['4']->getChildSpecs());
 	}
 	
-	public function testCreateSpecsByVisualPattern_DuplicateNamesArePresent_ThrowsException()
-	{
-		try
-		{
+	public function testCreateSpecsByVisualPattern_DuplicateNamesArePresent_ThrowsException() {
+		try {
 			$this->createSpecsByVisualPattern('
 				   aaa
 				  /   \
 				aaa   bbb
 			');
-		}
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			$this->assertSame('Duplicate name is present on line 3', $e->getMessage());
 			return null;
 		}
@@ -528,18 +521,14 @@ class TestTest extends Test
 		$this->fail('Should be thrown exception');
 	}
 	
-	public function testCreateSpecsByVisualPattern_UnknownRelationArePresent_ThrowsException()
-	{
-		try
-		{
+	public function testCreateSpecsByVisualPattern_UnknownRelationArePresent_ThrowsException() {
+		try {
 			$this->createSpecsByVisualPattern('
 				  0
 				 /*\
 				1   2
 			');
-		}
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			$this->assertSame($e->getMessage(), 'Unknown relation "*" is present on line 2');
 			return null;
 		}
@@ -549,8 +538,7 @@ class TestTest extends Test
 
 /**/
 	
-	public function testCreateSpecsByListPattern_ReverseOrder_AddsUpSpecsToBottomSpecsAsParents()
-	{
+	public function testCreateSpecsByListPattern_ReverseOrder_AddsUpSpecsToBottomSpecsAsParents() {
 		$specs = $this->createSpecsByListPattern('
 			->->Spec
 			->Spec(ccc)
@@ -584,25 +572,20 @@ class TestTest extends Test
 		$this->assertSame(array($specs['ccc']), $specs[0]->getChildSpecs());
 	}
 	
-	public function testCreateSpecsByListPattern_ReverseOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne()
-	{
-		try
-		{
+	public function testCreateSpecsByListPattern_ReverseOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne() {
+		try {
 			$this->createSpecsByListPattern('
 				->->Spec
 				Spec
 			');
-		}
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			return null;
 		}
 
 		$this->fail('Should be thrown exception');
 	}
 	
-	public function testCreateSpecsByListPattern_DirectOrder_AddsBottomSpecsToUpSpecsAsChildren()
-	{
+	public function testCreateSpecsByListPattern_DirectOrder_AddsBottomSpecsToUpSpecsAsChildren() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(aaa)
@@ -623,25 +606,20 @@ class TestTest extends Test
 		$this->assertSame(array($specs['ccc']), $specs[6]->getParentSpecs());
 	}
 	
-	public function testCreateSpecsByListPattern_DirectOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne()
-	{
-		try
-		{
+	public function testCreateSpecsByListPattern_DirectOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne() {
+		try {
 			$this->createSpecsByListPattern('
 				Spec
 				->->Spec
 			');
-		}
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			return null;
 		}
 
 		$this->fail('Should be thrown exception');
 	}
 
-	public function testCreateSpecsByListPattern_MixedOrder_AddsUpSpecsToBottomSpecsAsParentsAndAddsBottomSpecsToUpSpecsAsChildren()
-	{
+	public function testCreateSpecsByListPattern_MixedOrder_AddsUpSpecsToBottomSpecsAsParentsAndAddsBottomSpecsToUpSpecsAsChildren() {
 		$specs = $this->createSpecsByListPattern('
 			->->Spec
 			->Spec
@@ -700,17 +678,13 @@ class TestTest extends Test
 		$this->assertSame(array(), $specs[12]->getChildSpecs());
 	}
 
-	public function testCreateSpecsByListPattern_ThrowsExceptionWhenNameIsDuplicate()
-	{
-		try
-		{
+	public function testCreateSpecsByListPattern_ThrowsExceptionWhenNameIsDuplicate() {
+		try {
 			$this->createSpecsByListPattern('
 				Spec(aaa)
 				->Spec(aaa)
 			');
-		}
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			return null;
 		}
 

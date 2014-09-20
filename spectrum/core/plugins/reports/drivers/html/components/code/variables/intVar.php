@@ -6,10 +6,8 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
-class intVar extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class intVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-code-variables-int { font-size: 12px; }
 			.c-code-variables-int .type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
@@ -18,8 +16,7 @@ class intVar extends \spectrum\core\plugins\reports\drivers\html\components\comp
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml($variable)
-	{
+	static public function getHtml($variable) {
 		return
 			'<span class="c-code-variables-int">' .
 				'<span class="type">' . static::translateAndEscapeHtml('int') . '</span> ' .

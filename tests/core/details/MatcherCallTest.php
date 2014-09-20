@@ -10,10 +10,8 @@ use spectrum\core\details\MatcherCall;
 
 require_once __DIR__ . '/../../init.php';
 
-class MatcherCallTest extends \spectrum\tests\Test
-{
-	public function testReturnsSetValues()
-	{
+class MatcherCallTest extends \spectrum\tests\Test {
+	public function testReturnsSetValues() {
 		$exception = new \Exception();
 		
 		$matcherCallDetails = new MatcherCall();
@@ -44,8 +42,7 @@ class MatcherCallTest extends \spectrum\tests\Test
 		$this->assertSame(null, $matcherCallDetails->getMatcherException());
 	}
 	
-	public function testReturnsEmptyValuesByDefault()
-	{
+	public function testReturnsEmptyValuesByDefault() {
 		$matcherCallDetails = new MatcherCall();
 		
 		$this->assertSame(null, $matcherCallDetails->getTestedValue());

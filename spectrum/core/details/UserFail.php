@@ -6,17 +6,14 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\details;
 
-class UserFail implements UserFailInterface
-{
+class UserFail implements UserFailInterface {
 	protected $message;
 	
-	public function __construct($message)
-	{
+	public function __construct($message) {
 		$this->message = $message;
 	}
 	
-	public function getMessage()
-	{
+	public function getMessage() {
 		return $this->message;
 	}
 }

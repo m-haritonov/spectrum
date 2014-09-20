@@ -6,10 +6,8 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
-class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-code-variables-object { display: inline-block; vertical-align: text-top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); font-size: 12px; }
 			.c-code-variables-object>.indention { display: none; }
@@ -30,8 +28,7 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		/*]]>*/</style>', 2);
 	}
 	
-	static public function getHtml($variable, $depth, $inputCharset = null)
-	{
+	static public function getHtml($variable, $depth, $inputCharset = null) {
 		$properties = static::getProperties($variable);
 		
 		$output = '';
@@ -41,16 +38,16 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		$output .= static::callComponentMethod('code\operator', 'getHtml', array('{', 'us-ascii'));
 		$output .= static::getHtmlForElements($variable, $properties, $depth, $inputCharset);
 		
-		if (count($properties))
+		if (count($properties)) {
 			$output .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth); // Indention should be copied to buffer
+		}
 		
 		$output .= static::callComponentMethod('code\operator', 'getHtml', array('}', 'us-ascii'));
 		$output .= '</span>';
 		return $output;
 	}
 	
-	static protected function getHtmlForType($properties)
-	{
+	static protected function getHtmlForType($properties) {
 		return
 			'<span class="type">' .
 				static::translateAndEscapeHtml('object') .
@@ -58,22 +55,19 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'</span>';
 	}
 	
-	static protected function getHtmlForClass($variable, $inputCharset)
-	{
+	static protected function getHtmlForClass($variable, $inputCharset) {
 		return '<span class="class">\\' . static::escapeHtml(static::convertToOutputCharset(get_class($variable), $inputCharset)) . '</span> ';
 	}
 	
-	static protected function getHtmlForElements($variable, $properties, $depth, $inputCharset)
-	{
+	static protected function getHtmlForElements($variable, $properties, $depth, $inputCharset) {
 		$output = '';
-		if (count($properties))
-		{
+		if (count($properties)) {
 			$output .= '<span class="elements">';
-			foreach ($properties as $key => $value)
-			{
+			foreach ($properties as $key => $value) {
 				// Replace full exception trace to light text representation for resource saving
-				if ($variable instanceof \Exception && (string) $key === 'trace')
+				if ($variable instanceof \Exception && (string) $key === 'trace') {
 					$value['value'] = static::convertToOutputCharset($variable->getTraceAsString(), 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")
+				}
 				
 				$output .= static::getHtmlForElement($key, $value, $depth, $inputCharset);
 			}
@@ -84,8 +78,7 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		return $output;
 	}
 
-	static protected function getHtmlForElement($key, $value, $depth, $inputCharset)
-	{
+	static protected function getHtmlForElement($key, $value, $depth, $inputCharset) {
 		return
 			'<span class="element">' .
 				// Indention should be copied to buffer
@@ -104,13 +97,11 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'</span>';
 	}
 
-	static protected function getProperties($variable)
-	{
+	static protected function getProperties($variable) {
 		$result = array();
 		
 		// Use "get_object_vars" because "ReflectionClass::getProperties" does not return undeclared public properties
-		foreach (get_object_vars($variable) as $name => $value)
-		{
+		foreach (get_object_vars($variable) as $name => $value) {
 			$result[$name] = array(
 				'value' => $value,
 				'isStatic' => false,
@@ -127,8 +118,7 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			\ReflectionProperty::IS_PRIVATE
 		);
 
-		foreach ($properties as $property)
-		{
+		foreach ($properties as $property) {
 			$property->setAccessible(true);
 			$result[$property->getName()] = array(
 				'value' => $property->getValue($variable),

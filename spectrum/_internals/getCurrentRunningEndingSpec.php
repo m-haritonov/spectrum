@@ -11,12 +11,13 @@ use spectrum\config;
  * @access private
  * @return \spectrum\core\SpecInterface|null
  */
-function getCurrentRunningEndingSpec()
-{
+function getCurrentRunningEndingSpec() {
 	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getRootSpec');
 	$rootSpec = $getRootSpecFunction();
-	if ($rootSpec->isRunning() && !$rootSpec->getChildSpecs())
+	if ($rootSpec->isRunning() && !$rootSpec->getChildSpecs()) {
 		return $rootSpec;
-	else
+	}
+	else {
 		return $rootSpec->getRunningDescendantEndingSpec();
+	}
 }

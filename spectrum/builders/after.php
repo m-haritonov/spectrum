@@ -12,11 +12,11 @@ use spectrum\Exception;
  * @throws \spectrum\Exception If called not at building state
  * @param  callback $function
  */
-function after($function)
-{
+function after($function) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
-	if ($isRunningStateFunction())
+	if ($isRunningStateFunction()) {
 		throw new Exception('Builder "after" should be call only at building state');
+	}
 
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentBuildingSpec');
 	return $getCurrentBuildingSpecFunction()->contextModifiers->add($function, 'after');

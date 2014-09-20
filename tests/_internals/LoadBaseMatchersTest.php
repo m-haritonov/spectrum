@@ -8,10 +8,8 @@ namespace spectrum\tests\_internals;
 
 require_once __DIR__ . '/../init.php';
 
-class LoadBaseMatchersTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsAndReturnsBaseMatchers()
-	{
+class LoadBaseMatchersTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsAndReturnsBaseMatchers() {
 		$matchers = \spectrum\_internals\loadBaseMatchers();
 		
 		$this->assertTrue(function_exists('\spectrum\matchers\eq'));
@@ -35,8 +33,7 @@ class LoadBaseMatchersTest extends \spectrum\tests\Test
 		), $matchers);
 	}
 	
-	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsOnce()
-	{
+	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsOnce() {
 		\spectrum\_internals\loadBaseMatchers();
 		\spectrum\_internals\loadBaseMatchers();
 	}

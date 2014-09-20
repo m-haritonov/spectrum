@@ -6,8 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\details;
 
-interface MatcherCallInterface
-{
+interface MatcherCallInterface {
 	public function setTestedValue($testedValue);
 	public function getTestedValue();
 	

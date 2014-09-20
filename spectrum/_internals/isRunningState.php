@@ -13,12 +13,11 @@ use spectrum\core\SpecInterface;
  * @access private
  * @return bool
  */
-function isRunningState()
-{
-	foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS) as $trace)
-	{
-		if (isset($trace['object']) && is_object($trace['object']) && $trace['object'] instanceof SpecInterface)
+function isRunningState() {
+	foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
+		if (isset($trace['object']) && is_object($trace['object']) && $trace['object'] instanceof SpecInterface) {
 			return true;
+		}
 	}
 
 	return false;

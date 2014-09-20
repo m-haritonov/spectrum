@@ -11,10 +11,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class BeforeTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_AddsContextFunctionWithBeforeTypeToCurrentBuildingSpec()
-	{
+class BeforeTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_AddsContextFunctionWithBeforeTypeToCurrentBuildingSpec() {
 		$spec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($spec);
 		
@@ -29,14 +27,11 @@ class BeforeTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll());
 	}
 
-	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction()
-	{
+	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction() {
 		config::unregisterSpecPlugins('\spectrum\core\plugins\ContextModifiers');
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\ContextModifiers
-			{
-				public function add($function, $type = "before")
-				{
+			class ... extends \spectrum\core\plugins\ContextModifiers {
+				public function add($function, $type = "before") {
 					return "some text";
 				}
 			}
@@ -45,17 +40,13 @@ class BeforeTest extends \spectrum\tests\Test
 		$this->assertSame('some text', \spectrum\builders\before(function(){}));
 	}
 	
-	public function testCallsAtRunningState_ThrowsException()
-	{
+	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				\spectrum\builders\before(function(){});
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		', 'onEndingSpecExecute');

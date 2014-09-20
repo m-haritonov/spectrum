@@ -10,8 +10,7 @@ use spectrum\core\SpecInterface;
 /**
  * @property not
  */
-interface AssertInterface
-{
+interface AssertInterface {
 	public function __construct(SpecInterface $ownerSpec, $testedValue);
 	public function __call($name, array $matcherArguments = array());
 	public function __get($name);

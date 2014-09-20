@@ -9,8 +9,7 @@ namespace spectrum\_internals;
 /**
  * @access private
  */
-function loadBaseMatchers()
-{
+function loadBaseMatchers() {
 	$matchers = array(
 		'eq' => null,
 		'gt' => null,
@@ -22,8 +21,7 @@ function loadBaseMatchers()
 		'throwsException' => null,
 	);
 	
-	foreach ($matchers as $matcherName => $functionName)
-	{
+	foreach ($matchers as $matcherName => $functionName) {
 		$fileName = __DIR__ . '/../matchers/' . $matcherName . '.php';
 		$functionName = '\spectrum\matchers\\' . $matcherName;
 		

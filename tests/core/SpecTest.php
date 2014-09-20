@@ -10,27 +10,22 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class SpecTest extends \spectrum\tests\Test
-{
-	public function setUp()
-	{
+class SpecTest extends \spectrum\tests\Test {
+	public function setUp() {
 		parent::setUp();
 		config::unregisterSpecPlugins();
 	}
 	
-	public function testPlugins_SupportsAccessToPluginsThroughMagicProperties()
-	{
+	public function testPlugins_SupportsAccessToPluginsThroughMagicProperties() {
 		$pluginClassName1 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 			}
 		');
 		
 		$pluginClassName2 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				static public function getAccessName(){ return "bbb"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
 			}
@@ -44,19 +39,16 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertInstanceOf($pluginClassName2, $spec->bbb);
 	}
 	
-	public function testPlugins_AccessToNotExistingPlugin_ThrowsException()
-	{
+	public function testPlugins_AccessToNotExistingPlugin_ThrowsException() {
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\Exception', 'Undefined plugin with access name "asdfgscvsadf" in "spectrum\core\Spec" class', function() use($spec){
 			$spec->asdfgscvsadf;
 		});
 	}
 	
-	public function testPlugins_AccessToPluginWithEmptyAccessName_ThrowsException()
-	{
+	public function testPlugins_AccessToPluginWithEmptyAccessName_ThrowsException() {
 		$pluginClassName1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return null; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
@@ -67,8 +59,7 @@ class SpecTest extends \spectrum\tests\Test
 		');
 		
 		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return ""; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
@@ -93,20 +84,17 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesPluginOnAccessAndReturnsProperPluginInstance()
-	{
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesPluginOnAccessAndReturnsProperPluginInstance() {
 		\spectrum\tests\Test::$temp["activateCount"] = 0;
 		\spectrum\tests\Test::$temp["pluginInstanceOnActivate"] = null;
 		
 		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["activateCount"]++;
 					\spectrum\tests\Test::$temp["pluginInstanceOnActivate"] = $this;
 				}
@@ -123,21 +111,18 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($spec->aaa, \spectrum\tests\Test::$temp["pluginInstanceOnActivate"]);
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesAllPluginsWithRespectiveClasses()
-	{
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesAllPluginsWithRespectiveClasses() {
 		\spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = null;
 		\spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = null;
 		\spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = null;
 		
 		$pluginClassName1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = $this;
 				}
 				
@@ -146,14 +131,12 @@ class SpecTest extends \spectrum\tests\Test
 		');
 		
 		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "bbb"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = $this;
 				}
 				
@@ -162,14 +145,12 @@ class SpecTest extends \spectrum\tests\Test
 		');
 		
 		$pluginClassName3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "ccc"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = $this;
 				}
 				
@@ -200,19 +181,16 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertNotSame(\spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"], \spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_PassesRespectiveOwnerSpecToPluginInstance()
-	{
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_PassesRespectiveOwnerSpecToPluginInstance() {
 		\spectrum\tests\Test::$temp["passedOwnerSpec"] = null;
 		
 		config::registerSpecPlugin($this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["passedOwnerSpec"] = $ownerSpec;
 				}
 				
@@ -230,19 +208,16 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($spec2, \spectrum\tests\Test::$temp["passedOwnerSpec"]);
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotActivatePluginOnSpecInstanceCreation()
-	{
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotActivatePluginOnSpecInstanceCreation() {
 		\spectrum\tests\Test::$temp["activateCount"] = 0;
 		
 		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["activateCount"]++;
 				}
 				
@@ -255,19 +230,16 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(0, \spectrum\tests\Test::$temp["activateCount"]);
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotReactivatePluginOnPluginAccess()
-	{
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotReactivatePluginOnPluginAccess() {
 		\spectrum\tests\Test::$temp["activateCount"] = 0;
 		
 		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["activateCount"]++;
 				}
 				
@@ -283,31 +255,26 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(1, \spectrum\tests\Test::$temp["activateCount"]);
 	}
 		
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotReactivatePluginOnPluginEventDispatching()
-	{
+	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotReactivatePluginOnPluginEventDispatching() {
 		\spectrum\tests\Test::$temp["activateCount"] = 0;
 		\spectrum\tests\Test::$temp["eventDispatchCount"] = 0;
 		
 		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["activateCount"]++;
 				}
 				
 				public function getOwnerSpec(){}
-				public function onSpecRunStart()
-				{
+				public function onSpecRunStart() {
 					\spectrum\tests\Test::$temp["eventDispatchCount"]++;
 				}
 			}
@@ -322,20 +289,17 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesPluginOnEveryAccessAndReturnsProperPluginInstance()
-	{
+	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesPluginOnEveryAccessAndReturnsProperPluginInstance() {
 		\spectrum\tests\Test::$temp["activateCount"] = 0;
 		\spectrum\tests\Test::$temp["pluginInstanceOnActivate"] = null;
 		
 		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["activateCount"]++;
 					\spectrum\tests\Test::$temp["pluginInstanceOnActivate"] = $this;
 				}
@@ -369,19 +333,16 @@ class SpecTest extends \spectrum\tests\Test
 		$instances[] = \spectrum\tests\Test::$temp["pluginInstanceOnActivate"];
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_PassesRespectiveOwnerSpecToPluginInstance()
-	{
+	public function testPlugins_Activation_ActivateMomentIsEveryAccess_PassesRespectiveOwnerSpecToPluginInstance() {
 		\spectrum\tests\Test::$temp["passedOwnerSpec"] = null;
 		
 		config::registerSpecPlugin($this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["passedOwnerSpec"] = $ownerSpec;
 				}
 				
@@ -399,21 +360,18 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($spec2, \spectrum\tests\Test::$temp["passedOwnerSpec"]);
 	}
 
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesAllPluginsWithRespectiveClasses()
-	{
+	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesAllPluginsWithRespectiveClasses() {
 		\spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = null;
 		\spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = null;
 		\spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = null;
 		
 		$pluginClassName1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = $this;
 				}
 				
@@ -422,14 +380,12 @@ class SpecTest extends \spectrum\tests\Test
 		');
 		
 		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "bbb"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = $this;
 				}
 				
@@ -438,14 +394,12 @@ class SpecTest extends \spectrum\tests\Test
 		');
 		
 		$pluginClassName3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "ccc"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = $this;
 				}
 				
@@ -476,34 +430,29 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertNotSame(\spectrum\tests\Test::$temp["plugin3"]["pluginInstanceOnActivate"], \spectrum\tests\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ReactivatesPluginOnEveryEventDispatching()
-	{
+	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ReactivatesPluginOnEveryEventDispatching() {
 		\spectrum\tests\Test::$temp["activateCount"] = 0;
 		\spectrum\tests\Test::$temp["eventDispatchCount"] = 0;
 		\spectrum\tests\Test::$temp["pluginInstanceOnActivate"] = null;
 		\spectrum\tests\Test::$temp["pluginInstanceOnEventDispatch"] = null;
 
 		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["activateCount"]++;
 					\spectrum\tests\Test::$temp["pluginInstanceOnActivate"] = $this;
 				}
 				
 				public function getOwnerSpec(){}
-				public function onSpecRunStart()
-				{
+				public function onSpecRunStart() {
 					\spectrum\tests\Test::$temp["eventDispatchCount"]++;
 					\spectrum\tests\Test::$temp["pluginInstanceOnEventDispatch"] = $this;
 				}
@@ -537,19 +486,16 @@ class SpecTest extends \spectrum\tests\Test
 		$instances[] = \spectrum\tests\Test::$temp["pluginInstanceOnEventDispatch"];
 	}
 	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_DoesNotActivatePluginOnSpecInstanceCreation()
-	{
+	public function testPlugins_Activation_ActivateMomentIsEveryAccess_DoesNotActivatePluginOnSpecInstanceCreation() {
 		\spectrum\tests\Test::$temp["activateCount"] = 0;
 		
 		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return "aaa"; }
 				static public function getActivateMoment(){ return "everyAccess"; }
 				static public function getEventListeners(){}
 				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["activateCount"]++;
 				}
 				
@@ -564,8 +510,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testEnable_EnablesSpec()
-	{
+	public function testEnable_EnablesSpec() {
 		$spec = new Spec();
 		$spec->disable();
 		$this->assertSame(false, $spec->isEnabled());
@@ -573,8 +518,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(true, $spec->isEnabled());
 	}
 	
-	public function testEnable_CallOnRun_ThrowsExceptionAndDoesNotEnableSpec()
-	{
+	public function testEnable_CallOnRun_ThrowsExceptionAndDoesNotEnableSpec() {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["specs"][1]->enable();
 		');
@@ -595,8 +539,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testDisable_DisablesSpec()
-	{
+	public function testDisable_DisablesSpec() {
 		$spec = new Spec();
 		$spec->enable();
 		$this->assertSame(true, $spec->isEnabled());
@@ -604,8 +547,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(false, $spec->isEnabled());
 	}
 	
-	public function testDisable_CallOnRun_ThrowsExceptionAndDoesNotDisableSpec()
-	{
+	public function testDisable_CallOnRun_ThrowsExceptionAndDoesNotDisableSpec() {
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->disable();');
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::disable" method is forbidden on run', function() use($spec){
@@ -617,15 +559,13 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testIsEnabled_ReturnsTrueForEnabledSpec()
-	{
+	public function testIsEnabled_ReturnsTrueForEnabledSpec() {
 		$spec = new Spec();
 		$spec->enable();
 		$this->assertSame(true, $spec->isEnabled());
 	}
 	
-	public function testIsEnabled_ReturnsFalseForDisabledSpec()
-	{
+	public function testIsEnabled_ReturnsFalseForDisabledSpec() {
 		$spec = new Spec();
 		$spec->disable();
 		$this->assertSame(false, $spec->isEnabled());
@@ -633,8 +573,7 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 
-	public function testSetName_SetsSpecName()
-	{
+	public function testSetName_SetsSpecName() {
 		$spec = new Spec();
 		
 		$spec->setName('aaa');
@@ -644,8 +583,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame('bbb', $spec->getName());
 	}
 	
-	public function testSetName_CallOnRun_ThrowsExceptionAndDoesNotChangeName()
-	{
+	public function testSetName_CallOnRun_ThrowsExceptionAndDoesNotChangeName() {
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->setName("bbb");');
 		$spec = new Spec();
 		$spec->setName('aaa');
@@ -659,89 +597,77 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetName_ReturnsSpecName()
-	{
+	public function testGetName_ReturnsSpecName() {
 		$spec = new Spec();
 		$spec->setName('aaa');
 		$this->assertSame('aaa', $spec->getName());
 	}
 	
-	public function testGetName_ReturnsNullByDefault()
-	{
+	public function testGetName_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->getName());
 	}
 	
 /**/
 	
-	public function testIsAnonymous_NameIsNotSetAndSpecHasChildren_ReturnsTrue()
-	{
+	public function testIsAnonymous_NameIsNotSetAndSpecHasChildren_ReturnsTrue() {
 		$spec = new Spec();
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(true, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsNotSetAndSpecHasNoChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsNotSetAndSpecHasNoChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsNullAndSpecHasChildren_ReturnsTrue()
-	{
+	public function testIsAnonymous_NameIsNullAndSpecHasChildren_ReturnsTrue() {
 		$spec = new Spec();
 		$spec->setName(null);
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(true, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsNullAndSpecHasNoChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsNullAndSpecHasNoChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$spec->setName(null);
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 
-	public function testIsAnonymous_NameIsNotEmptyStringAndSpecHasChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsNotEmptyStringAndSpecHasChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$spec->setName('aaa');
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsNotEmptyStringAndSpecHasNoChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsNotEmptyStringAndSpecHasNoChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$spec->setName('aaa');
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsEmptyStringAndSpecHasChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsEmptyStringAndSpecHasChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$spec->setName('');
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsEmptyStringAndSpecHasNoChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsEmptyStringAndSpecHasNoChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$spec->setName('');
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsZeroNumberAndSpecHasChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsZeroNumberAndSpecHasChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$spec->setName(0);
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(false, $spec->isAnonymous());
 	}
 	
-	public function testIsAnonymous_NameIsZeroNumberAndSpecHasNoChildren_ReturnsFalse()
-	{
+	public function testIsAnonymous_NameIsZeroNumberAndSpecHasNoChildren_ReturnsFalse() {
 		$spec = new Spec();
 		$spec->setName(0);
 		$this->assertSame(false, $spec->isAnonymous());
@@ -749,24 +675,21 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetParentSpecs_ReturnsEmptyArrayByDefault()
-	{
+	public function testGetParentSpecs_ReturnsEmptyArrayByDefault() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getParentSpecs());
 	}
 	
 /**/
 	
-	public function testHasParentSpec_ReturnsTrueForBoundSpec()
-	{
+	public function testHasParentSpec_ReturnsTrueForBoundSpec() {
 		$spec = new Spec();
 		$parentSpec = new Spec();
 		$spec->bindParentSpec($parentSpec);
 		$this->assertSame(true, $spec->hasParentSpec($parentSpec));
 	}
 	
-	public function testHasParentSpec_ReturnsFalseForNotBoundSpec()
-	{
+	public function testHasParentSpec_ReturnsFalseForNotBoundSpec() {
 		$spec = new Spec();
 		$spec->bindParentSpec(new Spec());
 		$this->assertSame(false, $spec->hasParentSpec(new Spec()));
@@ -774,8 +697,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testBindParentSpec_CreatesConnectionBetweenSpecs()
-	{
+	public function testBindParentSpec_CreatesConnectionBetweenSpecs() {
 		$spec = new Spec();
 		$parentSpec = new Spec();
 		$spec->bindParentSpec($parentSpec);
@@ -783,8 +705,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $parentSpec->getChildSpecs());
 	}
 	
-	public function testBindParentSpec_DoesNotCreateConnectionBetweenAlreadyConnectedSpecs()
-	{
+	public function testBindParentSpec_DoesNotCreateConnectionBetweenAlreadyConnectedSpecs() {
 		$spec = new Spec();
 		$parentSpec = new Spec();
 		
@@ -797,12 +718,11 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $parentSpec->getChildSpecs());
 	}
 	
-	public function testBindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec()
-	{
+	public function testBindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec() {
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindParentSpec(new \spectrum\core\Spec());');
 		$spec = new Spec();
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindParentSpec" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindParentSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -811,8 +731,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testUnbindParentSpec_BreaksConnectionBetweenSpecs()
-	{
+	public function testUnbindParentSpec_BreaksConnectionBetweenSpecs() {
 		$spec = new Spec();
 		$parentSpec = new Spec();
 		
@@ -825,8 +744,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $parentSpec->getChildSpecs());
 	}
 	
-	public function testUnbindParentSpec_DoesNotBreaksOtherConnections()
-	{
+	public function testUnbindParentSpec_DoesNotBreaksOtherConnections() {
 		$spec = new Spec();
 		$parentSpec1 = new Spec();
 		$parentSpec2 = new Spec();
@@ -843,8 +761,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $parentSpec2->getChildSpecs());
 	}
 	
-	public function testUnbindParentSpec_ResetsArrayIndexes()
-	{
+	public function testUnbindParentSpec_ResetsArrayIndexes() {
 		$spec = new Spec();
 		$parentSpec1 = new Spec();
 		$parentSpec2 = new Spec();
@@ -858,8 +775,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($parentSpec1, $parentSpec3), $spec->getParentSpecs());
 	}
 	
-	public function testUnbindParentSpec_ResetsArrayIndexesInUnboundSpec()
-	{
+	public function testUnbindParentSpec_ResetsArrayIndexesInUnboundSpec() {
 		$spec = new Spec();
 		$childSpec1 = new Spec();
 		$childSpec2 = new Spec();
@@ -873,8 +789,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($childSpec1, $childSpec3), $spec->getChildSpecs());
 	}
 	
-	public function testUnbindParentSpec_NoConnectionBetweenSpecs_DoesNotTriggersError()
-	{
+	public function testUnbindParentSpec_NoConnectionBetweenSpecs_DoesNotTriggersError() {
 		$spec = new Spec();
 		$parentSpec = new Spec();
 		
@@ -883,14 +798,13 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $parentSpec->getChildSpecs());
 	}
 	
-	public function testUnbindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec()
-	{
+	public function testUnbindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec() {
 		\spectrum\tests\Test::$temp["newSpec"] = new Spec();
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindParentSpec(\spectrum\tests\Test::$temp["newSpec"]);');
 		$spec = new Spec();
 		$spec->bindParentSpec(\spectrum\tests\Test::$temp["newSpec"]);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindParentSpec" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindParentSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -899,8 +813,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testUnbindAllParentSpecs_BreaksConnectionsWithAllParentSpecs()
-	{
+	public function testUnbindAllParentSpecs_BreaksConnectionsWithAllParentSpecs() {
 		$spec = new Spec();
 		$parentSpec1 = new Spec();
 		$parentSpec2 = new Spec();
@@ -917,8 +830,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $parentSpec2->getChildSpecs());
 	}
 	
-	public function testUnbindAllParentSpecs_ResetsArrayIndexes()
-	{
+	public function testUnbindAllParentSpecs_ResetsArrayIndexes() {
 		$spec = new Spec();
 		$parentSpec1 = new Spec();
 		$parentSpec2 = new Spec();
@@ -935,8 +847,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($parentSpec3), $spec->getParentSpecs());
 	}
 	
-	public function testUnbindAllParentSpecs_ResetsArrayIndexesInUnboundSpec()
-	{
+	public function testUnbindAllParentSpecs_ResetsArrayIndexesInUnboundSpec() {
 		$spec = new Spec();
 		$childSpec1 = new Spec();
 		$childSpec2 = new Spec();
@@ -950,14 +861,13 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($childSpec1, $childSpec3), $spec->getChildSpecs());
 	}
 	
-	public function testUnbindAllParentSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs()
-	{
+	public function testUnbindAllParentSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs() {
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindAllParentSpecs();');
 		$newSpec = new Spec();
 		$spec = new Spec();
 		$spec->bindParentSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindAllParentSpecs" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindAllParentSpecs" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -966,24 +876,21 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetChildSpecs_ReturnsEmptyArrayByDefault()
-	{
+	public function testGetChildSpecs_ReturnsEmptyArrayByDefault() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getChildSpecs());
 	}
 	
 /**/
 	
-	public function testHasChildSpec_ReturnsTrueForBoundSpec()
-	{
+	public function testHasChildSpec_ReturnsTrueForBoundSpec() {
 		$spec = new Spec();
 		$childSpec = new Spec();
 		$spec->bindChildSpec($childSpec);
 		$this->assertSame(true, $spec->hasChildSpec($childSpec));
 	}
 	
-	public function testHasChildSpec_ReturnsFalseForNotBoundSpec()
-	{
+	public function testHasChildSpec_ReturnsFalseForNotBoundSpec() {
 		$spec = new Spec();
 		$spec->bindChildSpec(new Spec());
 		$this->assertSame(false, $spec->hasChildSpec(new Spec()));
@@ -991,8 +898,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testBindChildSpec_CreatesConnectionBetweenSpecs()
-	{
+	public function testBindChildSpec_CreatesConnectionBetweenSpecs() {
 		$spec = new Spec();
 		$childSpec = new Spec();
 		$spec->bindChildSpec($childSpec);
@@ -1000,8 +906,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $childSpec->getParentSpecs());
 	}
 	
-	public function testBindChildSpec_DoesNotCreateConnectionBetweenAlreadyConnectedSpecs()
-	{
+	public function testBindChildSpec_DoesNotCreateConnectionBetweenAlreadyConnectedSpecs() {
 		$spec = new Spec();
 		$childSpec = new Spec();
 		
@@ -1014,11 +919,10 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $childSpec->getParentSpecs());
 	}
 	
-	public function testBindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec()
-	{
+	public function testBindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec() {
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindChildSpec(new \spectrum\core\Spec());');
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindChildSpec" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindChildSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -1027,8 +931,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testUnbindChildSpec_BreaksConnectionBetweenSpecs()
-	{
+	public function testUnbindChildSpec_BreaksConnectionBetweenSpecs() {
 		$spec = new Spec();
 		$childSpec = new Spec();
 		
@@ -1041,8 +944,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $childSpec->getParentSpecs());
 	}
 	
-	public function testUnbindChildSpec_DoesNotBreaksOtherConnections()
-	{
+	public function testUnbindChildSpec_DoesNotBreaksOtherConnections() {
 		$spec = new Spec();
 		$childSpec1 = new Spec();
 		$childSpec2 = new Spec();
@@ -1059,8 +961,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($spec), $childSpec2->getParentSpecs());
 	}
 	
-	public function testUnbindChildSpec_ResetsArrayIndexes()
-	{
+	public function testUnbindChildSpec_ResetsArrayIndexes() {
 		$spec = new Spec();
 		$childSpec1 = new Spec();
 		$childSpec2 = new Spec();
@@ -1074,8 +975,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($childSpec1, $childSpec3), $spec->getChildSpecs());
 	}
 	
-	public function testUnbindChildSpec_ResetsArrayIndexesInUnboundSpec()
-	{
+	public function testUnbindChildSpec_ResetsArrayIndexesInUnboundSpec() {
 		$spec = new Spec();
 		$parentSpec1 = new Spec();
 		$parentSpec2 = new Spec();
@@ -1089,8 +989,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($parentSpec1, $parentSpec3), $spec->getParentSpecs());
 	}
 	
-	public function testUnbindChildSpec_NoConnectionBetweenSpecs_DoesNotTriggersError()
-	{
+	public function testUnbindChildSpec_NoConnectionBetweenSpecs_DoesNotTriggersError() {
 		$spec = new Spec();
 		$childSpec = new Spec();
 		
@@ -1099,14 +998,13 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $childSpec->getParentSpecs());
 	}
 
-	public function testUnbindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec()
-	{
+	public function testUnbindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec() {
 		\spectrum\tests\Test::$temp["newSpec"] = new Spec();
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindChildSpec(\spectrum\tests\Test::$temp["newSpec"]);');
 		$spec = new Spec();
 		$spec->bindChildSpec(\spectrum\tests\Test::$temp["newSpec"]);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindChildSpec" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindChildSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -1115,8 +1013,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testUnbindAllChildSpecs_BreaksConnectionsWithAllChildSpecs()
-	{
+	public function testUnbindAllChildSpecs_BreaksConnectionsWithAllChildSpecs() {
 		$spec = new Spec();
 		$childSpec1 = new Spec();
 		$childSpec2 = new Spec();
@@ -1133,8 +1030,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $childSpec2->getParentSpecs());
 	}
 	
-	public function testUnbindAllChildSpecs_ResetsArrayIndexes()
-	{
+	public function testUnbindAllChildSpecs_ResetsArrayIndexes() {
 		$spec = new Spec();
 		$childSpec1 = new Spec();
 		$childSpec2 = new Spec();
@@ -1151,8 +1047,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($childSpec3), $spec->getChildSpecs());
 	}
 	
-	public function testUnbindAllChildSpecs_ResetsArrayIndexesInUnboundSpec()
-	{
+	public function testUnbindAllChildSpecs_ResetsArrayIndexesInUnboundSpec() {
 		$spec = new Spec();
 		$parentSpec1 = new Spec();
 		$parentSpec2 = new Spec();
@@ -1166,14 +1061,13 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($parentSpec1, $parentSpec3), $spec->getParentSpecs());
 	}
 
-	public function testUnbindAllChildSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs()
-	{
+	public function testUnbindAllChildSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs() {
 		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindAllChildSpecs();');
 		$newSpec = new Spec();
 		$spec = new Spec();
 		$spec->bindChildSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindAllChildSpecs" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindAllChildSpecs" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -1182,8 +1076,7 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 
-	public function providerGetAncestorRootSpecs()
-	{
+	public function providerGetAncestorRootSpecs() {
 		return array(
 			array(
 				'
@@ -1238,19 +1131,18 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerGetAncestorRootSpecs
 	 */
-	public function testGetAncestorRootSpecs_ReturnsAllRootSpecs($pattern, $expectedSpecKeys)
-	{
+	public function testGetAncestorRootSpecs_ReturnsAllRootSpecs($pattern, $expectedSpecKeys) {
 		$specs = $this->createSpecsByVisualPattern($pattern);
 		
 		$expectedSpecs = array();
-		foreach ($expectedSpecKeys as $specKey)
+		foreach ($expectedSpecKeys as $specKey) {
 			$expectedSpecs[] = $specs[$specKey];
+		}
 		
 		$this->assertSame($expectedSpecs, $specs['spec']->getAncestorRootSpecs());
 	}
 	
-	public function testGetAncestorRootSpecs_SpecHasNoParents_ReturnsEmptyArray()
-	{
+	public function testGetAncestorRootSpecs_SpecHasNoParents_ReturnsEmptyArray() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getAncestorRootSpecs());
 		
@@ -1261,8 +1153,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetDescendantEndingSpecs_ReturnsAllEndingSpecs()
-	{
+	public function testGetDescendantEndingSpecs_ReturnsAllEndingSpecs() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
@@ -1276,8 +1167,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs['endingSpec1'], $specs['endingSpec2'], $specs['endingSpec3'], $specs['endingSpec4']), $specs[0]->getDescendantEndingSpecs());
 	}
 	
-	public function testGetDescendantEndingSpecs_SpecHasNoChildren_ReturnsEmptyArray()
-	{
+	public function testGetDescendantEndingSpecs_SpecHasNoChildren_ReturnsEmptyArray() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->getDescendantEndingSpecs());
 		
@@ -1288,13 +1178,13 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetRunningParentSpec_ReturnsRunningParentSpec()
-	{
+	public function testGetRunningParentSpec_ReturnsRunningParentSpec() {
 		\spectrum\tests\Test::$temp["specs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
+			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec()) {
 				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningParentSpec();
+			}
 		');
 		
 		$specs = $this->createSpecsByListPattern('
@@ -1313,8 +1203,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[1]), \spectrum\tests\Test::$temp["specs"]);
 	}
 	
-	public function testGetRunningParentSpec_NoRunningParentSpec_ReturnsNull()
-	{
+	public function testGetRunningParentSpec_NoRunningParentSpec_ReturnsNull() {
 		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
@@ -1325,13 +1214,13 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 
-	public function testGetRunningAncestorSpecs_ReturnsRunningAncestorSpecs()
-	{
+	public function testGetRunningAncestorSpecs_ReturnsRunningAncestorSpecs() {
 		\spectrum\tests\Test::$temp["specs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
+			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec()) {
 				\spectrum\tests\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningAncestorSpecs();
+			}
 		');
 		
 		$specs = $this->createSpecsByListPattern('
@@ -1353,8 +1242,7 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["specs"]);
 	}
 	
-	public function testGetRunningAncestorSpecs_NoRunningParentSpec_ReturnsEmptyArray()
-	{
+	public function testGetRunningAncestorSpecs_NoRunningParentSpec_ReturnsEmptyArray() {
 		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
@@ -1365,8 +1253,7 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 	
-	public function testGetRunningDescendantEndingSpec_ReturnsRunningEndingSpec()
-	{
+	public function testGetRunningDescendantEndingSpec_ReturnsRunningEndingSpec() {
 		\spectrum\tests\Test::$temp["runningEndingSpecs"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runningEndingSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningDescendantEndingSpec();');
 		
@@ -1385,19 +1272,18 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["runningEndingSpecs"]);
 	}
 	
-	public function testGetRunningDescendantEndingSpec_NoRunningChildren_ReturnsNull()
-	{
+	public function testGetRunningDescendantEndingSpec_NoRunningChildren_ReturnsNull() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->getRunningDescendantEndingSpec());
 	}
 	
-	public function testGetRunningDescendantEndingSpec_NoRunningChildrenAndSelfIsRunning_ReturnsNull()
-	{
+	public function testGetRunningDescendantEndingSpec_NoRunningChildrenAndSelfIsRunning_ReturnsNull() {
 		\spectrum\tests\Test::$temp["runningEndingSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec())
+			if (\spectrum\tests\Test::$temp["checkpoint"] === $this->getOwnerSpec()) {
 				\spectrum\tests\Test::$temp["runningEndingSpecs"][] = $this->getOwnerSpec()->getRunningDescendantEndingSpec();
+			}
 		');
 		
 		$specs = $this->createSpecsByListPattern('
@@ -1413,13 +1299,11 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetRunningChildSpec_ReturnsRunningChildSpec()
-	{
+	public function testGetRunningChildSpec_ReturnsRunningChildSpec() {
 		\spectrum\tests\Test::$temp["returnSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
-			{
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
 				\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"][0]->getRunningChildSpec();
 				\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"][1]->getRunningChildSpec();
 				\spectrum\tests\Test::$temp["returnSpecs"][] = \spectrum\tests\Test::$temp["specs"]["checkpoint"]->getRunningChildSpec();
@@ -1441,16 +1325,14 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["returnSpecs"]);
 	}	
 	
-	public function testGetRunningChildSpec_NoRunningChildren_ReturnsNull()
-	{
+	public function testGetRunningChildSpec_NoRunningChildren_ReturnsNull() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->getRunningChildSpec());
 	}
 	
 /**/
 
-	public function providerGetSpecsByRunId_CorrectIds()
-	{
+	public function providerGetSpecsByRunId_CorrectIds() {
 		return array(
 			array(
 				'0',
@@ -1694,22 +1576,20 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerGetSpecsByRunId_CorrectIds
 	 */
-	public function testGetSpecsByRunId_ReturnsProperSpecs($pattern, array $expectedRunIdsAndSpecKeys)
-	{
+	public function testGetSpecsByRunId_ReturnsProperSpecs($pattern, array $expectedRunIdsAndSpecKeys) {
 		$specs = $this->createSpecsByVisualPattern($pattern);
 		
-		foreach ($expectedRunIdsAndSpecKeys as $runId => $expectedSpecKeys)
-		{
+		foreach ($expectedRunIdsAndSpecKeys as $runId => $expectedSpecKeys) {
 			$expectedSpecs = array();
-			foreach ($expectedSpecKeys as $key)
+			foreach ($expectedSpecKeys as $key) {
 				$expectedSpecs[] = $specs[$key];
+			}
 
 			$this->assertSame($expectedSpecs, $specs['0']->getSpecsByRunId($runId));
 		}
 	}
 	
-	public function testGetSpecsByRunId_IgnoreInitialAndEndingSpaces()
-	{
+	public function testGetSpecsByRunId_IgnoreInitialAndEndingSpaces() {
 		$specs = $this->createSpecsByVisualPattern('
 			  0
 			 / \
@@ -1720,8 +1600,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs['0'], $specs['2']), $specs[0]->getSpecsByRunId("\r\n\t   r_1\r\n\t   "));
 	}
 	
-	public function testGetSpecsByRunId_SpecIsNotRoot_ThrowsException()
-	{
+	public function testGetSpecsByRunId_SpecIsNotRoot_ThrowsException() {
 		$specs = $this->createSpecsByVisualPattern('
 			0
 			|
@@ -1733,8 +1612,7 @@ class SpecTest extends \spectrum\tests\Test
 		});
 	}
 	
-	public function providerGetSpecsByRunId_IncorrectIds()
-	{
+	public function providerGetSpecsByRunId_IncorrectIds() {
 		return array(
 			array('aaa'),
 			array('r0'),
@@ -1750,16 +1628,14 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerGetSpecsByRunId_IncorrectIds
 	 */
-	public function testGetSpecsByRunId_RunIdIsIncorrect_ThrowsException($runId)
-	{
+	public function testGetSpecsByRunId_RunIdIsIncorrect_ThrowsException($runId) {
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\Exception', 'Incorrect run id "' . $runId . '" (id should be in format "r_<number>_<number>_...")', function() use($spec, $runId){
 			$spec->getSpecsByRunId($runId);
 		});
 	}
 	
-	public function testGetSpecsByRunId_SpecWithDeclaredIndexIsNotExists_ThrowsException()
-	{
+	public function testGetSpecsByRunId_SpecWithDeclaredIndexIsNotExists_ThrowsException() {
 		$specs = $this->createSpecsByVisualPattern('
 			0
 			|
@@ -1775,16 +1651,14 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 	
-	public function testGetResultBuffer_ReturnsNullByDefault()
-	{
+	public function testGetResultBuffer_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->getResultBuffer());
 	}
 	
 /**/
 	
-	public function providerGetRunId()
-	{
+	public function providerGetRunId() {
 		return array(
 			array('
 				spec
@@ -1978,12 +1852,12 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerGetRunId
 	 */
-	public function testGetRunId_SpecIsRunning_ReturnsUniqueId($pattern, $expectedRunIds)
-	{
+	public function testGetRunId_SpecIsRunning_ReturnsUniqueId($pattern, $expectedRunIds) {
 		$this->registerPluginWithCodeInEvent('
 			$ownerSpec = $this->getOwnerSpec();
-			if ($ownerSpec === \spectrum\tests\Test::$temp["specs"]["spec"])
+			if ($ownerSpec === \spectrum\tests\Test::$temp["specs"]["spec"]) {
 				\spectrum\tests\Test::$temp["results"][] = $ownerSpec->getRunId();
+			}
 		', 'onEndingSpecExecute');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByVisualPattern($pattern);
@@ -1993,8 +1867,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($expectedRunIds, \spectrum\tests\Test::$temp["results"]);
 	}
 	
-	public function testGetRunId_SpecIsNotRunning_ThrowsException()
-	{
+	public function testGetRunId_SpecIsNotRunning_ThrowsException() {
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::getRunId" method is available on run only', function() use($spec){
 			$spec->getRunId();
@@ -2003,16 +1876,14 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testIsRunning_ReturnsFalseByDefault()
-	{
+	public function testIsRunning_ReturnsFalseByDefault() {
 		$spec = new Spec();
 		$this->assertSame(false, $spec->isRunning());
 	}
 	
 /**/
 	
-	public function providerSpecsWithMoreThanOneRootAncestors()
-	{
+	public function providerSpecsWithMoreThanOneRootAncestors() {
 		return array(
 			array('
 				->Spec
@@ -2037,25 +1908,24 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerSpecsWithMoreThanOneRootAncestors
 	 */
-	public function testRun_SpecHasMoreThanOneRootAncestors_ThrowsException($specTreePattern)
-	{
+	public function testRun_SpecHasMoreThanOneRootAncestors_ThrowsException($specTreePattern) {
 		$specs = $this->createSpecsByListPattern($specTreePattern);
 		$specs['spec']->setName('aaa');
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use($specs){
+		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use($specs) {
 			$specs['spec']->run();
 		});
 	}
 	
-	public function testRun_SpecHasMoreThanOneRootAncestors_StopsRunByExceptionThrowing()
-	{
+	public function testRun_SpecHasMoreThanOneRootAncestors_StopsRunByExceptionThrowing() {
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 			
-			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
 				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
+			}
 		');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -2079,17 +1949,13 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRun_SpecIsAlreadyRunning_ThrowsException()
-	{
+	public function testRun_SpecIsAlreadyRunning_ThrowsException() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->run();
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -2102,15 +1968,15 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame('Spec "aaa" is already running', \spectrum\tests\Test::$temp["exception"]->getMessage());
 	}
 	
-	public function testRun_SpecIsAlreadyRunning_StopsRunByExceptionThrowing()
-	{
+	public function testRun_SpecIsAlreadyRunning_StopsRunByExceptionThrowing() {
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 			
-			if (\spectrum\tests\Test::$temp["specs"]["spec"] === $this->getOwnerSpec())
+			if (\spectrum\tests\Test::$temp["specs"]["spec"] === $this->getOwnerSpec()) {
 				\spectrum\tests\Test::$temp["specs"]["spec"]->run();
+			}
 		');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -2133,19 +1999,14 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRun_SpecHasAlreadyRunningSibling_ThrowsException()
-	{
+	public function testRun_SpecHasAlreadyRunningSibling_ThrowsException() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
-			{
-				try
-				{
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
+				try {
 					\spectrum\tests\Test::$temp["specs"]["callee"]->run();
-				}
-				catch (\Exception $e)
-				{
+				} catch (\Exception $e) {
 					\spectrum\tests\Test::$temp["exception"] = $e;
 				}
 			}
@@ -2164,15 +2025,15 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame('Sibling spec of spec "aaa" is already running', \spectrum\tests\Test::$temp["exception"]->getMessage());
 	}
 	
-	public function testRun_SpecHasAlreadyRunningSibling_StopsRunByExceptionThrowing()
-	{
+	public function testRun_SpecHasAlreadyRunningSibling_StopsRunByExceptionThrowing() {
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 			
-			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
 				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
+			}
 		');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -2196,8 +2057,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function providerChildSpecRunWithoutRunningParent()
-	{
+	public function providerChildSpecRunWithoutRunningParent() {
 		return array(
 			
 			/* Disable siblings of self */
@@ -2470,18 +2330,17 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerChildSpecRunWithoutRunningParent
 	 */
-	public function testRun_ChildSpecRunWithoutRunningParent_DisablesSiblingSpecsUpToRootAndRunRootSpec($specTreePattern, $specStates, $calledSpecs, $specBindings = array())
-	{
+	public function testRun_ChildSpecRunWithoutRunningParent_DisablesSiblingSpecsUpToRootAndRunRootSpec($specTreePattern, $specStates, $calledSpecs, $specBindings = array()) {
 		\spectrum\tests\Test::$temp["specStates"] = array();
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
 			$ownerSpec = $this->getOwnerSpec();
 			
-			if ($ownerSpec === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
-			{
-				foreach (\spectrum\tests\Test::$temp["specs"] as $spec)
+			if ($ownerSpec === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
+				foreach (\spectrum\tests\Test::$temp["specs"] as $spec) {
 					\spectrum\tests\Test::$temp["specStates"][] = $spec->isEnabled();
+				}
 			}
 			
 			\spectrum\tests\Test::$temp["calledSpecs"][] = array_search($ownerSpec, \spectrum\tests\Test::$temp["specs"], true);
@@ -2497,17 +2356,16 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerChildSpecRunWithoutRunningParent
 	 */
-	public function testRun_ChildSpecRunWithoutRunningParent_EnablesDisabledSpecsAfterRun($specTreePattern, $specStates, $calledSpecs, $specBindings = array())
-	{
+	public function testRun_ChildSpecRunWithoutRunningParent_EnablesDisabledSpecsAfterRun($specTreePattern, $specStates, $calledSpecs, $specBindings = array()) {
 		$specs = $this->createSpecsByListPattern($specTreePattern, $specBindings);
 		$specs["callee"]->run();
 		
-		foreach ($specs as $spec)
+		foreach ($specs as $spec) {
 			$this->assertSame(true, $spec->isEnabled());
+		}
 	}
 	
-	public function providerDisabledChildSpecs()
-	{
+	public function providerDisabledChildSpecs() {
 		return array(
 			array('
 				Spec
@@ -2527,8 +2385,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerDisabledChildSpecs
 	 */
-	public function testRun_ChildSpecRunWithoutRunningParent_DoesNotEnableUserDisabledSpecsAfterRun($specTreePattern)
-	{
+	public function testRun_ChildSpecRunWithoutRunningParent_DoesNotEnableUserDisabledSpecsAfterRun($specTreePattern) {
 		$specs = $this->createSpecsByListPattern($specTreePattern);
 		$specs["disabled"]->disable();
 		$specs["callee"]->run();
@@ -2536,17 +2393,15 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(false, $specs["disabled"]->isEnabled());
 	}
 	
-	public function testRun_ChildSpecRunWithoutRunningParent_ReturnsRootSpecRunResult()
-	{
+	public function testRun_ChildSpecRunWithoutRunningParent_ReturnsRootSpecRunResult() {
 		$resultBufferClassName = $this->createClass('
-			class ... extends \spectrum\core\ResultBuffer
-			{
-				public function getTotalResult()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0])
+			class ... extends \spectrum\core\ResultBuffer {
+				public function getTotalResult() {
+					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0]) {
 						return true;
-					else
+					} else {
 						return false;
+					}
 				}
 			}
 		');
@@ -2562,19 +2417,14 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(true, \spectrum\tests\Test::$temp["specs"][2]->run());
 	}
 	
-	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_ThrowsException()
-	{
+	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_ThrowsException() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
-			{
-				try
-				{
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
+				try {
 					\spectrum\tests\Test::$temp["specs"]["callee"]->run();
-				}
-				catch (\Exception $e)
-				{
+				} catch (\Exception $e) {
 					\spectrum\tests\Test::$temp["exception"] = $e;
 				}
 			}
@@ -2594,15 +2444,15 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame('Root spec of spec "aaa" is already running', \spectrum\tests\Test::$temp["exception"]->getMessage());
 	}
 	
-	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_StopsRunByExceptionThrowing()
-	{
+	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_StopsRunByExceptionThrowing() {
 		\spectrum\tests\Test::$temp["calledSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
 			
-			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec())
+			if (\spectrum\tests\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
 				\spectrum\tests\Test::$temp["specs"]["callee"]->run();
+			}
 		');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -2623,13 +2473,11 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRun_RootSpecRun_EnablesRunningFlagDuringRun()
-	{
+	public function testRun_RootSpecRun_EnablesRunningFlagDuringRun() {
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][2])
-			{
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][2]) {
 				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][0]->isRunning();
 				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][1]->isRunning();
 				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][2]->isRunning();
@@ -2655,13 +2503,11 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(true, true, true), \spectrum\tests\Test::$temp["isRunningCallResults"]);
 	}
 	
-	public function testRun_RootSpecRun_DisablesRunningFlagAfterEachChildSpecRun()
-	{
+	public function testRun_RootSpecRun_DisablesRunningFlagAfterEachChildSpecRun() {
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][4])
-			{
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][4]) {
 				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][0]->isRunning();
 				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][1]->isRunning();
 				\spectrum\tests\Test::$temp["isRunningCallResults"][] = \spectrum\tests\Test::$temp["specs"][2]->isRunning();
@@ -2682,8 +2528,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(true, false, false, true, true), \spectrum\tests\Test::$temp["isRunningCallResults"]);
 	}
 
-	public function testRun_RootSpecRun_RunsChildSpecsForNotEndingSpecsSequentially()
-	{
+	public function testRun_RootSpecRun_RunsChildSpecsForNotEndingSpecsSequentially() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
@@ -2702,8 +2547,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3], $specs[4], $specs[5], $specs[6]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testRun_RootSpecRun_RunsEnabledSpecsOnly()
-	{
+	public function testRun_RootSpecRun_RunsEnabledSpecsOnly() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
@@ -2724,8 +2568,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[3], $specs[4]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testRun_RootSpecRun_DoesNotRunChildrenOfDisabledSpecs()
-	{
+	public function testRun_RootSpecRun_DoesNotRunChildrenOfDisabledSpecs() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
@@ -2743,13 +2586,10 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[4]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testRun_RootSpecRun_ReturnsResultBufferTotalResult()
-	{
+	public function testRun_RootSpecRun_ReturnsResultBufferTotalResult() {
 		$resultBufferClassName = $this->createClass('
-			class ... extends \spectrum\core\ResultBuffer
-			{
-				public function getTotalResult()
-				{
+			class ... extends \spectrum\core\ResultBuffer {
+				public function getTotalResult() {
 					return \spectrum\tests\Test::$temp["totalResult"];
 				}
 			}
@@ -2771,8 +2611,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRun_RootSpecRun_ResultBuffer_UsesConfigForResultBufferClassGetting()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_UsesConfigForResultBufferClassGetting() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		$resultBufferClassName = $this->createClass('class ... extends \spectrum\core\ResultBuffer {}');
 		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
@@ -2790,15 +2629,12 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\Test::$temp["resultBuffers"][1]);
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferWithProperLinkToOwnerSpecForEachSpec()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferWithProperLinkToOwnerSpecForEachSpec() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$resultBufferClassName = $this->createClass('
-			class ... extends \spectrum\core\ResultBuffer
-			{
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+			class ... extends \spectrum\core\ResultBuffer {
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["resultBuffers"][] = array(
 						"resultBuffer" => $this,
 						"ownerSpec" => $ownerSpec,
@@ -2865,25 +2701,21 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame($specs['childSpec1'], \spectrum\tests\Test::$temp["resultBuffers"][9]["resultBuffer"]->getOwnerSpec());
 		$this->assertSame($specs['childSpec2'], \spectrum\tests\Test::$temp["resultBuffers"][10]["resultBuffer"]->getOwnerSpec());
 		
-		foreach (\spectrum\tests\Test::$temp["resultBuffers"] as $key => $val)
-		{
-			foreach (\spectrum\tests\Test::$temp["resultBuffers"] as $key2 => $val2)
-			{
-				if ($key != $key2)
+		foreach (\spectrum\tests\Test::$temp["resultBuffers"] as $key => $val) {
+			foreach (\spectrum\tests\Test::$temp["resultBuffers"] as $key2 => $val2) {
+				if ($key != $key2) {
 					$this->assertNotSame($val2["resultBuffer"], $val["resultBuffer"]);
+				}
 			}
 		}
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferForEachRun()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferForEachRun() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$resultBufferClassName = $this->createClass('
-			class ... implements \spectrum\core\ResultBufferInterface
-			{
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-				{
+			class ... implements \spectrum\core\ResultBufferInterface {
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 					\spectrum\tests\Test::$temp["resultBuffers"][] = $this;
 				}
 			
@@ -2917,8 +2749,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertNotSame(\spectrum\tests\Test::$temp["resultBuffers"][2], \spectrum\tests\Test::$temp["resultBuffers"][1]);
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_UnsetResultBufferLinkAfterRun()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_UnsetResultBufferLinkAfterRun() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
@@ -2933,24 +2764,20 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(null, $specs[3]->getResultBuffer());
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_DoesNotClearResultBufferDataAfterRun()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_DoesNotClearResultBufferDataAfterRun() {
 		\spectrum\tests\Test::$temp["counter"] = 0;
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
+			class ... extends \spectrum\core\plugins\Plugin {
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => 100),
 						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
 					);
 				}
 				
-				public function onEndingSpecExecute()
-				{
+				public function onEndingSpecExecute() {
 					\spectrum\tests\Test::$temp["counter"]++;
 				
 					$resultBuffer = $this->getOwnerSpec()->getResultBuffer();
@@ -2959,8 +2786,7 @@ class SpecTest extends \spectrum\tests\Test
 					$resultBuffer->addResult(null, "ccc" . \spectrum\tests\Test::$temp["counter"] . "ccc");
 				}
 				
-				public function onSpecRunFinish()
-				{
+				public function onSpecRunFinish() {
 					\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
 				}
 			}
@@ -2988,13 +2814,13 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["resultBuffers"][1]->getResults());
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_CreatesLockedResultBufferAfterChildSpecsRun()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_CreatesLockedResultBufferAfterChildSpecsRun() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0])
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0]) {
 				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
+			}
 		', 'onSpecRunFinish');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -3008,13 +2834,13 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(true, \spectrum\tests\Test::$temp["resultBuffers"][0]->isLocked());
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_DoesNotCreateResultBufferWhileChildSpecsRun()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_DoesNotCreateResultBufferWhileChildSpecsRun() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1]) {
 				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
+			}
 		');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -3026,28 +2852,27 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(null), \spectrum\tests\Test::$temp["resultBuffers"]);
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_PutsChildSpecRunResultWithChildSpecObjectToResultBufferForEachChildSpec()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_PutsChildSpecRunResultWithChildSpecObjectToResultBufferForEachChildSpec() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0])
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][0]) {
 				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][0]->getResultBuffer();
+			}
 		', 'onSpecRunFinish');
 		
 		$resultBufferClassName = $this->createClass('
-			class ... extends \spectrum\core\ResultBuffer
-			{
-				public function getTotalResult()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
+			class ... extends \spectrum\core\ResultBuffer {
+				public function getTotalResult() {
+					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1]) {
 						return true;
-					else if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][2])
+					} else if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][2]) {
 						return false;
-					else if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][3])
+					} else if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][3]) {
 						return null;
-					else
+					} else {
 						return call_user_func_array("parent::getTotalResult", func_get_args());
+					}
 				}
 			}
 		');
@@ -3070,13 +2895,13 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["resultBuffers"][0]->getResults());
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_EndingSpec_CreatesEmptyAndNotLockedResultBuffer()
-	{
+	public function testRun_RootSpecRun_ResultBuffer_EndingSpec_CreatesEmptyAndNotLockedResultBuffer() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1])
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"][1]) {
 				\spectrum\tests\Test::$temp["resultBuffers"][] = \spectrum\tests\Test::$temp["specs"][1]->getResultBuffer();
+			}
 		', 'onSpecRunFinish');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -3093,29 +2918,24 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 	
-	public function testEventDispatch_DispatchPluginEvent_CallsSpecifiedMethodWithPassedArguments()
-	{
+	public function testEventDispatch_DispatchPluginEvent_CallsSpecifiedMethodWithPassedArguments() {
 		\spectrum\tests\Test::$temp["calledMethods"] = array();
 		
 		$pluginClassName1 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				static public function getAccessName(){ return "abc"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				public function dispatchPluginEvent($eventName, array $arguments = array())
-				{
+				public function dispatchPluginEvent($eventName, array $arguments = array()) {
 					return parent::dispatchPluginEvent($eventName, $arguments);
 				}
 			}
 		');
 		
 		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return null; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "testEvent1", "method" => "methodForTestEvent1", "order" => 100),
 						array("event" => "testEvent2", "method" => "methodForTestEvent2", "order" => 100),
@@ -3126,18 +2946,15 @@ class SpecTest extends \spectrum\tests\Test
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
-				public function methodForTestEvent1()
-				{
+				public function methodForTestEvent1() {
 					\spectrum\tests\Test::$temp["calledMethods"][] = array(__FUNCTION__, func_get_args());
 				}
 				
-				public function methodForTestEvent2()
-				{
+				public function methodForTestEvent2() {
 					\spectrum\tests\Test::$temp["calledMethods"][] = array(__FUNCTION__, func_get_args());
 				}
 				
-				public function methodForTestEvent3()
-				{
+				public function methodForTestEvent3() {
 					\spectrum\tests\Test::$temp["calledMethods"][] = array(__FUNCTION__, func_get_args());
 				}
 			}
@@ -3166,29 +2983,24 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["calledMethods"]);
 	}
 	
-	public function testEventDispatch_DispatchPluginEvent_CallsSpecifiedMethodInOrderFromLowerNegativeToHigherPositiveNumber()
-	{
+	public function testEventDispatch_DispatchPluginEvent_CallsSpecifiedMethodInOrderFromLowerNegativeToHigherPositiveNumber() {
 		\spectrum\tests\Test::$temp["calledMethods"] = array();
 		
 		$pluginClassName1 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				static public function getAccessName(){ return "abc"; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				public function dispatchPluginEvent($eventName, array $arguments = array())
-				{
+				public function dispatchPluginEvent($eventName, array $arguments = array()) {
 					return parent::dispatchPluginEvent($eventName, $arguments);
 				}
 			}
 		');
 		
 		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return null; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => 10),
 					);
@@ -3197,20 +3009,17 @@ class SpecTest extends \spectrum\tests\Test
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
-				public function methodForTestEvent()
-				{
+				public function methodForTestEvent() {
 					\spectrum\tests\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
 				}
 			}
 		');
 		
 		$pluginClassName3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return null; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => 0),
 					);
@@ -3219,20 +3028,17 @@ class SpecTest extends \spectrum\tests\Test
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
-				public function methodForTestEvent()
-				{
+				public function methodForTestEvent() {
 					\spectrum\tests\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
 				}
 			}
 		');
 		
 		$pluginClassName4 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return null; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => -20),
 					);
@@ -3241,20 +3047,17 @@ class SpecTest extends \spectrum\tests\Test
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
-				public function methodForTestEvent()
-				{
+				public function methodForTestEvent() {
 					\spectrum\tests\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
 				}
 			}
 		');
 		
 		$pluginClassName5 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface
-			{
+			class ... implements \spectrum\core\plugins\PluginInterface {
 				static public function getAccessName(){ return null; }
 				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => -10),
 					);
@@ -3263,8 +3066,7 @@ class SpecTest extends \spectrum\tests\Test
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
 				public function getOwnerSpec(){}
 				
-				public function methodForTestEvent()
-				{
+				public function methodForTestEvent() {
 					\spectrum\tests\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
 				}
 			}
@@ -3293,10 +3095,8 @@ class SpecTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["calledEvents"] = array();
 		
 		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
+			class ... extends \spectrum\core\plugins\Plugin {
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onRootSpecRunBefore", "method" => "onRootSpecRunBefore", "order" => 4),
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 6),
@@ -3340,8 +3140,7 @@ class SpecTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["calledEvents"]);
 	}
 	
-	public function providerAllEvents()
-	{
+	public function providerAllEvents() {
 		return array(
 			array('onSpecConstruct'),
 			array('onRootSpecRunBefore'),
@@ -3357,8 +3156,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllEvents
 	 */
-	public function testEventDispatch_Events_DispatchesSameEventsInSequenceSpecifiedByOrderValue($testEventName)
-	{
+	public function testEventDispatch_Events_DispatchesSameEventsInSequenceSpecifiedByOrderValue($testEventName) {
 		\spectrum\tests\Test::$temp["result"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["result"][] = 20;', $testEventName, 20);
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["result"][] = 30;', $testEventName, 30);
@@ -3375,8 +3173,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllEvents
 	 */
-	public function testEventDispatch_Events_DispatchesSameEventsWithSameOrderValueInRegistrationSequence($testEventName)
-	{
+	public function testEventDispatch_Events_DispatchesSameEventsWithSameOrderValueInRegistrationSequence($testEventName) {
 		\spectrum\tests\Test::$temp["result"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["result"][] = 1;', $testEventName, 10);
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["result"][] = 2;', $testEventName, 10);
@@ -3392,16 +3189,14 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testEventDispatch_Events_OnSpecConstruct_IsDispatchedOnSpecInstanceCreation()
-	{
+	public function testEventDispatch_Events_OnSpecConstruct_IsDispatchedOnSpecInstanceCreation() {
 		\spectrum\tests\Test::$temp["createdSpecs"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["createdSpecs"][] = $this->getOwnerSpec();', 'onSpecConstruct');
 		$specs = array(new Spec(), new Spec(), new Spec());
 		$this->assertSame($specs, \spectrum\tests\Test::$temp["createdSpecs"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecConstruct_DoesNotPassArgumentsToCalleeMethod()
-	{
+	public function testEventDispatch_Events_OnSpecConstruct_DoesNotPassArgumentsToCalleeMethod() {
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onSpecConstruct');
 		new Spec();
@@ -3411,8 +3206,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedOnRunOfRootSpecOnly()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedOnRunOfRootSpecOnly() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunBefore');
@@ -3427,8 +3221,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_DoesNotPassArgumentsToCalleeMethod()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunBefore_DoesNotPassArgumentsToCalleeMethod() {
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunBefore');
@@ -3442,8 +3235,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(array()), \spectrum\tests\Test::$temp["passedArguments"]);
 	}
 	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedBeforeRunningFlagEnable()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedBeforeRunningFlagEnable() {
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunBefore');
@@ -3457,8 +3249,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(false), \spectrum\tests\Test::$temp["isRunningCallResults"]);
 	}
 	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedBeforeResultBufferCreate()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedBeforeResultBufferCreate() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunBefore');
@@ -3474,8 +3265,7 @@ class SpecTest extends \spectrum\tests\Test
 
 /**/
 	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedOnRunOfRootSpecOnly()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedOnRunOfRootSpecOnly() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunAfter');
@@ -3490,8 +3280,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_DoesNotPassArgumentsToCalleeMethod()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunAfter_DoesNotPassArgumentsToCalleeMethod() {
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunAfter');
@@ -3505,8 +3294,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(array()), \spectrum\tests\Test::$temp["passedArguments"]);
 	}
 	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedAfterRunningFlagDisabled()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedAfterRunningFlagDisabled() {
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunAfter');
@@ -3520,8 +3308,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(false), \spectrum\tests\Test::$temp["isRunningCallResults"]);
 	}
 	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedBeforeResultBufferLinkUnset()
-	{
+	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedBeforeResultBufferLinkUnset() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunAfter');
@@ -3541,8 +3328,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedOnRunOfEverySpecs()
-	{
+	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedOnRunOfEverySpecs() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
@@ -3558,8 +3344,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunStart_DoesNotPassArgumentsToCalleeMethod()
-	{
+	public function testEventDispatch_Events_OnSpecRunStart_DoesNotPassArgumentsToCalleeMethod() {
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();');
@@ -3573,8 +3358,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(array(), array()), \spectrum\tests\Test::$temp["passedArguments"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedAfterRunningFlagEnable()
-	{
+	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedAfterRunningFlagEnable() {
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();');
@@ -3588,8 +3372,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(true, true), \spectrum\tests\Test::$temp["isRunningCallResults"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedBeforeChildSpecRun()
-	{
+	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedBeforeChildSpecRun() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
@@ -3604,8 +3387,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[0], $specs[1], $specs[2]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedBeforeResultBufferCreate()
-	{
+	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedBeforeResultBufferCreate() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();');
@@ -3621,8 +3403,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedOnRunOfEverySpecs()
-	{
+	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedOnRunOfEverySpecs() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
@@ -3638,8 +3419,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[2], $specs[1], $specs[3], $specs[0]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunFinish_DoesNotPassArgumentsToCalleeMethod()
-	{
+	public function testEventDispatch_Events_OnSpecRunFinish_DoesNotPassArgumentsToCalleeMethod() {
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', 'onSpecRunFinish');
@@ -3653,8 +3433,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(array(), array()), \spectrum\tests\Test::$temp["passedArguments"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedBeforeRunningFlagDisable()
-	{
+	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedBeforeRunningFlagDisable() {
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onSpecRunFinish');
@@ -3668,8 +3447,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(true, true), \spectrum\tests\Test::$temp["isRunningCallResults"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedAfterChildSpecsRun()
-	{
+	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedAfterChildSpecsRun() {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
@@ -3684,8 +3462,7 @@ class SpecTest extends \spectrum\tests\Test
 		$this->assertSame(array($specs[1], $specs[2], $specs[0]), \spectrum\tests\Test::$temp["runSpecs"]);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedBeforeResultBufferLinkUnset()
-	{
+	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedBeforeResultBufferLinkUnset() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
@@ -3708,8 +3485,7 @@ class SpecTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function providerEndingSpecExecuteEvents()
-	{
+	public function providerEndingSpecExecuteEvents() {
 		return array(
 			array('onEndingSpecExecuteBefore'),
 			array('onEndingSpecExecute'),
@@ -3720,8 +3496,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedOnExecuteOfEndingSpecsOnly($eventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedOnExecuteOfEndingSpecsOnly($eventName) {
 		\spectrum\tests\Test::$temp["runSpecs"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', $eventName);
@@ -3742,8 +3517,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotPassArgumentsToCalleeMethod($eventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotPassArgumentsToCalleeMethod($eventName) {
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();', $eventName);
@@ -3757,8 +3531,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedAfterRunningFlagEnable($eventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedAfterRunningFlagEnable($eventName) {
 		\spectrum\tests\Test::$temp["isRunningCallResults"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', $eventName);
@@ -3772,8 +3545,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedAfterResultBufferCreate($eventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedAfterResultBufferCreate($eventName) {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', $eventName);
@@ -3788,8 +3560,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_CatchesExceptionsAndAddsItToResultBufferAsFail($eventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_CatchesExceptionsAndAddsItToResultBufferAsFail($eventName) {
 		\spectrum\tests\Test::$temp["thrownExceptions"] = array();
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
@@ -3817,8 +3588,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_CatchesBreakExceptionAndDoesNotAddResultsToResultBuffer($eventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_CatchesBreakExceptionAndDoesNotAddResultsToResultBuffer($eventName) {
 		\spectrum\tests\Test::$temp["thrownExceptions"] = array();
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
@@ -3840,8 +3610,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByException($testEventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByException($testEventName) {
 		$this->registerPluginWithCodeInEvent('throw new \Exception("aaa");', $testEventName);
 		
 		\spectrum\tests\Test::$temp["calledEvents"] = array();
@@ -3850,8 +3619,9 @@ class SpecTest extends \spectrum\tests\Test
 		unset($otherEvents[array_search($testEventName, $otherEvents)]);
 		$otherEvents = array_values($otherEvents);
 		
-		foreach ($otherEvents as $otherEventName)
+		foreach ($otherEvents as $otherEventName) {
 			$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledEvents"][] = "' . $otherEventName . '";', $otherEventName);
+		}
 		
 		$spec = new Spec();
 		$spec->run();
@@ -3862,8 +3632,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByBreakException($testEventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByBreakException($testEventName) {
 		$this->registerPluginWithCodeInEvent('throw new \spectrum\core\BreakException();', $testEventName);
 		
 		\spectrum\tests\Test::$temp["calledEvents"] = array();
@@ -3872,8 +3641,9 @@ class SpecTest extends \spectrum\tests\Test
 		unset($otherEvents[array_search($testEventName, $otherEvents)]);
 		$otherEvents = array_values($otherEvents);
 		
-		foreach ($otherEvents as $otherEventName)
+		foreach ($otherEvents as $otherEventName) {
 			$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledEvents"][] = "' . $otherEventName . '";', $otherEventName);
+		}
 		
 		$spec = new Spec();
 		$spec->run();
@@ -3884,8 +3654,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherPluginsInSameEventByException($testEventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherPluginsInSameEventByException($testEventName) {
 		\spectrum\tests\Test::$temp["calledPlugins"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledPlugins"][] = 1; throw new \Exception();', $testEventName, 10);
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledPlugins"][] = 2; throw new \Exception();', $testEventName, 20);
@@ -3900,8 +3669,7 @@ class SpecTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerEndingSpecExecuteEvents
 	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherPluginsInSameEventByBreakException($testEventName)
-	{
+	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherPluginsInSameEventByBreakException($testEventName) {
 		\spectrum\tests\Test::$temp["calledPlugins"] = array();
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledPlugins"][] = 1; throw new \spectrum\core\BreakException();', $testEventName, 10);
 		$this->registerPluginWithCodeInEvent('\spectrum\tests\Test::$temp["calledPlugins"][] = 2; throw new \spectrum\core\BreakException();', $testEventName, 20);

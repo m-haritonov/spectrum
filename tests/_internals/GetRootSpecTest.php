@@ -8,10 +8,8 @@ namespace spectrum\tests\_internals;
 
 require_once __DIR__ . '/../init.php';
 
-class GetRootSpecTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_ReturnsSameSpecOnEachCall()
-	{
+class GetRootSpecTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_ReturnsSameSpecOnEachCall() {
 		$rootSpec = \spectrum\_internals\getRootSpec();
 		$this->assertInstanceOf('\spectrum\core\Spec', $rootSpec);
 
@@ -20,8 +18,7 @@ class GetRootSpecTest extends \spectrum\tests\Test
 		$this->assertSame($rootSpec, \spectrum\_internals\getRootSpec());
 	}
 	
-	public function testCallsAtBuildingState_AddsToSpecBaseMatchers()
-	{
+	public function testCallsAtBuildingState_AddsToSpecBaseMatchers() {
 		$this->assertSame(array(
 			'eq' => '\spectrum\matchers\eq',
 			'gt' => '\spectrum\matchers\gt',

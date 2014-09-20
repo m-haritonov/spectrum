@@ -17,8 +17,7 @@ use spectrum\Exception;
  * @property \spectrum\core\plugins\Messages messages
  * @property \spectrum\core\plugins\Test test
  */
-class Spec implements SpecInterface
-{
+class Spec implements SpecInterface {
 	/**
 	 * @var array
 	 */
@@ -54,35 +53,33 @@ class Spec implements SpecInterface
 	 */
 	protected $isRunning = false;
 
-	public function __construct()
-	{
+	public function __construct() {
 		$this->dispatchPluginEvent('onSpecConstruct');
 	}
 
-	public function __get($pluginAccessName)
-	{
-		if ($pluginAccessName == '')
+	public function __get($pluginAccessName) {
+		if ($pluginAccessName == '') {
 			throw new Exception('Access to plugins by empty access name is denied');
+		}
 		
 		$pluginClass = config::getRegisteredSpecPluginClassByAccessName($pluginAccessName);
-		if ($pluginClass)
+		if ($pluginClass) {
 			return $this->activatePluginByAccess($pluginClass);
+		}
 		
 		throw new Exception('Undefined plugin with access name "' . $pluginAccessName . '" in "' . __CLASS__ . '" class');
 	}
 
-	protected function activatePluginByAccess($pluginClass)
-	{
-		if (!array_key_exists($pluginClass, $this->activatedPlugins) || (string) $pluginClass::getActivateMoment() === 'everyAccess')
+	protected function activatePluginByAccess($pluginClass) {
+		if (!array_key_exists($pluginClass, $this->activatedPlugins) || (string) $pluginClass::getActivateMoment() === 'everyAccess') {
 			$this->activatedPlugins[$pluginClass] = new $pluginClass($this);
+		}
 		
 		return $this->activatedPlugins[$pluginClass];
 	}
 	
-	protected function dispatchPluginEvent($eventName, array $arguments = array())
-	{
-		foreach ($this->getPluginEventMethods($eventName) as $method)
-		{
+	protected function dispatchPluginEvent($eventName, array $arguments = array()) {
+		foreach ($this->getPluginEventMethods($eventName) as $method) {
 			$reflectionClass = new \ReflectionClass($method['class']);
 			$reflectionMethod = $reflectionClass->getMethod($method['method']);
 			$reflectionMethod->setAccessible(true);
@@ -90,15 +87,11 @@ class Spec implements SpecInterface
 		}
 	}
 	
-	protected function getPluginEventMethods($eventName)
-	{
+	protected function getPluginEventMethods($eventName) {
 		$methods = array();
-		foreach (config::getRegisteredSpecPlugins() as $pluginClass)
-		{
-			foreach ((array) $pluginClass::getEventListeners() as $eventListener)
-			{
-				if ((string) $eventListener['event'] === (string) $eventName)
-				{
+		foreach (config::getRegisteredSpecPlugins() as $pluginClass) {
+			foreach ((array) $pluginClass::getEventListeners() as $eventListener) {
+				if ((string) $eventListener['event'] === (string) $eventName) {
 					$methods[] = array(
 						'class' => $pluginClass,
 						'method' => $eventListener['method'],
@@ -108,9 +101,10 @@ class Spec implements SpecInterface
 			}
 		}
 		
-		$this->usortWithOriginalSequencePreserving($methods, function($a, $b){
-			if ($a['order'] == $b['order'])
-				return 0; 
+		$this->usortWithOriginalSequencePreserving($methods, function($a, $b) {
+			if ($a['order'] == $b['order']) {
+				return 0;
+			}
 			
 			return ($a['order'] < $b['order'] ? -1 : 1);
 		});
@@ -118,28 +112,25 @@ class Spec implements SpecInterface
 		return $methods;
 	}
 	
-	protected function usortWithOriginalSequencePreserving(&$array, $cmpFunction, $reverseEqualElementSequence = false)
-	{
+	protected function usortWithOriginalSequencePreserving(&$array, $cmpFunction, $reverseEqualElementSequence = false) {
 		$indexes = array();
 		$num = 0;
-		foreach ($array as $key => $value)
-		{
+		foreach ($array as $key => $value) {
 			$indexes[$key] = $num;
 			$num++;
 		}
 		
-		uksort($array, function($keyA, $keyB) use($array, &$indexes, &$cmpFunction, &$reverseEqualElementSequence)
-		{
+		uksort($array, function($keyA, $keyB) use($array, &$indexes, &$cmpFunction, &$reverseEqualElementSequence) {
 			$result = $cmpFunction($array[$keyA], $array[$keyB]);
 			
 			// Keep equal elements in original sequence
-			if ($result == 0)
-			{
+			if ($result == 0) {
 				// Equal indexes are not existed
-				if ($reverseEqualElementSequence)
+				if ($reverseEqualElementSequence) {
 					return ($indexes[$keyA] < $indexes[$keyB] ? 1 : -1);
-				else
+				} else {
 					return ($indexes[$keyA] < $indexes[$keyB] ? -1 : 1);
+				}
 			}
 			
 			return $result;
@@ -148,185 +139,174 @@ class Spec implements SpecInterface
 
 /**/
 
-	public function enable()
-	{
+	public function enable() {
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->isEnabled = true;
 	}
 
-	public function disable()
-	{
+	public function disable() {
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->isEnabled = false;
 	}
 
-	public function isEnabled()
-	{
+	public function isEnabled() {
 		return $this->isEnabled;
 	}
 
 /**/
 	
-	public function setName($name)
-	{
+	public function setName($name) {
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->name = $name;
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return $this->name;
 	}
 	
 
-	public function isAnonymous()
-	{
+	public function isAnonymous() {
 		return ($this->getName() === null && $this->childSpecs);
 	}
 
 /**/
 
-	public function getParentSpecs()
-	{
+	public function getParentSpecs() {
 		return $this->parentSpecs;
 	}
 	
-	public function hasParentSpec(SpecInterface $spec)
-	{
-		if (array_search($spec, $this->parentSpecs, true) !== false)
+	public function hasParentSpec(SpecInterface $spec) {
+		if (array_search($spec, $this->parentSpecs, true) !== false) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
-	public function bindParentSpec(SpecInterface $spec)
-	{
+	public function bindParentSpec(SpecInterface $spec) {
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		if (!$this->hasParentSpec($spec))
+		if (!$this->hasParentSpec($spec)) {
 			$this->parentSpecs[] = $spec;
+		}
 		
-		if (!$spec->hasChildSpec($this))
+		if (!$spec->hasChildSpec($this)) {
 			$spec->bindChildSpec($this);
+		}
 	}
 	
-	public function unbindParentSpec(SpecInterface $spec)
-	{
+	public function unbindParentSpec(SpecInterface $spec) {
 		$this->handleModifyDeny(__FUNCTION__);
 		
 		$parentSpecKey = array_search($spec, $this->parentSpecs, true);
-		if ($parentSpecKey !== false)
-		{
+		if ($parentSpecKey !== false) {
 			unset($this->parentSpecs[$parentSpecKey]);
 			$this->parentSpecs = array_values($this->parentSpecs);
 		}
 		
-		if ($spec->hasChildSpec($this))
+		if ($spec->hasChildSpec($this)) {
 			$spec->unbindChildSpec($this);
+		}
 	}
 
-	public function unbindAllParentSpecs()
-	{
+	public function unbindAllParentSpecs() {
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		foreach ($this->parentSpecs as $spec)
+		foreach ($this->parentSpecs as $spec) {
 			$this->unbindParentSpec($spec);
+		}
 		
 		$this->parentSpecs = array();
 	}
 	
 /**/
 	
-	public function getChildSpecs()
-	{
+	public function getChildSpecs() {
 		return $this->childSpecs;
 	}
 
-	public function hasChildSpec(SpecInterface $spec)
-	{
-		if (array_search($spec, $this->childSpecs, true) !== false)
+	public function hasChildSpec(SpecInterface $spec) {
+		if (array_search($spec, $this->childSpecs, true) !== false) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 	
-	public function bindChildSpec(SpecInterface $spec)
-	{
+	public function bindChildSpec(SpecInterface $spec) {
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		if (!$this->hasChildSpec($spec))
+		if (!$this->hasChildSpec($spec)) {
 			$this->childSpecs[] = $spec;
+		}
 		
-		if (!$spec->hasParentSpec($this))
+		if (!$spec->hasParentSpec($this)) {
 			$spec->bindParentSpec($this);
+		}
 	}
 	
-	public function unbindChildSpec(SpecInterface $spec)
-	{
+	public function unbindChildSpec(SpecInterface $spec) {
 		$this->handleModifyDeny(__FUNCTION__);
 		
 		$childSpecKey = array_search($spec, $this->childSpecs, true);
-		if ($childSpecKey !== false)
-		{
+		if ($childSpecKey !== false) {
 			unset($this->childSpecs[$childSpecKey]);
 			$this->childSpecs = array_values($this->childSpecs);
 		}
 		
-		if ($spec->hasParentSpec($this))
+		if ($spec->hasParentSpec($this)) {
 			$spec->unbindParentSpec($this);
+		}
 	}
 
-	public function unbindAllChildSpecs()
-	{
+	public function unbindAllChildSpecs() {
 		$this->handleModifyDeny(__FUNCTION__);
 		
-		foreach ($this->childSpecs as $spec)
+		foreach ($this->childSpecs as $spec) {
 			$this->unbindChildSpec($spec);
+		}
 		
 		$this->childSpecs = array();
 	}
 
 /**/
 	
-	public function getAncestorRootSpecs()
-	{
+	public function getAncestorRootSpecs() {
 		$rootSpecs = array();
 		
-		foreach ($this->parentSpecs as $parentSpec)
-		{
-			if (!$parentSpec->getParentSpecs() && !in_array($parentSpec, $rootSpecs, true))
+		foreach ($this->parentSpecs as $parentSpec) {
+			if (!$parentSpec->getParentSpecs() && !in_array($parentSpec, $rootSpecs, true)) {
 				$rootSpecs[] = $parentSpec;
+			}
 			
-			foreach ($parentSpec->getAncestorRootSpecs() as $spec)
-			{
-				if (!in_array($spec, $rootSpecs, true))
+			foreach ($parentSpec->getAncestorRootSpecs() as $spec) {
+				if (!in_array($spec, $rootSpecs, true)) {
 					$rootSpecs[] = $spec;
+				}
 			}
 		}
 		
 		return $rootSpecs;
 	}
 	
-	public function getDescendantEndingSpecs()
-	{
+	public function getDescendantEndingSpecs() {
 		$endingSpecs = array();
-		foreach ($this->childSpecs as $childSpec)
-		{
-			if ($childSpec->getChildSpecs())
+		foreach ($this->childSpecs as $childSpec) {
+			if ($childSpec->getChildSpecs()) {
 				$endingSpecs = array_merge($endingSpecs, $childSpec->getDescendantEndingSpecs());
-			else
+			} else {
 				$endingSpecs[] = $childSpec;
+			}
 		}
 		
 		return $endingSpecs;
 	}
 	
-	public function getRunningParentSpec()
-	{
-		foreach ($this->parentSpecs as $parentSpec)
-		{
-			if ($parentSpec->isRunning())
+	public function getRunningParentSpec() {
+		foreach ($this->parentSpecs as $parentSpec) {
+			if ($parentSpec->isRunning()) {
 				return $parentSpec;
+			}
 		}
 		
 		return null;
@@ -335,72 +315,67 @@ class Spec implements SpecInterface
 	/**
 	 * Return running ancestor specs from parent to root
 	 */
-	public function getRunningAncestorSpecs()
-	{
+	public function getRunningAncestorSpecs() {
 		$ancestorSpecs = array();
 
 		$parent = $this;
-		while ($parent = $parent->getRunningParentSpec())
+		while ($parent = $parent->getRunningParentSpec()) {
 			$ancestorSpecs[] = $parent;
+		}
 
 		return $ancestorSpecs;
 	}
 	
-	public function getRunningChildSpec()
-	{
-		foreach ($this->childSpecs as $childSpec)
-		{
-			if ($childSpec->isRunning())
+	public function getRunningChildSpec() {
+		foreach ($this->childSpecs as $childSpec) {
+			if ($childSpec->isRunning()) {
 				return $childSpec;
-		}
-		
-		return null;
-	}
-	
-	public function getRunningDescendantEndingSpec()
-	{
-		foreach ($this->childSpecs as $childSpec)
-		{
-			if ($childSpec->isRunning())
-			{
-				if ($childSpec->getChildSpecs())
-					return $childSpec->getRunningDescendantEndingSpec();
-				else
-					return $childSpec;
 			}
 		}
 		
 		return null;
 	}
 	
-	public function getSpecsByRunId($runId)
-	{
-		if ($this->getParentSpecs())
+	public function getRunningDescendantEndingSpec() {
+		foreach ($this->childSpecs as $childSpec) {
+			if ($childSpec->isRunning()) {
+				if ($childSpec->getChildSpecs()) {
+					return $childSpec->getRunningDescendantEndingSpec();
+				} else {
+					return $childSpec;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public function getSpecsByRunId($runId) {
+		if ($this->getParentSpecs()) {
 			throw new Exception('Method "\\' . get_class($this) . '::' . __FUNCTION__ . '" should be called from root spec only');
+		}
 		
 		$runId = trim($runId);
 		
-		if (!preg_match('/^r(_\d+)*$/s', $runId))
+		if (!preg_match('/^r(_\d+)*$/s', $runId)) {
 			throw new Exception('Incorrect run id "' . $runId . '" (id should be in format "r_<number>_<number>_...")');
+		}
 
 		$specs = array();
 		$currentSpec = $this;
 		$specs[] = $currentSpec;
 		
 		$runIdWithoutRoot = mb_substr($runId, 2, mb_strlen($runId, 'us-ascii'), 'us-ascii');
-		if ($runIdWithoutRoot != '')
-		{
-			foreach (explode('_', $runIdWithoutRoot) as $num => $index)
-			{
+		if ($runIdWithoutRoot != '') {
+			foreach (explode('_', $runIdWithoutRoot) as $num => $index) {
 				$childSpecs = $currentSpec->getChildSpecs();
 
-				if (array_key_exists($index, $childSpecs))
-				{
+				if (array_key_exists($index, $childSpecs)) {
 					$currentSpec = $childSpecs[$index];
 					$specs[] = $currentSpec;
-				}
-				else
+				} else {
 					throw new Exception('Spec with index "' . $index . '" on "' . ($num + 2) . '" position of run id "' . $runId . '" is not exists');
+				}
 			}
 		}
 		
@@ -409,8 +384,7 @@ class Spec implements SpecInterface
 
 /**/
 
-	public function getResultBuffer()
-	{
+	public function getResultBuffer() {
 		return $this->resultBuffer;
 	}
 
@@ -422,20 +396,17 @@ class Spec implements SpecInterface
 	 * 
 	 * @return string String in "us-ascii" charset
 	 */
-	public function getRunId()
-	{
-		if (!$this->isRunning())
+	public function getRunId() {
+		if (!$this->isRunning()) {
 			throw new Exception('Call of "\\' . get_class($this) . '::' . __FUNCTION__ . '" method is available on run only');
+		}
 		
 		$runId = '';
 		
 		$spec = $this;
-		while ($runningParentSpec = $spec->getRunningParentSpec())
-		{
-			foreach ($runningParentSpec->getChildSpecs() as $index => $specInParent)
-			{
-				if ($specInParent === $spec)
-				{
+		while ($runningParentSpec = $spec->getRunningParentSpec()) {
+			foreach ($runningParentSpec->getChildSpecs() as $index => $specInParent) {
+				if ($specInParent === $spec) {
 					$runId = '_' . $index . $runId;
 					break;
 				}
@@ -447,39 +418,42 @@ class Spec implements SpecInterface
 		return 'r' . $runId;
 	}
 
-	public function isRunning()
-	{
+	public function isRunning() {
 		return $this->isRunning;
 	}
 	
-	public function run()
-	{
+	public function run() {
 		$rootSpecs = $this->getAncestorRootSpecs();
 		$runningParentSpec = $this->getRunningParentSpec();
 		
-		if (count($rootSpecs) > 1)
+		if (count($rootSpecs) > 1) {
 			throw new Exception('Spec "' . $this->getName() . '" has more than one root ancestors, but for run needs only one general root');
+		}
 		
-		if ($this->isRunning())
+		if ($this->isRunning()) {
 			throw new Exception('Spec "' . $this->getName() . '" is already running');
+		}
 			
-		if ($runningParentSpec && $runningParentSpec->getRunningChildSpec())
+		if ($runningParentSpec && $runningParentSpec->getRunningChildSpec()) {
 			throw new Exception('Sibling spec of spec "' . $this->getName() . '" is already running');
+		}
 		
-		if ($this->parentSpecs && !$runningParentSpec)
-		{
-			if ($rootSpecs[0]->isRunning())
+		if ($this->parentSpecs && !$runningParentSpec) {
+			if ($rootSpecs[0]->isRunning()) {
 				throw new Exception('Root spec of spec "' . $this->getName() . '" is already running');
+			}
 			
 			$siblingSpecs = $this->getEnabledSiblingSpecsUpToRoot();
 			
-			foreach ($siblingSpecs as $spec)
+			foreach ($siblingSpecs as $spec) {
 				$spec->disable();
+			}
 			
 			$result = $rootSpecs[0]->run();
 			
-			foreach ($siblingSpecs as $spec)
+			foreach ($siblingSpecs as $spec) {
 				$spec->enable();
+			}
 			
 			return $result;
 		}
@@ -487,67 +461,61 @@ class Spec implements SpecInterface
 		// Now (after foregoing checks) we knows that this spec is spec without parent or with running parent (and the 
 		// parent for a while has no running children)
 		
-		if (!$this->parentSpecs)
+		if (!$this->parentSpecs) {
 			$this->dispatchPluginEvent('onRootSpecRunBefore');
+		}
 		
 		$this->isRunning = true;
 		$this->dispatchPluginEvent('onSpecRunStart');
 		
-		if ($this->childSpecs)
+		if ($this->childSpecs) {
 			$this->executeAsNotEndingSpec();
-		else
+		} else {
 			$this->executeAsEndingSpec();
+		}
 		
 		$this->dispatchPluginEvent('onSpecRunFinish');
 		$this->isRunning = false;
 		
-		if (!$this->parentSpecs)
+		if (!$this->parentSpecs) {
 			$this->dispatchPluginEvent('onRootSpecRunAfter');
+		}
 
 		$result = $this->getResultBuffer()->getTotalResult();
 		$this->resultBuffer = null;
 		return $result;
 	}
 	
-	protected function executeAsNotEndingSpec()
-	{
+	protected function executeAsNotEndingSpec() {
 		$resultBuffer = $this->createResultBuffer();
 		
-		foreach ($this->childSpecs as $childSpec)
-		{
-			if ($childSpec->isEnabled())
+		foreach ($this->childSpecs as $childSpec) {
+			if ($childSpec->isEnabled()) {
 				$resultBuffer->addResult($childSpec->run(), $childSpec);
+			}
 		}
 		
 		$resultBuffer->lock();
 		$this->resultBuffer = $resultBuffer;
 	}
 	
-	protected function executeAsEndingSpec()
-	{
+	protected function executeAsEndingSpec() {
 		$this->resultBuffer = $this->createResultBuffer();
 		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteBefore');
 		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecute');
 		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteAfter');
 	}
 	
-	protected function dispatchPluginEventAndCatchExceptions($eventName, array $arguments = array())
-	{
-		foreach ($this->getPluginEventMethods($eventName) as $method)
-		{
-			try
-			{
+	protected function dispatchPluginEventAndCatchExceptions($eventName, array $arguments = array()) {
+		foreach ($this->getPluginEventMethods($eventName) as $method) {
+			try {
 				$reflectionClass = new \ReflectionClass($method['class']);
 				$reflectionMethod = $reflectionClass->getMethod($method['method']);
 				$reflectionMethod->setAccessible(true);
 				$reflectionMethod->invokeArgs($this->activatePluginByAccess($method['class']), $arguments);
-			}
-			catch (BreakException $e)
-			{
+			} catch (BreakException $e) {
 				// Just ignore special break exception
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				$this->getResultBuffer()->addResult(false, $e);
 			}
 		}
@@ -556,31 +524,28 @@ class Spec implements SpecInterface
 	/**
 	 * @return ResultBufferInterface
 	 */
-	protected function createResultBuffer()
-	{
+	protected function createResultBuffer() {
 		$resultBufferClass = config::getClassReplacement('\spectrum\core\ResultBuffer');
 		return new $resultBufferClass($this);
 	}
 	
-	protected function getEnabledSiblingSpecsUpToRoot()
-	{
+	protected function getEnabledSiblingSpecsUpToRoot() {
 		$siblingSpecs = array();
 		$notSiblingSpecs = array_merge(array($this), $this->getAncestorSpecs());
 		$specsToWalk = array($this);
-		while ($specsToWalk)
-		{
+		while ($specsToWalk) {
 			$spec = array_shift($specsToWalk);
-			foreach ($spec->getParentSpecs() as $parentSpec)
-			{
-				if (!$parentSpec->isEnabled())
+			foreach ($spec->getParentSpecs() as $parentSpec) {
+				if (!$parentSpec->isEnabled()) {
 					continue;
+				}
 				
 				$specsToWalk[] = $parentSpec;
 				
-				foreach ($parentSpec->getChildSpecs() as $childSpec)
-				{
-					if ($childSpec->isEnabled() && !in_array($childSpec, $siblingSpecs, true) && !in_array($childSpec, $notSiblingSpecs, true))
+				foreach ($parentSpec->getChildSpecs() as $childSpec) {
+					if ($childSpec->isEnabled() && !in_array($childSpec, $siblingSpecs, true) && !in_array($childSpec, $notSiblingSpecs, true)) {
 						$siblingSpecs[] = $childSpec;
+					}
 				}
 			}
 		}
@@ -588,12 +553,10 @@ class Spec implements SpecInterface
 		return $siblingSpecs;
 	}
 	
-	protected function getAncestorSpecs()
-	{
+	protected function getAncestorSpecs() {
 		$ancestorSpecs = array();
 		$specsToWalk = $this->getParentSpecs();
-		while ($specsToWalk)
-		{
+		while ($specsToWalk) {
 			$spec = array_shift($specsToWalk);
 			$specsToWalk = array_merge($specsToWalk, $spec->getParentSpecs());
 			$ancestorSpecs[] = $spec;
@@ -604,12 +567,11 @@ class Spec implements SpecInterface
 	
 /**/
 
-	protected function handleModifyDeny($functionName)
-	{
-		foreach (array_merge(array($this), $this->getAncestorRootSpecs()) as $spec)
-		{
-			if ($spec->isRunning())
+	protected function handleModifyDeny($functionName) {
+		foreach (array_merge(array($this), $this->getAncestorRootSpecs()) as $spec) {
+			if ($spec->isRunning()) {
 				throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
+			}
 		}
 	}
 }

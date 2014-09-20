@@ -6,8 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-interface ResultBufferInterface
-{
+interface ResultBufferInterface {
 	public function __construct(\spectrum\core\SpecInterface $ownerSpec);
 	public function getOwnerSpec();
 	

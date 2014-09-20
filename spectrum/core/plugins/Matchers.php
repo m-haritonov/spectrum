@@ -6,47 +6,41 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins;
 
-class Matchers extends \spectrum\core\plugins\Plugin
-{
+class Matchers extends \spectrum\core\plugins\Plugin {
 	protected $items = array();
 	
-	static public function getAccessName()
-	{
+	static public function getAccessName() {
 		return 'matchers';
 	}
 	
-	public function add($name, $function)
-	{
+	public function add($name, $function) {
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->items[$name] = $function;
 	}
 
-	public function get($name)
-	{
-		if (isset($this->items[$name]))
+	public function get($name) {
+		if (isset($this->items[$name])) {
 			return $this->items[$name];
-		else
+		}
+		else {
 			return null;
+		}
 	}
 	
-	public function getThroughRunningAncestors($name)
-	{
+	public function getThroughRunningAncestors($name) {
 		return $this->callMethodThroughRunningAncestorSpecs('get', array($name));
 	}
 	
-	public function getAll()
-	{
+	public function getAll() {
 		return $this->items;
 	}
 	
-	public function remove($name)
-	{
+	public function remove($name) {
 		$this->handleModifyDeny(__FUNCTION__);
 		unset($this->items[$name]);
 	}
 	
-	public function removeAll()
-	{
+	public function removeAll() {
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->items = array();
 	}

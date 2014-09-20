@@ -10,10 +10,8 @@ use spectrum\config;
 
 require_once __DIR__ . '/../init.php';
 
-class FailTest extends \spectrum\tests\Test
-{
-	public function testCallsAtRunningState_GetsUserFailDetailsClassFromConfig()
-	{
+class FailTest extends \spectrum\tests\Test {
+	public function testCallsAtRunningState_GetsUserFailDetailsClassFromConfig() {
 		$userFailDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\UserFail {}');
 		config::setClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
 
@@ -30,8 +28,7 @@ class FailTest extends \spectrum\tests\Test
 		$this->assertSame('some fail message', $results[0]['details']->getMessage());
 	}
 	
-	public function testCallsAtRunningState_AddsFalseResultWithUserFailDetailsAndPassedMessageToResultBufferOfCurrentRunningSpec()
-	{
+	public function testCallsAtRunningState_AddsFalseResultWithUserFailDetailsAndPassedMessageToResultBufferOfCurrentRunningSpec() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -74,8 +71,7 @@ class FailTest extends \spectrum\tests\Test
 		$this->assertSame('some fail message for spec ending2 of spec parent2', $results[0]['details']->getMessage());
 	}
 	
-	public function testCallsAtRunningState_MessageIsNotSet_AddsFalseResultWithUserFailDetailsAndEmptyMessageToResultBufferOfCurrentRunningSpec()
-	{
+	public function testCallsAtRunningState_MessageIsNotSet_AddsFalseResultWithUserFailDetailsAndEmptyMessageToResultBufferOfCurrentRunningSpec() {
 		\spectrum\tests\Test::$temp["resultBuffers"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -94,8 +90,7 @@ class FailTest extends \spectrum\tests\Test
 		$this->assertSame(null, $results[0]['details']->getMessage());
 	}
 	
-	public function testCallsAtBuildingState_ThrowsException()
-	{
+	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Builder "fail" should be call only at running state', function(){
 			\spectrum\builders\fail("aaa");
 		});

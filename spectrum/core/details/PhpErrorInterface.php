@@ -6,8 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\details;
 
-interface PhpErrorInterface
-{
+interface PhpErrorInterface {
 	public function __construct($errorLevel, $errorMessage, $file, $line);
 	public function getErrorLevel();
 	public function getErrorMessage();

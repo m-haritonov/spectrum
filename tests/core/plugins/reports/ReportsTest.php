@@ -11,24 +11,21 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../../init.php';
 
-class ReportsTest extends \spectrum\tests\Test
-{
-	protected function setUp()
-	{
+class ReportsTest extends \spectrum\tests\Test {
+	protected function setUp() {
 		parent::setUp();
 		$this->restoreClassStaticProperties('\spectrum\config');
 	}
 	
-	public function testOutputFormatIsHtml_AllowsOutputDataBuffering()
-	{
-		ob_start(function($buffer) use(&$html){
+	public function testOutputFormatIsHtml_AllowsOutputDataBuffering() {
+		ob_start(function($buffer) use(&$html) {
 			$html .= $buffer;
 			return ''; 
 		});
 		
 		config::setOutputFormat('html');
 		$spec = new Spec();
-		$spec->test->setFunction(function(){ throw new \Exception('<>&"\''); });
+		$spec->test->setFunction(function() { throw new \Exception('<>&"\''); });
 		$spec->run();
 		
 		ob_end_clean();
@@ -40,9 +37,8 @@ class ReportsTest extends \spectrum\tests\Test
 		$this->assertContains('</html>', $html);
 	}
 	
-	public function testOutputFormatIsHtml_GeneratesValidXhtml1StrictCode()
-	{
-		ob_start(function($buffer) use(&$html){
+	public function testOutputFormatIsHtml_GeneratesValidXhtml1StrictCode() {
+		ob_start(function($buffer) use(&$html) {
 			$html .= $buffer;
 			return ''; 
 		});
@@ -58,7 +54,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->matchers->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
-		$spec->test->setFunction(function() use($spec){
+		$spec->test->setFunction(function() use($spec) {
 			$assert = new Assert($spec, null);
 			$assert->__call('<>&"\'');
 		});
@@ -66,7 +62,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->matchers->add('<>&"\'', function(){ return '<>&"\''; });
-		$spec->test->setFunction(function() use($spec){
+		$spec->test->setFunction(function() use($spec) {
 			$object = new \stdClass();
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
@@ -94,7 +90,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
-		$spec->contextModifiers->add(function() use($spec){
+		$spec->contextModifiers->add(function() use($spec) {
 			$assert = new Assert($spec, null);
 			$assert->__call('<>&"\'');
 		}, 'before');
@@ -103,7 +99,7 @@ class ReportsTest extends \spectrum\tests\Test
 		$spec->bindParentSpec($groupSpec);
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ return '<>&"\''; });
-		$spec->contextModifiers->add(function() use($spec){
+		$spec->contextModifiers->add(function() use($spec) {
 			$object = new \stdClass();
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
@@ -216,11 +212,10 @@ class ReportsTest extends \spectrum\tests\Test
 		$this->assertSame(array(), libxml_get_errors());
 	}
 	
-	public function testOutputFormatIsNotSupported_ThrowsException()
-	{
+	public function testOutputFormatIsNotSupported_ThrowsException() {
 		config::setOutputFormat('aaa');
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Output format "aaa" is not supported by "Reports" plugin', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Output format "aaa" is not supported by "Reports" plugin', function() use($spec) {
 			$spec->run();
 		});
 	}

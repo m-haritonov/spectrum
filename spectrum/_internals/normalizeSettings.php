@@ -23,30 +23,30 @@ use spectrum\Exception;
  * @access private
  * @param mixed $settings
  */
-function normalizeSettings($settings)
-{
+function normalizeSettings($settings) {
 	$normalizedSettings = array(
 		'catchPhpErrors' => null,
 		'breakOnFirstPhpError' => null,
 		'breakOnFirstMatcherFail' => null,
 	);
 	
-	if ($settings !== null)
-	{
-		if (is_int($settings) || is_bool($settings))
+	if ($settings !== null) {
+		if (is_int($settings) || is_bool($settings)) {
 			$normalizedSettings['catchPhpErrors'] = $settings;
-		else if (is_array($settings))
-		{
-			foreach ($settings as $settingName => $settingValue)
-			{
-				if (in_array($settingName, array('catchPhpErrors', 'breakOnFirstPhpError', 'breakOnFirstMatcherFail')))
+		}
+		else if (is_array($settings)) {
+			foreach ($settings as $settingName => $settingValue) {
+				if (in_array($settingName, array('catchPhpErrors', 'breakOnFirstPhpError', 'breakOnFirstMatcherFail'))) {
 					$normalizedSettings[$settingName] = $settingValue;
-				else
+				}
+				else {
 					throw new Exception('Invalid setting "' . $settingName . '"');
+				}
 			}
 		}
-		else
+		else {
 			throw new Exception('Invalid settings variable type ("' . gettype($settings) . '")');
+		}
 	}
 	
 	return $normalizedSettings;

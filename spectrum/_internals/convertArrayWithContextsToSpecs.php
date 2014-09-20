@@ -12,38 +12,39 @@ use spectrum\Exception;
 /**
  * @access private
  */
-function convertArrayWithContextsToSpecs(array $contexts)
-{
+function convertArrayWithContextsToSpecs(array $contexts) {
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
 	$specs = array();
 	$closure = function(){};
 	
 	$num = 0;
-	foreach ($contexts as $title => $values)
-	{
+	foreach ($contexts as $title => $values) {
 		$num++;
-		if (is_array($values))
-		{
+		if (is_array($values)) {
 			$firstValue = reset($values);
-			if ((!is_string($title) || $title === '') && count($values) >= 1 && is_scalar($firstValue))
-			{
-				if (mb_strlen($firstValue, config::getInputCharset()) > 100)
+			if ((!is_string($title) || $title === '') && count($values) >= 1 && is_scalar($firstValue)) {
+				if (mb_strlen($firstValue, config::getInputCharset()) > 100) {
 					$title = mb_substr($firstValue, 0, 100, config::getInputCharset()) . '...';
-				else
+				}
+				else {
 					$title = $firstValue;
+				}
 			}
 			
 			$contextModifierFunction = function() use($values){
 				$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentData');
 				$data = $getCurrentDataFunction();
-				foreach ($values as $propertyName => $value)
+				foreach ($values as $propertyName => $value) {
 					$data->$propertyName = $value;
+				}
 			};
 		}
-		else if ($values instanceof $closure)
+		else if ($values instanceof $closure) {
 			$contextModifierFunction = $values;
-		else
+		}
+		else {
 			throw new Exception('The context row #' . $num . ' should be an array');
+		}
 		
 		$spec = new $specClass();
 		$spec->setName($title);

@@ -8,10 +8,8 @@ namespace spectrum\tests\_internals;
 
 require_once __DIR__ . '/../init.php';
 
-class TranslateTest extends \spectrum\tests\Test
-{
-	public function testReturnsStringWithReplacementValues()
-	{
+class TranslateTest extends \spectrum\tests\Test {
+	public function testReturnsStringWithReplacementValues() {
 		$this->assertSame('text "some text 1" is "some text 2"', \spectrum\_internals\translate('text "%aaa%" is "%bbb%"', array(
 			'%aaa%' => 'some text 1',
 			'%bbb%' => 'some text 2',

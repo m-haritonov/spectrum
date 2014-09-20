@@ -8,10 +8,8 @@ namespace spectrum\tests\_internals;
 
 require_once __DIR__ . '/../init.php';
 
-class ConvertArgumentsTest extends \spectrum\tests\Test
-{
-	public function providerCorrectArguments()
-	{
+class ConvertArgumentsTest extends \spectrum\tests\Test {
+	public function providerCorrectArguments() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -274,27 +272,32 @@ class ConvertArgumentsTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerCorrectArguments
 	 */
-	public function testCallsAtBuildingState_PassedArgumentsIsCorrect_ReturnsArrayWith4Elements($expectedArguments, $passedArguments)
-	{
-		$this->assertSame($expectedArguments, \spectrum\_internals\convertArguments($passedArguments, array(
-			array('closure:body'),                                                                                  // function(\Closure $body)
-			array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
-			array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
-			array('array|closure:contexts', 'closure:body', 'null|scalar|array:settings'),                          // function(array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
-			array('null|scalar:name', 'closure:body'),                                                              // function(null|scalar $name, \Closure $body)
-			array('null|scalar:name', 'closure:body', 'null|scalar|array:settings'),                                // function(null|scalar $name, \Closure $body, null|scalar|array $settings)
-			array('null|scalar:name', 'null|array|closure:contexts', 'closure:body'),                               // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body)
-			array('null|scalar:name', 'null|array|closure:contexts', 'closure:body', 'null|scalar|array:settings'), // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
-		), array(
-			'name' => null,
-			'contexts' => null,
-			'body' => null,
-			'settings' => null,
-		)));
+	public function testCallsAtBuildingState_PassedArgumentsIsCorrect_ReturnsArrayWith4Elements($expectedArguments, $passedArguments) {
+		$this->assertSame(
+			$expectedArguments,
+			\spectrum\_internals\convertArguments(
+				$passedArguments,
+				array(
+					array('closure:body'),                                                                                  // function(\Closure $body)
+					array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
+					array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
+					array('array|closure:contexts', 'closure:body', 'null|scalar|array:settings'),                          // function(array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
+					array('null|scalar:name', 'closure:body'),                                                              // function(null|scalar $name, \Closure $body)
+					array('null|scalar:name', 'closure:body', 'null|scalar|array:settings'),                                // function(null|scalar $name, \Closure $body, null|scalar|array $settings)
+					array('null|scalar:name', 'null|array|closure:contexts', 'closure:body'),                               // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body)
+					array('null|scalar:name', 'null|array|closure:contexts', 'closure:body', 'null|scalar|array:settings'), // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
+				),
+				array(
+					'name' => null,
+					'contexts' => null,
+					'body' => null,
+					'settings' => null,
+				)
+			)
+		);
 	}
 	
-	public function providerWrongArguments()
-	{
+	public function providerWrongArguments() {
 		return array(
 			array(array(null, null, null)),
 			array(array(null, null, null, null)),
@@ -305,22 +308,28 @@ class ConvertArgumentsTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerWrongArguments
 	 */
-	public function testCallsAtBuildingState_PassedArgumentsIsWrong_ReturnsNull($passedArguments)
-	{
-		$this->assertSame(null, \spectrum\_internals\convertArguments($passedArguments, array(
-			array('closure:body'),                                                                                  // function(\Closure $body)
-			array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
-			array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
-			array('array|closure:contexts', 'closure:body', 'null|scalar|array:settings'),                          // function(array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
-			array('null|scalar:name', 'closure:body'),                                                              // function(null|scalar $name, \Closure $body)
-			array('null|scalar:name', 'closure:body', 'null|scalar|array:settings'),                                // function(null|scalar $name, \Closure $body, null|scalar|array $settings)
-			array('null|scalar:name', 'null|array|closure:contexts', 'closure:body'),                               // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body)
-			array('null|scalar:name', 'null|array|closure:contexts', 'closure:body', 'null|scalar|array:settings'), // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
-		), array(
-			'name' => null,
-			'contexts' => null,
-			'body' => null,
-			'settings' => null,
-		)));
+	public function testCallsAtBuildingState_PassedArgumentsIsWrong_ReturnsNull($passedArguments) {
+		$this->assertSame(
+			null,
+			\spectrum\_internals\convertArguments(
+				$passedArguments,
+				array(
+					array('closure:body'),                                                                                  // function(\Closure $body)
+					array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)
+					array('array|closure:contexts', 'closure:body'),                                                        // function(array|\Closure $contexts, \Closure $body)
+					array('array|closure:contexts', 'closure:body', 'null|scalar|array:settings'),                          // function(array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
+					array('null|scalar:name', 'closure:body'),                                                              // function(null|scalar $name, \Closure $body)
+					array('null|scalar:name', 'closure:body', 'null|scalar|array:settings'),                                // function(null|scalar $name, \Closure $body, null|scalar|array $settings)
+					array('null|scalar:name', 'null|array|closure:contexts', 'closure:body'),                               // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body)
+					array('null|scalar:name', 'null|array|closure:contexts', 'closure:body', 'null|scalar|array:settings'), // function(null|scalar $name, null|array|\Closure $contexts, \Closure $body, null|scalar|array $settings)
+				),
+				array(
+					'name' => null,
+					'contexts' => null,
+					'body' => null,
+					'settings' => null,
+				)
+			)
+		);
 	}
 }

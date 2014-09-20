@@ -10,10 +10,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class ContextModifiersTest extends \spectrum\tests\Test
-{
-	public function testAdd_AddsFunctionAndType()
-	{
+class ContextModifiersTest extends \spectrum\tests\Test {
+	public function testAdd_AddsFunctionAndType() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -33,8 +31,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll());
 	}
 	
-	public function testAdd_ConvertsTypeToLowercase()
-	{
+	public function testAdd_ConvertsTypeToLowercase() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -48,17 +45,13 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll());
 	}
 	
-	public function testAdd_CallOnRun_ThrowsExceptionAndDoesNotAddValue()
-	{
+	public function testAdd_CallOnRun_ThrowsExceptionAndDoesNotAddValue() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->contextModifiers->add(function(){}, "before");
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -71,28 +64,25 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $spec->contextModifiers->getAll());
 	}
 	
-	public function testAdd_ThrowsExceptionForInvalidTypes()
-	{
+	public function testAdd_ThrowsExceptionForInvalidTypes() {
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec) {
 			$spec->contextModifiers->add(function(){}, 'aaa');
 		});
 	}
 
 /**/
 	
-	public function testGetAll_ThrowsExceptionForInvalidTypes()
-	{
+	public function testGetAll_ThrowsExceptionForInvalidTypes() {
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec) {
 			$spec->contextModifiers->getAll('aaa');
 		});
 	}
 	
 /**/
 	
-	public function testGetAll_TypeIsNull_ReturnsAllRowsWithAnyType()
-	{
+	public function testGetAll_TypeIsNull_ReturnsAllRowsWithAnyType() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -112,8 +102,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll());
 	}
 	
-	public function testGetAll_TypeIsNull_ReturnsEmptyArrayWhenNoRows()
-	{
+	public function testGetAll_TypeIsNull_ReturnsEmptyArrayWhenNoRows() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->contextModifiers->getAll());
 		
@@ -128,8 +117,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetAll_TypeIsBefore_ReturnsAllRowsWithSameType()
-	{
+	public function testGetAll_TypeIsBefore_ReturnsAllRowsWithSameType() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -145,8 +133,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll('before'));
 	}
 	
-	public function testGetAll_TypeIsBefore_PreservesIndexes()
-	{
+	public function testGetAll_TypeIsBefore_PreservesIndexes() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -166,8 +153,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll('before'));
 	}
 	
-	public function testGetAll_TypeIsBefore_IgnoresTypeCase()
-	{
+	public function testGetAll_TypeIsBefore_IgnoresTypeCase() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -181,8 +167,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll('BEFOre'));
 	}
 	
-	public function testGetAll_TypeIsBefore_ReturnsEmptyArrayWhenNoRows()
-	{
+	public function testGetAll_TypeIsBefore_ReturnsEmptyArrayWhenNoRows() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->contextModifiers->getAll('before'));
 		
@@ -197,8 +182,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetAll_TypeIsAfter_ReturnsAllRowsWithSameType()
-	{
+	public function testGetAll_TypeIsAfter_ReturnsAllRowsWithSameType() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -214,8 +198,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll('after'));
 	}
 	
-	public function testGetAll_TypeIsAfter_PreservesIndexes()
-	{
+	public function testGetAll_TypeIsAfter_PreservesIndexes() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -235,8 +218,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll('after'));
 	}
 	
-	public function testGetAll_TypeIsAfter_IgnoresTypeCase()
-	{
+	public function testGetAll_TypeIsAfter_IgnoresTypeCase() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -250,8 +232,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll('AFTer'));
 	}
 	
-	public function testGetAll_TypeIsAfter_ReturnsEmptyArrayWhenNoRows()
-	{
+	public function testGetAll_TypeIsAfter_ReturnsEmptyArrayWhenNoRows() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->contextModifiers->getAll('after'));
 		
@@ -266,18 +247,16 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetAllThroughRunningAncestors_ThrowsExceptionForInvalidTypes()
-	{
+	public function testGetAllThroughRunningAncestors_ThrowsExceptionForInvalidTypes() {
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Unknown type "aaa" in plugin "contextModifiers"', function() use($spec) {
 			$spec->contextModifiers->getAllThroughRunningAncestors('aaa');
 		});
 	}
 	
 /**/
 	
-	public function testGetAllThroughRunningAncestors_TypeIsBefore_ReturnsAllRowsWithSameType()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsBefore_ReturnsAllRowsWithSameType() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -293,8 +272,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAllThroughRunningAncestors('before'));
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsBefore_DoesNotPreserveIndexes()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsBefore_DoesNotPreserveIndexes() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -314,13 +292,13 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAllThroughRunningAncestors('before'));
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsBefore_ReturnsRowsInOrderFromRootRunningAncestorToSelf()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsBefore_ReturnsRowsInOrderFromRootRunningAncestorToSelf() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
 				\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors("before");
+			}
 		');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -369,8 +347,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsBefore_IgnoresTypeCase()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsBefore_IgnoresTypeCase() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -384,8 +361,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAllThroughRunningAncestors('BEFOre'));
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsBefore_ReturnsEmptyArrayWhenNoRows()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsBefore_ReturnsEmptyArrayWhenNoRows() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->contextModifiers->getAllThroughRunningAncestors('before'));
 		
@@ -400,8 +376,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetAllThroughRunningAncestors_TypeIsAfter_ReturnsAllRowsWithSameType()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsAfter_ReturnsAllRowsWithSameType() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -417,8 +392,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAllThroughRunningAncestors('after'));
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsAfter_DoesNotPreserveIndexes()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsAfter_DoesNotPreserveIndexes() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -438,13 +412,13 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAllThroughRunningAncestors('after'));
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsAfter_ReturnsRowsInOrderFromSelfToRootRunningAncestor()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsAfter_ReturnsRowsInOrderFromSelfToRootRunningAncestor() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
+			if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
 				\spectrum\tests\Test::$temp["returnValues"][] = $this->getOwnerSpec()->contextModifiers->getAllThroughRunningAncestors("after");
+			}
 		');
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern('
@@ -473,29 +447,31 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		\spectrum\tests\Test::$temp["specs"]['checkpoint']->contextModifiers->add($function8, 'after');
 		
 		\spectrum\tests\Test::$temp["specs"][0]->run();
-		$this->assertSame(array(
+		$this->assertSame(
 			array(
-				array('function' => $function8, 'type' => 'after'),
-				array('function' => $function7, 'type' => 'after'),
-				array('function' => $function4, 'type' => 'after'),
-				array('function' => $function3, 'type' => 'after'),
-				array('function' => $function2, 'type' => 'after'),
-				array('function' => $function1, 'type' => 'after'),
-				
+				array(
+					array('function' => $function8, 'type' => 'after'),
+					array('function' => $function7, 'type' => 'after'),
+					array('function' => $function4, 'type' => 'after'),
+					array('function' => $function3, 'type' => 'after'),
+					array('function' => $function2, 'type' => 'after'),
+					array('function' => $function1, 'type' => 'after'),
+					
+				),
+				array(
+					array('function' => $function8, 'type' => 'after'),
+					array('function' => $function7, 'type' => 'after'),
+					array('function' => $function6, 'type' => 'after'),
+					array('function' => $function5, 'type' => 'after'),
+					array('function' => $function2, 'type' => 'after'),
+					array('function' => $function1, 'type' => 'after'),
+				),
 			),
-			array(
-				array('function' => $function8, 'type' => 'after'),
-				array('function' => $function7, 'type' => 'after'),
-				array('function' => $function6, 'type' => 'after'),
-				array('function' => $function5, 'type' => 'after'),
-				array('function' => $function2, 'type' => 'after'),
-				array('function' => $function1, 'type' => 'after'),
-			),
-		), \spectrum\tests\Test::$temp["returnValues"]);
+			\spectrum\tests\Test::$temp["returnValues"]
+		);
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsAfter_IgnoresTypeCase()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsAfter_IgnoresTypeCase() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -509,8 +485,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAllThroughRunningAncestors('AFTer'));
 	}
 	
-	public function testGetAllThroughRunningAncestors_TypeIsAfter_ReturnsEmptyArrayWhenNoRows()
-	{
+	public function testGetAllThroughRunningAncestors_TypeIsAfter_ReturnsEmptyArrayWhenNoRows() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->contextModifiers->getAllThroughRunningAncestors('after'));
 		
@@ -525,8 +500,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRemove_RemovesValueByIndex()
-	{
+	public function testRemove_RemovesValueByIndex() {
 		$spec = new Spec();
 		$spec->contextModifiers->add(function(){}, 'before');
 		$spec->contextModifiers->add(function(){}, 'after');
@@ -535,8 +509,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $spec->contextModifiers->getAll());
 	}
 
-	public function testRemove_PreventsIndexes()
-	{
+	public function testRemove_PreventsIndexes() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -567,17 +540,13 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll());
 	}
 	
-	public function testRemove_CallOnRun_ThrowsExceptionAndDoesNotRemoveValue()
-	{
+	public function testRemove_CallOnRun_ThrowsExceptionAndDoesNotRemoveValue() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->contextModifiers->remove(0);
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -597,8 +566,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRemoveAll_RemovesAllValues()
-	{
+	public function testRemoveAll_RemovesAllValues() {
 		$spec = new Spec();
 		$spec->contextModifiers->add(function(){}, 'before');
 		$spec->contextModifiers->add(function(){}, 'after');
@@ -606,8 +574,7 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $spec->contextModifiers->getAll());
 	}
 
-	public function testRemoveAll_DoesNotPreventIndexes()
-	{
+	public function testRemoveAll_DoesNotPreventIndexes() {
 		$spec = new Spec();
 		
 		$spec->contextModifiers->add(function(){}, 'before');
@@ -622,17 +589,13 @@ class ContextModifiersTest extends \spectrum\tests\Test
 		), $spec->contextModifiers->getAll());
 	}
 	
-	public function testRemoveAll_CallOnRun_ThrowsExceptionAndDoesNotRemoveValues()
-	{
+	public function testRemoveAll_CallOnRun_ThrowsExceptionAndDoesNotRemoveValues() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->contextModifiers->removeAll();
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');

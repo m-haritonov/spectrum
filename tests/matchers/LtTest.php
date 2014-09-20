@@ -9,10 +9,8 @@ namespace spectrum\tests\matchers;
 require_once __DIR__ . '/../init.php';
 require_once __DIR__ . '/../../spectrum/matchers/lt.php';
 
-class LtTest extends \spectrum\tests\Test
-{
-	public function test()
-	{
+class LtTest extends \spectrum\tests\Test {
+	public function test() {
 		$this->assertSame(true, \spectrum\matchers\lt(10, 20));
 
 		$this->assertSame(false, \spectrum\matchers\lt(10, 10));

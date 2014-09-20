@@ -9,34 +9,31 @@ namespace spectrum\core\plugins\reports\drivers\html;
 use spectrum\config;
 use spectrum\core\SpecInterface;
 
-class html
-{
-	static public function getContentBeforeSpec(SpecInterface $spec)
-	{
+class html {
+	static public function getContentBeforeSpec(SpecInterface $spec) {
 		$output = '';
 		
-		if (!$spec->getParentSpecs())
-		{
+		if (!$spec->getParentSpecs()) {
 			$output .= static::getHeader() . static::getHtmlEscapedOutputNewline();
 			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline();
 		}
 
 		$specListHtml = static::callComponentMethod('specList', 'getHtmlBegin', array($spec));
-		if ($specListHtml != '')
+		if ($specListHtml != '') {
 			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListHtml) . static::getHtmlEscapedOutputNewline();
+		}
 		
 		return $output;
 	}
 
-	static public function getContentAfterSpec(SpecInterface $spec)
-	{
+	static public function getContentAfterSpec(SpecInterface $spec) {
 		$output = '';
 		$specListHtml = static::callComponentMethod('specList', 'getHtmlEnd', array($spec));
-		if ($specListHtml != '')
+		if ($specListHtml != '') {
 			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListHtml) . static::getHtmlEscapedOutputNewline();
+		}
 		
-		if (!$spec->getParentSpecs())
-		{
+		if (!$spec->getParentSpecs()) {
 			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline();
 			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtmlForUpdate', array($spec))) . static::getHtmlEscapedOutputNewline();
 			$output .= static::getFooter();
@@ -45,8 +42,7 @@ class html
 		return $output;
 	}
 	
-	static protected function getHeader()
-	{
+	static protected function getHeader() {
 		return
 			static::getHtmlDeclaration() . static::getHtmlEscapedOutputNewline() .
 			static::getHtmlOpenTag() . static::getHtmlEscapedOutputNewline() .
@@ -61,13 +57,11 @@ class html
 			'<body><div>';
 	}
 	
-	static protected function getHtmlDeclaration()
-	{
+	static protected function getHtmlDeclaration() {
 		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 	}
 
-	static protected function getHtmlOpenTag()
-	{
+	static protected function getHtmlOpenTag() {
 		return
 			'<!--[if IE 6]><html class="c-browser-ie6" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
 			'<!--[if IE 7]><html class="c-browser-ie7" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
@@ -76,13 +70,11 @@ class html
 			'<!--[if !IE]>--><html xmlns="http://www.w3.org/1999/xhtml"><!--<![endif]-->';
 	}
 
-	static protected function getFooter()
-	{
+	static protected function getFooter() {
 		return '</div></body>' . static::getHtmlEscapedOutputNewline() . '</html>';
 	}
 	
-	static protected function getCommonStyles()
-	{
+	static protected function getCommonStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			html { background: #fff; }
 			body { padding: 10px; font-family: Verdana, sans-serif; font-size: 0.75em; background: #fff; color: #000; }
@@ -94,8 +86,7 @@ class html
 		/*]]>*/</style>', 2);
 	}
 
-	static protected function getCommonScripts()
-	{
+	static protected function getCommonScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			spectrum = window.spectrum || {};
 			spectrum.tools = {
@@ -103,8 +94,7 @@ class html
 				 * @param {HTMLElement} node
 				 * @param {String} className
 				 */
-				hasClass: function(node, className)
-				{
+				hasClass: function(node, className) {
 					return (node.className.match(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)")) !== null);
 				},
 				
@@ -112,14 +102,13 @@ class html
 				 * @param {HTMLElement} node
 				 * @param {String} classNamePrefix
 				 */
-				getClassesByPrefix: function(node, classNamePrefix)
-				{
+				getClassesByPrefix: function(node, classNamePrefix) {
 					var results = [];
 					var classNames = node.className.split(/\\s+/);
-					for (var i = 0; i < classNames.length; i++)
-					{
-						if (classNames[i].indexOf(classNamePrefix) === 0)
+					for (var i = 0; i < classNames.length; i++) {
+						if (classNames[i].indexOf(classNamePrefix) === 0) {
 							results.push(classNames[i]);
+						}
 					}
 					
 					return results;
@@ -129,40 +118,40 @@ class html
 				 * @param {HTMLElement|NodeList|String} node
 				 * @param {String} className
 				 */
-				addClass: function(node, className)
-				{
-					if (typeof(node) == "string")
+				addClass: function(node, className) {
+					if (typeof(node) == "string") {
 						node = document.querySelectorAll(node);
-
-					if (node instanceof (NodeList || StaticNodeList))
-					{
-						for (var i = 0; i < node.length; i++)
-							arguments.callee(node[i], className);
 					}
-					else if (!spectrum.tools.hasClass(node, className))
+
+					if (node instanceof (NodeList || StaticNodeList)) {
+						for (var i = 0; i < node.length; i++) {
+							arguments.callee(node[i], className);
+						}
+					} else if (!spectrum.tools.hasClass(node, className)) {
 						node.className += " " + className;
+					}
 				},
 
 				/**
 				 * @param {HTMLElement|NodeList|String} node
 				 * @param {String} className
 				 */
-				removeClass: function(node, className)
-				{
-					if (typeof(node) == "string")
+				removeClass: function(node, className) {
+					if (typeof(node) == "string") {
 						node = document.querySelectorAll(node);
-
-					if (node instanceof (NodeList || StaticNodeList))
-					{
-						for (var i = 0; i < node.length; i++)
-							arguments.callee(node[i], className);
 					}
-					else if (spectrum.tools.hasClass(node, className))
+
+					if (node instanceof (NodeList || StaticNodeList)) {
+						for (var i = 0; i < node.length; i++) {
+							arguments.callee(node[i], className);
+						}
+					}
+					else if (spectrum.tools.hasClass(node, className)) {
 						node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
+					}
 				},
 				
-				getExecutingScriptNode: function()
-				{
+				getExecutingScriptNode: function() {
 					var scripts = document.getElementsByTagName("script");
 					return scripts[scripts.length - 1];
 				},
@@ -172,140 +161,127 @@ class html
 				 * @param {String} eventName
 				 * @param {Function} callback
 				 */
-				addEventListener: function(node, eventName, callback)
-				{
-					var fixedCallback = function(event)
-					{
+				addEventListener: function(node, eventName, callback) {
+					var fixedCallback = function(event) {
 						event = event || window.event;
 						
-						if (!event.isFixed)
-						{
+						if (!event.isFixed) {
 							event.isFixed = true;
 							event.preventDefault = event.preventDefault || function(){ this.returnValue = false; };
 							event.stopPropagation = event.stopPropagation || function(){ this.cancelBubble = true; };
 							
-							if (!event.target)
+							if (!event.target) {
 								event.target = event.srcElement;
+							}
 							
-							if (!event.relatedTarget && event.fromElement)
+							if (!event.relatedTarget && event.fromElement) {
 								event.relatedTarget = event.fromElement == event.target ? event.toElement : event.fromElement;
+							}
 							
-							if (event.pageX == null && event.clientX != null)
-							{
+							if (event.pageX == null && event.clientX != null) {
 								var html = document.documentElement;
 								var body = document.body;
 								event.pageX = event.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0);
 								event.pageY = event.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0);
 							}
 							
-							if (!event.which && event.button)
+							if (!event.which && event.button) {
 								event.which = (event.button & 1 ? 1 : (event.button & 2 ? 3 : (event.button & 4 ? 2 : 0)));
+							}
 						}
 						
 						return callback(event);
 					};
 				
-					if (node.addEventListener)
+					if (node.addEventListener) {
 						node.addEventListener(eventName, fixedCallback, false);
-					else if (node.attachEvent)
+					} else if (node.attachEvent) {
 						node.attachEvent("on" + eventName, fixedCallback);
+					}
 				},
 
 				/**
 				 * @param {HTMLElement} node
 				 * @param {String} eventName
 				 */
-				dispatchEvent: function(node, eventName)
-				{
-					if (document.createEvent)
-					{
+				dispatchEvent: function(node, eventName) {
+					if (document.createEvent) {
 						var e = document.createEvent("HTMLEvents");
 						e.initEvent(eventName, true, true);
 						node.dispatchEvent(e);
-					}
-					else
+					} else {
 						node.fireEvent("on" + eventName, document.createEventObject());
+					}
 				}
 			};
 		/*]]>*/</script>', 2);
 	}
 	
-	static protected function collectAllComponentStyles()
-	{
+	static protected function collectAllComponentStyles() {
 		$output = '';
-		foreach (config::getAllClassReplacements() as $class)
-		{
-			if (mb_stripos($class, '\spectrum\core\plugins\reports\drivers\html\components\\', null, 'us-ascii') === 0)
-			{
+		foreach (config::getAllClassReplacements() as $class) {
+			if (mb_stripos($class, '\spectrum\core\plugins\reports\drivers\html\components\\', null, 'us-ascii') === 0) {
 				$styles = $class::getStyles();
-				if ($styles != '')
+				if ($styles != '') {
 					$output .= $styles . static::getHtmlEscapedOutputNewline(2);
+				}
 			}
 		}
 
 		return $output;
 	}
 
-	static protected function collectAllComponentScripts()
-	{
+	static protected function collectAllComponentScripts() {
 		$output = '';
-		foreach (config::getAllClassReplacements() as $class)
-		{
-			if (mb_stripos($class, '\spectrum\core\plugins\reports\drivers\html\components\\', null, 'us-ascii') === 0)
-			{
+		foreach (config::getAllClassReplacements() as $class) {
+			if (mb_stripos($class, '\spectrum\core\plugins\reports\drivers\html\components\\', null, 'us-ascii') === 0) {
 				$scripts = $class::getScripts();
-				if ($scripts != '')
+				if ($scripts != '') {
 					$output .= $scripts . static::getHtmlEscapedOutputNewline(2);
+				}
 			}
 		}
 
 		return $output;
 	}
 	
-	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array())
-	{
+	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array()) {
 		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\components\\' . $componentShortName), $methodName), $arguments);
 	}
 	
-	static protected function escapeHtml($html)
-	{
+	static protected function escapeHtml($html) {
 		return htmlspecialchars($html, ENT_QUOTES, 'iso-8859-1');
 	}
 
-	static protected function getHtmlEscapedOutputIndention($repeat = 1)
-	{
+	static protected function getHtmlEscapedOutputIndention($repeat = 1) {
 		return str_repeat(static::escapeHtml(config::getOutputIndention()), $repeat);
 	}
 	
-	static protected function getHtmlEscapedOutputNewline($repeat = 1)
-	{
+	static protected function getHtmlEscapedOutputNewline($repeat = 1) {
 		return str_repeat(static::escapeHtml(config::getOutputNewline()), $repeat);
 	}
 	
-	static protected function prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($text, $repeat = 1)
-	{
-		if ($text == '')
+	static protected function prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($text, $repeat = 1) {
+		if ($text == '') {
 			return $text;
+		}
 		
 		$indention = static::getHtmlEscapedOutputIndention($repeat);
 		$newline = static::getHtmlEscapedOutputNewline();
 		return $indention . str_replace($newline, $newline . $indention, $text);
 	}
 	
-	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0)
-	{
+	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0) {
 		$function = config::getFunctionReplacement('\spectrum\_internals\formatTextForOutput');
 		return $function($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
 	}
 	
-	static protected function translateAndEscapeHtml($string, array $replacement = array())
-	{
+	static protected function translateAndEscapeHtml($string, array $replacement = array()) {
 		$translateFunction = config::getFunctionReplacement('\spectrum\_internals\translate');
 		return static::escapeHtml($translateFunction($string, $replacement));
 	}
 	
-	static protected function convertToOutputCharset($string, $inputCharset = null)
-	{
+	static protected function convertToOutputCharset($string, $inputCharset = null) {
 		$function = config::getFunctionReplacement('\spectrum\_internals\convertCharset');
 		return $function($string, $inputCharset);
 	}

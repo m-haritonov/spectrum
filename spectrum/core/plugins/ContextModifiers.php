@@ -9,17 +9,14 @@ namespace spectrum\core\plugins;
 use spectrum\config;
 use spectrum\Exception;
 
-class ContextModifiers extends \spectrum\core\plugins\Plugin
-{
+class ContextModifiers extends \spectrum\core\plugins\Plugin {
 	protected $items = array();
 	
-	static public function getAccessName()
-	{
+	static public function getAccessName() {
 		return 'contextModifiers';
 	}
 	
-	public function add($function, $type = 'before')
-	{
+	public function add($function, $type = 'before') {
 		$this->handleModifyDeny(__FUNCTION__);
 		
 		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
@@ -33,22 +30,20 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 		);
 	}
 	
-	public function getAll($type = null)
-	{
-		if ($type === null)
+	public function getAll($type = null) {
+		if ($type === null) {
 			return $this->items;
-		else
-		{
+		} else {
 			$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 			$type = $convertLatinCharsToLowerCaseFunction($type);
 			
 			$this->checkType($type);
 			
 			$resultItems = array();
-			foreach ($this->items as $index => $item)
-			{
-				if ((string) $item['type'] === (string) $type)
+			foreach ($this->items as $index => $item) {
+				if ((string) $item['type'] === (string) $type) {
 					$resultItems[$index] = $item;
+				}
 			}
 			
 			return $resultItems;
@@ -59,8 +54,7 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 	 * "before" type: order is from parent to child
 	 * "after" type: order is from child to parent
 	 */
-	public function getAllThroughRunningAncestors($type = 'before')
-	{
+	public function getAllThroughRunningAncestors($type = 'before') {
 		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction($type);
 		
@@ -69,34 +63,33 @@ class ContextModifiers extends \spectrum\core\plugins\Plugin
 		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
 		
 		$result = array();
-		foreach ($ancestorSpecs as $spec)
-		{
-			if ((string) $type === 'before')
+		foreach ($ancestorSpecs as $spec) {
+			if ((string) $type === 'before') {
 				$result = array_merge($spec->{static::getAccessName()}->getAll('before'), $result);
-			else
+			}
+			else {
 				$result = array_merge($result, array_reverse($spec->{static::getAccessName()}->getAll('after')));
+			}
 		}
 
 		return $result;
 	}
 	
-	public function remove($index)
-	{
+	public function remove($index) {
 		$this->handleModifyDeny(__FUNCTION__);
 		unset($this->items[$index]);
 	}
 
-	public function removeAll()
-	{
+	public function removeAll() {
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->items = array();
 	}
 	
 /**/
 	
-	protected function checkType($type)
-	{
-		if ($type != 'before' && $type != 'after')
+	protected function checkType($type) {
+		if ($type != 'before' && $type != 'after') {
 			throw new Exception('Unknown type "' . $type . '" in plugin "' . static::getAccessName() . '"');
+		}
 	}
 }

@@ -11,18 +11,17 @@ use spectrum\config;
 /**
  * @access private
  */
-function getRootSpec()
-{
+function getRootSpec() {
 	static $rootSpec = null;
 	
-	if (!isset($rootSpec))
-	{
+	if (!isset($rootSpec)) {
 		$specClass = config::getClassReplacement('\spectrum\core\Spec');
 		$rootSpec = new $specClass;
 		
 		$loadBaseMatchersFunction = config::getFunctionReplacement('\spectrum\_internals\loadBaseMatchers');
-		foreach ($loadBaseMatchersFunction() as $name => $function)
+		foreach ($loadBaseMatchersFunction() as $name => $function) {
 			$rootSpec->matchers->add($name, $function);
+		}
 	}
 	
 	return $rootSpec;

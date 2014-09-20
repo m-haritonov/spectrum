@@ -8,10 +8,8 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 
 use spectrum\core\SpecInterface;
 
-class totalResult extends component
-{
-	static public function getStyles()
-	{
+class totalResult extends component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-totalResult-result { color: #aaa; font-weight: bold; }
 			.c-totalResult-result.fail { color: #a31010; }
@@ -22,22 +20,20 @@ class totalResult extends component
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getScripts()
-	{
+	static public function getScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			spectrum = window.spectrum || {};
 			spectrum.totalResult = {
-				update: function()
-				{
+				update: function() {
 					var totalResultNode = spectrum.tools.getExecutingScriptNode();
-					while (!spectrum.tools.hasClass(totalResultNode, "c-totalResult-update"))
+					while (!spectrum.tools.hasClass(totalResultNode, "c-totalResult-update")) {
 						totalResultNode = totalResultNode.parentNode;
+					}
 		
 					var result = totalResultNode.querySelectorAll(".result")[0].innerHTML;
 					var title = totalResultNode.querySelectorAll(".title")[0].innerHTML;
 					var resultNodes = document.querySelectorAll(".c-totalResult-result." + spectrum.tools.getClassesByPrefix(totalResultNode, "id-")[0]);
-					for (var i = 0; i < resultNodes.length; i++)
-					{
+					for (var i = 0; i < resultNodes.length; i++) {
 						resultNodes[i].className += " " + result;
 						resultNodes[i].innerHTML = title;
 					}
@@ -46,16 +42,14 @@ class totalResult extends component
 		/*]]>*/</script>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec)
-	{
+	static public function getHtml(SpecInterface $spec) {
 		return
 			'<span class="c-totalResult-result id-' . static::escapeHtml($spec->getRunId()) . '">' .
 				static::translateAndEscapeHtml('wait...') .
 			'</span>';
 	}
 	
-	static public function getHtmlForUpdate(SpecInterface $spec)
-	{
+	static public function getHtmlForUpdate(SpecInterface $spec) {
 		$resultName = static::getResultName($spec->getResultBuffer()->getTotalResult());
 		return
 			'<span class="c-totalResult-update id-' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline() .
@@ -65,13 +59,13 @@ class totalResult extends component
 			'</span>';
 	}
 
-	static protected function getResultName($result)
-	{
-		if ($result === false)
+	static protected function getResultName($result) {
+		if ($result === false) {
 			return 'fail';
-		else if ($result === true)
+		} else if ($result === true) {
 			return 'success';
-		else
+		} else {
 			return 'empty';
+		}
 	}
 }

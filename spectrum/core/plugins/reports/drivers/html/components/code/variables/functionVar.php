@@ -6,10 +6,8 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
-class functionVar extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class functionVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-code-variables-function { font-size: 12px; }
 			.c-code-variables-function .type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
@@ -18,8 +16,7 @@ class functionVar extends \spectrum\core\plugins\reports\drivers\html\components
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml($variable, $inputCharset = null)
-	{
+	static public function getHtml($variable, $inputCharset = null) {
 		return
 			'<span class="c-code-variables-function">' .
 				'<span class="type">' . static::translateAndEscapeHtml('function') . '</span> ' .

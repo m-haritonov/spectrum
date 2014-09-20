@@ -6,10 +6,8 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
-class floatVar extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class floatVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-code-variables-float { font-size: 12px; }
 			.c-code-variables-float .type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
@@ -18,8 +16,7 @@ class floatVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 	
-	static public function getHtml($variable)
-	{
+	static public function getHtml($variable) {
 		return
 			'<span class="c-code-variables-float">' .
 				'<span class="type">' . static::translateAndEscapeHtml('float') . '</span> ' .

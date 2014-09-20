@@ -8,10 +8,8 @@ namespace spectrum\tests\_internals;
 
 require_once __DIR__ . '/../init.php';
 
-class GetCurrentDataTest extends \spectrum\tests\Test
-{
-	public function testCallsAtRunningState_ReturnsDataOfCurrentRunningSpec()
-	{
+class GetCurrentDataTest extends \spectrum\tests\Test {
+	public function testCallsAtRunningState_ReturnsDataOfCurrentRunningSpec() {
 		$specs = $this->createSpecsByVisualPattern('
 			  __0__
 			 /  |  \
@@ -24,9 +22,8 @@ class GetCurrentDataTest extends \spectrum\tests\Test
 		
 		$dataObjects = array();
 		$returnValues = array();
-		foreach ($specs as $spec)
-		{
-			$spec->test->setFunction(function() use(&$dataObjects, &$returnValues, $spec){
+		foreach ($specs as $spec) {
+			$spec->test->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
 				$dataObjects[] = $spec->test->getData();
 				$returnValues[] = \spectrum\_internals\getCurrentData();
 			});

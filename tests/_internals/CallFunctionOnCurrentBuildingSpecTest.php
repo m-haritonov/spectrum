@@ -10,10 +10,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class CallFunctionOnCurrentBuildingSpecTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_CallsPassedFunctionOnPassedBuildingSpec()
-	{
+class CallFunctionOnCurrentBuildingSpecTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_CallsPassedFunctionOnPassedBuildingSpec() {
 		$spec = new Spec();
 		$buildingSpec = null;
 		\spectrum\_internals\callFunctionOnCurrentBuildingSpec(function() use(&$buildingSpec){
@@ -23,8 +21,7 @@ class CallFunctionOnCurrentBuildingSpecTest extends \spectrum\tests\Test
 		$this->assertSame($spec, $buildingSpec);
 	}
 	
-	public function testCallsAtBuildingState_RestoresBuildingSpecAfterCall()
-	{
+	public function testCallsAtBuildingState_RestoresBuildingSpecAfterCall() {
 		$spec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($spec);
 		\spectrum\_internals\callFunctionOnCurrentBuildingSpec(function(){}, new Spec());
@@ -32,8 +29,7 @@ class CallFunctionOnCurrentBuildingSpecTest extends \spectrum\tests\Test
 		$this->assertSame($spec, \spectrum\_internals\getCurrentBuildingSpec());
 	}
 	
-	public function testCallsAtBuildingState_DoesNotPassArgumentsToCalleeFunction()
-	{
+	public function testCallsAtBuildingState_DoesNotPassArgumentsToCalleeFunction() {
 		$passedArguments = null;
 		\spectrum\_internals\callFunctionOnCurrentBuildingSpec(function() use(&$passedArguments){
 			$passedArguments = func_get_args();
@@ -42,8 +38,7 @@ class CallFunctionOnCurrentBuildingSpecTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $passedArguments);
 	}
 
-	public function testCallsAtBuildingState_ReturnsReturnValueOfPassedFunction()
-	{
+	public function testCallsAtBuildingState_ReturnsReturnValueOfPassedFunction() {
 		$this->assertSame('aaa', \spectrum\_internals\callFunctionOnCurrentBuildingSpec(function(){
 			return 'aaa';
 		}, new Spec()));

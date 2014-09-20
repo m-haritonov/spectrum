@@ -9,10 +9,8 @@ namespace spectrum\tests\matchers;
 require_once __DIR__ . '/../init.php';
 require_once __DIR__ . '/../../spectrum/matchers/gt.php';
 
-class GtTest extends \spectrum\tests\Test
-{
-	public function test()
-	{
+class GtTest extends \spectrum\tests\Test {
+	public function test() {
 		$this->assertSame(true, \spectrum\matchers\gt(20, 10));
 
 		$this->assertSame(false, \spectrum\matchers\gt(20, 20));

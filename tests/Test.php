@@ -19,8 +19,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	private $classStaticPropertyBackups = array();
 	private $objectPropertyBackups = array();
 
-	protected function setUp()
-	{
+	protected function setUp() {
 		parent::setUp();
 		
 		\spectrum\_internals\setCurrentBuildingSpec(null);
@@ -33,8 +32,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		\spectrum\tests\Test::$temp = null;
 	}
 	
-	protected function tearDown()
-	{
+	protected function tearDown() {
 		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
 		$this->restoreClassStaticProperties('\spectrum\config');
 		$this->restoreObjectProperties(\spectrum\_internals\getRootSpec());
@@ -42,36 +40,30 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		parent::tearDown();
 	}
 
-	final protected function backupClassStaticProperties($className)
-	{
+	final protected function backupClassStaticProperties($className) {
 		$reflection = new \ReflectionClass($className);
 		$this->classStaticPropertyBackups[$className] = $reflection->getStaticProperties();
 	}
 
-	final protected function restoreClassStaticProperties($className)
-	{
-		foreach ($this->classStaticPropertyBackups[$className] as $name => $value)
-		{
+	final protected function restoreClassStaticProperties($className) {
+		foreach ($this->classStaticPropertyBackups[$className] as $name => $value) {
 			$propertyReflection = new \ReflectionProperty($className, $name);
 			$propertyReflection->setAccessible(true);
 			$propertyReflection->setValue(null, $value);
 		}
 	}
 	
-	final protected function backupObjectProperties($object)
-	{
+	final protected function backupObjectProperties($object) {
 		$this->objectPropertyBackups[spl_object_hash($object)] = serialize($object);
 	}
 
-	final protected function restoreObjectProperties($object)
-	{
+	final protected function restoreObjectProperties($object) {
 		$objectReflection = new \ReflectionClass($object);
 		
 		$backupObject = unserialize($this->objectPropertyBackups[spl_object_hash($object)]);
 		$backupObjectReflection = new \ReflectionClass($backupObject);
 		
-		foreach ($objectReflection->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE) as $objectProperty)
-		{
+		foreach ($objectReflection->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE) as $objectProperty) {
 			$objectProperty->setAccessible(true);
 			
 			$backupObjectProperty = $backupObjectReflection->getProperty($objectProperty->getName());
@@ -81,17 +73,15 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		}
 	}
 	
-	final protected function getUniqueArrayElements(array $array, $preserveKeys = true)
-	{
+	final protected function getUniqueArrayElements(array $array, $preserveKeys = true) {
 		$newArray = array();
-		foreach ($array as $key => $element)
-		{
-			if (!in_array($element, $newArray, true))
-			{
-				if ($preserveKeys)
+		foreach ($array as $key => $element) {
+			if (!in_array($element, $newArray, true)) {
+				if ($preserveKeys) {
 					$newArray[$key] = $element;
-				else
+				} else {
 					$newArray[] = $element;
+				}
 			}
 		}
 		
@@ -101,8 +91,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return string Class name string in "us-ascii" charset
 	 */
-	final protected function createClass($code)
-	{
+	final protected function createClass($code) {
 		$namespace = 'spectrum\tests\_testware\_dynamicClasses_';
 		$className = 'DynamicClass' . self::$classNumber;
 		self::$classNumber++;
@@ -117,8 +106,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		return '\\' . $namespace . '\\' . $className;
 	}
 	
-	final protected function createInterface($code)
-	{
+	final protected function createInterface($code) {
 		$namespace = 'spectrum\tests\_testware\_dynamicClasses_';
 		$className = 'DynamicClass' . self::$classNumber;
 		self::$classNumber++;
@@ -133,20 +121,16 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		return '\\' . $namespace . '\\' . $className;
 	}
 	
-	final protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart', $order = 100)
-	{
+	final protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart', $order = 100) {
 		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
+			class ... extends \spectrum\core\plugins\Plugin {
+				static public function getEventListeners() {
 					return array(
 						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => ' . $order . '),
 					);
 				}
 				
-				public function ' . $eventName . '()
-				{
+				public function ' . $eventName . '() {
 					' . $code . '
 				}
 			}
@@ -156,27 +140,24 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		return $pluginClassName;
 	}
 	
-	final protected function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null)
-	{
-		if ($callback === null)
-		{
+	final protected function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null) {
+		if ($callback === null) {
 			$message = null;
 			$callback = $stringInMessageOrCallback;
 		}
-		else
+		else {
 			$message = $stringInMessageOrCallback;
+		}
 
 		try {
 			$callback();
-		}
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			$actualClass = '\\' . get_class($e);
 			// Class found
-			if ((string) $actualClass === (string) $expectedClass || is_subclass_of($actualClass, $expectedClass))
-			{
-				if ($message !== null)
+			if ((string) $actualClass === (string) $expectedClass || is_subclass_of($actualClass, $expectedClass)) {
+				if ($message !== null) {
 					$this->assertSame($message, $e->getMessage());
+				}
 				
 				return null;
 			}
@@ -185,8 +166,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->fail('Exception "' . $expectedClass . '" not thrown');
 	}
 	
-	final protected function getProviderWithCorrectArgumentsForGroupAndTestBuilders($name = null, $contexts = null, $body = null, $settings = null)
-	{
+	final protected function getProviderWithCorrectArgumentsForGroupAndTestBuilders($name = null, $contexts = null, $body = null, $settings = null) {
 		$values = array(
 			'name' => array('some name text', 123),
 			'contexts' => array(array(), array('aaa' => array('bbb', 'ccc')), function(){}, function(){
@@ -230,69 +210,69 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		);
 		
 		$rows = array();
-		foreach ($values['name'] as $valueOfName)
-		{
-			foreach ($values['contexts'] as $valueOfContexts)
-			{
-				foreach ($values['body'] as $valueOfBody)
-				{
-					foreach ($values['settings'] as $valueOfSettings)
-					{
-						foreach ($patterns as $pattern)
-						{
-							if ($name !== null)
-							{
-								if (in_array('name', $pattern))
+		foreach ($values['name'] as $valueOfName) {
+			foreach ($values['contexts'] as $valueOfContexts) {
+				foreach ($values['body'] as $valueOfBody) {
+					foreach ($values['settings'] as $valueOfSettings) {
+						foreach ($patterns as $pattern) {
+							if ($name !== null) {
+								if (in_array('name', $pattern)) {
 									$valueOfName = $name;
-								else
+								} else {
 									continue;
+								}
 							}
 							
-							if ($contexts !== null)
-							{
-								if (in_array('contexts', $pattern))
+							if ($contexts !== null) {
+								if (in_array('contexts', $pattern)) {
 									$valueOfContexts = $contexts;
-								else
+								} else {
 									continue;
+								}
 							}
 							
-							if ($body !== null)
-							{
-								if (in_array('body', $pattern))
+							if ($body !== null) {
+								if (in_array('body', $pattern)) {
 									$valueOfBody = $body;
-								else
+								} else {
 									continue;
+								}
 							}
 							
-							if ($settings !== null)
-							{
-								if (in_array('settings', $pattern))
+							if ($settings !== null) {
+								if (in_array('settings', $pattern)) {
 									$valueOfSettings = $settings;
-								else
+								} else {
 									continue;
+								}
 							}
 							
 							$row = $pattern;
 							
 							$key = array_search('name', $pattern, true);
-							if ($key !== false)
+							if ($key !== false) {
 								$row[$key] = $valueOfName;
+							}
 								
 							$key = array_search('contexts', $pattern, true);
-							if ($key !== false)
+							if ($key !== false) {
 								$row[$key] = $valueOfContexts;
+							}
 								
 							$key = array_search('body', $pattern, true);
-							if ($key !== false)
+							if ($key !== false) {
 								$row[$key] = $valueOfBody;
+							}
 								
 							$key = array_search('settings', $pattern, true);
-							if ($key !== false)
+							if ($key !== false) {
 								$row[$key] = $valueOfSettings;
+							}
 							
 							$row = array($row);
-							if (!in_array($row, $rows, true))
+							if (!in_array($row, $rows, true)) {
 								$rows[] = $row;
+							}
 						}
 					}
 				}
@@ -381,25 +361,24 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	 * 
 	 * See "self::providerCreateSpecsByVisualPattern" method for more examples.
 	 */
-	final protected function createSpecsByVisualPattern($pattern, array $additionalRelations = array())
-	{
+	final protected function createSpecsByVisualPattern($pattern, array $additionalRelations = array()) {
 		$specs = array();
 		$lines = preg_split('/[\r\n]+/s', trim($pattern));
 		
 		// Process element lines
-		foreach ($lines as $lineIndex => $line)
-		{
-			if ($lineIndex % 2 != 0)
+		foreach ($lines as $lineIndex => $line) {
+			if ($lineIndex % 2 != 0) {
 				continue;
+			}
 			
 			$elements = preg_split('/\s+/s', trim($line));
-			foreach ($elements as $elementIndex => $elementName)
-			{
+			foreach ($elements as $elementIndex => $elementName) {
 				$elementName = preg_replace('/^_+|_+$/s', '', $elementName);
 				$elements[$elementIndex] = $elementName;
 				
-				if (array_key_exists($elementName, $specs))
+				if (array_key_exists($elementName, $specs)) {
 					throw new \Exception('Duplicate name is present on line ' . ($lineIndex + 1));
+				}
 
 				$specs[$elementName] = new Spec();
 			}
@@ -408,10 +387,10 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		}
 		
 		// Process relation lines
-		foreach ($lines as $lineIndex => $line)
-		{
-			if ($lineIndex % 2 == 0)
+		foreach ($lines as $lineIndex => $line) {
+			if ($lineIndex % 2 == 0) {
 				continue;
+			}
 			
 			$upperElements = $lines[$lineIndex - 1];
 			$lastUpperElementIndex = count($upperElements) - 1;
@@ -427,70 +406,64 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 			
 			$openedGroup = null;
 			
-			for ($i = 0; $i < $relationLength; $i++)
-			{
+			for ($i = 0; $i < $relationLength; $i++) {
 				$relation = (string) $relations[$i];
-				if ($relation === '+')
+				if ($relation === '+') {
 					$currentLowerElementIndex--;
-				else if ($currentUpperElementIndex > $lastUpperElementIndex || $currentLowerElementIndex > $lastLowerElementIndex)
+				} else if ($currentUpperElementIndex > $lastUpperElementIndex || $currentLowerElementIndex > $lastLowerElementIndex) {
 					break;
-				else if ($relation === '.')
+				} else if ($relation === '.') {
 					$currentUpperElementIndex++;
-				else if ($relation === '/')
-				{
-					if (!$openedGroup)
+				} else if ($relation === '/') {
+					if (!$openedGroup) {
 						$openedGroup = 'direct';
+					}
 					
 					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
 					
-					if ($openedGroup === 'direct')
+					if ($openedGroup === 'direct') {
 						$currentLowerElementIndex++;
-					else
-					{
+					} else {
 						$currentUpperElementIndex++;
 						$currentLowerElementIndex++;
 						$openedGroup = null;
 					}
-				}
-				else if ($relation === '|')
-				{
+				} else if ($relation === '|') {
 					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
 					
-					if ($openedGroup === 'direct')
+					if ($openedGroup === 'direct') {
 						$currentLowerElementIndex++;
-					else if ($openedGroup === 'reversed')
+					} else if ($openedGroup === 'reversed') {
 						$currentUpperElementIndex++;
-					else
-					{
+					} else {
 						$currentUpperElementIndex++;
 						$currentLowerElementIndex++;
 					}
-				}
-				else if ($relation === '\\')
-				{
-					if (!$openedGroup)
+				} else if ($relation === '\\') {
+					if (!$openedGroup) {
 						$openedGroup = 'reversed';
+					}
 					
 					$specs[$upperElements[$currentUpperElementIndex]]->bindChildSpec($specs[$lowerElements[$currentLowerElementIndex]]);
 					
-					if ($openedGroup === 'reversed')
+					if ($openedGroup === 'reversed') {
 						$currentUpperElementIndex++;
-					else
-					{
+					} else {
 						$currentUpperElementIndex++;
 						$currentLowerElementIndex++;
 						$openedGroup = null;
 					}
 				}
-				else
+				else {
 					throw new \Exception('Unknown relation "' . $relation . '" is present on line ' . ($lineIndex + 1));
+				}
 			}
 		}
 		
-		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames)
-		{
-			foreach ((array) $childrenSpecNames as $childSpecName)
+		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames) {
+			foreach ((array) $childrenSpecNames as $childSpecName) {
 				$specs[$parentSpecName]->bindChildSpec($specs[$childSpecName]);
+			}
 		}
 		
 		return $specs;
@@ -529,106 +502,104 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	 * 
 	 * @return array
 	 */
-	final protected function createSpecsByListPattern($pattern, array $additionalRelations = array())
-	{
+	final protected function createSpecsByListPattern($pattern, array $additionalRelations = array()) {
 		$pattern = trim($pattern);
 		
-		if (preg_match('/^\-\>/is', $pattern))
+		if (preg_match('/^\-\>/is', $pattern)) {
 			$isReverse = true;
-		else
+		} else {
 			$isReverse = false;
+		}
 
 		$specsWithNames = array();
 		$specsWithDepths = array();
 		
-		foreach (preg_split("/\r?\n/s", $pattern) as $key => $row)
-		{
+		foreach (preg_split("/\r?\n/s", $pattern) as $key => $row) {
 			list($depth, $className, $name) = $this->parseSpecTreeRow($row);
 			
-			if ($depth == 0)
+			if ($depth == 0) {
 				$isReverse = false;
-			else if ($isReverse)
+			} else if ($isReverse) {
 				$depth = -$depth;
+			}
 			
 			$className = '\spectrum\core\\' . $className;
 			
-			if ($name == '')
+			if ($name == '') {
 				$name = $key;
+			}
 			
-			if (array_key_exists($name, $specsWithNames))
+			if (array_key_exists($name, $specsWithNames)) {
 				throw new \Exception('Name "' . $name . '" is already used');
+			}
 			
 			$spec = new $className();
 			$specsWithNames[$name] = $spec;
 			$specsWithDepths[] = array('spec' => $spec, 'depth' => $depth);
 		}
 
-		foreach ($specsWithDepths as $key => $item)
-		{
-			if ($item['depth'] < 0)
-			{
+		foreach ($specsWithDepths as $key => $item) {
+			if ($item['depth'] < 0) {
 				$masterItem = $this->getNextItemWithMasterDepth($key, $specsWithDepths);
 				
-				if (!$masterItem)
+				if (!$masterItem) {
 					throw new \Exception('Depth can not jump more than one');
+				}
 				
 				$masterItem['spec']->bindParentSpec($item['spec']);
-			}
-			else if ($item['depth'] > 0)
-			{
+			} else if ($item['depth'] > 0) {
 				$masterItem = $this->getPrevItemWithMasterDepth($key, $specsWithDepths);
 				
-				if (!$masterItem)
+				if (!$masterItem) {
 					throw new \Exception('Depth can not jump more than one');
+				}
 				
 				$masterItem['spec']->bindChildSpec($item['spec']);
 			}
 		}
 		
-		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames)
-		{
-			foreach ((array) $childrenSpecNames as $childSpecName)
+		foreach ($additionalRelations as $parentSpecName => $childrenSpecNames) {
+			foreach ((array) $childrenSpecNames as $childSpecName) {
 				$specsWithNames[$parentSpecName]->bindChildSpec($specsWithNames[$childSpecName]);
+			}
 		}
 		
 		return $specsWithNames;
 	}
 	
-	private function getNextItemWithMasterDepth($itemKey, $specsWithDepths)
-	{
-		foreach ($specsWithDepths as $key => $item)
-		{
-			if ($key > $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] + 1)
+	private function getNextItemWithMasterDepth($itemKey, $specsWithDepths) {
+		foreach ($specsWithDepths as $key => $item) {
+			if ($key > $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] + 1) {
 				return $item;
+			}
 		}
 		
 		return null;
 	}
 	
-	private function getPrevItemWithMasterDepth($itemKey, $specsWithDepths)
-	{
+	private function getPrevItemWithMasterDepth($itemKey, $specsWithDepths) {
 		$masterItem = null;
-		foreach ($specsWithDepths as $key => $item)
-		{
-			if ($key < $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] - 1)
+		foreach ($specsWithDepths as $key => $item) {
+			if ($key < $itemKey && $item['depth'] == $specsWithDepths[$itemKey]['depth'] - 1) {
 				$masterItem = $item;
+			}
 		}
 		
 		return $masterItem;
 	}
 	
-	private function parseSpecTreeRow($row)
-	{
+	private function parseSpecTreeRow($row) {
 		$depth = null;
 		$row = str_replace('->', '', $row, $depth);
 		$parts = explode('(', $row);
 		
 		$className = trim($parts[0]);
 		
-		if (isset($parts[1]))
+		if (isset($parts[1])) {
 			$name = trim(str_replace(')', '', $parts[1]));
-		else
+		} else {
 			$name = '';
+		}
 
 		return array($depth, $className, $name);
 	}

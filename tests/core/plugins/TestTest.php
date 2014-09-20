@@ -11,10 +11,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class TestTest extends \spectrum\tests\Test
-{
-	public function testSetFunction_SetsNewFunction()
-	{
+class TestTest extends \spectrum\tests\Test {
+	public function testSetFunction_SetsNewFunction() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -26,17 +24,13 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame($function2, $spec->test->getFunction());
 	}
 	
-	public function testSetFunction_CallOnRun_ThrowsExceptionAndDoesNotChangeFunction()
-	{
+	public function testSetFunction_CallOnRun_ThrowsExceptionAndDoesNotChangeFunction() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->test->setFunction(function(){});
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -54,8 +48,7 @@ class TestTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetFunction_ReturnsSetFunction()
-	{
+	public function testGetFunction_ReturnsSetFunction() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
@@ -67,16 +60,14 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame($function2, $spec->test->getFunction());
 	}
 	
-	public function testGetFunction_ReturnsNullByDefault()
-	{
+	public function testGetFunction_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->test->getFunction());
 	}
 
 /**/
 	
-	public function testGetFunctionThroughRunningAncestors_ReturnsFunctionFromRunningAncestorOrFromSelf()
-	{
+	public function testGetFunctionThroughRunningAncestors_ReturnsFunctionFromRunningAncestorOrFromSelf() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -107,24 +98,21 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame(array($function2, $function3, $function4, $function1), \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testGetFunctionThroughRunningAncestors_ReturnsNullByDefault()
-	{
+	public function testGetFunctionThroughRunningAncestors_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->test->getFunctionThroughRunningAncestors());
 	}
 	
 /**/
 	
-	public function testGetData_ReturnsNullByDefault()
-	{
+	public function testGetData_ReturnsNullByDefault() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->test->getData());
 	}
 	
 /**/
 	
-	public function testFunctionCall_CallsFunctionOnEndingSpec()
-	{
+	public function testFunctionCall_CallsFunctionOnEndingSpec() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
@@ -137,8 +125,7 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame(1, $callCount);
 	}
 	
-	public function testFunctionCall_DoesNotCallsFunctionOnNotEndingSpecs()
-	{
+	public function testFunctionCall_DoesNotCallsFunctionOnNotEndingSpecs() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
@@ -152,8 +139,7 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame(array('notEndingSpec' => 0, 'endingSpec' => 1), $callCount);
 	}
 	
-	public function testFunctionCall_DoesNotPassArgumentsToFunction()
-	{
+	public function testFunctionCall_DoesNotPassArgumentsToFunction() {
 		$spec = new Spec();
 		$passedArguments = array();
 		$spec->test->setFunction(function() use(&$passedArguments){
@@ -164,8 +150,7 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame(array(array()), $passedArguments);
 	}
 	
-	public function testFunctionCall_GetsFunctionFromAncestorsOrSelf()
-	{
+	public function testFunctionCall_GetsFunctionFromAncestorsOrSelf() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
@@ -184,8 +169,7 @@ class TestTest extends \spectrum\tests\Test
 	}
 
 	
-	public function testFunctionCall_InitializesDataBeforeFunctionCall()
-	{
+	public function testFunctionCall_InitializesDataBeforeFunctionCall() {
 		$spec = new Spec();
 		$data = array();
 		$spec->test->setFunction(function() use(&$data, $spec){
@@ -196,8 +180,7 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertInstanceOf('\spectrum\core\Data', $data);
 	}
 	
-	public function testFunctionCall_SetsDataToNullAfterFunctionCall()
-	{
+	public function testFunctionCall_SetsDataToNullAfterFunctionCall() {
 		$spec = new Spec();
 		$spec->test->setFunction(function(){});
 		$spec->run();
@@ -205,8 +188,7 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertNull($spec->test->getData());
 	}
 	
-	public function testFunctionCall_CreatesNewInstanceOfDataOnEveryRun()
-	{
+	public function testFunctionCall_CreatesNewInstanceOfDataOnEveryRun() {
 		$spec = new Spec();
 		$dataItems = array();
 		$spec->test->setFunction(function() use(&$dataItems, $spec){
@@ -228,17 +210,17 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertNotSame($dataItems[2], $dataItems[0]);
 	}
 	
-	public function testFunctionCall_ApplyBeforeFunctionsToDataBeforeFunctionCallAndInDirectOrder()
-	{
+	public function testFunctionCall_ApplyBeforeFunctionsToDataBeforeFunctionCallAndInDirectOrder(){
 		$specs = $this->createSpecsByVisualPattern('
 			0
 			|
 			1
 		');
 		
-		$appendValueToDataVariable = function($value) use(&$specs){
-			if (!isset($specs[1]->test->getData()->aaa))
+		$appendValueToDataVariable = function($value) use(&$specs) {
+			if (!isset($specs[1]->test->getData()->aaa)) {
 				$specs[1]->test->getData()->aaa = '';
+			}
 			
 			$specs[1]->test->getData()->aaa .= $value;
 		};
@@ -254,7 +236,7 @@ class TestTest extends \spectrum\tests\Test
 		$specs[1]->contextModifiers->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'before');
 		
 		$properties = array();
-		$specs[1]->test->setFunction(function() use(&$properties, $specs){
+		$specs[1]->test->setFunction(function() use(&$properties, $specs) {
 			$properties[] = get_object_vars($specs[1]->test->getData());
 		});
 		
@@ -263,17 +245,17 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame(array(array('aaa' => '124568')), $properties);
 	}
 	
-	public function testFunctionCall_ApplyAfterFunctionsToDataAfterFunctionCallAndInBackwardOrder()
-	{
+	public function testFunctionCall_ApplyAfterFunctionsToDataAfterFunctionCallAndInBackwardOrder() {
 		$specs = $this->createSpecsByVisualPattern('
 			0
 			|
 			1
 		');
 		
-		$appendValueToDataVariable = function($value) use(&$specs){
-			if (!isset($specs[1]->test->getData()->aaa))
+		$appendValueToDataVariable = function($value) use(&$specs) {
+			if (!isset($specs[1]->test->getData()->aaa)) {
 				$specs[1]->test->getData()->aaa = '';
+			}
 			
 			$specs[1]->test->getData()->aaa .= $value;
 		};
@@ -290,7 +272,7 @@ class TestTest extends \spectrum\tests\Test
 		
 		$properties = array();
 		$dataItems = array();
-		$specs[1]->test->setFunction(function() use(&$properties, &$dataItems, $specs){
+		$specs[1]->test->setFunction(function() use(&$properties, &$dataItems, $specs) {
 			$properties[] = get_object_vars($specs[1]->test->getData());
 			$dataItems[] = $specs[1]->test->getData();
 		});
@@ -301,14 +283,13 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa' => '37865421'), get_object_vars($dataItems[0]));
 	}
 	
-	public function testFunctionCall_UsesConfigForDataClassGetting()
-	{
+	public function testFunctionCall_UsesConfigForDataClassGetting() {
 		$dataClassName = $this->createClass('class ... extends \spectrum\core\Data {}');
 		config::setClassReplacement('\spectrum\core\Data', $dataClassName);
 
 		$spec = new Spec();
 		$data = array();
-		$spec->test->setFunction(function() use(&$data, $spec){
+		$spec->test->setFunction(function() use(&$data, $spec) {
 			$data = $spec->test->getData();
 		});
 		
@@ -317,21 +298,17 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertInstanceOf($dataClassName, $data);
 	}
 	
-	public function testFunctionCall_FunctionNotSet_DoesNotTryToCallFunction()
-	{
+	public function testFunctionCall_FunctionNotSet_DoesNotTryToCallFunction() {
 		$spec = new Spec();
 		$spec->test->setFunction(null);
 		$spec->run();
 	}
 	
-	public function testFunctionCall_FunctionNotSet_DoesNotInitializeData()
-	{
+	public function testFunctionCall_FunctionNotSet_DoesNotInitializeData() {
 		\spectrum\tests\Test::$temp["dataInitializeCount"] = 0;
 		config::setClassReplacement('\spectrum\core\Data', $this->createClass('
-			class ... extends \spectrum\core\Data
-			{
-				public function __construct()
-				{
+			class ... extends \spectrum\core\Data {
+				public function __construct() {
 					\spectrum\tests\Test::$temp["dataInitializeCount"]++;
 				}
 			}
@@ -342,8 +319,7 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertSame(0, \spectrum\tests\Test::$temp["dataInitializeCount"]);
 	}
 	
-	public function testFunctionCall_FunctionThrowsException_SetsDataToNullAfterFunctionCall()
-	{
+	public function testFunctionCall_FunctionThrowsException_SetsDataToNullAfterFunctionCall() {
 		$spec = new Spec();
 		$spec->test->setFunction(function(){ throw new \Exception(); });
 		$spec->run();
@@ -351,17 +327,17 @@ class TestTest extends \spectrum\tests\Test
 		$this->assertNull($spec->test->getData());
 	}
 	
-	public function testFunctionCall_FunctionThrowsException_ApplyAfterFunctionsToDataAfterFunctionCallAndInBackwardOrder()
-	{
+	public function testFunctionCall_FunctionThrowsException_ApplyAfterFunctionsToDataAfterFunctionCallAndInBackwardOrder() {
 		$specs = $this->createSpecsByVisualPattern('
 			0
 			|
 			1
 		');
 		
-		$appendValueToDataVariable = function($value) use(&$specs){
-			if (!isset($specs[1]->test->getData()->aaa))
+		$appendValueToDataVariable = function($value) use(&$specs) {
+			if (!isset($specs[1]->test->getData()->aaa)) {
 				$specs[1]->test->getData()->aaa = '';
+			}
 			
 			$specs[1]->test->getData()->aaa .= $value;
 		};

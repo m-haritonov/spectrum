@@ -8,69 +8,60 @@ namespace spectrum\core\plugins;
 
 use spectrum\Exception;
 
-abstract class Plugin implements PluginInterface
-{
+abstract class Plugin implements PluginInterface {
 	/** @var \spectrum\core\SpecInterface|\spectrum\core\Spec */
 	private $ownerSpec;
 	
-	static public function getAccessName()
-	{
+	static public function getAccessName() {
 		return null;
 	}
 	
-	static public function getActivateMoment()
-	{
+	static public function getActivateMoment() {
 		return 'firstAccess';
 	}
 	
-	static public function getEventListeners()
-	{
+	static public function getEventListeners() {
 		return array();
 	}
 
-	public function __construct(\spectrum\core\SpecInterface $ownerSpec)
-	{
+	public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
 		$this->ownerSpec = $ownerSpec;
 	}
 
 	/**
 	 * @return \spectrum\core\SpecInterface|\spectrum\core\Spec
 	 */
-	public function getOwnerSpec()
-	{
+	public function getOwnerSpec() {
 		return $this->ownerSpec;
 	}
 	
-	protected function callMethodThroughRunningAncestorSpecs($methodName, $arguments = array(), $defaultReturnValue = null, $ignoredReturnValue = null, $useStrictComparison = true)
-	{
+	protected function callMethodThroughRunningAncestorSpecs($methodName, $arguments = array(), $defaultReturnValue = null, $ignoredReturnValue = null, $useStrictComparison = true) {
 		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
 		
-		foreach ($ancestorSpecs as $spec)
-		{
+		foreach ($ancestorSpecs as $spec) {
 			$plugin = $spec->{static::getAccessName()};
 			
 			$return = call_user_func_array(array($plugin, $methodName), $arguments);
-			if (($useStrictComparison && $return !== $ignoredReturnValue) || (!$useStrictComparison && $return != $ignoredReturnValue))
+			if (($useStrictComparison && $return !== $ignoredReturnValue) || (!$useStrictComparison && $return != $ignoredReturnValue)) {
 				return $return;
+			}
 		}
 
 		return $defaultReturnValue;
 	}
 	
-	protected function dispatchPluginEvent($eventName, array $arguments = array())
-	{
+	protected function dispatchPluginEvent($eventName, array $arguments = array()) {
 		$reflectionClass = new \ReflectionClass($this->getOwnerSpec());
 		$reflectionMethod = $reflectionClass->getMethod('dispatchPluginEvent');
 		$reflectionMethod->setAccessible(true);
 		$reflectionMethod->invokeArgs($this->getOwnerSpec(), array($eventName, $arguments));
 	}
 	
-	protected function handleModifyDeny($functionName)
-	{
-		foreach (array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getAncestorRootSpecs()) as $spec)
-		{
-			if ($spec->isRunning())
+	protected function handleModifyDeny($functionName) {
+		foreach (array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getAncestorRootSpecs()) as $spec) {
+			if ($spec->isRunning()) {
 				throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
+			}
 		}
 	}
 }

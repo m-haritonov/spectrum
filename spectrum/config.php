@@ -6,8 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
-final class config
-{
+final class config {
 	static private $inputCharset = 'utf-8';
 	static private $outputCharset = 'utf-8';
 	static private $outputFormat = 'html';
@@ -107,8 +106,7 @@ final class config
 	 * @param string $charsetName
 	 * @return void
 	 */
-	static public function setInputCharset($charsetName)
-	{
+	static public function setInputCharset($charsetName) {
 		static::throwExceptionIfLocked();
 		static::$inputCharset = $charsetName;
 	}
@@ -116,8 +114,7 @@ final class config
 	/**
 	 * @return string Already set charset or "utf-8" by default
 	 */
-	static public function getInputCharset()
-	{
+	static public function getInputCharset() {
 		return static::$inputCharset;
 	}
 	
@@ -126,8 +123,7 @@ final class config
 	 * @param string $charsetName
 	 * @return void
 	 */
-	static public function setOutputCharset($charsetName)
-	{
+	static public function setOutputCharset($charsetName) {
 		static::throwExceptionIfLocked();
 		static::$outputCharset = $charsetName;
 	}
@@ -135,8 +131,7 @@ final class config
 	/**
 	 * @return string Already set charset or "utf-8" by default
 	 */
-	static public function getOutputCharset()
-	{
+	static public function getOutputCharset() {
 		return static::$outputCharset;
 	}
 	
@@ -145,8 +140,7 @@ final class config
 	 * @param $format "html"|"text"
 	 * @return void
 	 */
-	static public function setOutputFormat($format)
-	{
+	static public function setOutputFormat($format) {
 		static::throwExceptionIfLocked();
 		static::$outputFormat = $format;
 	}
@@ -154,8 +148,7 @@ final class config
 	/**
 	 * @return string Already set format or "html" by default
 	 */
-	static public function getOutputFormat()
-	{
+	static public function getOutputFormat() {
 		return static::$outputFormat;
 	}
 
@@ -163,12 +156,12 @@ final class config
 	 * @param $string String with "\t" or " " chars
 	 * @return void
 	 */
-	static public function setOutputIndention($string)
-	{
+	static public function setOutputIndention($string) {
 		static::throwExceptionIfLocked();
 		
-		if (preg_match("/[^\t ]/s", $string))
+		if (preg_match("/[^\t ]/s", $string)) {
 			throw new Exception('Incorrect char is passed to "\\' . __METHOD__ . '" method (only "\t" and " " chars are allowed)');
+		}
 		
 		static::$outputIndention = $string;
 	}
@@ -176,8 +169,7 @@ final class config
 	/**
 	 * @return string Already set indention or "\t" by default
 	 */
-	static public function getOutputIndention()
-	{
+	static public function getOutputIndention() {
 		return static::$outputIndention;
 	}
 
@@ -185,12 +177,12 @@ final class config
 	 * @param $string String with "\r" or "\n" chars
 	 * @return void
 	 */
-	static public function setOutputNewline($string)
-	{
+	static public function setOutputNewline($string) {
 		static::throwExceptionIfLocked();
 		
-		if (preg_match("/[^\r\n]/s", $string))
+		if (preg_match("/[^\r\n]/s", $string)) {
 			throw new Exception('Incorrect char is passed to "\\' . __METHOD__ . '" method (only "\r" and "\n" chars are allowed)');
+		}
 		
 		static::$outputNewline = $string;
 	}
@@ -198,8 +190,7 @@ final class config
 	/**
 	 * @return string Already set newline or "\n" by default
 	 */
-	static public function getOutputNewline()
-	{
+	static public function getOutputNewline() {
 		return static::$outputNewline;
 	}
 	
@@ -207,8 +198,7 @@ final class config
 	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\ErrorHandling" class)
 	 * @param bool $isEnable
 	 */
-	static public function setAllowErrorHandlingModify($isEnable)
-	{
+	static public function setAllowErrorHandlingModify($isEnable) {
 		static::throwExceptionIfLocked();
 		static::$allowErrorHandlingModify = $isEnable;
 	}
@@ -216,98 +206,99 @@ final class config
 	/**
 	 * @return bool Already set value or "true" by default
 	 */
-	static public function getAllowErrorHandlingModify()
-	{
+	static public function getAllowErrorHandlingModify() {
 		return static::$allowErrorHandlingModify;
 	}
 	
 /**/
 	
-	static public function setClassReplacement($className, $newClassName)
-	{
-		if (static::$locked)
+	static public function setClassReplacement($className, $newClassName) {
+		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
+		}
 		
 		$interface = $className . 'Interface';
-		if (interface_exists($interface))
-		{
+		if (interface_exists($interface)) {
 			$reflection = new \ReflectionClass($newClassName);
-			if (!$reflection->implementsInterface($interface))
+			if (!$reflection->implementsInterface($interface)) {
 				throw new Exception('Class "' . $newClassName . '" does not implement "' . $interface . '"');
+			}
 		}
 		
 		static::$classReplacements[$className] = $newClassName;
 	}
 	
-	static public function getClassReplacement($className)
-	{
+	static public function getClassReplacement($className) {
 		return static::$classReplacements[$className];
 	}
 	
-	static public function getAllClassReplacements()
-	{
+	static public function getAllClassReplacements() {
 		return static::$classReplacements;
 	}
 	
 /**/
 	
-	static public function setFunctionReplacement($functionName, $newFunctionName)
-	{
-		if (static::$locked)
+	static public function setFunctionReplacement($functionName, $newFunctionName) {
+		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
+		}
 		
 		static::$functionReplacements[$functionName] = $newFunctionName;
 	}
 	
-	static public function getFunctionReplacement($functionName)
-	{
+	static public function getFunctionReplacement($functionName) {
 		return static::$functionReplacements[$functionName];
 	}
 	
-	static public function getAllFunctionReplacements()
-	{
+	static public function getAllFunctionReplacements() {
 		return static::$functionReplacements;
 	}
 	
 /**/
 
-	static public function registerSpecPlugin($class)
-	{
-		if (static::$locked)
+	static public function registerSpecPlugin($class) {
+		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
+		}
 		
 		// Get origin class name (in origin case)
 		$reflectionClass = new \ReflectionClass($class);
 		$class = '\\' . $reflectionClass->getName();
 		
 		$reflection = new \ReflectionClass($class);
-		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface'))
+		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface')) {
 			throw new Exception('Plugin class "' . $class . '" does not implement PluginInterface');
+		}
 		
-		if (static::hasRegisteredSpecPlugin($class))
+		if (static::hasRegisteredSpecPlugin($class)) {
 			throw new Exception('Plugin with class "' . $class . '" is already registered');
+		}
 		
 		$accessName = $class::getAccessName();
-		if ($accessName != '' && static::getRegisteredSpecPluginClassByAccessName($accessName))
+		if ($accessName != '' && static::getRegisteredSpecPluginClassByAccessName($accessName)) {
 			throw new Exception('Plugin with accessName "' . $accessName . '" is already registered (remove registered plugin before register new)');
+		}
 		
 		$activateMoment = $class::getActivateMoment();
-		if (!in_array($activateMoment, array('firstAccess', 'everyAccess')))
+		if (!in_array($activateMoment, array('firstAccess', 'everyAccess'))) {
 			throw new Exception('Wrong activate moment "' . $activateMoment . '" in plugin with class "' . $class . '"');
+		}
 
 		$num = 0;
-		foreach ((array) $class::getEventListeners() as $eventListener)
-		{
+		foreach ((array) $class::getEventListeners() as $eventListener) {
 			$num++;
 			
-			if ((string) $eventListener['event'] === '')
+			if ((string) $eventListener['event'] === '') {
 				throw new Exception('Event for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
+			}
 			
-			if ((string) $eventListener['method'] === '')
+			if ((string) $eventListener['method'] === '') {
 				throw new Exception('Method for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
+			}
 			
-			if ((string) $eventListener['order'] === '')
+			if ((string) $eventListener['order'] === '') {
 				throw new Exception('Order for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
+			}
 		}
 		
 		static::$registeredSpecPlugins[] = $class;
@@ -315,21 +306,20 @@ final class config
 
 	static public function unregisterSpecPlugins($classes = null)
 	{
-		if (static::$locked)
+		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
+		}
 
 		$classes = (array) $classes;
-		if (!$classes)
+		if (!$classes) {
 			static::$registeredSpecPlugins = array();
-		else
-		{
-			foreach (static::$registeredSpecPlugins as $key => $registeredPluginClass)
-			{
-				foreach ($classes as $class)
-				{
+		} else {
+			foreach (static::$registeredSpecPlugins as $key => $registeredPluginClass) {
+				foreach ($classes as $class) {
 					// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
-					if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass))
+					if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass)) {
 						unset(static::$registeredSpecPlugins[$key]);
+					}
 				}
 			}
 			
@@ -337,54 +327,48 @@ final class config
 		}
 	}
 
-	static public function getRegisteredSpecPlugins()
-	{
+	static public function getRegisteredSpecPlugins() {
 		return static::$registeredSpecPlugins;
 	}
 	
-	static public function getRegisteredSpecPluginClassByAccessName($pluginAccessName)
-	{
-		foreach (static::getRegisteredSpecPlugins() as $pluginClass)
-		{
-			if ((string) $pluginClass::getAccessName() === (string) $pluginAccessName)
+	static public function getRegisteredSpecPluginClassByAccessName($pluginAccessName) {
+		foreach (static::getRegisteredSpecPlugins() as $pluginClass) {
+			if ((string) $pluginClass::getAccessName() === (string) $pluginAccessName) {
 				return $pluginClass;
+			}
 		}
 		
 		return null;
 	}
 	
-	static public function hasRegisteredSpecPlugin($class)
-	{
-		foreach (static::$registeredSpecPlugins as $registeredPluginClass)
-		{
+	static public function hasRegisteredSpecPlugin($class) {
+		foreach (static::$registeredSpecPlugins as $registeredPluginClass) {
 			// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
-			if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass))
+			if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass)) {
 				return true;
+			}
 		}
 		
 		return false;
 	}
 
-	static public function lock()
-	{
+	static public function lock() {
 		static::$locked = true;
 	}
 	
-	static public function isLocked()
-	{
+	static public function isLocked() {
 		return static::$locked;
 	}
 
 /**/
 
-	static private function throwExceptionIfLocked()
-	{
-		if (static::$locked)
+	static private function throwExceptionIfLocked() {
+		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
+		}
 	}
 	
-	static private function convertLatinCharsToLowerCase($string)
-	{
+	static private function convertLatinCharsToLowerCase($string) {
 		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		return $convertLatinCharsToLowerCaseFunction($string);
 	}

@@ -12,17 +12,19 @@ use spectrum\core\SpecInterface;
 /**
  * @access private
  */
-function setSettingsToSpec(SpecInterface $spec, $settings)
-{
+function setSettingsToSpec(SpecInterface $spec, $settings) {
 	$normalizeSettingsFunction = config::getFunctionReplacement('\spectrum\_internals\normalizeSettings');
 	$settings = $normalizeSettingsFunction($settings);
 	
-	if ($settings['catchPhpErrors'] !== null)
+	if ($settings['catchPhpErrors'] !== null) {
 		$spec->errorHandling->setCatchPhpErrors($settings['catchPhpErrors']);
+	}
 	
-	if ($settings['breakOnFirstPhpError'] !== null)
+	if ($settings['breakOnFirstPhpError'] !== null) {
 		$spec->errorHandling->setBreakOnFirstPhpError($settings['breakOnFirstPhpError']);
+	}
 	
-	if ($settings['breakOnFirstMatcherFail'] !== null)
+	if ($settings['breakOnFirstMatcherFail'] !== null) {
 		$spec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
+	}
 }

@@ -9,10 +9,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class MessagesTest extends \spectrum\tests\Test
-{
-	public function testRemovesAllMessagesBeforeEachRun()
-	{
+class MessagesTest extends \spectrum\tests\Test {
+	public function testRemovesAllMessagesBeforeEachRun() {
 		\spectrum\tests\Test::$temp["messages"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
@@ -34,8 +32,7 @@ class MessagesTest extends \spectrum\tests\Test
 		$this->assertSame(array(), \spectrum\tests\Test::$temp["messages"]);
 	}
 	
-	public function testDoesNotRemoveMessagesAfterRun()
-	{
+	public function testDoesNotRemoveMessagesAfterRun() {
 		$this->registerPluginWithCodeInEvent('
 			$this->getOwnerSpec()->messages->add("aaa aaa");
 		', 'onEndingSpecExecuteBefore');
@@ -52,8 +49,7 @@ class MessagesTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testAdd_AddsMessageToArray()
-	{
+	public function testAdd_AddsMessageToArray() {
 		$spec = new Spec();
 		
 		$spec->messages->add('aaa aaa');
@@ -66,8 +62,7 @@ class MessagesTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa aaa', 'bbb bbb', 'ccc ccc'), $spec->messages->getAll());
 	}
 	
-	public function testAdd_SpecWithChildren_ThrowsExceptionAndDoesNotAddMessage()
-	{
+	public function testAdd_SpecWithChildren_ThrowsExceptionAndDoesNotAddMessage() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
@@ -81,8 +76,7 @@ class MessagesTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $specs[1]->messages->getAll());
 	}
 	
-	public function testAdd_SpecWithoutChildren_DoesNotThrowsExceptionAndAddsMessage()
-	{
+	public function testAdd_SpecWithoutChildren_DoesNotThrowsExceptionAndAddsMessage() {
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
@@ -92,17 +86,13 @@ class MessagesTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa aaa'), $specs[1]->messages->getAll());
 	}
 	
-	public function testAdd_CallOnRun_DoesNotThrowsExceptionAndAddsMessage()
-	{
+	public function testAdd_CallOnRun_DoesNotThrowsExceptionAndAddsMessage() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->messages->add("aaa aaa");
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -117,8 +107,7 @@ class MessagesTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetAll_ReturnsArrayWithAllAddedMessages()
-	{
+	public function testGetAll_ReturnsArrayWithAllAddedMessages() {
 		$spec = new Spec();
 		$spec->messages->add('aaa aaa');
 		$spec->messages->add('bbb bbb');
@@ -127,8 +116,7 @@ class MessagesTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa aaa', 'bbb bbb', 'ccc ccc'), $spec->messages->getAll());
 	}
 	
-	public function testGetAll_ReturnsEmptyArrayByDefault()
-	{
+	public function testGetAll_ReturnsEmptyArrayByDefault() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->messages->getAll());
 	}

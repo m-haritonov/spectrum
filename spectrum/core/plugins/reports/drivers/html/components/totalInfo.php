@@ -8,10 +8,8 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 
 use spectrum\core\SpecInterface;
 
-class totalInfo extends component
-{
-	static public function getStyles()
-	{
+class totalInfo extends component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #e5e5e5; }
 			.c-totalInfo>div { display: inline; }
@@ -19,10 +17,10 @@ class totalInfo extends component
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec)
-	{
-		if ($spec->getParentSpecs())
+	static public function getHtml(SpecInterface $spec) {
+		if ($spec->getParentSpecs()) {
 			return null;
+		}
 
 		return
 			'<div class="c-totalInfo">' . static::getHtmlEscapedOutputNewline() .
@@ -38,10 +36,10 @@ class totalInfo extends component
 			'</div>';
 	}
 
-	static public function getHtmlForUpdate(SpecInterface $spec)
-	{
-		if ($spec->getParentSpecs())
+	static public function getHtmlForUpdate(SpecInterface $spec) {
+		if ($spec->getParentSpecs()) {
 			return null;
+		}
 
 		return static::callComponentMethod('totalResult', 'getHtmlForUpdate', array($spec));
 	}

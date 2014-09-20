@@ -12,7 +12,6 @@ namespace spectrum\_internals;
  * @param array $replacement Strings in output charset
  * @return string String in output charset
  */
-function translate($string, array $replacement = array())
-{
+function translate($string, array $replacement = array()) {
 	return strtr($string, $replacement);
 }

@@ -12,8 +12,7 @@ use spectrum\core\SpecInterface;
  * @access private
  * @see getCurrentBuildingSpec()
  */
-function setCurrentBuildingSpec(SpecInterface $spec = null)
-{
+function setCurrentBuildingSpec(SpecInterface $spec = null) {
 	static $buildingSpec = null;
 	$buildingSpec = $spec;
 }

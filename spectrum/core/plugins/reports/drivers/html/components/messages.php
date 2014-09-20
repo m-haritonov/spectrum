@@ -8,10 +8,8 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 
 use spectrum\core\SpecInterface;
 
-class messages extends component
-{
-	static public function getStyles()
-	{
+class messages extends component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-messages { position: relative; margin: 0.5em 0 1em 0; }
 			.c-messages>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 0; color: #888; font-size: 0.9em; font-weight: normal; }
@@ -21,12 +19,12 @@ class messages extends component
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec)
-	{
+	static public function getHtml(SpecInterface $spec) {
 		$messages = $spec->messages->getAll();
 
-		if (!count($messages))
+		if (!count($messages)) {
 			return null;
+		}
 
 		$output = '';
 		$output .= '<div class="c-messages c-clearFix">' . static::getHtmlEscapedOutputNewline();
@@ -36,14 +34,12 @@ class messages extends component
 		return $output;
 	}
 	
-	static protected function getHtmlForMessages($messages)
-	{
+	static protected function getHtmlForMessages($messages) {
 		$output = '';
 		$output .= '<ul>' . static::getHtmlEscapedOutputNewline();
 		
 		$num = 0;
-		foreach ($messages as $message)
-		{
+		foreach ($messages as $message) {
 			$num++;
 			$output .= static::getHtmlEscapedOutputIndention() . '<li>';
 			$output .= '<span class="number">' . $num . '. </span>';

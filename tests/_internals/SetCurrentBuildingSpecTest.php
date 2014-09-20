@@ -10,10 +10,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class SetCurrentBuildingSpecTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_ArgumentIsNull_SetsNullToStaticVariable()
-	{
+class SetCurrentBuildingSpecTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_ArgumentIsNull_SetsNullToStaticVariable() {
 		$reflection = new \ReflectionFunction('spectrum\_internals\setCurrentBuildingSpec');
 		
 		$spec = new Spec();
@@ -26,8 +24,7 @@ class SetCurrentBuildingSpecTest extends \spectrum\tests\Test
 		$this->assertSame(null, $staticVariables['buildingSpec']);
 	}
 	
-	public function testCallsAtBuildingState_ArgumentIsSpec_SetsSpecToStaticVariable()
-	{
+	public function testCallsAtBuildingState_ArgumentIsSpec_SetsSpecToStaticVariable() {
 		$reflection = new \ReflectionFunction('spectrum\_internals\setCurrentBuildingSpec');
 		
 		$spec = new Spec();

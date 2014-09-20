@@ -11,10 +11,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class BeTest extends \spectrum\tests\Test
-{
-	public function testCallsAtRunningState_ReturnsNewAssertInstance()
-	{
+class BeTest extends \spectrum\tests\Test {
+	public function testCallsAtRunningState_ReturnsNewAssertInstance() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -30,8 +28,7 @@ class BeTest extends \spectrum\tests\Test
 		$this->assertNotSame(\spectrum\tests\Test::$temp["returnValues"][0], \spectrum\tests\Test::$temp["returnValues"][1]);
 	}
 	
-	public function testCallsAtRunningState_UsesConfigForAssertClassGetting()
-	{
+	public function testCallsAtRunningState_UsesConfigForAssertClassGetting() {
 		$assertClassName = $this->createClass('class ... extends \spectrum\core\Assert {}');
 		config::setClassReplacement('\spectrum\core\Assert', $assertClassName);
 
@@ -46,16 +43,13 @@ class BeTest extends \spectrum\tests\Test
 		$this->assertInstanceOf($assertClassName, \spectrum\tests\Test::$temp["returnValue"]);
 	}
 	
-	public function testCallsAtRunningState_PassesToAssertInstanceCurrentRunningSpecAndTestedValue()
-	{
+	public function testCallsAtRunningState_PassesToAssertInstanceCurrentRunningSpecAndTestedValue() {
 		\spectrum\tests\Test::$temp["assert"] = null;
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
 		config::setClassReplacement('\spectrum\core\Assert', $this->createClass('
-			class ... extends \spectrum\core\Assert
-			{
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue)
-				{
+			class ... extends \spectrum\core\Assert {
+				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue) {
 					\spectrum\tests\Test::$temp["assert"] = $this;
 					\spectrum\tests\Test::$temp["passedArguments"] = func_get_args();
 				}
@@ -80,8 +74,7 @@ class BeTest extends \spectrum\tests\Test
 		$this->assertSame('aaa', \spectrum\tests\Test::$temp["passedArguments"][1]);
 	}
 	
-	public function testCallsAtBuildingState_ThrowsException()
-	{
+	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Builder "be" should be call only at running state', function(){
 			\spectrum\builders\be("aaa");
 		});

@@ -4,8 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-set_exception_handler(function(\Exception $exception)
-{
+set_exception_handler(function(\Exception $exception) {
 	$inputCharset = \spectrum\config::getInputCharset();
 	$outputCharset = \spectrum\config::getOutputCharset();
 	$outputNewline = \spectrum\config::getOutputNewline();
@@ -17,8 +16,7 @@ set_exception_handler(function(\Exception $exception)
 	$exceptionLine = mb_convert_encoding($exception->getLine(), $outputCharset, $inputCharset);
 	$exceptionTrace = mb_convert_encoding($exception->getTraceAsString(), $outputCharset, 'utf-8');
 	
-	if ((string) \spectrum\config::getOutputFormat() === 'html')
-	{
+	if ((string) \spectrum\config::getOutputFormat() === 'html') {
 		$outputNewline = '<br />' . $outputNewline;
 		
 		$exceptionClass = htmlspecialchars($exceptionClass, ENT_QUOTES, 'iso-8859-1');
@@ -27,9 +25,9 @@ set_exception_handler(function(\Exception $exception)
 		$exceptionFile = htmlspecialchars($exceptionFile, ENT_QUOTES, 'iso-8859-1');
 		$exceptionLine = htmlspecialchars($exceptionLine, ENT_QUOTES, 'iso-8859-1');
 		$exceptionTrace = str_replace("\n", $outputNewline, htmlspecialchars($exceptionTrace, ENT_QUOTES, 'iso-8859-1'));
-	}
-	else
+	} else {
 		$exceptionTrace = str_replace("\n", $outputNewline, $exceptionTrace);
+	}
 
 	print
 		'Fatal error: uncaught exception ' .

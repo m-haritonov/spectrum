@@ -11,10 +11,8 @@ use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;
 use spectrum\core\SpecInterface;
 
-class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-resultBuffer { position: relative; margin: 0.5em 0 1em 0; }
 			.c-resultBuffer>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 0; color: #888; font-size: 0.9em; font-weight: normal; }
@@ -57,29 +55,27 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getScripts()
-	{
+	static public function getScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			(function(){
-				function toggleExpand(resultBufferNode)
-				{
-					if (spectrum.tools.hasClass(resultBufferNode, "expanded"))
+				function toggleExpand(resultBufferNode) {
+					if (spectrum.tools.hasClass(resultBufferNode, "expanded")) {
 						spectrum.tools.removeClass(resultBufferNode, "expanded");
-					else
+					} else {
 						spectrum.tools.addClass(resultBufferNode, "expanded");
+					} 
 				}
 				
-				spectrum.tools.addEventListener(document, "DOMContentLoaded", function()
-				{
+				spectrum.tools.addEventListener(document, "DOMContentLoaded", function() {
 					var resultBufferNodes = document.body.querySelectorAll(".c-resultBuffer>.results>.result");
-					for (var i = 0; i < resultBufferNodes.length; i++)
-					{
+					for (var i = 0; i < resultBufferNodes.length; i++) {
 						spectrum.tools.addEventListener(resultBufferNodes[i], "click", function(e){
 							e.preventDefault();
 							
 							// Uses middle click instead of double click for text selection by double click support
-							if (e.button == 1)
+							if (e.button == 1) {
 								toggleExpand(e.currentTarget);
+							}
 						});
 	
 						spectrum.tools.addEventListener(resultBufferNodes[i].querySelector("a.expand"), "click", function(e){
@@ -92,11 +88,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		/*]]>*/</script>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec)
-	{
+	static public function getHtml(SpecInterface $spec) {
 		$results = $spec->getResultBuffer()->getResults();
-		if (count($results) == 0)
+		if (count($results) == 0) {
 			return null;
+		}
 		
 		$output = '';
 		$output .= '<div class="c-resultBuffer c-clearFix">' . static::getHtmlEscapedOutputNewline();
@@ -106,22 +102,21 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		return $output;
 	}
 	
-	static protected function getHtmlForResults($results)
-	{
+	static protected function getHtmlForResults($results) {
 		$output = '';
 		$output .= '<div class="results">' . static::getHtmlEscapedOutputNewline();
 		
 		$num = 0;
-		foreach ($results as $result)
-		{
+		foreach ($results as $result) {
 			$num++;
 			$output .= static::getHtmlEscapedOutputIndention() . '<div class="result ' . static::getResultValueName($result['result']) . '">' . static::getHtmlEscapedOutputNewline();
 			$output .= static::getHtmlEscapedOutputIndention(2) . '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show/hide full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>' . static::getHtmlEscapedOutputNewline();
 			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="num" title="' . static::translateAndEscapeHtml('Order in run results buffer') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>' . static::getHtmlEscapedOutputNewline();
 			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="value" title="' . static::translateAndEscapeHtml('Result, contains in run results buffer') . '">' . static::escapeHtml(static::getResultValueName($result['result'])) . '</div>' . static::getHtmlEscapedOutputNewline();
 			
-			if ($result['result'] === false)
+			if ($result['result'] === false) {
 				$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="failType" title="' . static::translateAndEscapeHtml('Fail type') . '">' . static::translateAndEscapeHtml(static::getFailType($result['details'])) . '</div>' . static::getHtmlEscapedOutputNewline();
+			}
 			
 			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="details">' . static::getHtmlEscapedOutputNewline();
 			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForResultDetails($result['details']), 3) . static::getHtmlEscapedOutputNewline();
@@ -133,39 +128,39 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		return $output;
 	}
 	
-	static protected function getResultValueName($result)
-	{
-		if ($result === false)
+	static protected function getResultValueName($result) {
+		if ($result === false) {
 			return 'false';
-		else if ($result === true)
+		} else if ($result === true) {
 			return 'true';
-		else if ($result === null)
+		} else if ($result === null) {
 			return 'null';
-		else
+		} else {
 			return 'unknown';
+		}
 	}
 	
-	static protected function getFailType($details)
-	{
-		if (is_object($details) && $details instanceof MatcherCallInterface)
+	static protected function getFailType($details) {
+		if (is_object($details) && $details instanceof MatcherCallInterface) {
 			return 'matcher call fail';
-		else if (is_object($details) && $details instanceof PhpErrorInterface)
+		} else if (is_object($details) && $details instanceof PhpErrorInterface) {
 			return 'php error';
-		else if (is_object($details) && $details instanceof UserFailInterface)
+		} else if (is_object($details) && $details instanceof UserFailInterface) {
 			return 'user fail';
-		else
+		} else {
 			return 'unknown fail';
+		}
 	}
 
-	static protected function getHtmlForResultDetails($details)
-	{
-		if (is_object($details) && $details instanceof MatcherCallInterface)
+	static protected function getHtmlForResultDetails($details) {
+		if (is_object($details) && $details instanceof MatcherCallInterface) {
 			return static::callComponentMethod('details\matcherCall', 'getHtml', array($details));
-		else if (is_object($details) && $details instanceof PhpErrorInterface)
+		} else if (is_object($details) && $details instanceof PhpErrorInterface) {
 			return static::callComponentMethod('details\phpError', 'getHtml', array($details));
-		else if (is_object($details) && $details instanceof UserFailInterface)
+		} else if (is_object($details) && $details instanceof UserFailInterface) {
 			return static::callComponentMethod('details\userFail', 'getHtml', array($details));
-		else
+		} else {
 			return static::callComponentMethod('details\unknown', 'getHtml', array($details));
+		}
 	}
 }

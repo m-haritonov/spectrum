@@ -8,10 +8,8 @@ namespace spectrum\core\plugins\reports\drivers\html\components\details;
 
 use \spectrum\core\details\PhpErrorInterface;
 
-class phpError extends \spectrum\core\plugins\reports\drivers\html\components\component
-{
-	static public function getStyles()
-	{
+class phpError extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.c-details-phpError { padding: 7px; }
 			.c-details-phpError>.errorLevel { margin-bottom: 1em; }
@@ -24,8 +22,7 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(PhpErrorInterface $details)
-	{
+	static public function getHtml(PhpErrorInterface $details) {
 		return
 			'<div class="c-details-phpError">' . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForErrorLevel($details)) . static::getHtmlEscapedOutputNewline() .
@@ -34,8 +31,7 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 			'</div>';
 	}
 
-	static protected function getHtmlForErrorLevel(PhpErrorInterface $details)
-	{
+	static protected function getHtmlForErrorLevel(PhpErrorInterface $details) {
 		$errorLevel = $details->getErrorLevel();
 		
 		$output = '';
@@ -46,20 +42,18 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		return $output;
 	}
 	
-	static protected function getErrorLevelConstantNameByValue($constantValue)
-	{
+	static protected function getErrorLevelConstantNameByValue($constantValue) {
 		$constants = get_defined_constants(true);
-		foreach ($constants['Core'] as $name => $value)
-		{
-			if ($value === $constantValue)
+		foreach ($constants['Core'] as $name => $value) {
+			if ($value === $constantValue) {
 				return $name;
+			}
 		}
 		
 		return null;
 	}
 	
-	static protected function getHtmlForErrorMessage(PhpErrorInterface $details)
-	{
+	static protected function getHtmlForErrorMessage(PhpErrorInterface $details) {
 		$output = '';
 		$output .= '<div class="errorMessage">' . static::getHtmlEscapedOutputNewline();
 		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error message') . '</h1>' . static::getHtmlEscapedOutputNewline();
@@ -68,8 +62,7 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		return $output;
 	}
 	
-	static protected function getHtmlForSource(PhpErrorInterface $details)
-	{
+	static protected function getHtmlForSource(PhpErrorInterface $details) {
 		$filename = $details->getFile();
 		$filenameEndLength = 25;
 		$filenameBegin = mb_substr($filename, 0, -$filenameEndLength, 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")

@@ -9,10 +9,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class MatchersTest extends \spectrum\tests\Test
-{
-	public function testAdd_AddsMatcherToArrayWithNameAsIndex()
-	{
+class MatchersTest extends \spectrum\tests\Test {
+	public function testAdd_AddsMatcherToArrayWithNameAsIndex() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -28,8 +26,7 @@ class MatchersTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa' => $function1, 'bbb' => $function2, 'ccc' => $function3), $spec->matchers->getAll());
 	}
 	
-	public function testAdd_OverridesMatcherWithExistsName()
-	{
+	public function testAdd_OverridesMatcherWithExistsName() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$spec = new Spec();
@@ -41,17 +38,13 @@ class MatchersTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa' => $function2), $spec->matchers->getAll());
 	}
 	
-	public function testAdd_CallOnRun_ThrowsExceptionAndDoesNotAddMatcher()
-	{
+	public function testAdd_CallOnRun_ThrowsExceptionAndDoesNotAddMatcher() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->matchers->add("aaa", function(){});
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -67,8 +60,7 @@ class MatchersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGet_ReturnsMatcherFunctionByMatcherName()
-	{
+	public function testGet_ReturnsMatcherFunctionByMatcherName() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -83,8 +75,7 @@ class MatchersTest extends \spectrum\tests\Test
 		$this->assertSame($function3, $spec->matchers->get('ccc'));
 	}
 	
-	public function testGet_ReturnsNullForNotExistsMatchers()
-	{
+	public function testGet_ReturnsNullForNotExistsMatchers() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->matchers->get('aaa'));
 		
@@ -94,8 +85,7 @@ class MatchersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetThroughRunningAncestors_ReturnsMatcherFunctionFromRunningAncestorOrFromSelf()
-	{
+	public function testGetThroughRunningAncestors_ReturnsMatcherFunctionFromRunningAncestorOrFromSelf() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -126,8 +116,7 @@ class MatchersTest extends \spectrum\tests\Test
 		$this->assertSame(array($function2, $function3, $function4, $function1), \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testGetThroughRunningAncestors_ReturnsNullForNotExistsMatchers()
-	{
+	public function testGetThroughRunningAncestors_ReturnsNullForNotExistsMatchers() {
 		$spec = new Spec();
 		$this->assertSame(null, $spec->matchers->getThroughRunningAncestors('aaa'));
 		
@@ -137,8 +126,7 @@ class MatchersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testGetAll_ReturnsArrayWithAllAddedMatchers()
-	{
+	public function testGetAll_ReturnsArrayWithAllAddedMatchers() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -151,16 +139,14 @@ class MatchersTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa' => $function1, 'bbb' => $function2, 'ccc' => $function3), $spec->matchers->getAll());
 	}
 	
-	public function testGetAll_ReturnsEmptyArrayByDefault()
-	{
+	public function testGetAll_ReturnsEmptyArrayByDefault() {
 		$spec = new Spec();
 		$this->assertSame(array(), $spec->matchers->getAll());
 	}
 	
 /**/
 	
-	public function testRemove_RemovesMatcherWithSameName()
-	{
+	public function testRemove_RemovesMatcherWithSameName() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -182,17 +168,13 @@ class MatchersTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $spec->matchers->getAll());
 	}
 	
-	public function testRemove_CallOnRun_ThrowsExceptionAndDoesNotRemoveMatcher()
-	{
+	public function testRemove_CallOnRun_ThrowsExceptionAndDoesNotRemoveMatcher() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->matchers->remove("aaa");
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');
@@ -210,8 +192,7 @@ class MatchersTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testRemoveAll_RemovesAllMatchers()
-	{
+	public function testRemoveAll_RemovesAllMatchers() {
 		$function1 = function(){};
 		$function2 = function(){};
 		$function3 = function(){};
@@ -227,17 +208,13 @@ class MatchersTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $spec->matchers->getAll());
 	}
 	
-	public function testRemoveAll_CallOnRun_ThrowsExceptionAndDoesNotRemoveMatchers()
-	{
+	public function testRemoveAll_CallOnRun_ThrowsExceptionAndDoesNotRemoveMatchers() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				$this->getOwnerSpec()->matchers->removeAll();
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		');

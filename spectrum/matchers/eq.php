@@ -10,7 +10,6 @@ namespace spectrum\matchers;
  * Matcher for equal operator ($actual == $expected).
  * @return bool
  */
-function eq($actual, $expected)
-{
+function eq($actual, $expected) {
 	return ($actual == $expected);
 }

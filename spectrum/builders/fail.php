@@ -14,11 +14,11 @@ use spectrum\Exception;
  * @throws \spectrum\Exception If called not at running state
  * @param string|null $message
  */
-function fail($message = null)
-{
+function fail($message = null) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
-	if (!$isRunningStateFunction())
+	if (!$isRunningStateFunction()) {
 		throw new Exception('Builder "fail" should be call only at running state');
+	}
 
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentRunningEndingSpec');
 	$userFailDetailsClass = config::getClassReplacement('\spectrum\core\details\UserFail');

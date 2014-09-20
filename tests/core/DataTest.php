@@ -10,10 +10,8 @@ use spectrum\core\Data;
 
 require_once __DIR__ . '/../init.php';
 
-class DataTest extends \spectrum\tests\Test
-{
-	public function testSupportsAccessToPropertiesThroughObjectAccessStyle()
-	{
+class DataTest extends \spectrum\tests\Test {
+	public function testSupportsAccessToPropertiesThroughObjectAccessStyle() {
 		$context = new Data();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
@@ -24,8 +22,7 @@ class DataTest extends \spectrum\tests\Test
 		$this->assertSame('cccVal', $context->ccc);
 	}
 
-	public function testSupportsAccessToPropertiesThroughArrayAccessStyle()
-	{
+	public function testSupportsAccessToPropertiesThroughArrayAccessStyle() {
 		$context = new Data();
 		$context['aaa-aaa'] = 'aaaVal';
 		$context['bbb-bbb'] = 'bbbVal';
@@ -36,24 +33,21 @@ class DataTest extends \spectrum\tests\Test
 		$this->assertSame('cccVal', $context['ccc-ccc']);
 	}
 
-	public function testSupportsPropertyExistCheck()
-	{
+	public function testSupportsPropertyExistCheck() {
 		$context = new Data();
 		$this->assertFalse(isset($context->aaa));
 		$context->aaa = 'aaaVal';
 		$this->assertTrue(isset($context->aaa));
 	}
 
- 	public function testSupportsPropertyUnset()
-	{
+ 	public function testSupportsPropertyUnset() {
 		$context = new Data();
 		$context->aaa = 'aaaVal';
 		unset($context->aaa);
 		$this->assertFalse(property_exists($context, 'aaa'));
 	}
 
- 	public function testSupportsPropertyCountCheck()
-	{
+ 	public function testSupportsPropertyCountCheck() {
 		$context = new Data();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
@@ -61,16 +55,16 @@ class DataTest extends \spectrum\tests\Test
 		$this->assertSame(2, count($context));
 	}
 
-	public function testSupportsForeachTraverse()
-	{
+	public function testSupportsForeachTraverse() {
 		$context = new Data();
 		$context->aaa = 'aaaVal';
 		$context->bbb = 'bbbVal';
 		$context->ccc = 'cccVal';
 
 		$values = array();
-		foreach ($context as $key => $val)
+		foreach ($context as $key => $val) {
 			$values[$key] = $val;
+		}
 
 		$this->assertSame(array(
 			'aaa' => 'aaaVal',

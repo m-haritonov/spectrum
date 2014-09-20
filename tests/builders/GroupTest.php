@@ -10,23 +10,19 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class GroupTest extends \spectrum\tests\Test
-{
-	public function providerAllArgumentCombinations()
-	{
+class GroupTest extends \spectrum\tests\Test {
+	public function providerAllArgumentCombinations() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders();
 	}
 	
-	public function providerAllArgumentCombinationsWithEmptyContextAndBodyFunctions()
-	{
+	public function providerAllArgumentCombinationsWithEmptyContextAndBodyFunctions() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){}, function(){});
 	}
 	
 	/**
 	 * @dataProvider providerAllArgumentCombinations
 	 */
-	public function testCallsAtBuildingState_ReturnsNewGroupSpec($arguments)
-	{
+	public function testCallsAtBuildingState_ReturnsNewGroupSpec($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -43,8 +39,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllArgumentCombinations
 	 */
-	public function testCallsAtBuildingState_RestoreBuildingSpecAfterCall($arguments)
-	{
+	public function testCallsAtBuildingState_RestoreBuildingSpecAfterCall($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		call_user_func_array('\spectrum\builders\group', $arguments);
@@ -54,8 +49,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllArgumentCombinations
 	 */
-	public function testCallsAtBuildingState_BuildingSpecIsRoot_AddsGroupSpecToRootSpec($arguments)
-	{
+	public function testCallsAtBuildingState_BuildingSpecIsRoot_AddsGroupSpecToRootSpec($arguments) {
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		$this->assertSame(array($groupSpec), \spectrum\_internals\getRootSpec()->getChildSpecs());
 	}
@@ -63,8 +57,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllArgumentCombinations
 	 */
-	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_AddsGroupSpecToSpecifySpec($arguments)
-	{
+	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_AddsGroupSpecToSpecifySpec($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -75,8 +68,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllArgumentCombinations
 	 */
-	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddGroupSpecToRootSpec($arguments)
-	{
+	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddGroupSpecToRootSpec($arguments) {
 		\spectrum\_internals\setCurrentBuildingSpec(new Spec());
 		call_user_func_array('\spectrum\builders\group', $arguments);
 		
@@ -86,8 +78,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerAllArgumentCombinationsWithEmptyContextAndBodyFunctions
 	 */
-	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddGroupSpecToSiblingGroupSpecs($arguments)
-	{
+	public function testCallsAtBuildingState_BuildingSpecIsNotRoot_DoesNotAddGroupSpecToSiblingGroupSpecs($arguments) {
 		\spectrum\_internals\setCurrentBuildingSpec(new Spec());
 		$groupSpec1 = call_user_func_array('\spectrum\builders\group', $arguments);
 		$groupSpec2 = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -98,16 +89,14 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $groupSpec3->getChildSpecs());
 	}
 	
-	public function providerVariantsOfArguments_NameArgumentIsString()
-	{
+	public function providerVariantsOfArguments_NameArgumentIsString() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders('aaa bbb');
 	}
 
 	/**
 	 * @dataProvider providerVariantsOfArguments_NameArgumentIsString
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_NameArgumentIsString_SetsNameToGroupSpec($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_NameArgumentIsString_SetsNameToGroupSpec($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -116,23 +105,25 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame('aaa bbb', $groupSpec->getName());
 	}
 	
-	public function providerVariantsOfArguments_ContextsArgumentIsArray()
-	{
-		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, array(
-			'aaa' => array(),
-			'bbb' => array(),
-			'ccc' => array(),
-		), function(){
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
-		});
+	public function providerVariantsOfArguments_ContextsArgumentIsArray() {
+		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(
+			null,
+			array(
+				'aaa' => array(),
+				'bbb' => array(),
+				'ccc' => array(),
+			),
+			function() {
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+			}
+		);
 	}
 
 	/**
 	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsArray
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsArray_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsArray_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -162,23 +153,25 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
-	public function providerVariantsOfArguments_ContextsArgumentIsFunction()
-	{
-		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){
-			\spectrum\builders\group('aaa', null, function(){}, null);
-			\spectrum\builders\group('bbb', null, function(){}, null);
-			\spectrum\builders\group('ccc', null, function(){}, null);
-		}, function(){
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
-		});
+	public function providerVariantsOfArguments_ContextsArgumentIsFunction() {
+		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(
+			null,
+			function() {
+				\spectrum\builders\group('aaa', null, function(){}, null);
+				\spectrum\builders\group('bbb', null, function(){}, null);
+				\spectrum\builders\group('ccc', null, function(){}, null);
+			},
+			function() {
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+			}
+		);
 	}
 
 	/**
 	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsFunction
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsContextSpecsBetweenGroupSpecAndBodySpecs($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -208,25 +201,32 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
-	public function providerVariantsOfArguments_ContextsArgumentIsFunction2()
-	{
-		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){
-			\spectrum\builders\group('aaa', null, function(){
-				\spectrum\builders\group('bbb', null, function(){}, null);
-				\spectrum\builders\group('ccc', null, function(){}, null);
-			}, null);
-			\spectrum\builders\group('ddd', null, function(){}, null);
-		}, function(){
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
-		});
+	public function providerVariantsOfArguments_ContextsArgumentIsFunction2() {
+		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(
+			null,
+			function() {
+				\spectrum\builders\group(
+					'aaa',
+					null,
+					function(){
+						\spectrum\builders\group('bbb', null, function(){}, null);
+						\spectrum\builders\group('ccc', null, function(){}, null);
+					},
+					null
+				);
+				\spectrum\builders\group('ddd', null, function(){}, null);
+			},
+			function() {
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+			}
+		);
 	}
 
 	/**
 	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsFunction2
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsBodySpecsToEndingContextSpecsOnly($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_AddsBodySpecsToEndingContextSpecsOnly($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -260,24 +260,26 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
-	public function providerVariantsOfArguments_ContextsArgumentIsFunction3()
-	{
-		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, function(){
-			\spectrum\builders\test('aaa', null, function(){}, null);
-			\spectrum\builders\group('bbb', null, function(){}, null);
-			\spectrum\builders\group('ccc', null, function(){}, null);
-			\spectrum\builders\test('ddd', null, function(){}, null);
-		}, function(){
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
-		});
+	public function providerVariantsOfArguments_ContextsArgumentIsFunction3() {
+		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(
+			null,
+			function() {
+				\spectrum\builders\test('aaa', null, function(){}, null);
+				\spectrum\builders\group('bbb', null, function(){}, null);
+				\spectrum\builders\group('ccc', null, function(){}, null);
+				\spectrum\builders\test('ddd', null, function(){}, null);
+			},
+			function() {
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+			}
+		);
 	}
 
 	/**
 	 * @dataProvider providerVariantsOfArguments_ContextsArgumentIsFunction3
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_DoesNotAddSpecsToTestSpecOfContext($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_DoesNotAddSpecsToTestSpecOfContext($arguments) {
 		\spectrum\_internals\setCurrentBuildingSpec(new Spec());
 		
 		\spectrum\tests\Test::$temp = array();
@@ -303,8 +305,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(\spectrum\tests\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 		
-	public function providerVariantsOfArguments_BodyArgumentIsFunction()
-	{
+	public function providerVariantsOfArguments_BodyArgumentIsFunction() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, array(), function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('bbb', null, function(){}, null);
@@ -317,8 +318,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerVariantsOfArguments_BodyArgumentIsFunction
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsBodySpecsToGroupSpec($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsBodySpecsToGroupSpec($arguments) {
 		\spectrum\tests\Test::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
@@ -339,31 +339,53 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $specs[4]->getChildSpecs());
 	}
 	
-	public function providerVariantsOfArguments_BodyArgumentIsFunction2()
-	{
-		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders('aaa', array(), function(){
-			\spectrum\builders\group('bbb', null, function(){
-				\spectrum\builders\test('ccc', null, function(){}, null);
-			}, null);
-			
-			\spectrum\builders\group('ddd', null, function(){
-				\spectrum\builders\group('eee', null, function(){
-					\spectrum\builders\test('fff', null, function(){}, null);
-				}, null);
+	public function providerVariantsOfArguments_BodyArgumentIsFunction2() {
+		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(
+			'aaa',
+			array(),
+			function() {
+				\spectrum\builders\group(
+					'bbb',
+					null,
+					function() {
+						\spectrum\builders\test('ccc', null, function(){}, null);
+					},
+					null
+				);
 				
-				\spectrum\builders\group('ggg', null, function(){
-					\spectrum\builders\test('hhh', null, function(){}, null);
-					\spectrum\builders\test('iii', null, function(){}, null);
-				}, null);
-			}, null);
-		});
+				\spectrum\builders\group(
+					'ddd',
+					null,
+					function() {
+						\spectrum\builders\group(
+							'eee',
+							null,
+							function() {
+								\spectrum\builders\test('fff', null, function(){}, null);
+							},
+							null
+						);
+						
+						\spectrum\builders\group(
+							'ggg',
+							null,
+							function() {
+								\spectrum\builders\test('hhh', null, function(){}, null);
+								\spectrum\builders\test('iii', null, function(){}, null);
+							},
+							null
+						);
+					},
+					null
+				);
+			}
+		);
 	}
 
 	/**
 	 * @dataProvider providerVariantsOfArguments_BodyArgumentIsFunction2
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsDescendantSpecsOfBodySpecsToHisParents($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsDescendantSpecsOfBodySpecsToHisParents($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
@@ -399,8 +421,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertSame(0, count($level3Specs[1]->getChildSpecs()));
 	}
 		
-	public function providerVariantsOfArguments_SettingsArgumentIsInteger()
-	{
+	public function providerVariantsOfArguments_SettingsArgumentIsInteger() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
@@ -410,8 +431,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsInteger
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsInteger_SetsErrorHandlingLevelToGroupSpec($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsInteger_SetsErrorHandlingLevelToGroupSpec($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -424,8 +444,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertNotSame(8, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function providerVariantsOfArguments_SettingsArgumentIsTrue()
-	{
+	public function providerVariantsOfArguments_SettingsArgumentIsTrue() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
@@ -435,8 +454,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsTrue
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsTrue_SetsErrorHandlingLevelToGroupSpec($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsTrue_SetsErrorHandlingLevelToGroupSpec($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -449,8 +467,7 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertNotSame(-1, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function providerVariantsOfArguments_SettingsArgumentIsFalse()
-	{
+	public function providerVariantsOfArguments_SettingsArgumentIsFalse() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
 			\spectrum\tests\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
@@ -460,8 +477,7 @@ class GroupTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsFalse
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsFalse_SetsErrorHandlingLevelToGroupSpec($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsFalse_SetsErrorHandlingLevelToGroupSpec($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -474,23 +490,26 @@ class GroupTest extends \spectrum\tests\Test
 		$this->assertNotSame(0, \spectrum\tests\Test::$temp[1]->errorHandling->getCatchPhpErrors());
 	}
 	
-	public function providerVariantsOfArguments_SettingsArgumentIsArray()
-	{
-		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
-			\spectrum\tests\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
-		}, array(
-			'catchPhpErrors' => 8,
-			'breakOnFirstPhpError' => true,
-			'breakOnFirstMatcherFail' => true,
-		));
+	public function providerVariantsOfArguments_SettingsArgumentIsArray() {
+		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(
+			null,
+			null,
+			function() {
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
+				\spectrum\tests\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
+			},
+			array(
+				'catchPhpErrors' => 8,
+				'breakOnFirstPhpError' => true,
+				'breakOnFirstMatcherFail' => true,
+			)
+		);
 	}
 
 	/**
 	 * @dataProvider providerVariantsOfArguments_SettingsArgumentIsArray
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsArray_SetsSettingsToGroupSpec($arguments)
-	{
+	public function testCallsAtBuildingState_VariantsOfArguments_SettingsArgumentIsArray_SetsSettingsToGroupSpec($arguments) {
 		$parentSpec = new Spec();
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		
@@ -516,26 +535,21 @@ class GroupTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testCallsAtBuildingState_BadArgumentsPassed_ThrowsException()
-	{
-		$this->assertThrowsException('\spectrum\Exception', 'Incorrect arguments in "group" builder', function(){
+	public function testCallsAtBuildingState_BadArgumentsPassed_ThrowsException() {
+		$this->assertThrowsException('\spectrum\Exception', 'Incorrect arguments in "group" builder', function() {
 			\spectrum\builders\group(null, null, function(){}, null, null, null, null);
 		});
 	}
 	
 /**/
 	
-	public function testCallsAtRunningState_ThrowsException()
-	{
+	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\tests\Test::$temp["exception"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			try
-			{
+			try {
 				\spectrum\builders\group();
-			}
-			catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				\spectrum\tests\Test::$temp["exception"] = $e;
 			}
 		', 'onEndingSpecExecute');

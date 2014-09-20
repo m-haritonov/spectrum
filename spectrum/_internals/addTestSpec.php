@@ -11,8 +11,7 @@ use spectrum\core\SpecInterface;
 /**
  * @access private
  */
-function addTestSpec(SpecInterface $spec)
-{
+function addTestSpec(SpecInterface $spec) {
 	static $specs = array();
 	$specs[] = $spec;
 }

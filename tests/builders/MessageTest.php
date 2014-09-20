@@ -8,10 +8,8 @@ namespace spectrum\tests\builders;
 
 require_once __DIR__ . '/../init.php';
 
-class MessageTest extends \spectrum\tests\Test
-{
-	public function testCallsAtRunningState_AddsPassedMessageToMessagesPluginInstanceOfCurrentRunningSpec()
-	{
+class MessageTest extends \spectrum\tests\Test {
+	public function testCallsAtRunningState_AddsPassedMessageToMessagesPluginInstanceOfCurrentRunningSpec() {
 		\spectrum\tests\Test::$temp["messages"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -40,8 +38,7 @@ class MessageTest extends \spectrum\tests\Test
 		$this->assertSame(array('some message for spec ending2 of spec parent2'), \spectrum\tests\Test::$temp["messages"][2]);
 	}
 	
-	public function testCallsAtBuildingState_ThrowsException()
-	{
+	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Builder "message" should be call only at running state', function(){
 			\spectrum\builders\message("aaa");
 		});

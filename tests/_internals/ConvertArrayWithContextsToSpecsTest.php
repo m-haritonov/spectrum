@@ -8,10 +8,8 @@ namespace spectrum\tests\_internals;
 
 require_once __DIR__ . '/../init.php';
 
-class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_ElementIsArray_ReturnsSpecsWithBeforeContextFunctionsThatSetsValuesToData()
-	{
+class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_ElementIsArray_ReturnsSpecsWithBeforeContextFunctionsThatSetsValuesToData() {
 		$specs = \spectrum\_internals\convertArrayWithContextsToSpecs(array(
 			array(),
 			array('aaa'),
@@ -49,10 +47,9 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		
 		
 		$dataObjects = array();
-		foreach ($specs as $spec)
-		{
+		foreach ($specs as $spec) {
 			\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$dataObjects, $spec){
+			$spec->test->setFunction(function() use(&$dataObjects, $spec) {
 				$dataObjects[] = $spec->test->getData();
 			});
 		}
@@ -67,44 +64,48 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$this->assertSame(array(0 => 'ccc1', 'ccc2' => 'ccc3', 'ccc4' => 'ccc5'), get_object_vars($dataObjects[5]));
 	}
 	
-	public function providerElementIsArray_KeysAsNames()
-	{
+	public function providerElementIsArray_KeysAsNames() {
 		return array(
 			array(array('bbb'), array('bbb' => array('aaa'))),
 			array(array('AA bb CC'), array('AA bb CC' => array('aaa', 'bbb'))),
-			array(array('AA bb CC', 'BB bb', 'CC cc'), array(
-				'AA bb CC' => array('aaa', 'bbb'),
-				'BB bb' => array('aaa', 'bbb'),
-				'CC cc' => array('aaa', 'bbb'),
-			)),
+			array(
+				array('AA bb CC', 'BB bb', 'CC cc'),
+				array(
+					'AA bb CC' => array('aaa', 'bbb'),
+					'BB bb' => array('aaa', 'bbb'),
+					'CC cc' => array('aaa', 'bbb'),
+				)
+			),
 		);
 	}
 	
 	/**
 	 * @dataProvider providerElementIsArray_KeysAsNames
 	 */
-	public function testCallsAtBuildingState_ElementIsArray_ElementKeyIsNotEmptyString_SetsElementKeyAsSpecName($expectedNames, $contexts)
-	{
+	public function testCallsAtBuildingState_ElementIsArray_ElementKeyIsNotEmptyString_SetsElementKeyAsSpecName($expectedNames, $contexts) {
 		$names = array();
-		foreach (\spectrum\_internals\convertArrayWithContextsToSpecs($contexts) as $spec)
+		foreach (\spectrum\_internals\convertArrayWithContextsToSpecs($contexts) as $spec) {
 			$names[] = $spec->getName();
+		}
 		
 		$this->assertSame($expectedNames, $names);
 	}
 	
-	public function providerElementIsArray_FirstValueAsNames()
-	{
+	public function providerElementIsArray_FirstValueAsNames() {
 		return array(
 			array(array('aaa'), array('' => array('aaa'))),
 			array(array('aaa'), array(0 => array('aaa'))),
 			array(array('aaa'), array(0 => array('a' => 'aaa'))),
 			array(array('aaa'), array(1 => array('aaa'))),
 			array(array('aaa'), array(1 => array('aaa', 'bbb'))),
-			array(array('aaa', 'ccc', 'eee'), array(
-				0 => array('a' => 'aaa', 'b' => 'bbb'),
-				1 => array('c' => 'ccc', 'd' => 'ddd'),
-				2 => array('e' => 'eee'),
-			)),
+			array(
+				array('aaa', 'ccc', 'eee'),
+				array(
+					0 => array('a' => 'aaa', 'b' => 'bbb'),
+					1 => array('c' => 'ccc', 'd' => 'ddd'),
+					2 => array('e' => 'eee'),
+				)
+			),
 			
 			array(array('AA bb CC'), array(0 => array('a' => 'AA bb CC', 'b' => 'bbb'))),
 			
@@ -122,23 +123,22 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerElementIsArray_FirstValueAsNames
 	 */
-	public function testCallsAtBuildingState_ElementIsArray_ElementKeyIsIntegerOrEmptyString_SetsFirstValueAsSpecName($expectedNames, $contexts)
-	{
+	public function testCallsAtBuildingState_ElementIsArray_ElementKeyIsIntegerOrEmptyString_SetsFirstValueAsSpecName($expectedNames, $contexts) {
 		$names = array();
-		foreach (\spectrum\_internals\convertArrayWithContextsToSpecs($contexts) as $spec)
+		foreach (\spectrum\_internals\convertArrayWithContextsToSpecs($contexts) as $spec) {
 			$names[] = $spec->getName();
+		}
 		
 		$this->assertSame($expectedNames, $names);
 	}
 	
 /**/
 	
-	public function testCallsAtBuildingState_ElementIsFunction_ReturnsSpecsWithBeforeContextFunctions()
-	{
+	public function testCallsAtBuildingState_ElementIsFunction_ReturnsSpecsWithBeforeContextFunctions() {
 		$specs = \spectrum\_internals\convertArrayWithContextsToSpecs(array(
 			function(){},
 			function() use(&$isCalled) { $isCalled = true; },
-			function(){ \spectrum\builders\data()->aaa = 'bbb'; },
+			function() { \spectrum\builders\data()->aaa = 'bbb'; },
 		));
 		
 		$this->assertSame(3, count($specs));
@@ -158,10 +158,9 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$this->assertSame(null, $isCalled);
 		
 		$dataObjects = array();
-		foreach ($specs as $spec)
-		{
+		foreach ($specs as $spec) {
 			\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$dataObjects, $spec){
+			$spec->test->setFunction(function() use(&$dataObjects, $spec) {
 				$dataObjects[] = $spec->test->getData();
 			});
 		}
@@ -174,15 +173,17 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$this->assertSame(array('aaa' => 'bbb'), get_object_vars($dataObjects[2]));
 	}
 	
-	public function providerElementIsFunction_KeysAsNames()
-	{
+	public function providerElementIsFunction_KeysAsNames() {
 		return array(
 			array(array('aaa'), array('aaa' => function(){})),
-			array(array('aaa', 'bbb', 'ccc'), array(
-				'aaa' => function(){},
-				'bbb' => function(){},
-				'ccc' => function(){},
-			)),
+			array(
+				array('aaa', 'bbb', 'ccc'),
+				array(
+					'aaa' => function(){},
+					'bbb' => function(){},
+					'ccc' => function(){},
+				)
+			),
 			
 			array(array('AA bb CC'), array('AA bb CC' => function(){})),
 			
@@ -195,19 +196,18 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerElementIsFunction_KeysAsNames
 	 */
-	public function testCallsAtBuildingState_ElementIsFunction_SetsElementKeyAsSpecName($expectedNames, $contexts)
-	{
+	public function testCallsAtBuildingState_ElementIsFunction_SetsElementKeyAsSpecName($expectedNames, $contexts) {
 		$names = array();
-		foreach (\spectrum\_internals\convertArrayWithContextsToSpecs($contexts) as $spec)
+		foreach (\spectrum\_internals\convertArrayWithContextsToSpecs($contexts) as $spec) {
 			$names[] = $spec->getName();
+		}
 		
 		$this->assertSame($expectedNames, $names);
 	}
 	
 /**/
 	
-	public function testCallsAtBuildingState_ElementsAreArraysAndFunctions_ReturnsSpecsWithBeforeContextFunctions()
-	{
+	public function testCallsAtBuildingState_ElementsAreArraysAndFunctions_ReturnsSpecsWithBeforeContextFunctions() {
 		$specs = \spectrum\_internals\convertArrayWithContextsToSpecs(array(
 			array(),
 			function() use(&$isCalled) { $isCalled = true; },
@@ -246,10 +246,9 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 		$this->assertSame(null, $isCalled);
 		
 		$dataObjects = array();
-		foreach ($specs as $spec)
-		{
+		foreach ($specs as $spec) {
 			\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$dataObjects, $spec){
+			$spec->test->setFunction(function() use(&$dataObjects, $spec) {
 				$dataObjects[] = $spec->test->getData();
 			});
 		}
@@ -267,9 +266,8 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testCallsAtBuildingState_ElementIsNotArrayAndNotFunction_ThrowsException()
-	{
-		$this->assertThrowsException('\spectrum\Exception', 'The context row #2 should be an array', function(){
+	public function testCallsAtBuildingState_ElementIsNotArrayAndNotFunction_ThrowsException() {
+		$this->assertThrowsException('\spectrum\Exception', 'The context row #2 should be an array', function() {
 			\spectrum\_internals\convertArrayWithContextsToSpecs(array(
 				'some name 1' => array('a' => 'aaa'),
 				'some name 2' => 'aaa',

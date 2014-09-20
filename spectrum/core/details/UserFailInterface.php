@@ -6,8 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\details;
 
-interface UserFailInterface
-{
+interface UserFailInterface {
 	public function __construct($message);
 	public function getMessage();
 }

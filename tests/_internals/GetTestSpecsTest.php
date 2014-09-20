@@ -10,10 +10,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class GetTestSpecsTest extends \spectrum\tests\Test
-{
-	public function testCallsAtBuildingState_ReturnsArrayWithExclusionSpecs()
-	{
+class GetTestSpecsTest extends \spectrum\tests\Test {
+	public function testCallsAtBuildingState_ReturnsArrayWithExclusionSpecs() {
 		$spec1 = new Spec();
 		\spectrum\_internals\addTestSpec($spec1);
 		$this->assertTrue(in_array($spec1, \spectrum\_internals\getTestSpecs()));

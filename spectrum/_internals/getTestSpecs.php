@@ -11,13 +11,14 @@ use spectrum\config;
 /**
  * @access private
  */
-function getTestSpecs()
-{
+function getTestSpecs() {
 	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internals\addTestSpec'));
 	$staticVariables = $reflection->getStaticVariables();
 	
-	if (isset($staticVariables['specs']))
+	if (isset($staticVariables['specs'])) {
 		return $staticVariables['specs'];
-	else
+	}
+	else {
 		return array();
+	}
 }

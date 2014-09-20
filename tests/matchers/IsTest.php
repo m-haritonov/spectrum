@@ -9,10 +9,8 @@ namespace spectrum\tests\matchers;
 require_once __DIR__ . '/../init.php';
 require_once __DIR__ . '/../../spectrum/matchers/is.php';
 
-class IsTest extends \spectrum\tests\Test
-{
-	public function provider()
-	{
+class IsTest extends \spectrum\tests\Test {
+	public function provider() {
 		$ancestor['interface'] = $this->createInterface('interface ... {}');
 		$ancestor['class'] = $this->createClass('class ... implements ' . $ancestor['interface'] . ' {}');
 		$ancestor['instance'] = new $ancestor['class']();
@@ -89,8 +87,7 @@ class IsTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider provider
 	 */
-	public function test($heir, $parent, $result)
-	{
+	public function test($heir, $parent, $result) {
 		$this->assertSame($result, \spectrum\matchers\is($heir, $parent));
 	}
 }

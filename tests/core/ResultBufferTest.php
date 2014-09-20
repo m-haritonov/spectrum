@@ -10,10 +10,8 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class ResultBufferTest extends \spectrum\tests\Test
-{
-	public function testGetOwnerSpec_ReturnsPassedToConstructorSpecInstance()
-	{
+class ResultBufferTest extends \spectrum\tests\Test {
+	public function testGetOwnerSpec_ReturnsPassedToConstructorSpecInstance() {
 		$spec = new Spec();
 		$resultBuffer = new ResultBuffer($spec);
 		$this->assertSame($spec, $resultBuffer->getOwnerSpec());
@@ -21,8 +19,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testAddResult_AcceptsTrueOrFalseOrNullWithDetailsOrWithoutDetails()
-	{
+	public function testAddResult_AcceptsTrueOrFalseOrNullWithDetailsOrWithoutDetails() {
 		$resultBuffer = new ResultBuffer(new Spec());
 		
 		$object1 = new \stdClass();
@@ -56,8 +53,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 		), $resultBuffer->getResults());
 	}
 	
-	public function providerBadResultValues()
-	{
+	public function providerBadResultValues() {
 		return array(
 			array(''),
 			array('some string'),
@@ -74,8 +70,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerBadResultValues
 	 */
-	public function testAddResult_ResultIsNotTrueAndIsNotFalseAndIsNotNull_ThrowsExceptionAndDoesNotAddResult($badResultValue)
-	{
+	public function testAddResult_ResultIsNotTrueAndIsNotFalseAndIsNotNull_ThrowsExceptionAndDoesNotAddResult($badResultValue) {
 		$resultBuffer = new ResultBuffer(new Spec());
 		
 		$this->assertThrowsException('\spectrum\Exception', 'ResultBuffer is accept only "true", "false" or "null"', function() use($resultBuffer, $badResultValue){
@@ -85,8 +80,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 		$this->assertSame(array(), $resultBuffer->getResults());
 	}
 	
-	public function testAddResult_ResultBufferIsLocked_ThrowsExceptionAndDoesNotAddResult()
-	{
+	public function testAddResult_ResultBufferIsLocked_ThrowsExceptionAndDoesNotAddResult() {
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->lock();
 		
@@ -99,14 +93,12 @@ class ResultBufferTest extends \spectrum\tests\Test
 
 /**/
 
-	public function testGetResults_ReturnsEmptyArrayByDefault()
-	{
+	public function testGetResults_ReturnsEmptyArrayByDefault() {
 		$resultBuffer = new ResultBuffer(new Spec());
 		$this->assertSame(array(), $resultBuffer->getResults());
 	}
 
-	public function testGetResults_ReturnsAddedResults()
-	{
+	public function testGetResults_ReturnsAddedResults() {
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->addResult(true, 'aaa');
 		$resultBuffer->addResult(false, 'bbb');
@@ -121,8 +113,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 
 /**/
 
-	public function providerFalseResult()
-	{
+	public function providerFalseResult() {
 		return array(
 			array(array(false)),
 			array(array(false, false)),
@@ -155,22 +146,19 @@ class ResultBufferTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerFalseResult
 	 */
-	public function testGetTotalResult_ReturnsFalseIfAnyResultIsFalse($results)
-	{
+	public function testGetTotalResult_ReturnsFalseIfAnyResultIsFalse($results) {
 		$resultBuffer = new ResultBuffer(new Spec());
-		foreach ($results as $result)
+		foreach ($results as $result) {
 			$resultBuffer->addResult($result);
+		}
 
 		$this->assertSame(false, $resultBuffer->getTotalResult());
 	}
 	
-	public function testGetTotalResult_AnyResultIsNotTrueAndNotNullAndNotFalse_ThrowsException()
-	{
+	public function testGetTotalResult_AnyResultIsNotTrueAndNotNullAndNotFalse_ThrowsException() {
 		$resultBufferClass = $this->createClass('
-			class ... extends \spectrum\core\ResultBuffer
-			{
-				public function addResult($result, $details = null)
-				{
+			class ... extends \spectrum\core\ResultBuffer {
+				public function addResult($result, $details = null) {
 					$this->results[] = array(
 						"result" => $result,
 						"details" => $details,
@@ -187,8 +175,7 @@ class ResultBufferTest extends \spectrum\tests\Test
 		});
 	}
 
-	public function providerTrueResult()
-	{
+	public function providerTrueResult() {
 		return array(
 			array(array(true)),
 			array(array(true, true)),
@@ -199,17 +186,16 @@ class ResultBufferTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerTrueResult
 	 */
-	public function testGetTotalResult_ReturnsTrueIfAllResultsAreTrue($results)
-	{
+	public function testGetTotalResult_ReturnsTrueIfAllResultsAreTrue($results) {
 		$resultBuffer = new ResultBuffer(new Spec());
-		foreach ($results as $result)
+		foreach ($results as $result) {
 			$resultBuffer->addResult($result);
+		}
 
 		$this->assertSame(true, $resultBuffer->getTotalResult());
 	}
 
-	public function providerNullResult()
-	{
+	public function providerNullResult() {
 		return array(
 			array(array(null)),
 			array(array(null, null)),
@@ -225,17 +211,16 @@ class ResultBufferTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerNullResult
 	 */
-	public function testGetTotalResult_ReturnsNullIfAnyResultIsNullAndNoFalseResult($results)
-	{
+	public function testGetTotalResult_ReturnsNullIfAnyResultIsNullAndNoFalseResult($results) {
 		$resultBuffer = new ResultBuffer(new Spec());
-		foreach ($results as $result)
+		foreach ($results as $result) {
 			$resultBuffer->addResult($result);
+		}
 		
 		$this->assertSame(null, $resultBuffer->getTotalResult());
 	}
 	
-	public function testGetTotalResult_ReturnsNullIfThereAreNoResults()
-	{
+	public function testGetTotalResult_ReturnsNullIfThereAreNoResults() {
 		$resultBuffer = new ResultBuffer(new Spec());
 		$this->assertSame(array(), $resultBuffer->getResults());
 		$this->assertSame(null, $resultBuffer->getTotalResult());
@@ -243,14 +228,12 @@ class ResultBufferTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testIsLocked_ResultBufferIsNotLocked_ReturnsFalse()
-	{
+	public function testIsLocked_ResultBufferIsNotLocked_ReturnsFalse() {
 		$resultBuffer = new ResultBuffer(new Spec());
 		$this->assertSame(false, $resultBuffer->isLocked());
 	}
 	
-	public function testIsLocked_ResultBufferIsLocked_ReturnsTrue()
-	{
+	public function testIsLocked_ResultBufferIsLocked_ReturnsTrue() {
 		$resultBuffer = new ResultBuffer(new Spec());
 		$resultBuffer->lock();
 		$this->assertSame(true, $resultBuffer->isLocked());

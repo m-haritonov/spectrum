@@ -11,34 +11,29 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class PluginTest extends \spectrum\tests\Test
-{
-	public function testGetAccessName_ReturnsNullByDefault()
-	{
+class PluginTest extends \spectrum\tests\Test {
+	public function testGetAccessName_ReturnsNullByDefault() {
 		$pluginClassName = $this->createClass('class ... extends \spectrum\core\plugins\Plugin {}');
 		$this->assertSame(null, $pluginClassName::getAccessName());
 	}
 	
 /**/
 	
-	public function testGetActivateMoment_ReturnsFirstAccessStringByDefault()
-	{
+	public function testGetActivateMoment_ReturnsFirstAccessStringByDefault() {
 		$pluginClassName = $this->createClass('class ... extends \spectrum\core\plugins\Plugin {}');
 		$this->assertSame('firstAccess', $pluginClassName::getActivateMoment());
 	}
 	
 /**/
 	
-	public function testGetEventListeners_ReturnsEmptyArrayByDefault()
-	{
+	public function testGetEventListeners_ReturnsEmptyArrayByDefault() {
 		$pluginClassName = $this->createClass('class ... extends \spectrum\core\plugins\Plugin {}');
 		$this->assertSame(array(), $pluginClassName::getEventListeners());
 	}
 	
 /**/
 	
-	public function testGetOwnerSpec_ReturnsPassedToConstructorSpecInstance()
-	{
+	public function testGetOwnerSpec_ReturnsPassedToConstructorSpecInstance() {
 		$pluginClassName = $this->createClass('class ... extends \spectrum\core\plugins\Plugin {}');
 		$spec = new Spec();
 		$plugin = new $pluginClassName($spec);
@@ -47,8 +42,7 @@ class PluginTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function providerCallMethodThroughRunningAncestorSpecs()
-	{
+	public function providerCallMethodThroughRunningAncestorSpecs() {
 		return array(
 			array(
 				'
@@ -100,79 +94,69 @@ class PluginTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerCallMethodThroughRunningAncestorSpecs
 	 */
-	public function testCallMethodThroughRunningAncestorSpecs_ReturnsValueFromFirstRunningSpecFromSelfToUp($specTreePattern, $specBindings, $pluginValues, $returnValues)
-	{
+	public function testCallMethodThroughRunningAncestorSpecs_ReturnsValueFromFirstRunningSpecFromSelfToUp($specTreePattern, $specBindings, $pluginValues, $returnValues) {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				public $value = null;
 				
-				static public function getAccessName()
-				{
+				static public function getAccessName() {
 					return "testPlugin";
 				}
 				
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function getValue()
-				{
+				public function getValue() {
 					return $this->value;
 				}
 				
-				protected function onSpecRunStart()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
+				protected function onSpecRunStart() {
+					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
 						\spectrum\tests\Test::$temp["returnValues"][] = $this->callMethodThroughRunningAncestorSpecs("getValue");
+					}
 				}
 			}
 		'));
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern($specTreePattern, $specBindings);
 		
-		foreach ($pluginValues as $specKey => $pluginValue)
+		foreach ($pluginValues as $specKey => $pluginValue) {
 			\spectrum\tests\Test::$temp["specs"][$specKey]->testPlugin->value = $pluginValue;
+		}
 		
 		\spectrum\tests\Test::$temp["specs"][0]->run();
 		
 		$this->assertSame($returnValues, \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testCallMethodThroughRunningAncestorSpecs_PassesArgumentsToCalleeMethod()
-	{
+	public function testCallMethodThroughRunningAncestorSpecs_PassesArgumentsToCalleeMethod() {
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				public $value = null;
 				
-				static public function getAccessName()
-				{
+				static public function getAccessName() {
 					return "testPlugin";
 				}
 				
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function getValue()
-				{
+				public function getValue() {
 					\spectrum\tests\Test::$temp["passedArguments"][] = func_get_args();
 					return $this->value;
 				}
 				
-				protected function onSpecRunStart()
-				{
+				protected function onSpecRunStart() {
 					$this->callMethodThroughRunningAncestorSpecs("getValue", array("aaa", "bbb", "ccc"));
 				}
 			}
@@ -184,8 +168,7 @@ class PluginTest extends \spectrum\tests\Test
 		$this->assertSame(array(array("aaa", "bbb", "ccc")), \spectrum\tests\Test::$temp["passedArguments"]);
 	}
 	
-	public function providerCallMethodThroughRunningAncestorSpecs2()
-	{
+	public function providerCallMethodThroughRunningAncestorSpecs2() {
 		return array(
 			array(
 				'
@@ -249,82 +232,73 @@ class PluginTest extends \spectrum\tests\Test
 	/**
 	 * @dataProvider providerCallMethodThroughRunningAncestorSpecs2
 	 */
-	public function testCallMethodThroughRunningAncestorSpecs_DiscardsIgnoredReturnValues($specTreePattern, $specBindings, $pluginValues, $ignoredReturnValue, $useStrictComparison, $returnValues)
-	{
+	public function testCallMethodThroughRunningAncestorSpecs_DiscardsIgnoredReturnValues($specTreePattern, $specBindings, $pluginValues, $ignoredReturnValue, $useStrictComparison, $returnValues) {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		\spectrum\tests\Test::$temp["ignoredReturnValue"] = $ignoredReturnValue;
 		\spectrum\tests\Test::$temp["useStrictComparison"] = $useStrictComparison;
 		
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				public $value;
 				
-				static public function getAccessName()
-				{
+				static public function getAccessName() {
 					return "testPlugin";
 				}
 				
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function getValue()
-				{
+				public function getValue() {
 					return $this->value;
 				}
 				
-				protected function onSpecRunStart()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
+				protected function onSpecRunStart() {
+					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
 						\spectrum\tests\Test::$temp["returnValues"][] = $this->callMethodThroughRunningAncestorSpecs("getValue", array(), null, \spectrum\tests\Test::$temp["ignoredReturnValue"], \spectrum\tests\Test::$temp["useStrictComparison"]);
+					}
 				}
 			}
 		'));
 		
 		\spectrum\tests\Test::$temp["specs"] = $this->createSpecsByListPattern($specTreePattern, $specBindings);
 		
-		foreach ($pluginValues as $specKey => $pluginValue)
+		foreach ($pluginValues as $specKey => $pluginValue) {
 			\spectrum\tests\Test::$temp["specs"][$specKey]->testPlugin->value = $pluginValue;
+		}
 		
 		\spectrum\tests\Test::$temp["specs"][0]->run();
 		
 		$this->assertSame($returnValues, \spectrum\tests\Test::$temp["returnValues"]);
 	}
 	
-	public function testCallMethodThroughRunningAncestorSpecs_ProperReturnValueIsNotFound_ReturnsDefaultReturnValue()
-	{
+	public function testCallMethodThroughRunningAncestorSpecs_ProperReturnValueIsNotFound_ReturnsDefaultReturnValue() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
+			class ... extends \spectrum\core\plugins\Plugin {
 				public $value = null;
 				
-				static public function getAccessName()
-				{
+				static public function getAccessName() {
 					return "testPlugin";
 				}
 				
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				public function getValue()
-				{
+				public function getValue() {
 					return $this->value;
 				}
 				
-				protected function onSpecRunStart()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
+				protected function onSpecRunStart() {
+					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
 						\spectrum\tests\Test::$temp["returnValues"][] = $this->callMethodThroughRunningAncestorSpecs("getValue", array(), "some text", null);
+					}
 				}
 			}
 		'));
@@ -343,37 +317,30 @@ class PluginTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testDispatchPluginEvent_DispatchesCustomEventWithArguments()
-	{
+	public function testDispatchPluginEvent_DispatchesCustomEventWithArguments() {
 		\spectrum\tests\Test::$temp["dispatchedEvents"] = array();
 		
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getAccessName()
-				{
+			class ... extends \spectrum\core\plugins\Plugin {
+				static public function getAccessName() {
 					return "testPlugin";
 				}
 				
-				public function dispatchMyTestEvent()
-				{
+				public function dispatchMyTestEvent() {
 					$this->dispatchPluginEvent("onMyTestEvent", array("aaa", "bbb", "ccc"));
 				}
 			}
 		'));
 
 		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getEventListeners()
-				{
+			class ... extends \spectrum\core\plugins\Plugin {
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onMyTestEvent", "method" => "onMyTestEvent", "order" => 100),
 					);
 				}
 				
-				protected function onMyTestEvent()
-				{
+				protected function onMyTestEvent() {
 					\spectrum\tests\Test::$temp["dispatchedEvents"][] = array(__FUNCTION__, func_get_args());
 				}
 			}
@@ -389,33 +356,25 @@ class PluginTest extends \spectrum\tests\Test
 	
 /**/
 	
-	public function testHandleModifyDeny_SpecWithoutParentsIsRunning_ThrowsException()
-	{
+	public function testHandleModifyDeny_SpecWithoutParentsIsRunning_ThrowsException() {
 		\spectrum\tests\Test::$temp["caughtException"] = null;
 
 		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getAccessName()
-				{
+			class ... extends \spectrum\core\plugins\Plugin {
+				static public function getAccessName() {
 					return "testPlugin";
 				}
 				
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				protected function onSpecRunStart()
-				{
-					try
-					{
+				protected function onSpecRunStart() {
+					try {
 						$this->getOwnerSpec()->testPlugin->handleModifyDeny("aaa");
-					}
-					catch(\Exception $e)
-					{
+					} catch(\Exception $e) {
 						\spectrum\tests\Test::$temp["caughtException"] = $e;
 					}
 				}
@@ -431,35 +390,26 @@ class PluginTest extends \spectrum\tests\Test
 		$this->assertSame('Call of "' . $pluginClassName . '::aaa" method is forbidden on run', \spectrum\tests\Test::$temp["caughtException"]->getMessage());
 	}
 	
-	public function testHandleModifyDeny_RootSpecIsRunning_ThrowsException()
-	{
+	public function testHandleModifyDeny_RootSpecIsRunning_ThrowsException() {
 		\spectrum\tests\Test::$temp["caughtException"] = null;
 
 		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin
-			{
-				static public function getAccessName()
-				{
+			class ... extends \spectrum\core\plugins\Plugin {
+				static public function getAccessName() {
 					return "testPlugin";
 				}
 				
-				static public function getEventListeners()
-				{
+				static public function getEventListeners() {
 					return array(
 						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
 					);
 				}
 				
-				protected function onSpecRunStart()
-				{
-					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"])
-					{
-						try
-						{
+				protected function onSpecRunStart() {
+					if ($this->getOwnerSpec() === \spectrum\tests\Test::$temp["specs"]["checkpoint"]) {
+						try {
 							\spectrum\tests\Test::$temp["specs"]["tested"]->testPlugin->handleModifyDeny("aaa");
-						}
-						catch(\Exception $e)
-						{
+						} catch(\Exception $e) {
 							\spectrum\tests\Test::$temp["caughtException"] = $e;
 						}
 					}
