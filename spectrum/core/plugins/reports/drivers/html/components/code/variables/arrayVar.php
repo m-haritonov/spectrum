@@ -54,8 +54,9 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		$output = '';
 		if (count($variable)) {
 			$output .= '<span class="elements">';
-			foreach ($variable as $key => $value)
+			foreach ($variable as $key => $value) {
 				$output .= static::getHtmlForElement($key, $value, $depth, $inputCharset);
+			}
 
 			$output .= '</span>';
 		}
