@@ -37,10 +37,10 @@ class Reports extends \spectrum\core\plugins\Plugin {
 		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$outputFormatWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction(config::getOutputFormat());
 		
-		if ((string) $outputFormatWithLatinLowerCase === 'html') {
+		if ($outputFormatWithLatinLowerCase === 'html') {
 			return config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html');
-		} else if ((string) $outputFormatWithLatinLowerCase === 'text') {
-			return config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\text');
+		} else if ($outputFormatWithLatinLowerCase === 'text') {
+			return config::getClassReplacement('\spectrum\core\plugins\reports\drivers\text\text');
 		} else {
 			throw new Exception('Output format "' . config::getOutputFormat() . '" is not supported by "Reports" plugin');
 		}

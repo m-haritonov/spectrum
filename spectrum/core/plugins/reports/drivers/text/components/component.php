@@ -4,50 +4,15 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\core\plugins\reports\drivers\text;
+namespace spectrum\core\plugins\reports\drivers\text\components;
 
 use spectrum\config;
-use spectrum\core\SpecInterface;
 
-class text {
-	static public function getContentBeforeSpec(SpecInterface $spec) {
-		$output = '';
-		
-		if (!$spec->getParentSpecs()) {
-			$output .= static::getHeader() . static::getOutputNewline(2);
-		}
-
-		$output .= static::callComponentMethod('specList', 'getContentBegin', array($spec));
-		
-		return $output;
-	}
-
-	static public function getContentAfterSpec(SpecInterface $spec) {
-		$output = '';
-		$output .= static::callComponentMethod('specList', 'getContentEnd', array($spec));
-		
-		if (!$spec->getParentSpecs()) {
-			$output .= static::callComponentMethod('totalInfo', 'getContent', array($spec)) . static::getOutputNewline();
-			$output .= static::getFooter();
-		}
-		
-		return $output;
-	}
-	
-	static protected function getHeader() {
-		$title = static::translate('Spectrum framework report');
-		return
-			str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline() .
-			$title . static::getOutputNewline() .
-			str_repeat('=', mb_strlen($title, config::getOutputCharset()));
-	}
-
-	static protected function getFooter() {}
-	
+class component {
 	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array()) {
 		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\plugins\reports\drivers\text\components\\' . $componentShortName), $methodName), $arguments);
 	}
-	
+
 	static protected function getOutputIndention($repeat = 1) {
 		return str_repeat(config::getOutputIndention(), $repeat);
 	}
