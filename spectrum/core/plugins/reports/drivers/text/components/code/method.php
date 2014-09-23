@@ -21,19 +21,19 @@ class method extends \spectrum\core\plugins\reports\drivers\text\components\comp
 	}
 
 	static public function getContentForArguments(array $arguments, $inputCharset) {
-		$output = '';
+		$content = '';
 		
 		end($arguments);
 		$lastKey = key($arguments);
 		
 		foreach ($arguments as $key => $argument) {
-			$output .= static::callComponentMethod('code\variable', 'getContent', array($argument, 0, $inputCharset));
+			$content .= static::callComponentMethod('code\variable', 'getContent', array($argument, 0, $inputCharset));
 			
 			if ($key !== $lastKey) {
-				$output .= ', ';
+				$content .= ', ';
 			}
 		}
 
-		return $output;
+		return $content;
 	}
 }

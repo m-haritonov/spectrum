@@ -10,18 +10,18 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\text\components\c
 	static public function getContent($variable, $depth, $inputCharset = null) {
 		$properties = static::getProperties($variable);
 		
-		$output = '';
-		$output .= static::getContentForType($properties);
-		$output .= static::getContentForClass($variable, $inputCharset);
-		$output .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii')) . static::getOutputNewline();
-		$output .= static::getContentForElements($variable, $properties, $depth, $inputCharset);
+		$content = '';
+		$content .= static::getContentForType($properties);
+		$content .= static::getContentForClass($variable, $inputCharset);
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii')) . static::getOutputNewline();
+		$content .= static::getContentForElements($variable, $properties, $depth, $inputCharset);
 		
 		if (count($properties)) {
-			$output .= static::getOutputIndention($depth);
+			$content .= static::getOutputIndention($depth);
 		}
 		
-		$output .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
-		return $output;
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
+		return $content;
 	}
 	
 	static protected function getContentForType($properties) {
@@ -33,7 +33,7 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\text\components\c
 	}
 	
 	static protected function getContentForElements($variable, $properties, $depth, $inputCharset) {
-		$output = '';
+		$content = '';
 		if (count($properties)) {
 			foreach ($properties as $key => $value) {
 				// Replace full exception trace to light text representation for resource saving
@@ -41,11 +41,11 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\text\components\c
 					$value['value'] = static::convertToOutputCharset($variable->getTraceAsString(), 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")
 				}
 				
-				$output .= static::getContentForElement($key, $value, $depth, $inputCharset) . static::getOutputNewline();
+				$content .= static::getContentForElement($key, $value, $depth, $inputCharset) . static::getOutputNewline();
 			}
 		}
 		
-		return $output;
+		return $content;
 	}
 
 	static protected function getContentForElement($key, $value, $depth, $inputCharset) {

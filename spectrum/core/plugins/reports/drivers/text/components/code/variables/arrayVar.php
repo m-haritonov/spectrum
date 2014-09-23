@@ -8,17 +8,17 @@ namespace spectrum\core\plugins\reports\drivers\text\components\code\variables;
 
 class arrayVar extends \spectrum\core\plugins\reports\drivers\text\components\component {
 	static public function getContent($variable, $depth, $inputCharset = null) {
-		$output = '';
-		$output .= static::getContentForType($variable);
-		$output .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii')) . static::getOutputNewline();
-		$output .= static::getContentForElements($variable, $depth, $inputCharset);
+		$content = '';
+		$content .= static::getContentForType($variable);
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii')) . static::getOutputNewline();
+		$content .= static::getContentForElements($variable, $depth, $inputCharset);
 		
 		if (count($variable)) {
-			$output .= static::getOutputIndention($depth);
+			$content .= static::getOutputIndention($depth);
 		}
 		
-		$output .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
-		return $output;
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
+		return $content;
 	}
 	
 	static protected function getContentForType($variable) {
@@ -26,14 +26,14 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\text\components\co
 	}
 	
 	static protected function getContentForElements($variable, $depth, $inputCharset) {
-		$output = '';
+		$content = '';
 		if (count($variable)) {
 			foreach ($variable as $key => $value) {
-				$output .= static::getContentForElement($key, $value, $depth, $inputCharset) . static::getOutputNewline();
+				$content .= static::getContentForElement($key, $value, $depth, $inputCharset) . static::getOutputNewline();
 			}
 		}
 		
-		return $output;
+		return $content;
 	}
 	
 	static protected function getContentForElement($key, $value, $depth, $inputCharset) {

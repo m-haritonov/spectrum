@@ -20,35 +20,35 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 		}
 		
 		$title = static::translate('Result buffer');
-		$output = '';
-		$output .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
-		$output .= $title . static::getOutputNewline();
-		$output .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline(2);
-		$output .= static::getContentForResults($results);
-		return $output;
+		$content = '';
+		$content .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
+		$content .= $title . static::getOutputNewline();
+		$content .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline(2);
+		$content .= static::getContentForResults($results);
+		return $content;
 	}
 	
 	static protected function getContentForResults($results) {
-		$output = '';
+		$content = '';
 		
 		$num = 0;
 		$resultsCount = count($results);
 		foreach ($results as $result) {
 			$num++;
-			$output .= static::translate('Order') . ': ' . $num . static::getOutputNewline();
-			$output .= static::translate('Result, contains in run results buffer') . ': ' . static::getResultValueName($result['result']) . static::getOutputNewline();
+			$content .= static::translate('Order') . ': ' . $num . static::getOutputNewline();
+			$content .= static::translate('Result, contains in run results buffer') . ': ' . static::getResultValueName($result['result']) . static::getOutputNewline();
 			
 			if ($result['result'] === false) {
-				$output .= static::translate('Fail type') . ': ' . static::translate(static::getFailType($result['details'])) . static::getOutputNewline();
+				$content .= static::translate('Fail type') . ': ' . static::translate(static::getFailType($result['details'])) . static::getOutputNewline();
 			}
 			
-			$output .= static::getContentForResultDetails($result['details']);
+			$content .= static::getContentForResultDetails($result['details']);
 			if ($num < $resultsCount) {
-				$output .= static::getOutputNewline(2);
+				$content .= static::getOutputNewline(2);
 			}
 		}
 
-		return $output;
+		return $content;
 	}
 	
 	static protected function getResultValueName($result) {

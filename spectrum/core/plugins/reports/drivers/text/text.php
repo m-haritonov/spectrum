@@ -11,27 +11,27 @@ use spectrum\core\SpecInterface;
 
 class text {
 	static public function getContentBeforeSpec(SpecInterface $spec) {
-		$output = '';
+		$content = '';
 		
 		if (!$spec->getParentSpecs()) {
-			$output .= static::getHeader() . static::getOutputNewline(2);
+			$content .= static::getHeader() . static::getOutputNewline(2);
 		}
 
-		$output .= static::callComponentMethod('specList', 'getContentBegin', array($spec));
+		$content .= static::callComponentMethod('specList', 'getContentBegin', array($spec));
 		
-		return $output;
+		return $content;
 	}
 
 	static public function getContentAfterSpec(SpecInterface $spec) {
-		$output = '';
-		$output .= static::callComponentMethod('specList', 'getContentEnd', array($spec));
+		$content = '';
+		$content .= static::callComponentMethod('specList', 'getContentEnd', array($spec));
 		
 		if (!$spec->getParentSpecs()) {
-			$output .= static::callComponentMethod('totalInfo', 'getContent', array($spec)) . static::getOutputNewline();
-			$output .= static::getFooter();
+			$content .= static::callComponentMethod('totalInfo', 'getContent', array($spec)) . static::getOutputNewline();
+			$content .= static::getFooter();
 		}
 		
-		return $output;
+		return $content;
 	}
 	
 	static protected function getHeader() {

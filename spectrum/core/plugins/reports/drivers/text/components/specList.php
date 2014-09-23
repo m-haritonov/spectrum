@@ -14,7 +14,7 @@ class specList extends component {
 	static protected $numbers = array();
 	
 	static public function getContentBegin(SpecInterface $spec) {
-		$output = '';
+		$content = '';
 		
 		if ($spec->getParentSpecs() && !$spec->isAnonymous()) {
 			if (!isset(static::$numbers[static::$depth])) {
@@ -22,32 +22,32 @@ class specList extends component {
 			}
 			
 			static::$numbers[static::$depth]++;
-			$output .= static::getOutputIndention(static::$depth) . static::getContentForSpecTitle($spec);
+			$content .= static::getOutputIndention(static::$depth) . static::getContentForSpecTitle($spec);
 
 			if ($spec->getChildSpecs()) {
 				static::$depth++;
-				$output .= static::getOutputNewline();
+				$content .= static::getOutputNewline();
 			}
 		}
 		
-		return $output;
+		return $content;
 	}
 
 	static public function getContentEnd(SpecInterface $spec) {
-		$output = '';
+		$content = '';
 		
 		if ($spec->getParentSpecs() && !$spec->isAnonymous()) {
 			if ($spec->getChildSpecs()) {
 				static::$numbers[static::$depth] = 0;
 				static::$depth--;
 			} else {
-				$output .= static::getContentForRunResult($spec);
-				$output .= static::getContentForRunDetails($spec);
-				$output .= static::getOutputNewline();
+				$content .= static::getContentForRunResult($spec);
+				$content .= static::getContentForRunDetails($spec);
+				$content .= static::getOutputNewline();
 			}
 		}
 		
-		return $output;
+		return $content;
 	}
 
 	static protected function getContentForSpecTitle(SpecInterface $spec) {
@@ -66,23 +66,23 @@ class specList extends component {
 
 		$componentResults[] = static::callComponentMethod('messages', 'getContent', array($spec));
 
-		$output = '';
+		$content = '';
 		$num = 0;
 		foreach ($componentResults as $result) {
 			if (trim($result) != '') {
 				if ($num > 0) {
-					$output .= static::getOutputNewline(2);
+					$content .= static::getOutputNewline(2);
 				}
 				
-				$output .= static::prependOutputIndentionToEachOutputNewline($result, static::$depth + 1);
+				$content .= static::prependOutputIndentionToEachOutputNewline($result, static::$depth + 1);
 				$num++;
 			}
 		}
 		
-		if ($output != '') {
-			$output = static::getOutputNewline() . $output;
+		if ($content != '') {
+			$content = static::getOutputNewline() . $content;
 		}
 		
-		return $output;
+		return $content;
 	}
 }

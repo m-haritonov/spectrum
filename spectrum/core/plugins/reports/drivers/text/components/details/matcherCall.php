@@ -18,18 +18,18 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\text\components
 	}
 
 	static protected function getContentForEvaluatedValues(MatcherCallInterface $details) {
-		$output = '';
-		$output .= static::translate('Evaluated values') . ': ';
-		$output .= static::callComponentMethod('code\method', 'getContent', array('be', array($details->getTestedValue())));
+		$content = '';
+		$content .= static::translate('Evaluated values') . ': ';
+		$content .= static::callComponentMethod('code\method', 'getContent', array('be', array($details->getTestedValue())));
 
 		if ($details->getNot()) {
-			$output .= static::callComponentMethod('code\operator', 'getContent', array('->', 'us-ascii'));
-			$output .= static::callComponentMethod('code\property', 'getContent', array('not', 'us-ascii'));
+			$content .= static::callComponentMethod('code\operator', 'getContent', array('->', 'us-ascii'));
+			$content .= static::callComponentMethod('code\property', 'getContent', array('not', 'us-ascii'));
 		}
 
-		$output .= static::callComponentMethod('code\operator', 'getContent', array('->', 'us-ascii'));
-		$output .= static::callComponentMethod('code\method', 'getContent', array($details->getMatcherName(), $details->getMatcherArguments()));
-		return $output;
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('->', 'us-ascii'));
+		$content .= static::callComponentMethod('code\method', 'getContent', array($details->getMatcherName(), $details->getMatcherArguments()));
+		return $content;
 	}
 	
 	static protected function getContentForMatcherException(MatcherCallInterface $details) {

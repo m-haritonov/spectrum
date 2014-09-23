@@ -17,29 +17,29 @@ class messages extends component {
 			return null;
 		}
 
-		$output = '';
+		$content = '';
 		$title = static::translate('Messages');
-		$output .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
-		$output .= $title . static::getOutputNewline();
-		$output .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
-		$output .= static::getContentForMessages($messages);
-		return $output;
+		$content .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
+		$content .= $title . static::getOutputNewline();
+		$content .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
+		$content .= static::getContentForMessages($messages);
+		return $content;
 	}
 	
 	static protected function getContentForMessages($messages) {
-		$output = '';
+		$content = '';
 		
 		$num = 0;
 		$messagesCount = count($messages);
 		foreach ($messages as $message) {
 			$num++;
-			$output .= $num . '. ';
-			$output .= static::convertToOutputCharset($message);
+			$content .= $num . '. ';
+			$content .= static::convertToOutputCharset($message);
 			if ($num < $messagesCount) {
-				$output .= static::getOutputNewline();
+				$content .= static::getOutputNewline();
 			}
 		}
 
-		return $output;
+		return $content;
 	}
 }
