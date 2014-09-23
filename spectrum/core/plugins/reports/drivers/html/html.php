@@ -63,10 +63,10 @@ class html {
 
 	static protected function getHtmlOpenTag() {
 		return
-			'<!--[if IE 6]><html class="c-browser-ie6" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
-			'<!--[if IE 7]><html class="c-browser-ie7" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
-			'<!--[if IE 8]><html class="c-browser-ie8" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
-			'<!--[if IE 9]><html class="c-browser-ie9" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if IE 6]><html class="app-browser-ie6" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if IE 7]><html class="app-browser-ie7" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if IE 8]><html class="app-browser-ie8" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
+			'<!--[if IE 9]><html class="app-browser-ie9" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
 			'<!--[if !IE]>--><html xmlns="http://www.w3.org/1999/xhtml"><!--<![endif]-->';
 	}
 
@@ -81,8 +81,8 @@ class html {
 			* { margin: 0; padding: 0; }
 			*[title] { cursor: help; }
 			a[title] { cursor: pointer; }
-			.c-clearFix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-			html.c-browser-ie7 .c-clearFix { zoom: 1; }
+			.app-clearFix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+			html.app-browser-ie7 .app-clearFix { zoom: 1; }
 		/*]]>*/</style>', 2);
 	}
 

@@ -9,22 +9,22 @@ namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-code-variables-object { display: inline-block; vertical-align: text-top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); font-size: 12px; }
-			.c-code-variables-object>.indention { display: none; }
-			.c-code-variables-object>.type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
-			.c-code-variables-object>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: text-top; }
-			.c-code-variables-object>.c-code-operator.curlyBrace { display: none; }
-			.c-code-variables-object>.elements:before { content: "\\007B\\2026\\007D"; color: rgba(0, 0, 0, 0.6); }
-			.c-code-variables-object>.elements>.element { display: none; }
-			.c-code-variables-object>.elements>.element>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
-			.c-code-variables-object .c-code-variables-object,
-			.c-code-variables-object .c-code-variables-array { display: inline; vertical-align: baseline; background: transparent; }
+			.app-code-variables-object { display: inline-block; vertical-align: text-top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); font-size: 12px; }
+			.app-code-variables-object>.indention { display: none; }
+			.app-code-variables-object>.type { font-size: 0.8em; color: rgba(0, 0, 0, 0.6); }
+			.app-code-variables-object>.class { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; color: #000; white-space: nowrap; vertical-align: text-top; }
+			.app-code-variables-object>.app-code-operator.curlyBrace { display: none; }
+			.app-code-variables-object>.elements:before { content: "\\007B\\2026\\007D"; color: rgba(0, 0, 0, 0.6); }
+			.app-code-variables-object>.elements>.element { display: none; }
+			.app-code-variables-object>.elements>.element>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.app-code-variables-object .app-code-variables-object,
+			.app-code-variables-object .app-code-variables-array { display: inline; vertical-align: baseline; background: transparent; }
 			
-			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
-			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }
-			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.c-code-operator.curlyBrace { display: inline; }
-			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.elements:before { display: none; }
-			.c-resultBuffer>.results>.result.expanded .c-code-variables-object>.elements>.element { display: block; }
+			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }
+			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.app-code-operator.curlyBrace { display: inline; }
+			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.elements:before { display: none; }
+			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.elements>.element { display: block; }
 		/*]]>*/</style>', 2);
 	}
 	
@@ -32,7 +32,7 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		$properties = static::getProperties($variable);
 		
 		$content = '';
-		$content .= '<span class="c-code-variables-object">';
+		$content .= '<span class="app-code-variables-object">';
 		$content .= static::getContentForType($properties);
 		$content .= static::getContentForClass($variable, $inputCharset);
 		$content .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii'));

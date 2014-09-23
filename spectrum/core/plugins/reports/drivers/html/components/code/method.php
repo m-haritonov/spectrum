@@ -14,7 +14,7 @@ class method extends \spectrum\core\plugins\reports\drivers\html\components\comp
 	 */
 	static public function getContent($methodName, array $arguments, $inputCharset = null) {
 		return
-			'<span class="c-code-method">' .
+			'<span class="app-code-method">' .
 				'<span class="methodName">' . static::escapeHtml(static::convertToOutputCharset($methodName, $inputCharset)) . '</span>' .
 				static::callComponentMethod('code\operator', 'getContent', array('(', 'us-ascii')) .
 				'<span class="arguments">' . static::getContentForArguments($arguments, $inputCharset) . '</span>' .

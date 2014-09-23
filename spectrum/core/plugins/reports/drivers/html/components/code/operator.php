@@ -9,7 +9,7 @@ namespace spectrum\core\plugins\reports\drivers\html\components\code;
 class operator extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-code-operator { color: rgba(0, 0, 0, 0.6); }
+			.app-code-operator { color: rgba(0, 0, 0, 0.6); }
 		/*]]>*/</style>', 2);
 	}
 
@@ -18,7 +18,7 @@ class operator extends \spectrum\core\plugins\reports\drivers\html\components\co
 	 * @return string
 	 */
 	static public function getContent($operator, $inputCharset = null) {
-		return '<span class="c-code-operator ' . static::escapeHtml(static::getOperatorName($operator)) . '">' . static::escapeHtml(static::convertToOutputCharset($operator, $inputCharset)) . '</span>';
+		return '<span class="app-code-operator ' . static::escapeHtml(static::getOperatorName($operator)) . '">' . static::escapeHtml(static::convertToOutputCharset($operator, $inputCharset)) . '</span>';
 	}
 
 	static protected function getOperatorName($operator) {

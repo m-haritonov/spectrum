@@ -11,11 +11,11 @@ use spectrum\core\SpecInterface;
 class messages extends component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-messages { position: relative; margin: 0.5em 0 1em 0; }
-			.c-messages>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 0; color: #888; font-size: 0.9em; font-weight: normal; }
-			.c-messages>ul { clear: both; float: left; list-style: none; }
-			.c-messages>ul>li { margin-bottom: 2px; padding: 0.4em 7px; border-radius: 4px; background: #e5e5e5; }
-			.c-messages>ul>li>.number { color: #888; font-size: 0.9em; }
+			.app-messages { position: relative; margin: 0.5em 0 1em 0; }
+			.app-messages>h1 { float: left; margin-bottom: 2px; padding: 0.3em 0.5em 0 0; color: #888; font-size: 0.9em; font-weight: normal; }
+			.app-messages>ul { clear: both; float: left; list-style: none; }
+			.app-messages>ul>li { margin-bottom: 2px; padding: 0.4em 7px; border-radius: 4px; background: #e5e5e5; }
+			.app-messages>ul>li>.number { color: #888; font-size: 0.9em; }
 		/*]]>*/</style>', 2);
 	}
 
@@ -27,7 +27,7 @@ class messages extends component {
 		}
 
 		$content = '';
-		$content .= '<div class="c-messages c-clearFix">' . static::getHtmlEscapedOutputNewline();
+		$content .= '<div class="app-messages app-clearFix">' . static::getHtmlEscapedOutputNewline();
 		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Messages') . ':</h1>' . static::getHtmlEscapedOutputNewline();
 		$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForMessages($messages)) . static::getHtmlEscapedOutputNewline();
 		$content .= '</div>';

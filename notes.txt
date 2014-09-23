@@ -2,7 +2,6 @@ TODD: http://mkharitonov.net/projects/spectrum/
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
 TODO: text format
-TODO: c- to app- in html driver
 
 TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров (key => value) с обрезанием для 100 символов вместо использования только первого параметра
 TODO: test('', array(

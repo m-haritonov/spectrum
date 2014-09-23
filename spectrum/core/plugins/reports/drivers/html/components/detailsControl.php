@@ -11,16 +11,16 @@ use spectrum\core\SpecInterface;
 class detailsControl extends component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-detailsControl { display: inline-block; }
+			.app-detailsControl { display: inline-block; }
 
-			.c-detailsControl a { display: inline-block; padding: 0 2px; }
-			.c-detailsControl a span { display: inline-block; overflow: hidden; position: relative; width: 8px; height: 0; padding-top: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: -1px; }
-			.c-detailsControl a.state.selected span { background: #e6932f; border-color: #d4872a; }
+			.app-detailsControl a { display: inline-block; padding: 0 2px; }
+			.app-detailsControl a span { display: inline-block; overflow: hidden; position: relative; width: 8px; height: 0; padding-top: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: -1px; }
+			.app-detailsControl a.state.selected span { background: #e6932f; border-color: #d4872a; }
 
-			.c-detailsControl a.previous span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
+			.app-detailsControl a.previous span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
 
-			.c-detailsControl a.next span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
-			.c-detailsControl a.next span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }
+			.app-detailsControl a.next span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
+			.app-detailsControl a.next span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }
 		/*]]>*/</style>', 2);
 	}
 
@@ -28,12 +28,12 @@ class detailsControl extends component {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			(function(){
 				function changeDetailsControlStates(newStateNumber) {
-					spectrum.tools.removeClass(document.querySelectorAll(".c-detailsControl a.state"), "selected");
-					spectrum.tools.addClass(document.querySelectorAll(".c-detailsControl a.state" + newStateNumber), "selected");
+					spectrum.tools.removeClass(document.querySelectorAll(".app-detailsControl a.state"), "selected");
+					spectrum.tools.addClass(document.querySelectorAll(".app-detailsControl a.state" + newStateNumber), "selected");
 				}
 				
 				spectrum.tools.addEventListener(document, "DOMContentLoaded", function() {
-					var detailsControlNodes = document.querySelectorAll(".c-detailsControl");
+					var detailsControlNodes = document.querySelectorAll(".app-detailsControl");
 					for (var i = 0; i < detailsControlNodes.length; i++) {
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".previous"), "click", function(e){
 							e.preventDefault();
@@ -47,36 +47,36 @@ class detailsControl extends component {
 							e.preventDefault();
 							changeDetailsControlStates(1);
 	
-							spectrum.tools.removeClass(".c-specList>li.notEnding", "expanded");
-							spectrum.tools.removeClass(".c-specList>li.ending", "expanded");
-							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.removeClass(".app-specList>li.notEnding", "expanded");
+							spectrum.tools.removeClass(".app-specList>li.ending", "expanded");
+							spectrum.tools.removeClass(".app-resultBuffer>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state2"), "click", function(e){
 							e.preventDefault();
 							changeDetailsControlStates(2);
 	
-							spectrum.tools.addClass(".c-specList>li.notEnding", "expanded");
-							spectrum.tools.removeClass(".c-specList>li.ending", "expanded");
-							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.addClass(".app-specList>li.notEnding", "expanded");
+							spectrum.tools.removeClass(".app-specList>li.ending", "expanded");
+							spectrum.tools.removeClass(".app-resultBuffer>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state3"), "click", function(e){
 							e.preventDefault();
 							changeDetailsControlStates(3);
 	
-							spectrum.tools.addClass(".c-specList>li.notEnding", "expanded");
-							spectrum.tools.addClass(".c-specList>li.ending", "expanded");
-							spectrum.tools.removeClass(".c-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.addClass(".app-specList>li.notEnding", "expanded");
+							spectrum.tools.addClass(".app-specList>li.ending", "expanded");
+							spectrum.tools.removeClass(".app-resultBuffer>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state4"), "click", function(e){
 							e.preventDefault();
 							changeDetailsControlStates(4);
 	
-							spectrum.tools.addClass(".c-specList>li.notEnding", "expanded");
-							spectrum.tools.addClass(".c-specList>li.ending", "expanded");
-							spectrum.tools.addClass(".c-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.addClass(".app-specList>li.notEnding", "expanded");
+							spectrum.tools.addClass(".app-specList>li.ending", "expanded");
+							spectrum.tools.addClass(".app-resultBuffer>.results>.result", "expanded");
 						});
 						
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".next"), "click", function(e){
@@ -98,7 +98,7 @@ class detailsControl extends component {
 		}
 		
 		return
-			'<div class="c-detailsControl">' .
+			'<div class="app-detailsControl">' .
 				'<a href="#" class="previous"><span>' . static::translateAndEscapeHtml('Previous') . '</span></a>' .
 				'<a href="#" class="state state1" title="' . static::translateAndEscapeHtml('Collapse all') . '"><span>' . static::translateAndEscapeHtml('State 1') . '</span></a>' .
 				'<a href="#" class="state state2" title="' . static::translateAndEscapeHtml('Expand groups, collapse tests and results') . '"><span>' . static::translateAndEscapeHtml('State 2') . '</span></a>' .

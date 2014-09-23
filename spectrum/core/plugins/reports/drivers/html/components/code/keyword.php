@@ -9,7 +9,7 @@ namespace spectrum\core\plugins\reports\drivers\html\components\code;
 class keyword extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-code-keyword { color: rgba(0, 0, 0, 0.6); }
+			.app-code-keyword { color: rgba(0, 0, 0, 0.6); }
 		/*]]>*/</style>', 2);
 	}
 
@@ -18,6 +18,6 @@ class keyword extends \spectrum\core\plugins\reports\drivers\html\components\com
 	 * @return string
 	 */
 	static public function getContent($keyword, $inputCharset = null) {
-		return '<span class="c-code-keyword">' . static::escapeHtml(static::convertToOutputCharset($keyword, $inputCharset)) . '</span>';
+		return '<span class="app-code-keyword">' . static::escapeHtml(static::convertToOutputCharset($keyword, $inputCharset)) . '</span>';
 	}
 }

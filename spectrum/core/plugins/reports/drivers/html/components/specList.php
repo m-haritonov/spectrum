@@ -14,54 +14,54 @@ class specList extends component {
 
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-specList { padding-right: 35px; list-style: none; }
-			.c-specList>li { margin-top: 3px; white-space: nowrap; }
-			.c-specList>li .indention { display: inline-block; width: 0; white-space: pre; }
-			.c-specList>li>.head { display: inline-block; }
-			.c-specList>li>.head>.point { position: relative; padding: 1px 16px 1px 6px; border-radius: 20px; background: #e5e5e5; }
-			.c-specList>li>.head>.point>.number { font-size: 0.9em; }
-			.c-specList>li>.head>.point>.number .dot { display: inline-block; width: 0; color: transparent; }
-			.c-specList>li>.head>.point>a.expand { display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-right: 2px; text-decoration: none; text-align: right; }
-			.c-specList>li>.head>.point>a.expand span { display: inline-block; overflow: hidden; position: relative; width: 8px; height: 0; padding-top: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: middle; }
-			.c-specList>li>.head>.point>a.expand span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
-			.c-specList>li>.head>.point>a.expand span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }
-			.c-specList>li>.head>.title { display: inline-block; vertical-align: text-top; white-space: normal; }
+			.app-specList { padding-right: 35px; list-style: none; }
+			.app-specList>li { margin-top: 3px; white-space: nowrap; }
+			.app-specList>li .indention { display: inline-block; width: 0; white-space: pre; }
+			.app-specList>li>.head { display: inline-block; }
+			.app-specList>li>.head>.point { position: relative; padding: 1px 16px 1px 6px; border-radius: 20px; background: #e5e5e5; }
+			.app-specList>li>.head>.point>.number { font-size: 0.9em; }
+			.app-specList>li>.head>.point>.number .dot { display: inline-block; width: 0; color: transparent; }
+			.app-specList>li>.head>.point>a.expand { display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-right: 2px; text-decoration: none; text-align: right; }
+			.app-specList>li>.head>.point>a.expand span { display: inline-block; overflow: hidden; position: relative; width: 8px; height: 0; padding-top: 8px; border: 1px solid #bbb; background: #ccc; border-radius: 5px; vertical-align: middle; }
+			.app-specList>li>.head>.point>a.expand span:before { content: "\\0020"; display: block; position: absolute; top: 3px; right: 1px; bottom: 3px; left: 1px; background: #fff; }
+			.app-specList>li>.head>.point>a.expand span:after { content: "\\0020"; display: block; position: absolute; top: 1px; right: 3px; bottom: 1px; left: 3px; background: #fff; }
+			.app-specList>li>.head>.title { display: inline-block; vertical-align: text-top; white-space: normal; }
 			
-			.c-specList>li>.head>.title>.separator span,
-			.c-specList>li>.body>.title>.separator span { display: inline-block; width: 0; color: transparent; }
-			.c-specList>li>.head>.title>.separator:before,
-			.c-specList>li>.body>.title>.separator:before { content: "\\2014"; display: inline; }
+			.app-specList>li>.head>.title>.separator span,
+			.app-specList>li>.body>.title>.separator span { display: inline-block; width: 0; color: transparent; }
+			.app-specList>li>.head>.title>.separator:before,
+			.app-specList>li>.body>.title>.separator:before { content: "\\2014"; display: inline; }
 		
-			.c-specList>li>.c-specList { padding-right: 0; }
+			.app-specList>li>.app-specList { padding-right: 0; }
 		
-			.c-specList>li.notEnding>.c-specList { display: none; margin-left: 30px; white-space: normal; }
-			.c-specList>li.notEnding>.c-specList>li { position: relative; }
-			.c-specList>li.notEnding>.c-specList>li:before { content: "\\0020"; display: block; position: absolute; top: -3px; bottom: 0; left: -18px; width: 1px; background: #ccc; }
-			.c-specList>li.notEnding>.c-specList>li:after { content: "\\0020"; display: block; position: absolute; top: 8px; left: -17px; width: 17px; height: 1px; background: #ccc; }
-			.c-specList>li.notEnding>.c-specList>li:last-child:before { bottom: auto; height: 12px; }
+			.app-specList>li.notEnding>.app-specList { display: none; margin-left: 30px; white-space: normal; }
+			.app-specList>li.notEnding>.app-specList>li { position: relative; }
+			.app-specList>li.notEnding>.app-specList>li:before { content: "\\0020"; display: block; position: absolute; top: -3px; bottom: 0; left: -18px; width: 1px; background: #ccc; }
+			.app-specList>li.notEnding>.app-specList>li:after { content: "\\0020"; display: block; position: absolute; top: 8px; left: -17px; width: 17px; height: 1px; background: #ccc; }
+			.app-specList>li.notEnding>.app-specList>li:last-child:before { bottom: auto; height: 12px; }
 		
-			.c-specList>li.ending>.body { display: inline-block; vertical-align: text-top; white-space: normal; }
-			.c-specList>li.ending>.body>.runDetails { display: none; }
+			.app-specList>li.ending>.body { display: inline-block; vertical-align: text-top; white-space: normal; }
+			.app-specList>li.ending>.body>.runDetails { display: none; }
 			
-			.c-specList>li.noContent>.head>.point>a.expand { display: none; }
-			.c-specList>li.noContent>.head>.point { padding-right: 6px; }
+			.app-specList>li.noContent>.head>.point>a.expand { display: none; }
+			.app-specList>li.noContent>.head>.point { padding-right: 6px; }
 
-			.c-specList>li.expanded.notEnding>.head { position: relative; }
-			.c-specList>li.expanded.notEnding>.head:before { content: "\\0020"; display: block; position: absolute; top: 0; bottom: 0; left: 12px; width: 1px; background: #ccc; }
-			.c-specList>li.expanded.notEnding>.c-specList { display: block; }
-			.c-specList>li.expanded.ending>.body>.runDetails { display: block; }
-			.c-specList>li.expanded>.head>.point>a.expand span:after { display: none; }
+			.app-specList>li.expanded.notEnding>.head { position: relative; }
+			.app-specList>li.expanded.notEnding>.head:before { content: "\\0020"; display: block; position: absolute; top: 0; bottom: 0; left: 12px; width: 1px; background: #ccc; }
+			.app-specList>li.expanded.notEnding>.app-specList { display: block; }
+			.app-specList>li.expanded.ending>.body>.runDetails { display: block; }
+			.app-specList>li.expanded>.head>.point>a.expand span:after { display: none; }
 		/*]]>*/</style>', 2);
 	}
 
 	static public function getScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			spectrum.tools.addEventListener(document, "DOMContentLoaded", function() {
-				var expandLinkNodes = document.body.querySelectorAll(".c-specList>li>.head>.point>a.expand");
+				var expandLinkNodes = document.body.querySelectorAll(".app-specList>li>.head>.point>a.expand");
 				for (var i = 0; i < expandLinkNodes.length; i++) {
 					var liNode = expandLinkNodes[i].parentNode.parentNode.parentNode;
 
-					if (liNode.querySelector(".runDetails, .c-specList") == null) {
+					if (liNode.querySelector(".runDetails, .app-specList") == null) {
 						spectrum.tools.addClass(liNode, "noContent");
 					}
 
@@ -85,7 +85,7 @@ class specList extends component {
 		
 		if (!$spec->getParentSpecs()) {
 			static::$depth = 0;
-			$content .= static::getHtmlEscapedOutputIndention(static::$depth) . '<ol class="c-specList">';
+			$content .= static::getHtmlEscapedOutputIndention(static::$depth) . '<ol class="app-specList">';
 		} else if (!$spec->isAnonymous()) {
 			if (!isset(static::$numbers[static::$depth])) {
 				static::$numbers[static::$depth] = 0;
@@ -100,7 +100,7 @@ class specList extends component {
 				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSpecPoint(), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
 				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSpecTitle($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
 				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
-				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<ol class="c-specList">';
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<ol class="app-specList">';
 				static::$depth++;
 			} else {
 				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="head">' . static::getHtmlEscapedOutputNewline();
@@ -178,7 +178,7 @@ class specList extends component {
 		
 		if ($content != '') {
 			return
-				'<div class="runDetails c-clearFix">' . static::getHtmlEscapedOutputNewline() .
+				'<div class="runDetails app-clearFix">' . static::getHtmlEscapedOutputNewline() .
 					$content .
 				'</div>';
 		}

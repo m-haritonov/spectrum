@@ -11,9 +11,9 @@ use spectrum\core\SpecInterface;
 class totalInfo extends component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #e5e5e5; }
-			.c-totalInfo>div { display: inline; }
-			.c-totalInfo h1 { display: inline; color: #333; font-size: 1em; }
+			.app-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #e5e5e5; }
+			.app-totalInfo>div { display: inline; }
+			.app-totalInfo h1 { display: inline; color: #333; font-size: 1em; }
 		/*]]>*/</style>', 2);
 	}
 
@@ -23,7 +23,7 @@ class totalInfo extends component {
 		}
 
 		return
-			'<div class="c-totalInfo">' . static::getHtmlEscapedOutputNewline() .
+			'<div class="app-totalInfo">' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<div class="result">' . static::getHtmlEscapedOutputNewline() .
 					static::getHtmlEscapedOutputIndention(2) . '<h1>' . static::translateAndEscapeHtml('Total result') . ':</h1>' . static::getHtmlEscapedOutputNewline() .
 					static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getContent', array($spec)), 2) . static::getHtmlEscapedOutputNewline() .

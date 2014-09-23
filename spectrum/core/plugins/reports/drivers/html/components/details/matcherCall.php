@@ -11,20 +11,20 @@ use \spectrum\core\details\MatcherCallInterface;
 class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-details-matcherCall { padding: 7px; }
-			.c-details-matcherCall>.evaluatedValues { margin-bottom: 1em; }
-			.c-details-matcherCall>.matcherException { margin-bottom: 1em; }
-			.c-details-matcherCall>*>h1 { margin-bottom: 0.2em; font-size: 1em; }
-			.c-details-matcherCall>.source>p .file .prefix:before { content: "\2026"; }
-			.c-details-matcherCall>.source>p .file .prefix>span { display: none; }
-			.c-resultBuffer>.results>.result.expanded .c-details-matcherCall>.source>p .file .prefix:before { display: none; }
-			.c-resultBuffer>.results>.result.expanded .c-details-matcherCall>.source>p .file .prefix>span { display: inline; }
+			.app-details-matcherCall { padding: 7px; }
+			.app-details-matcherCall>.evaluatedValues { margin-bottom: 1em; }
+			.app-details-matcherCall>.matcherException { margin-bottom: 1em; }
+			.app-details-matcherCall>*>h1 { margin-bottom: 0.2em; font-size: 1em; }
+			.app-details-matcherCall>.source>p .file .prefix:before { content: "\2026"; }
+			.app-details-matcherCall>.source>p .file .prefix>span { display: none; }
+			.app-resultBuffer>.results>.result.expanded .app-details-matcherCall>.source>p .file .prefix:before { display: none; }
+			.app-resultBuffer>.results>.result.expanded .app-details-matcherCall>.source>p .file .prefix>span { display: inline; }
 		/*]]>*/</style>', 2);
 	}
 
 	static public function getContent(MatcherCallInterface $details) {
 		return
-			'<div class="c-details-matcherCall">' . static::getHtmlEscapedOutputNewline() .
+			'<div class="app-details-matcherCall">' . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForEvaluatedValues($details)) . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForMatcherException($details)) . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSource($details)) . static::getHtmlEscapedOutputNewline() .

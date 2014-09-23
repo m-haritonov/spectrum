@@ -11,20 +11,20 @@ use \spectrum\core\details\PhpErrorInterface;
 class phpError extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-details-phpError { padding: 7px; }
-			.c-details-phpError>.errorLevel { margin-bottom: 1em; }
-			.c-details-phpError>.errorMessage { margin-bottom: 1em; }
-			.c-details-phpError>*>h1 { margin-bottom: 0.2em; font-size: 1em; }
-			.c-details-phpError>.source>p .file .prefix:before { content: "\2026"; }
-			.c-details-phpError>.source>p .file .prefix>span { display: none; }
-			.c-resultBuffer>.results>.result.expanded .c-details-phpError>.source>p .file .prefix:before { display: none; }
-			.c-resultBuffer>.results>.result.expanded .c-details-phpError>.source>p .file .prefix>span { display: inline; }
+			.app-details-phpError { padding: 7px; }
+			.app-details-phpError>.errorLevel { margin-bottom: 1em; }
+			.app-details-phpError>.errorMessage { margin-bottom: 1em; }
+			.app-details-phpError>*>h1 { margin-bottom: 0.2em; font-size: 1em; }
+			.app-details-phpError>.source>p .file .prefix:before { content: "\2026"; }
+			.app-details-phpError>.source>p .file .prefix>span { display: none; }
+			.app-resultBuffer>.results>.result.expanded .app-details-phpError>.source>p .file .prefix:before { display: none; }
+			.app-resultBuffer>.results>.result.expanded .app-details-phpError>.source>p .file .prefix>span { display: inline; }
 		/*]]>*/</style>', 2);
 	}
 
 	static public function getContent(PhpErrorInterface $details) {
 		return
-			'<div class="c-details-phpError">' . static::getHtmlEscapedOutputNewline() .
+			'<div class="app-details-phpError">' . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForErrorLevel($details)) . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForErrorMessage($details)) . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSource($details)) . static::getHtmlEscapedOutputNewline() .

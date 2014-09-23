@@ -11,13 +11,13 @@ use spectrum\core\details\UserFailInterface;
 class userFail extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-details-userFail { padding: 7px; }
+			.app-details-userFail { padding: 7px; }
 		/*]]>*/</style>', 2);
 	}
 
 	static public function getContent(UserFailInterface $details) {
 		return
-			'<div class="c-details-userFail">' . static::getHtmlEscapedOutputNewline() .
+			'<div class="app-details-userFail">' . static::getHtmlEscapedOutputNewline() .
 				'<p>' . static::escapeHtml($details->getMessage()) . '</p>' .
 			'</div>';
 	}

@@ -9,13 +9,13 @@ namespace spectrum\core\plugins\reports\drivers\html\components\details;
 class unknown extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
-			.c-details-unknown { padding: 7px; }
+			.app-details-unknown { padding: 7px; }
 		/*]]>*/</style>', 2);
 	}
 
 	static public function getContent($details) {
 		return
-			'<div class="c-details-unknown">' .
+			'<div class="app-details-unknown">' .
 				static::callComponentMethod('code\variable', 'getContent', array($details)) .
 			'</div>';
 	}

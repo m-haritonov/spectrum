@@ -12,6 +12,6 @@ class property extends \spectrum\core\plugins\reports\drivers\html\components\co
 	 * @return string
 	 */
 	static public function getContent($propertyName, $inputCharset = null) {
-		return '<span class="c-code-property">' . static::escapeHtml(static::convertToOutputCharset($propertyName, $inputCharset)) . '</span>';
+		return '<span class="app-code-property">' . static::escapeHtml(static::convertToOutputCharset($propertyName, $inputCharset)) . '</span>';
 	}
 }
