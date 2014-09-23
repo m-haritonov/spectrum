@@ -31,11 +31,6 @@ class component {
 		return $indention . str_replace($newline, $newline . $indention, $text);
 	}
 	
-	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0) {
-		$function = config::getFunctionReplacement('\spectrum\_internals\formatTextForOutput');
-		return $function($text, $indentionToRemoveCount, "\t", "\n", config::getOutputIndention(), config::getOutputNewline());
-	}
-	
 	static protected function translate($string, array $replacement = array()) {
 		$translateFunction = config::getFunctionReplacement('\spectrum\_internals\translate');
 		return $translateFunction($string, $replacement);

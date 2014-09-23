@@ -1,11 +1,8 @@
 TODD: http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
-TODO: getHtml -> getContent, callComponentMethod in html driver
-
 TODO: text format
-TODO: убрать форматирование
-
+TODO: c- to app- in html driver
 
 TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров (key => value) с обрезанием для 100 символов вместо использования только первого параметра
 TODO: test('', array(
@@ -31,13 +28,13 @@ TODO: array context group:
 	});
 
 TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
-TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setCatchingPhpErrorLevel ???
+TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setPhpErrorCaughtLevel ???
 TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
 TODO: реализовать проверку *RECURSION* в ArrayVar и ObjectVar (в элементе массива тоже может содержаться объект)
 
 TODO: fix reports in all browsers 
 
-TODO: выделять цветом всю строку и point, fail/success оставить только для копирования в буфер
+TODO: выделять цветом всю строку и point, fail/success оставить только для копирования в буфер ???
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 TODO: create be()->triggersError($errorType = null, $errorMessage = null)  ???
 TODO: create plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
