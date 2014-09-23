@@ -13,10 +13,10 @@ class unknown extends \spectrum\core\plugins\reports\drivers\html\components\com
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml($details) {
+	static public function getContent($details) {
 		return
 			'<div class="c-details-unknown">' .
-				static::callComponentMethod('code\variable', 'getHtml', array($details)) .
+				static::callComponentMethod('code\variable', 'getContent', array($details)) .
 			'</div>';
 	}
 }

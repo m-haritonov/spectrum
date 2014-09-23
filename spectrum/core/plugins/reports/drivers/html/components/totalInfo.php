@@ -17,7 +17,7 @@ class totalInfo extends component {
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec) {
+	static public function getContent(SpecInterface $spec) {
 		if ($spec->getParentSpecs()) {
 			return null;
 		}
@@ -26,21 +26,21 @@ class totalInfo extends component {
 			'<div class="c-totalInfo">' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<div class="result">' . static::getHtmlEscapedOutputNewline() .
 					static::getHtmlEscapedOutputIndention(2) . '<h1>' . static::translateAndEscapeHtml('Total result') . ':</h1>' . static::getHtmlEscapedOutputNewline() .
-					static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getHtml', array($spec)), 2) . static::getHtmlEscapedOutputNewline() .
+					static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getContent', array($spec)), 2) . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '</div> | ' . static::getHtmlEscapedOutputNewline() .
 
 				static::getHtmlEscapedOutputIndention() . '<div class="details">' . static::getHtmlEscapedOutputNewline() .
 					static::getHtmlEscapedOutputIndention(2) . static::translateAndEscapeHtml('Details') . ': ' . static::getHtmlEscapedOutputNewline() .
-					static::getHtmlEscapedOutputIndention(2) . static::callComponentMethod('detailsControl', 'getHtml', array($spec)) . static::getHtmlEscapedOutputNewline() .
+					static::getHtmlEscapedOutputIndention(2) . static::callComponentMethod('detailsControl', 'getContent', array($spec)) . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '</div>' . static::getHtmlEscapedOutputNewline() .
 			'</div>';
 	}
 
-	static public function getHtmlForUpdate(SpecInterface $spec) {
+	static public function getContentForUpdate(SpecInterface $spec) {
 		if ($spec->getParentSpecs()) {
 			return null;
 		}
 
-		return static::callComponentMethod('totalResult', 'getHtmlForUpdate', array($spec));
+		return static::callComponentMethod('totalResult', 'getContentForUpdate', array($spec));
 	}
 }

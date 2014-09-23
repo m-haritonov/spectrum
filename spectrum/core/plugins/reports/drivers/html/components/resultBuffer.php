@@ -88,44 +88,44 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		/*]]>*/</script>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec) {
+	static public function getContent(SpecInterface $spec) {
 		$results = $spec->getResultBuffer()->getResults();
 		if (count($results) == 0) {
 			return null;
 		}
 		
-		$output = '';
-		$output .= '<div class="c-resultBuffer c-clearFix">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Result buffer') . ':</h1>' . static::getHtmlEscapedOutputNewline();
-		$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForResults($results)) . static::getHtmlEscapedOutputNewline();
-		$output .= '</div>';
-		return $output;
+		$content = '';
+		$content .= '<div class="c-resultBuffer c-clearFix">' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Result buffer') . ':</h1>' . static::getHtmlEscapedOutputNewline();
+		$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForResults($results)) . static::getHtmlEscapedOutputNewline();
+		$content .= '</div>';
+		return $content;
 	}
 	
-	static protected function getHtmlForResults($results) {
-		$output = '';
-		$output .= '<div class="results">' . static::getHtmlEscapedOutputNewline();
+	static protected function getContentForResults($results) {
+		$content = '';
+		$content .= '<div class="results">' . static::getHtmlEscapedOutputNewline();
 		
 		$num = 0;
 		foreach ($results as $result) {
 			$num++;
-			$output .= static::getHtmlEscapedOutputIndention() . '<div class="result ' . static::getResultValueName($result['result']) . '">' . static::getHtmlEscapedOutputNewline();
-			$output .= static::getHtmlEscapedOutputIndention(2) . '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show/hide full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>' . static::getHtmlEscapedOutputNewline();
-			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="num" title="' . static::translateAndEscapeHtml('Order in run results buffer') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>' . static::getHtmlEscapedOutputNewline();
-			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="value" title="' . static::translateAndEscapeHtml('Result, contains in run results buffer') . '">' . static::escapeHtml(static::getResultValueName($result['result'])) . '</div>' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention() . '<div class="result ' . static::getResultValueName($result['result']) . '">' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention(2) . '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show/hide full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="num" title="' . static::translateAndEscapeHtml('Order in run results buffer') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="value" title="' . static::translateAndEscapeHtml('Result, contains in run results buffer') . '">' . static::escapeHtml(static::getResultValueName($result['result'])) . '</div>' . static::getHtmlEscapedOutputNewline();
 			
 			if ($result['result'] === false) {
-				$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="failType" title="' . static::translateAndEscapeHtml('Fail type') . '">' . static::translateAndEscapeHtml(static::getFailType($result['details'])) . '</div>' . static::getHtmlEscapedOutputNewline();
+				$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="failType" title="' . static::translateAndEscapeHtml('Fail type') . '">' . static::translateAndEscapeHtml(static::getFailType($result['details'])) . '</div>' . static::getHtmlEscapedOutputNewline();
 			}
 			
-			$output .= static::getHtmlEscapedOutputIndention(2) . '<div class="details">' . static::getHtmlEscapedOutputNewline();
-			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForResultDetails($result['details']), 3) . static::getHtmlEscapedOutputNewline();
-			$output .= static::getHtmlEscapedOutputIndention(2) . '</div>' . static::getHtmlEscapedOutputNewline();
-			$output .= static::getHtmlEscapedOutputIndention() . '</div>' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="details">' . static::getHtmlEscapedOutputNewline();
+			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForResultDetails($result['details']), 3) . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention(2) . '</div>' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention() . '</div>' . static::getHtmlEscapedOutputNewline();
 		}
 
-		$output .= '</div>';
-		return $output;
+		$content .= '</div>';
+		return $content;
 	}
 	
 	static protected function getResultValueName($result) {
@@ -152,15 +152,15 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		}
 	}
 
-	static protected function getHtmlForResultDetails($details) {
+	static protected function getContentForResultDetails($details) {
 		if (is_object($details) && $details instanceof MatcherCallInterface) {
-			return static::callComponentMethod('details\matcherCall', 'getHtml', array($details));
+			return static::callComponentMethod('details\matcherCall', 'getContent', array($details));
 		} else if (is_object($details) && $details instanceof PhpErrorInterface) {
-			return static::callComponentMethod('details\phpError', 'getHtml', array($details));
+			return static::callComponentMethod('details\phpError', 'getContent', array($details));
 		} else if (is_object($details) && $details instanceof UserFailInterface) {
-			return static::callComponentMethod('details\userFail', 'getHtml', array($details));
+			return static::callComponentMethod('details\userFail', 'getContent', array($details));
 		} else {
-			return static::callComponentMethod('details\unknown', 'getHtml', array($details));
+			return static::callComponentMethod('details\unknown', 'getContent', array($details));
 		}
 	}
 }

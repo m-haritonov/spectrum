@@ -22,35 +22,35 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(MatcherCallInterface $details) {
+	static public function getContent(MatcherCallInterface $details) {
 		return
 			'<div class="c-details-matcherCall">' . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForEvaluatedValues($details)) . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForMatcherException($details)) . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSource($details)) . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForEvaluatedValues($details)) . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForMatcherException($details)) . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSource($details)) . static::getHtmlEscapedOutputNewline() .
 			'</div>';
 	}
 
-	static protected function getHtmlForEvaluatedValues(MatcherCallInterface $details) {
-		$output = '';
-		$output .= '<div class="evaluatedValues">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Evaluated values') . '</h1>' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<p>';
-		$output .= static::callComponentMethod('code\method', 'getHtml', array('be', array($details->getTestedValue())));
+	static protected function getContentForEvaluatedValues(MatcherCallInterface $details) {
+		$content = '';
+		$content .= '<div class="evaluatedValues">' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Evaluated values') . '</h1>' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<p>';
+		$content .= static::callComponentMethod('code\method', 'getContent', array('be', array($details->getTestedValue())));
 
 		if ($details->getNot()) {
-			$output .= static::callComponentMethod('code\operator', 'getHtml', array('->', 'us-ascii'));
-			$output .= static::callComponentMethod('code\property', 'getHtml', array('not', 'us-ascii'));
+			$content .= static::callComponentMethod('code\operator', 'getContent', array('->', 'us-ascii'));
+			$content .= static::callComponentMethod('code\property', 'getContent', array('not', 'us-ascii'));
 		}
 
-		$output .= static::callComponentMethod('code\operator', 'getHtml', array('->', 'us-ascii'));
-		$output .= static::callComponentMethod('code\method', 'getHtml', array($details->getMatcherName(), $details->getMatcherArguments()));
-		$output .= '</p>' . static::getHtmlEscapedOutputNewline();
-		$output .= '</div>';
-		return $output;
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('->', 'us-ascii'));
+		$content .= static::callComponentMethod('code\method', 'getContent', array($details->getMatcherName(), $details->getMatcherArguments()));
+		$content .= '</p>' . static::getHtmlEscapedOutputNewline();
+		$content .= '</div>';
+		return $content;
 	}
 	
-	static protected function getHtmlForMatcherException(MatcherCallInterface $details) {
+	static protected function getContentForMatcherException(MatcherCallInterface $details) {
 		if ($details->getMatcherException() === null) {
 			return null;
 		}
@@ -62,12 +62,12 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 				'</h1>' . static::getHtmlEscapedOutputNewline() .
 				
 				static::getHtmlEscapedOutputIndention() . '<p>' . 
-					static::callComponentMethod('code\variable', 'getHtml', array($details->getMatcherException())) .
+					static::callComponentMethod('code\variable', 'getContent', array($details->getMatcherException())) .
 				'</p>' . static::getHtmlEscapedOutputNewline() .
 			'</div>';
 	}
 	
-	static protected function getHtmlForSource(MatcherCallInterface $details) {
+	static protected function getContentForSource(MatcherCallInterface $details) {
 		$filename = $details->getFile();
 		$filenameEndLength = 25;
 		$filenameBegin = mb_substr($filename, 0, -$filenameEndLength, 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")

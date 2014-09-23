@@ -19,35 +19,35 @@ class messages extends component {
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec) {
+	static public function getContent(SpecInterface $spec) {
 		$messages = $spec->messages->getAll();
 
 		if (!count($messages)) {
 			return null;
 		}
 
-		$output = '';
-		$output .= '<div class="c-messages c-clearFix">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Messages') . ':</h1>' . static::getHtmlEscapedOutputNewline();
-		$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForMessages($messages)) . static::getHtmlEscapedOutputNewline();
-		$output .= '</div>';
-		return $output;
+		$content = '';
+		$content .= '<div class="c-messages c-clearFix">' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Messages') . ':</h1>' . static::getHtmlEscapedOutputNewline();
+		$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForMessages($messages)) . static::getHtmlEscapedOutputNewline();
+		$content .= '</div>';
+		return $content;
 	}
 	
-	static protected function getHtmlForMessages($messages) {
-		$output = '';
-		$output .= '<ul>' . static::getHtmlEscapedOutputNewline();
+	static protected function getContentForMessages($messages) {
+		$content = '';
+		$content .= '<ul>' . static::getHtmlEscapedOutputNewline();
 		
 		$num = 0;
 		foreach ($messages as $message) {
 			$num++;
-			$output .= static::getHtmlEscapedOutputIndention() . '<li>';
-			$output .= '<span class="number">' . $num . '. </span>';
-			$output .= static::escapeHtml(static::convertToOutputCharset($message));
-			$output .= '</li>' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention() . '<li>';
+			$content .= '<span class="number">' . $num . '. </span>';
+			$content .= static::escapeHtml(static::convertToOutputCharset($message));
+			$content .= '</li>' . static::getHtmlEscapedOutputNewline();
 		}
 
-		$output .= '</ul>';
-		return $output;
+		$content .= '</ul>';
+		return $content;
 	}
 }

@@ -92,7 +92,7 @@ class detailsControl extends component {
 		/*]]>*/</script>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec) {
+	static public function getContent(SpecInterface $spec) {
 		if ($spec->getParentSpecs()) {
 			return null;
 		}

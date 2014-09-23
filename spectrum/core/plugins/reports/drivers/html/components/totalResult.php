@@ -42,14 +42,14 @@ class totalResult extends component {
 		/*]]>*/</script>', 2);
 	}
 
-	static public function getHtml(SpecInterface $spec) {
+	static public function getContent(SpecInterface $spec) {
 		return
 			'<span class="c-totalResult-result id-' . static::escapeHtml($spec->getRunId()) . '">' .
 				static::translateAndEscapeHtml('wait...') .
 			'</span>';
 	}
 	
-	static public function getHtmlForUpdate(SpecInterface $spec) {
+	static public function getContentForUpdate(SpecInterface $spec) {
 		$resultName = static::getResultName($spec->getResultBuffer()->getTotalResult());
 		return
 			'<span class="c-totalResult-update id-' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline() .

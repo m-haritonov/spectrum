@@ -16,7 +16,7 @@ class floatVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 	
-	static public function getHtml($variable) {
+	static public function getContent($variable) {
 		return
 			'<span class="c-code-variables-float">' .
 				'<span class="type">' . static::translateAndEscapeHtml('float') . '</span> ' .

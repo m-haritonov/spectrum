@@ -15,7 +15,7 @@ class userFail extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(UserFailInterface $details) {
+	static public function getContent(UserFailInterface $details) {
 		return
 			'<div class="c-details-userFail">' . static::getHtmlEscapedOutputNewline() .
 				'<p>' . static::escapeHtml($details->getMessage()) . '</p>' .

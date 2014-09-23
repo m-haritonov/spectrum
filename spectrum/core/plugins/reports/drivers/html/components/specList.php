@@ -80,12 +80,12 @@ class specList extends component {
 		/*]]>*/</script>', 2);
 	}
 
-	static public function getHtmlBegin(SpecInterface $spec) {
-		$output = '';
+	static public function getContentBegin(SpecInterface $spec) {
+		$content = '';
 		
 		if (!$spec->getParentSpecs()) {
 			static::$depth = 0;
-			$output .= static::getHtmlEscapedOutputIndention(static::$depth) . '<ol class="c-specList">';
+			$content .= static::getHtmlEscapedOutputIndention(static::$depth) . '<ol class="c-specList">';
 		} else if (!$spec->isAnonymous()) {
 			if (!isset(static::$numbers[static::$depth])) {
 				static::$numbers[static::$depth] = 0;
@@ -93,53 +93,53 @@ class specList extends component {
 			
 			static::$numbers[static::$depth]++;
 
-			$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '<li class="' . ($spec->getChildSpecs() ? 'notEnding' : 'ending') . ' expanded" id="' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '<li class="' . ($spec->getChildSpecs() ? 'notEnding' : 'ending') . ' expanded" id="' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline();
 			
 			if ($spec->getChildSpecs()) {
-				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="head">' . static::getHtmlEscapedOutputNewline();
-				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecPoint(), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
-				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecTitle($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
-				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
-				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<ol class="c-specList">';
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="head">' . static::getHtmlEscapedOutputNewline();
+				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSpecPoint(), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSpecTitle($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<ol class="c-specList">';
 				static::$depth++;
 			} else {
-				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="head">' . static::getHtmlEscapedOutputNewline();
-				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecPoint(), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
-				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
-				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="body">' . static::getHtmlEscapedOutputNewline();
-				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSpecTitle($spec), static::$depth * 2 + 3);
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="head">' . static::getHtmlEscapedOutputNewline();
+				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSpecPoint(), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '<div class="body">' . static::getHtmlEscapedOutputNewline();
+				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSpecTitle($spec), static::$depth * 2 + 3);
 			}
 		}
 
-		return $output;
+		return $content;
 	}
 
-	static public function getHtmlEnd(SpecInterface $spec) {
-		$output = '';
+	static public function getContentEnd(SpecInterface $spec) {
+		$content = '';
 		
 		if ($spec->getParentSpecs()) {
 			if (!$spec->isAnonymous()) {
 				if ($spec->getChildSpecs()) {
 					static::$numbers[static::$depth] = 0;
 					static::$depth--;
-					$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</ol>' . static::getHtmlEscapedOutputNewline();
+					$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</ol>' . static::getHtmlEscapedOutputNewline();
 				} else {
-					$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForRunDetails($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
-					$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
+					$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForRunDetails($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+					$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
 				}
 
-				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getHtmlForUpdate', array($spec)), static::$depth * 2 + 2) . static::getHtmlEscapedOutputNewline();
-				$output .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '</li>';
+				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getContentForUpdate', array($spec)), static::$depth * 2 + 2) . static::getHtmlEscapedOutputNewline();
+				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '</li>';
 			}
 		}
 		else {
-			$output .= static::getHtmlEscapedOutputIndention(static::$depth) . '</ol>';
+			$content .= static::getHtmlEscapedOutputIndention(static::$depth) . '</ol>';
 		}
 
-		return $output;
+		return $content;
 	}
 
-	static protected function getHtmlForSpecPoint() {
+	static protected function getContentForSpecPoint() {
 		return
 			'<span class="point">' .
 				// Indention should be copied to buffer
@@ -152,34 +152,34 @@ class specList extends component {
 			'</span> ';
 	}
 
-	static protected function getHtmlForSpecTitle(SpecInterface $spec) {
+	static protected function getContentForSpecTitle(SpecInterface $spec) {
 		return
 			'<span class="title">' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<span class="name">' . static::escapeHtml(static::convertToOutputCharset($spec->getName())) . '</span> ' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<span class="separator"><span>-</span></span> ' . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getContent', array($spec))) . static::getHtmlEscapedOutputNewline() .
 			'</span>';
 	}
 
-	static protected function getHtmlForRunDetails(SpecInterface $spec) {
+	static protected function getContentForRunDetails(SpecInterface $spec) {
 		$componentResults = array();
 		if ($spec->getResultBuffer()->getTotalResult() !== true) {
-			$componentResults[] = static::callComponentMethod('resultBuffer', 'getHtml', array($spec));
+			$componentResults[] = static::callComponentMethod('resultBuffer', 'getContent', array($spec));
 		}
 
-		$componentResults[] = static::callComponentMethod('messages', 'getHtml', array($spec));
+		$componentResults[] = static::callComponentMethod('messages', 'getContent', array($spec));
 
-		$output = '';
-		foreach ($componentResults as $html) {
-			if (trim($html) != '') {
-				$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($html) . static::getHtmlEscapedOutputNewline();
+		$content = '';
+		foreach ($componentResults as $result) {
+			if (trim($result) != '') {
+				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($result) . static::getHtmlEscapedOutputNewline();
 			}
 		}
 		
-		if ($output != '') {
+		if ($content != '') {
 			return
 				'<div class="runDetails c-clearFix">' . static::getHtmlEscapedOutputNewline() .
-					$output .
+					$content .
 				'</div>';
 		}
 		

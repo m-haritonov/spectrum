@@ -28,26 +28,26 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		/*]]>*/</style>', 2);
 	}
 	
-	static public function getHtml($variable, $depth, $inputCharset = null) {
+	static public function getContent($variable, $depth, $inputCharset = null) {
 		$properties = static::getProperties($variable);
 		
-		$output = '';
-		$output .= '<span class="c-code-variables-object">';
-		$output .= static::getHtmlForType($properties);
-		$output .= static::getHtmlForClass($variable, $inputCharset);
-		$output .= static::callComponentMethod('code\operator', 'getHtml', array('{', 'us-ascii'));
-		$output .= static::getHtmlForElements($variable, $properties, $depth, $inputCharset);
+		$content = '';
+		$content .= '<span class="c-code-variables-object">';
+		$content .= static::getContentForType($properties);
+		$content .= static::getContentForClass($variable, $inputCharset);
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii'));
+		$content .= static::getContentForElements($variable, $properties, $depth, $inputCharset);
 		
 		if (count($properties)) {
-			$output .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth); // Indention should be copied to buffer
+			$content .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth); // Indention should be copied to buffer
 		}
 		
-		$output .= static::callComponentMethod('code\operator', 'getHtml', array('}', 'us-ascii'));
-		$output .= '</span>';
-		return $output;
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
+		$content .= '</span>';
+		return $content;
 	}
 	
-	static protected function getHtmlForType($properties) {
+	static protected function getContentForType($properties) {
 		return
 			'<span class="type">' .
 				static::translateAndEscapeHtml('object') .
@@ -55,45 +55,45 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'</span>';
 	}
 	
-	static protected function getHtmlForClass($variable, $inputCharset) {
+	static protected function getContentForClass($variable, $inputCharset) {
 		return '<span class="class">\\' . static::escapeHtml(static::convertToOutputCharset(get_class($variable), $inputCharset)) . '</span> ';
 	}
 	
-	static protected function getHtmlForElements($variable, $properties, $depth, $inputCharset) {
-		$output = '';
+	static protected function getContentForElements($variable, $properties, $depth, $inputCharset) {
+		$content = '';
 		if (count($properties)) {
-			$output .= '<span class="elements">';
+			$content .= '<span class="elements">';
 			foreach ($properties as $key => $value) {
 				// Replace full exception trace to light text representation for resource saving
 				if ($variable instanceof \Exception && (string) $key === 'trace') {
 					$value['value'] = static::convertToOutputCharset($variable->getTraceAsString(), 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")
 				}
 				
-				$output .= static::getHtmlForElement($key, $value, $depth, $inputCharset);
+				$content .= static::getContentForElement($key, $value, $depth, $inputCharset);
 			}
 
-			$output .= '</span>';
+			$content .= '</span>';
 		}
 		
-		return $output;
+		return $content;
 	}
 
-	static protected function getHtmlForElement($key, $value, $depth, $inputCharset) {
+	static protected function getContentForElement($key, $value, $depth, $inputCharset) {
 		return
 			'<span class="element">' .
 				// Indention should be copied to buffer
 				str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth + 1) .
 				'<span class="key">' .
-					($value['isPublic'] ? static::callComponentMethod('code\keyword', 'getHtml', array('public', 'us-ascii')) . ' ' : '') .
-					($value['isProtected'] ? static::callComponentMethod('code\keyword', 'getHtml', array('protected', 'us-ascii')) . ' ' : '') .
-					($value['isPrivate'] ? static::callComponentMethod('code\keyword', 'getHtml', array('private', 'us-ascii')) . ' ' : '') .
-					($value['isStatic'] ? static::callComponentMethod('code\keyword', 'getHtml', array('static', 'us-ascii')) . ' ' : '') .
-					static::callComponentMethod('code\operator', 'getHtml', array('[', 'us-ascii')) .
+					($value['isPublic'] ? static::callComponentMethod('code\keyword', 'getContent', array('public', 'us-ascii')) . ' ' : '') .
+					($value['isProtected'] ? static::callComponentMethod('code\keyword', 'getContent', array('protected', 'us-ascii')) . ' ' : '') .
+					($value['isPrivate'] ? static::callComponentMethod('code\keyword', 'getContent', array('private', 'us-ascii')) . ' ' : '') .
+					($value['isStatic'] ? static::callComponentMethod('code\keyword', 'getContent', array('static', 'us-ascii')) . ' ' : '') .
+					static::callComponentMethod('code\operator', 'getContent', array('[', 'us-ascii')) .
 					static::escapeHtml(static::convertToOutputCharset($key, $inputCharset)) .
-					static::callComponentMethod('code\operator', 'getHtml', array(']', 'us-ascii')) .
+					static::callComponentMethod('code\operator', 'getContent', array(']', 'us-ascii')) .
 				'</span> ' .
-				static::callComponentMethod('code\operator', 'getHtml', array('=>', 'us-ascii')) . ' ' .
-				static::callComponentMethod('code\variable', 'getHtml', array($value['value'], $depth + 1, $inputCharset)) .
+				static::callComponentMethod('code\operator', 'getContent', array('=>', 'us-ascii')) . ' ' .
+				static::callComponentMethod('code\variable', 'getContent', array($value['value'], $depth + 1, $inputCharset)) .
 			'</span>';
 	}
 

@@ -12,30 +12,30 @@ class method extends \spectrum\core\plugins\reports\drivers\html\components\comp
 	 * @param array $arguments Data in input charset
 	 * @return string
 	 */
-	static public function getHtml($methodName, array $arguments, $inputCharset = null) {
+	static public function getContent($methodName, array $arguments, $inputCharset = null) {
 		return
 			'<span class="c-code-method">' .
 				'<span class="methodName">' . static::escapeHtml(static::convertToOutputCharset($methodName, $inputCharset)) . '</span>' .
-				static::callComponentMethod('code\operator', 'getHtml', array('(', 'us-ascii')) .
-				'<span class="arguments">' . static::getHtmlForArguments($arguments, $inputCharset) . '</span>' .
-				static::callComponentMethod('code\operator', 'getHtml', array(')', 'us-ascii')) .
+				static::callComponentMethod('code\operator', 'getContent', array('(', 'us-ascii')) .
+				'<span class="arguments">' . static::getContentForArguments($arguments, $inputCharset) . '</span>' .
+				static::callComponentMethod('code\operator', 'getContent', array(')', 'us-ascii')) .
 			'</span>';
 	}
 
-	static public function getHtmlForArguments(array $arguments, $inputCharset) {
-		$output = '';
+	static public function getContentForArguments(array $arguments, $inputCharset) {
+		$content = '';
 		
 		end($arguments);
 		$lastKey = key($arguments);
 		
 		foreach ($arguments as $key => $argument) {
-			$output .= static::callComponentMethod('code\variable', 'getHtml', array($argument, 0, $inputCharset));
+			$content .= static::callComponentMethod('code\variable', 'getContent', array($argument, 0, $inputCharset));
 			
 			if ($key !== $lastKey) {
-				$output .= ', ';
+				$content .= ', ';
 			}
 		}
 
-		return $output;
+		return $content;
 	}
 }

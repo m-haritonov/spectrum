@@ -16,7 +16,7 @@ class unknownVar extends \spectrum\core\plugins\reports\drivers\html\components\
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml($variable, $inputCharset = null) {
+	static public function getContent($variable, $inputCharset = null) {
 		return
 			'<span class="c-code-variables-unknown">' .
 				'<span class="type">' . static::translateAndEscapeHtml('unknown') . '</span> ' .

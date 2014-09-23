@@ -15,7 +15,7 @@ class nullVar extends \spectrum\core\plugins\reports\drivers\html\components\com
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml() {
+	static public function getContent() {
 		return
 			'<span class="c-code-variables-null">' .
 				'<span class="value">null</span>' .

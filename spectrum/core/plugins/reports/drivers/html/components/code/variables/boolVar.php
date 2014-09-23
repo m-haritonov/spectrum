@@ -16,7 +16,7 @@ class boolVar extends \spectrum\core\plugins\reports\drivers\html\components\com
 		/*]]>*/</style>', 2);
 	}
 	
-	static public function getHtml($variable) {
+	static public function getContent($variable) {
 		return
 			'<span class="c-code-variables-bool">' .
 				'<span class="type">' . static::translateAndEscapeHtml('bool') . '</span> ' .

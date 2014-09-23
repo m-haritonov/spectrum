@@ -1,8 +1,7 @@
 TODD: http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
-TODO: getHtml -> getContent, html -> content in html driver
-TODO: drivers/text -> drivers/plain ???
+TODO: getHtml -> getContent, callComponentMethod in html driver
 
 TODO: text format
 TODO: убрать форматирование

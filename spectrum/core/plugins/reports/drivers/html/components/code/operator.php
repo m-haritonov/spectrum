@@ -17,7 +17,7 @@ class operator extends \spectrum\core\plugins\reports\drivers\html\components\co
 	 * @param string $operator String in "us-ascii" charset
 	 * @return string
 	 */
-	static public function getHtml($operator, $inputCharset = null) {
+	static public function getContent($operator, $inputCharset = null) {
 		return '<span class="c-code-operator ' . static::escapeHtml(static::getOperatorName($operator)) . '">' . static::escapeHtml(static::convertToOutputCharset($operator, $inputCharset)) . '</span>';
 	}
 

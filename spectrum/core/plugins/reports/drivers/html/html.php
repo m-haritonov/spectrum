@@ -11,35 +11,35 @@ use spectrum\core\SpecInterface;
 
 class html {
 	static public function getContentBeforeSpec(SpecInterface $spec) {
-		$output = '';
+		$content = '';
 		
 		if (!$spec->getParentSpecs()) {
-			$output .= static::getHeader() . static::getHtmlEscapedOutputNewline();
-			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline();
+			$content .= static::getHeader() . static::getHtmlEscapedOutputNewline();
+			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getContent', array($spec))) . static::getHtmlEscapedOutputNewline();
 		}
 
-		$specListHtml = static::callComponentMethod('specList', 'getHtmlBegin', array($spec));
-		if ($specListHtml != '') {
-			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListHtml) . static::getHtmlEscapedOutputNewline();
+		$specListContent = static::callComponentMethod('specList', 'getContentBegin', array($spec));
+		if ($specListContent != '') {
+			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListContent) . static::getHtmlEscapedOutputNewline();
 		}
 		
-		return $output;
+		return $content;
 	}
 
 	static public function getContentAfterSpec(SpecInterface $spec) {
-		$output = '';
-		$specListHtml = static::callComponentMethod('specList', 'getHtmlEnd', array($spec));
-		if ($specListHtml != '') {
-			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListHtml) . static::getHtmlEscapedOutputNewline();
+		$content = '';
+		$specListContent = static::callComponentMethod('specList', 'getContentEnd', array($spec));
+		if ($specListContent != '') {
+			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListContent) . static::getHtmlEscapedOutputNewline();
 		}
 		
 		if (!$spec->getParentSpecs()) {
-			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtml', array($spec))) . static::getHtmlEscapedOutputNewline();
-			$output .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getHtmlForUpdate', array($spec))) . static::getHtmlEscapedOutputNewline();
-			$output .= static::getFooter();
+			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getContent', array($spec))) . static::getHtmlEscapedOutputNewline();
+			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalInfo', 'getContentForUpdate', array($spec))) . static::getHtmlEscapedOutputNewline();
+			$content .= static::getFooter();
 		}
 		
-		return $output;
+		return $content;
 	}
 	
 	static protected function getHeader() {
@@ -218,31 +218,31 @@ class html {
 	}
 	
 	static protected function collectAllComponentStyles() {
-		$output = '';
+		$content = '';
 		foreach (config::getAllClassReplacements() as $class) {
 			if (mb_stripos($class, '\spectrum\core\plugins\reports\drivers\html\components\\', null, 'us-ascii') === 0) {
 				$styles = $class::getStyles();
 				if ($styles != '') {
-					$output .= $styles . static::getHtmlEscapedOutputNewline(2);
+					$content .= $styles . static::getHtmlEscapedOutputNewline(2);
 				}
 			}
 		}
 
-		return $output;
+		return $content;
 	}
 
 	static protected function collectAllComponentScripts() {
-		$output = '';
+		$content = '';
 		foreach (config::getAllClassReplacements() as $class) {
 			if (mb_stripos($class, '\spectrum\core\plugins\reports\drivers\html\components\\', null, 'us-ascii') === 0) {
 				$scripts = $class::getScripts();
 				if ($scripts != '') {
-					$output .= $scripts . static::getHtmlEscapedOutputNewline(2);
+					$content .= $scripts . static::getHtmlEscapedOutputNewline(2);
 				}
 			}
 		}
 
-		return $output;
+		return $content;
 	}
 	
 	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array()) {

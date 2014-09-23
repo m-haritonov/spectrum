@@ -26,23 +26,23 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml($variable, $depth, $inputCharset = null) {
-		$output = '';
-		$output .= '<span class="c-code-variables-array">';
-		$output .= static::getHtmlForType($variable);
-		$output .= static::callComponentMethod('code\operator', 'getHtml', array('{', 'us-ascii'));
-		$output .= static::getHtmlForElements($variable, $depth, $inputCharset);
+	static public function getContent($variable, $depth, $inputCharset = null) {
+		$content = '';
+		$content .= '<span class="c-code-variables-array">';
+		$content .= static::getContentForType($variable);
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii'));
+		$content .= static::getContentForElements($variable, $depth, $inputCharset);
 		
 		if (count($variable)) {
-			$output .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth); // Indention should be copied to buffer
+			$content .= str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth); // Indention should be copied to buffer
 		}
 		
-		$output .= static::callComponentMethod('code\operator', 'getHtml', array('}', 'us-ascii'));
-		$output .= '</span>';
-		return $output;
+		$content .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
+		$content .= '</span>';
+		return $content;
 	}
 	
-	static protected function getHtmlForType($variable) {
+	static protected function getContentForType($variable) {
 		return
 			'<span class="type">' .
 				static::translateAndEscapeHtml('array') .
@@ -50,32 +50,32 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 			'</span> ';
 	}
 	
-	static protected function getHtmlForElements($variable, $depth, $inputCharset) {
-		$output = '';
+	static protected function getContentForElements($variable, $depth, $inputCharset) {
+		$content = '';
 		if (count($variable)) {
-			$output .= '<span class="elements">';
+			$content .= '<span class="elements">';
 			foreach ($variable as $key => $value) {
-				$output .= static::getHtmlForElement($key, $value, $depth, $inputCharset);
+				$content .= static::getContentForElement($key, $value, $depth, $inputCharset);
 			}
 
-			$output .= '</span>';
+			$content .= '</span>';
 		}
 		
-		return $output;
+		return $content;
 	}
 	
-	static protected function getHtmlForElement($key, $value, $depth, $inputCharset) {
+	static protected function getContentForElement($key, $value, $depth, $inputCharset) {
 		return
 			'<span class="element">' .
 				// Indention should be copied to buffer
 				str_repeat('<span class="indention">' . static::getHtmlEscapedOutputIndention() . '</span>', $depth + 1) .
 				'<span class="key">' .
-					static::callComponentMethod('code\operator', 'getHtml', array('[', 'us-ascii')) .
+					static::callComponentMethod('code\operator', 'getContent', array('[', 'us-ascii')) .
 					static::escapeHtml(static::convertToOutputCharset($key, $inputCharset)) .
-					static::callComponentMethod('code\operator', 'getHtml', array(']', 'us-ascii')) .
+					static::callComponentMethod('code\operator', 'getContent', array(']', 'us-ascii')) .
 				'</span> ' .
-				static::callComponentMethod('code\operator', 'getHtml', array('=>', 'us-ascii')) . ' ' .
-				static::callComponentMethod('code\variable', 'getHtml', array($value, $depth + 1, $inputCharset)) .
+				static::callComponentMethod('code\operator', 'getContent', array('=>', 'us-ascii')) . ' ' .
+				static::callComponentMethod('code\variable', 'getContent', array($value, $depth + 1, $inputCharset)) .
 			'</span>';
 	}
 }

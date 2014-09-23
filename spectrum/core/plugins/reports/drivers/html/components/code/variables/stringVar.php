@@ -34,15 +34,15 @@ class stringVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		/*]]>*/</style>', 2);
 	}
 	
-	static public function getHtml($variable, $inputCharset = null) {
+	static public function getContent($variable, $inputCharset = null) {
 		return
 			'<span class="c-code-variables-string">' .
-				static::getHtmlForType($variable, $inputCharset) .
-				static::getHtmlForValue($variable, $inputCharset) .
+				static::getContentForType($variable, $inputCharset) .
+				static::getContentForValue($variable, $inputCharset) .
 			'</span>';
 	}
 
-	static protected function getHtmlForType($variable, $inputCharset) {
+	static protected function getContentForType($variable, $inputCharset) {
 		if ($inputCharset === null) {
 			$inputCharset = config::getInputCharset();
 		}
@@ -59,7 +59,7 @@ class stringVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'</span> ';
 	}
 
-	static protected function getHtmlForValue($variable, $inputCharset) {
+	static protected function getContentForValue($variable, $inputCharset) {
 		return
 			'<span class="quote open">&quot;</span>' .
 				'<span class="value">' . static::highlightSpaces(static::escapeHtml(static::convertToOutputCharset($variable, $inputCharset))) . '</span>' .

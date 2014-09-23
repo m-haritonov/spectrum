@@ -17,7 +17,7 @@ class keyword extends \spectrum\core\plugins\reports\drivers\html\components\com
 	 * @param string $keyword String in "us-ascii" charset
 	 * @return string
 	 */
-	static public function getHtml($keyword, $inputCharset = null) {
+	static public function getContent($keyword, $inputCharset = null) {
 		return '<span class="c-code-keyword">' . static::escapeHtml(static::convertToOutputCharset($keyword, $inputCharset)) . '</span>';
 	}
 }

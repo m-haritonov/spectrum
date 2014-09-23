@@ -16,7 +16,7 @@ class intVar extends \spectrum\core\plugins\reports\drivers\html\components\comp
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml($variable) {
+	static public function getContent($variable) {
 		return
 			'<span class="c-code-variables-int">' .
 				'<span class="type">' . static::translateAndEscapeHtml('int') . '</span> ' .

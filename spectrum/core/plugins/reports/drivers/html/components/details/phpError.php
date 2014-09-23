@@ -22,24 +22,24 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getHtml(PhpErrorInterface $details) {
+	static public function getContent(PhpErrorInterface $details) {
 		return
 			'<div class="c-details-phpError">' . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForErrorLevel($details)) . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForErrorMessage($details)) . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getHtmlForSource($details)) . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForErrorLevel($details)) . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForErrorMessage($details)) . static::getHtmlEscapedOutputNewline() .
+				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSource($details)) . static::getHtmlEscapedOutputNewline() .
 			'</div>';
 	}
 
-	static protected function getHtmlForErrorLevel(PhpErrorInterface $details) {
+	static protected function getContentForErrorLevel(PhpErrorInterface $details) {
 		$errorLevel = $details->getErrorLevel();
 		
-		$output = '';
-		$output .= '<div class="errorLevel">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error level') . '</h1>' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<p>' . static::escapeHtml($errorLevel) . ' (' . static::escapeHtml(static::getErrorLevelConstantNameByValue($errorLevel)) . ')</p>' . static::getHtmlEscapedOutputNewline();
-		$output .= '</div>';
-		return $output;
+		$content = '';
+		$content .= '<div class="errorLevel">' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error level') . '</h1>' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<p>' . static::escapeHtml($errorLevel) . ' (' . static::escapeHtml(static::getErrorLevelConstantNameByValue($errorLevel)) . ')</p>' . static::getHtmlEscapedOutputNewline();
+		$content .= '</div>';
+		return $content;
 	}
 	
 	static protected function getErrorLevelConstantNameByValue($constantValue) {
@@ -53,16 +53,16 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		return null;
 	}
 	
-	static protected function getHtmlForErrorMessage(PhpErrorInterface $details) {
-		$output = '';
-		$output .= '<div class="errorMessage">' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error message') . '</h1>' . static::getHtmlEscapedOutputNewline();
-		$output .= static::getHtmlEscapedOutputIndention() . '<p>' . static::escapeHtml($details->getErrorMessage()) . '</p>' . static::getHtmlEscapedOutputNewline();
-		$output .= '</div>';
-		return $output;
+	static protected function getContentForErrorMessage(PhpErrorInterface $details) {
+		$content = '';
+		$content .= '<div class="errorMessage">' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Error message') . '</h1>' . static::getHtmlEscapedOutputNewline();
+		$content .= static::getHtmlEscapedOutputIndention() . '<p>' . static::escapeHtml($details->getErrorMessage()) . '</p>' . static::getHtmlEscapedOutputNewline();
+		$content .= '</div>';
+		return $content;
 	}
 	
-	static protected function getHtmlForSource(PhpErrorInterface $details) {
+	static protected function getContentForSource(PhpErrorInterface $details) {
 		$filename = $details->getFile();
 		$filenameEndLength = 25;
 		$filenameBegin = mb_substr($filename, 0, -$filenameEndLength, 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")

@@ -11,7 +11,7 @@ class property extends \spectrum\core\plugins\reports\drivers\html\components\co
 	 * @param string $propertyName String in "us-ascii" charset
 	 * @return string
 	 */
-	static public function getHtml($propertyName, $inputCharset = null) {
+	static public function getContent($propertyName, $inputCharset = null) {
 		return '<span class="c-code-property">' . static::escapeHtml(static::convertToOutputCharset($propertyName, $inputCharset)) . '</span>';
 	}
 }
