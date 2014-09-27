@@ -1,8 +1,6 @@
 TODD: http://mkharitonov.net/projects/spectrum/ 
 добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
-TODO: text format
-
 TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров (key => value) с обрезанием для 100 символов вместо использования только первого параметра
 TODO: test('', array(
 	array('name', 'name', 'name),
@@ -29,7 +27,6 @@ TODO: array context group:
 TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
 TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setPhpErrorCaughtLevel ???
 TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
-TODO: реализовать проверку *RECURSION* в ArrayVar и ObjectVar (в элементе массива тоже может содержаться объект)
 
 TODO: fix reports in all browsers 
 

@@ -9,11 +9,21 @@ namespace spectrum\core\plugins\reports\drivers\html\components\code;
 use spectrum\config;
 
 class variable extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	static protected $previousVariables = array();
+	
 	static public function getContent($variable, $depth = 0, $inputCharset = null) {
 		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction(gettype($variable));
+		
+		if (is_object($variable)) {
+			static::$previousVariables[$depth] = $variable;
+		}
+		
+		$previousVariableDepth = array_search($variable, static::$previousVariables, true);
 
-		if ($type === 'boolean') {
+		if ($previousVariableDepth !== false && $previousVariableDepth < $depth) {
+			return static::callComponentMethod('code\variables\recursionVar', 'getContent', array($variable));	
+		} else if ($type === 'boolean') {
 			return static::callComponentMethod('code\variables\boolVar', 'getContent', array($variable));
 		} else if ($type === 'integer') {
 			return static::callComponentMethod('code\variables\intVar', 'getContent', array($variable));
