@@ -48,9 +48,9 @@ class component {
 		return $function($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
 	}
 	
-	static protected function translateAndEscapeHtml($string, array $replacement = array()) {
+	static protected function translateAndEscapeHtml($string, array $replacements = array()) {
 		$translateFunction = config::getFunctionReplacement('\spectrum\_internals\translate');
-		return static::escapeHtml($translateFunction($string, $replacement));
+		return static::escapeHtml($translateFunction($string, $replacements));
 	}
 	
 	static protected function convertToOutputCharset($string, $inputCharset = null) {

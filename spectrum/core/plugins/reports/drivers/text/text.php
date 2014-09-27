@@ -66,9 +66,9 @@ class text {
 		return $indention . str_replace($newline, $newline . $indention, $text);
 	}
 	
-	static protected function translate($string, array $replacement = array()) {
+	static protected function translate($string, array $replacements = array()) {
 		$translateFunction = config::getFunctionReplacement('\spectrum\_internals\translate');
-		return $translateFunction($string, $replacement);
+		return $translateFunction($string, $replacements);
 	}
 	
 	static protected function convertToOutputCharset($string, $inputCharset = null) {
