@@ -7,12 +7,12 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\tests\core;
 
 use spectrum\config;
-use spectrum\core\Assert;
+use spectrum\core\Assertion;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
 
-class AssertTest extends \spectrum\tests\Test {
+class AssertionTest extends \spectrum\tests\Test {
 	public function testMatcherCall_GetsMatcherCallDetailsClassFromConfig() {
 		$matcherCallDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\MatcherCall {}');
 		config::setClassReplacement('\spectrum\core\details\MatcherCall', $matcherCallDetailsClassName);
@@ -20,7 +20,7 @@ class AssertTest extends \spectrum\tests\Test {
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), null);
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), null);
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 		
@@ -34,7 +34,7 @@ class AssertTest extends \spectrum\tests\Test {
 	
 	public function testMatcherCall_GetsMatcherFunctionFromRunningAncestorOfOwnerSpecOrFromOwnerSpec() {
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 		
@@ -60,7 +60,7 @@ class AssertTest extends \spectrum\tests\Test {
 	
 	public function testMatcherCall_PassesTestedValueAndArgumentsToMatcher() {
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz("bbb", "ccc", "ddd");
 		', 'onEndingSpecExecute');
 
@@ -74,21 +74,21 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->assertSame(array(array('aaa', 'bbb', 'ccc', 'ddd')), $passedArguments);
 	}
 	
-	public function testMatcherCall_ReturnsAssertInstance() {
-		\spectrum\tests\Test::$temp["assert"] = null;
+	public function testMatcherCall_ReturnsAssertionInstance() {
+		\spectrum\tests\Test::$temp["assertion"] = null;
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["assert"] = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
-			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\tests\Test::$temp["assert"]->zzz();
+			\spectrum\tests\Test::$temp["assertion"] = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
+			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\tests\Test::$temp["assertion"]->zzz();
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
 		$spec->matchers->add('zzz', function(){});
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\Assert', \spectrum\tests\Test::$temp["returnValue"]);
-		$this->assertSame(\spectrum\tests\Test::$temp["assert"], \spectrum\tests\Test::$temp["returnValue"]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\Test::$temp["returnValue"]);
+		$this->assertSame(\spectrum\tests\Test::$temp["assertion"], \spectrum\tests\Test::$temp["returnValue"]);
 	}
 	
 	public function testMatcherCall_ResetsNotFlagAfterCall() {
@@ -97,7 +97,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), null);
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), null);
 			$assert->not->zzz();
 			$assert->zzz();
 		', 'onEndingSpecExecute');
@@ -118,7 +118,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 			
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), null);
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), null);
 			$assert
 				->aaa()
 				->bbb()
@@ -149,7 +149,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -181,7 +181,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 
@@ -200,7 +200,7 @@ class AssertTest extends \spectrum\tests\Test {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz();
 			\spectrum\tests\Test::$temp["isExecuted"] = true;
 		', 'onEndingSpecExecute');
@@ -220,7 +220,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->not->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -254,7 +254,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -286,7 +286,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 
@@ -305,7 +305,7 @@ class AssertTest extends \spectrum\tests\Test {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz();
 			\spectrum\tests\Test::$temp["isExecuted"] = true;
 		', 'onEndingSpecExecute');
@@ -325,7 +325,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->not->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -359,7 +359,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -391,7 +391,7 @@ class AssertTest extends \spectrum\tests\Test {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->zzz();
 			\spectrum\tests\Test::$temp["isExecuted"] = true;
 		', 'onEndingSpecExecute');
@@ -411,7 +411,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa bbb");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa bbb");
 			$assert->not->zzz("ccc", "ddd", "eee"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -444,7 +444,7 @@ class AssertTest extends \spectrum\tests\Test {
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 		
@@ -463,7 +463,7 @@ class AssertTest extends \spectrum\tests\Test {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz();
 			\spectrum\tests\Test::$temp["isExecuted"] = true;
 		', 'onEndingSpecExecute');
@@ -475,21 +475,21 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->assertSame(true, \spectrum\tests\Test::$temp["isExecuted"]);
 	}
 	
-	public function testMatcherCall_MatcherNotExists_ReturnsAssertInstance() {
-		\spectrum\tests\Test::$temp["assert"] = null;
+	public function testMatcherCall_MatcherNotExists_ReturnsAssertionInstance() {
+		\spectrum\tests\Test::$temp["assertion"] = null;
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["assert"] = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
-			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\tests\Test::$temp["assert"]->zzz();
+			\spectrum\tests\Test::$temp["assertion"] = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
+			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\tests\Test::$temp["assertion"]->zzz();
 		', 'onEndingSpecExecute');
 		
 		$spec = new Spec();
 		$spec->matchers->remove('zzz');
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\Assert', \spectrum\tests\Test::$temp["returnValue"]);
-		$this->assertSame(\spectrum\tests\Test::$temp["assert"], \spectrum\tests\Test::$temp["returnValue"]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\Test::$temp["returnValue"]);
+		$this->assertSame(\spectrum\tests\Test::$temp["assertion"], \spectrum\tests\Test::$temp["returnValue"]);
 	}
 
 	public function testMatcherCall_CallOnNotRun_ThrowsExceptionAndDoesNotCallMatcher() {
@@ -501,7 +501,7 @@ class AssertTest extends \spectrum\tests\Test {
 			$isCalled = true;
 		});
 		
-		$assert = new Assert($spec, null);
+		$assert = new Assertion($spec, null);
 		$this->assertThrowsException('\spectrum\Exception', 'Matcher call is denied on not running spec (now spec "aaa" is not running)', function() use($assert){
 			$assert->zzz();
 		});
@@ -526,7 +526,7 @@ class AssertTest extends \spectrum\tests\Test {
 		'));
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 
@@ -557,7 +557,7 @@ class AssertTest extends \spectrum\tests\Test {
 		'));
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz("bbb", "ccc", "ddd"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -596,7 +596,7 @@ class AssertTest extends \spectrum\tests\Test {
 		'));
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 
@@ -624,7 +624,7 @@ class AssertTest extends \spectrum\tests\Test {
 		'));
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz();
 		', 'onEndingSpecExecute');
 
@@ -640,20 +640,20 @@ class AssertTest extends \spectrum\tests\Test {
 	
 	public function testEventDispatch_OnMatcherCallFinish_IsDispatchedAfterNotFlagReset() {
 		\spectrum\tests\Test::$temp["resultBuffer"] = null;
-		\spectrum\tests\Test::$temp["assert"] = null;
+		\spectrum\tests\Test::$temp["assertion"] = null;
 		\spectrum\tests\Test::$temp["isCalled"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			\spectrum\tests\Test::$temp["assert"] = new \spectrum\core\Assert($this->getOwnerSpec(), null);
-			\spectrum\tests\Test::$temp["assert"]->not->zzz();
+			\spectrum\tests\Test::$temp["assertion"] = new \spectrum\core\Assertion($this->getOwnerSpec(), null);
+			\spectrum\tests\Test::$temp["assertion"]->not->zzz();
 		', 'onEndingSpecExecute');
 		
 		$this->registerPluginWithCodeInEvent('
 			if (!\spectrum\tests\Test::$temp["isCalled"]) {
 				\spectrum\tests\Test::$temp["isCalled"] = true;
-				\spectrum\tests\Test::$temp["assert"]->zzz();
+				\spectrum\tests\Test::$temp["assertion"]->zzz();
 			}
 		', 'onMatcherCallFinish');
 
@@ -687,7 +687,7 @@ class AssertTest extends \spectrum\tests\Test {
 		'));
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz("bbb", "ccc", "ddd"); \spectrum\tests\Test::$temp["line"] = __LINE__;
 			\spectrum\tests\Test::$temp["file"] = __FILE__;
 		', 'onEndingSpecExecute');
@@ -712,8 +712,8 @@ class AssertTest extends \spectrum\tests\Test {
 /**/
 	
 	public function testPropertyAccess_PropertyNotExists_ThrowsException() {
-		$assert = new \spectrum\core\Assert(new Spec(), null);
-		$this->assertThrowsException('\spectrum\Exception', 'Undefined property "aaa" in "\spectrum\core\Assert" class', function() use($assert){
+		$assert = new \spectrum\core\Assertion(new Spec(), null);
+		$this->assertThrowsException('\spectrum\Exception', 'Undefined property "aaa" in "\spectrum\core\Assertion" class', function() use($assert){
 			$assert->aaa;
 		});
 	}
@@ -724,7 +724,7 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->registerPluginWithCodeInEvent('
 			\spectrum\tests\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
 		
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), null);
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), null);
 			$assert->not->zzz();
 		', 'onEndingSpecExecute');
 
@@ -737,19 +737,19 @@ class AssertTest extends \spectrum\tests\Test {
 		$this->assertSame(false, $results[0]['result']);
 	}
 	
-	public function testPropertyAccess_Not_ReturnsAssertInstance() {
-		\spectrum\tests\Test::$temp["assert"] = null;
+	public function testPropertyAccess_Not_ReturnsAssertionInstance() {
+		\spectrum\tests\Test::$temp["assertion"] = null;
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
 		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\Test::$temp["assert"] = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
-			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\tests\Test::$temp["assert"]->not;
+			\spectrum\tests\Test::$temp["assertion"] = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
+			\spectrum\tests\Test::$temp["returnValue"] = \spectrum\tests\Test::$temp["assertion"]->not;
 		', 'onEndingSpecExecute');
 
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\core\Assert', \spectrum\tests\Test::$temp["returnValue"]);
-		$this->assertSame(\spectrum\tests\Test::$temp["assert"], \spectrum\tests\Test::$temp["returnValue"]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\Test::$temp["returnValue"]);
+		$this->assertSame(\spectrum\tests\Test::$temp["assertion"], \spectrum\tests\Test::$temp["returnValue"]);
 	}
 }

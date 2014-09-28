@@ -12,7 +12,7 @@ use spectrum\core\Spec;
 require_once __DIR__ . '/../init.php';
 
 class BeTest extends \spectrum\tests\Test {
-	public function testCallsAtRunningState_ReturnsNewAssertInstance() {
+	public function testCallsAtRunningState_ReturnsNewAssertionInstance() {
 		\spectrum\tests\Test::$temp["returnValues"] = array();
 		
 		$this->registerPluginWithCodeInEvent('
@@ -23,14 +23,14 @@ class BeTest extends \spectrum\tests\Test {
 		\spectrum\_internals\getRootSpec()->run();
 		
 		$this->assertSame(2, count(\spectrum\tests\Test::$temp["returnValues"]));
-		$this->assertInstanceOf('\spectrum\core\Assert', \spectrum\tests\Test::$temp["returnValues"][0]);
-		$this->assertInstanceOf('\spectrum\core\Assert', \spectrum\tests\Test::$temp["returnValues"][1]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\Test::$temp["returnValues"][0]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\Test::$temp["returnValues"][1]);
 		$this->assertNotSame(\spectrum\tests\Test::$temp["returnValues"][0], \spectrum\tests\Test::$temp["returnValues"][1]);
 	}
 	
-	public function testCallsAtRunningState_UsesConfigForAssertClassGetting() {
-		$assertClassName = $this->createClass('class ... extends \spectrum\core\Assert {}');
-		config::setClassReplacement('\spectrum\core\Assert', $assertClassName);
+	public function testCallsAtRunningState_UsesConfigForAssertionClassGetting() {
+		$assertClassName = $this->createClass('class ... extends \spectrum\core\Assertion {}');
+		config::setClassReplacement('\spectrum\core\Assertion', $assertClassName);
 
 		\spectrum\tests\Test::$temp["returnValue"] = null;
 		
@@ -43,14 +43,14 @@ class BeTest extends \spectrum\tests\Test {
 		$this->assertInstanceOf($assertClassName, \spectrum\tests\Test::$temp["returnValue"]);
 	}
 	
-	public function testCallsAtRunningState_PassesToAssertInstanceCurrentRunningSpecAndTestedValue() {
-		\spectrum\tests\Test::$temp["assert"] = null;
+	public function testCallsAtRunningState_PassesToAssertionInstanceCurrentRunningSpecAndTestedValue() {
+		\spectrum\tests\Test::$temp["assertion"] = null;
 		\spectrum\tests\Test::$temp["passedArguments"] = array();
 		
-		config::setClassReplacement('\spectrum\core\Assert', $this->createClass('
-			class ... extends \spectrum\core\Assert {
+		config::setClassReplacement('\spectrum\core\Assertion', $this->createClass('
+			class ... extends \spectrum\core\Assertion {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue) {
-					\spectrum\tests\Test::$temp["assert"] = $this;
+					\spectrum\tests\Test::$temp["assertion"] = $this;
 					\spectrum\tests\Test::$temp["passedArguments"] = func_get_args();
 				}
 			}
@@ -66,8 +66,8 @@ class BeTest extends \spectrum\tests\Test {
 		\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
 		\spectrum\_internals\getRootSpec()->run();
 
-		$this->assertInstanceOf('\spectrum\core\Assert', \spectrum\tests\Test::$temp["assert"]);
-		$this->assertSame(\spectrum\tests\Test::$temp["assert"], \spectrum\tests\Test::$temp["returnValue"]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\Test::$temp["assertion"]);
+		$this->assertSame(\spectrum\tests\Test::$temp["assertion"], \spectrum\tests\Test::$temp["returnValue"]);
 		$this->assertSame(2, count(\spectrum\tests\Test::$temp["passedArguments"]));
 		$this->assertInstanceOf('\spectrum\core\Spec', \spectrum\tests\Test::$temp["passedArguments"][0]);
 		$this->assertSame($spec, \spectrum\tests\Test::$temp["passedArguments"][0]);

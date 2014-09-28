@@ -9,17 +9,17 @@ namespace spectrum\core;
 use spectrum\Exception;
 
 /**
- * @property Assert $not
- * @method Assert eq($expected)
- * @method Assert gt($expected)
- * @method Assert gte($expected)
- * @method Assert ident($expected)
- * @method Assert is($expected)
- * @method Assert lt($expected)
- * @method Assert lte($expected)
- * @method Assert throwsException($expectedClass = null, $expectedStringInMessage = null, $expectedCode = null)
+ * @property Assertion $not
+ * @method Assertion eq($expected)
+ * @method Assertion gt($expected)
+ * @method Assertion gte($expected)
+ * @method Assertion ident($expected)
+ * @method Assertion is($expected)
+ * @method Assertion lt($expected)
+ * @method Assertion lte($expected)
+ * @method Assertion throwsException($expectedClass = null, $expectedStringInMessage = null, $expectedCode = null)
  */
-class Assert implements AssertInterface {
+class Assertion implements AssertionInterface {
 	protected $testedValue;
 	protected $notFlag = false;
 	

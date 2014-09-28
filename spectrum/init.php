@@ -66,7 +66,7 @@ if (!function_exists('be')) {
 	 * Creates assertion.
 	 * @throws \spectrum\Exception If called not at running state
 	 * @param mixed $testedValue
-	 * @return \spectrum\core\AssertInterface
+	 * @return \spectrum\core\AssertionInterface
 	 */
 	function be($testedValue) {
 		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\be'), func_get_args());

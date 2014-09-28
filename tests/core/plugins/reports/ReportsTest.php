@@ -7,7 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\tests\core\plugins\reports;
 
 use spectrum\config;
-use spectrum\core\Assert;
+use spectrum\core\Assertion;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../../init.php';
@@ -56,7 +56,7 @@ class ReportsTest extends \spectrum\tests\Test {
 		$spec->bindParentSpec($groupSpec);
 		$spec->matchers->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
 		$spec->test->setFunction(function() use($spec) {
-			$assert = new Assert($spec, null);
+			$assert = new Assertion($spec, null);
 			$assert->__call('<>&"\'');
 		});
 		
@@ -68,7 +68,7 @@ class ReportsTest extends \spectrum\tests\Test {
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
 			
-			$assert = new Assert($spec, '<>&"\'');
+			$assert = new Assertion($spec, '<>&"\'');
 			$assert->__call('<>&"\'', array(
 				'<>&"\'',
 				array('<>&"\'' => '<>&"\''),
@@ -92,7 +92,7 @@ class ReportsTest extends \spectrum\tests\Test {
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
 		$spec->contextModifiers->add(function() use($spec) {
-			$assert = new Assert($spec, null);
+			$assert = new Assertion($spec, null);
 			$assert->__call('<>&"\'');
 		}, 'before');
 		
@@ -105,7 +105,7 @@ class ReportsTest extends \spectrum\tests\Test {
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
 			
-			$assert = new Assert($spec, '<>&"\'');
+			$assert = new Assertion($spec, '<>&"\'');
 			$assert->__call('<>&"\'', array(
 				'<>&"\'',
 				array('<>&"\'' => '<>&"\''),
@@ -131,7 +131,7 @@ class ReportsTest extends \spectrum\tests\Test {
 		$spec->test->setFunction(function(){});
 		$spec->matchers->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
 		$spec->contextModifiers->add(function() use($spec){
-			$assert = new Assert($spec, null);
+			$assert = new Assertion($spec, null);
 			$assert->__call('<>&"\'');
 		}, 'after');
 		
@@ -144,7 +144,7 @@ class ReportsTest extends \spectrum\tests\Test {
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
 			
-			$assert = new Assert($spec, '<>&"\'');
+			$assert = new Assertion($spec, '<>&"\'');
 			$assert->__call('<>&"\'', array(
 				'<>&"\'',
 				array('<>&"\'' => '<>&"\''),

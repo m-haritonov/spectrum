@@ -41,7 +41,7 @@ final class config {
 	 * @var array
 	 */
 	static private $classReplacements = array(
-		'\spectrum\core\Assert' => '\spectrum\core\Assert',
+		'\spectrum\core\Assertion' => '\spectrum\core\Assertion',
 		'\spectrum\core\Data' => '\spectrum\core\Data',
 		'\spectrum\core\ResultBuffer' => '\spectrum\core\ResultBuffer',
 		'\spectrum\core\Spec' => '\spectrum\core\Spec',

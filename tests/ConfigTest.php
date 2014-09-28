@@ -235,24 +235,24 @@ class ConfigTest extends Test {
 
 	public function testSetClassReplacement_ClassHasInterface_NewClassImplementsInterface_SetsNewClass() {
 		$className = $this->createClass('
-			class ... implements \spectrum\core\AssertInterface {
+			class ... implements \spectrum\core\AssertionInterface {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue){}
 				public function __call($name, array $matcherArguments = array()){}
 				public function __get($name){}
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\Assert', $className);
-		$this->assertSame($className, config::getClassReplacement('\spectrum\core\Assert'));
+		config::setClassReplacement('\spectrum\core\Assertion', $className);
+		$this->assertSame($className, config::getClassReplacement('\spectrum\core\Assertion'));
 	}
 	
 	public function testSetClassReplacement_ClassHasInterface_NewClassDoesNotImplementInterface_ThrowsExceptionAndDoesNotChangeValue() {
 		$className = $this->createClass('class ... {}');
-		$this->assertThrowsException('\spectrum\Exception', 'Class "' . $className . '" does not implement "\spectrum\core\AssertInterface"', function() use($className){
-			config::setClassReplacement('\spectrum\core\Assert', $className);
+		$this->assertThrowsException('\spectrum\Exception', 'Class "' . $className . '" does not implement "\spectrum\core\AssertionInterface"', function() use($className){
+			config::setClassReplacement('\spectrum\core\Assertion', $className);
 		});
 
-		$this->assertSame('\spectrum\core\Assert', config::getClassReplacement('\spectrum\core\Assert'));
+		$this->assertSame('\spectrum\core\Assertion', config::getClassReplacement('\spectrum\core\Assertion'));
 	}
 
 	public function testSetClassReplacement_ClassHasNoInterface_NewClassDoesNotImplementInterface_SetsNewClass() {

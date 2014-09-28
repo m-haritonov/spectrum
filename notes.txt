@@ -1,5 +1,3 @@
-TODO: Assert -> Assertion (проверить наличие строки Assert в проекте после переименования)
-
 TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
 
 TODO: http://mkharitonov.net/projects/spectrum/ 
@@ -175,7 +173,7 @@ group(function(){
 group(function(){
 	addMatcher('matcherNameInUtf8', function(){});
 	test(function(){
-		be()->matcherNameInCp1251(); // Is matcher call handling (in "Assert" class) need converting for matcher name?
+		be()->matcherNameInCp1251(); // Is matcher call handling (in "Assertion" class) need converting for matcher name?
 	}, 'cp1251');
 }, 'utf-8');
 

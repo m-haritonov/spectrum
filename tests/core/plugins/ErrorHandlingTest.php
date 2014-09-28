@@ -686,7 +686,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->failMatcher();
 			\spectrum\tests\Test::$temp["isExecuted"] = true;
 		', 'onEndingSpecExecute');
@@ -704,7 +704,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test {
 		\spectrum\tests\Test::$temp["isExecuted"] = false;
 		
 		$this->registerPluginWithCodeInEvent('
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->successMatcher();
 			\spectrum\tests\Test::$temp["isExecuted"] = true;
 		', 'onEndingSpecExecute');
@@ -726,7 +726,7 @@ class ErrorHandlingTest extends \spectrum\tests\Test {
 			\spectrum\tests\Test::$temp["callCount"]++;
 			
 			\spectrum\tests\Test::$temp["isExecuted"][\spectrum\tests\Test::$temp["callCount"]][] = 1;
-			$assert = new \spectrum\core\Assert($this->getOwnerSpec(), "aaa");
+			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->failMatcher();
 			\spectrum\tests\Test::$temp["isExecuted"][\spectrum\tests\Test::$temp["callCount"]][] = 2;
 		', 'onEndingSpecExecute');
