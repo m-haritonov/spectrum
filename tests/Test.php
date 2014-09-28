@@ -147,7 +147,10 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		\spectrum\config::registerSpecPlugin($pluginClassName);
 		return $pluginClassName;
 	}
-	
+
+	/**
+	 * @param null|\Closure $callback
+	 */
 	final protected function assertThrowsException($expectedClass, $stringInMessageOrCallback, $callback = null) {
 		if ($callback === null) {
 			$message = null;
