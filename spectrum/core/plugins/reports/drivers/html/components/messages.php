@@ -9,6 +9,9 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 use spectrum\core\SpecInterface;
 
 class messages extends component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-messages { position: relative; margin: 0.5em 0 1em 0; }
@@ -19,6 +22,9 @@ class messages extends component {
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		$messages = $spec->messages->getAll();
 
@@ -33,8 +39,11 @@ class messages extends component {
 		$content .= '</div>';
 		return $content;
 	}
-	
-	static protected function getContentForMessages($messages) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForMessages(array $messages) {
 		$content = '';
 		$content .= '<ul>' . static::getHtmlEscapedOutputNewline();
 		

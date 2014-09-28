@@ -6,9 +6,12 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\text\components\details;
 
-use \spectrum\core\details\MatcherCallInterface;
+use spectrum\core\details\MatcherCallInterface;
 
 class matcherCall extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getContent(MatcherCallInterface $details) {
 		$contentForMatcherException = static::getContentForMatcherException($details);
 		return
@@ -17,6 +20,9 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\text\components
 			static::getContentForSource($details);
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForEvaluatedValues(MatcherCallInterface $details) {
 		$content = '';
 		$content .= static::translate('Evaluated values') . ': ';
@@ -31,7 +37,10 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\text\components
 		$content .= static::callComponentMethod('code\method', 'getContent', array($details->getMatcherName(), $details->getMatcherArguments()));
 		return $content;
 	}
-	
+
+	/**
+	 * @return null|string
+	 */
 	static protected function getContentForMatcherException(MatcherCallInterface $details) {
 		if ($details->getMatcherException() === null) {
 			return null;
@@ -39,7 +48,10 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\text\components
 		
 		return static::translate('Matcher exception') . ': ' . static::callComponentMethod('code\variable', 'getContent', array($details->getMatcherException()));
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getContentForSource(MatcherCallInterface $details) {
 		return
 			static::translate('Source') . ': ' .

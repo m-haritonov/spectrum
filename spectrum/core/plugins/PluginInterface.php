@@ -44,5 +44,9 @@ interface PluginInterface {
 	static public function getEventListeners();
 	
 	public function __construct(\spectrum\core\SpecInterface $ownerSpec);
+	
+	/**
+	 * @return SpecInterface
+	 */
 	public function getOwnerSpec();
 }

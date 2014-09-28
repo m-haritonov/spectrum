@@ -6,9 +6,12 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components\details;
 
-use \spectrum\core\details\PhpErrorInterface;
+use spectrum\core\details\PhpErrorInterface;
 
 class phpError extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-details-phpError { padding: 7px; }
@@ -22,6 +25,9 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContent(PhpErrorInterface $details) {
 		return
 			'<div class="app-details-phpError">' . static::getHtmlEscapedOutputNewline() .
@@ -31,6 +37,9 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 			'</div>';
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForErrorLevel(PhpErrorInterface $details) {
 		$errorLevel = $details->getErrorLevel();
 		
@@ -41,7 +50,11 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		$content .= '</div>';
 		return $content;
 	}
-	
+
+	/**
+	 * @param int $constantValue
+	 * @return null|string
+	 */
 	static protected function getErrorLevelConstantNameByValue($constantValue) {
 		$constants = get_defined_constants(true);
 		foreach ($constants['Core'] as $name => $value) {
@@ -52,7 +65,10 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		
 		return null;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getContentForErrorMessage(PhpErrorInterface $details) {
 		$content = '';
 		$content .= '<div class="errorMessage">' . static::getHtmlEscapedOutputNewline();
@@ -61,7 +77,10 @@ class phpError extends \spectrum\core\plugins\reports\drivers\html\components\co
 		$content .= '</div>';
 		return $content;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getContentForSource(PhpErrorInterface $details) {
 		$filename = $details->getFile();
 		$filenameEndLength = 25;

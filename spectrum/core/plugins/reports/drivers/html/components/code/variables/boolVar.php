@@ -7,6 +7,9 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
 class boolVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-code-variables-bool { font-size: 12px; }
@@ -15,7 +18,11 @@ class boolVar extends \spectrum\core\plugins\reports\drivers\html\components\com
 			.app-resultBuffer>.results>.result.expanded .app-code-variables-bool .value { overflow: visible; max-width: none; white-space: normal; }
 		/*]]>*/</style>', 2);
 	}
-	
+
+	/**
+	 * @param bool $variable
+	 * @return string
+	 */
 	static public function getContent($variable) {
 		return
 			'<span class="app-code-variables-bool">' .

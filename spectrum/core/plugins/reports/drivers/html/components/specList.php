@@ -9,9 +9,19 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 use spectrum\core\SpecInterface;
 
 class specList extends component {
+	/**
+	 * @var int
+	 */
 	static protected $depth;
+
+	/**
+	 * @var array
+	 */
 	static protected $numbers = array();
 
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-specList { padding-right: 35px; list-style: none; }
@@ -54,6 +64,9 @@ class specList extends component {
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			spectrum.tools.addEventListener(document, "DOMContentLoaded", function() {
@@ -80,6 +93,9 @@ class specList extends component {
 		/*]]>*/</script>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContentBegin(SpecInterface $spec) {
 		$content = '';
 		
@@ -114,6 +130,9 @@ class specList extends component {
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContentEnd(SpecInterface $spec) {
 		$content = '';
 		
@@ -131,14 +150,16 @@ class specList extends component {
 				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::callComponentMethod('totalResult', 'getContentForUpdate', array($spec)), static::$depth * 2 + 2) . static::getHtmlEscapedOutputNewline();
 				$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 1) . '</li>';
 			}
-		}
-		else {
+		} else {
 			$content .= static::getHtmlEscapedOutputIndention(static::$depth) . '</ol>';
 		}
 
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForSpecPoint() {
 		return
 			'<span class="point">' .
@@ -152,6 +173,9 @@ class specList extends component {
 			'</span> ';
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForSpecTitle(SpecInterface $spec) {
 		return
 			'<span class="title">' . static::getHtmlEscapedOutputNewline() .
@@ -161,6 +185,9 @@ class specList extends component {
 			'</span>';
 	}
 
+	/**
+	 * @return null|string
+	 */
 	static protected function getContentForRunDetails(SpecInterface $spec) {
 		$componentResults = array();
 		if ($spec->getResultBuffer()->getTotalResult() !== true) {

@@ -10,10 +10,16 @@ use spectrum\config;
 use spectrum\Exception;
 
 class Reports extends \spectrum\core\plugins\Plugin {
+	/**
+	 * @return string
+	 */
 	static public function getAccessName() {
 		return 'reports';
 	}
-	
+
+	/**
+	 * @return array
+	 */
 	static public function getEventListeners() {
 		return array(
 			array('event' => 'onSpecRunStart', 'method' => 'onSpecRunStart', 'order' => 20),
@@ -32,7 +38,10 @@ class Reports extends \spectrum\core\plugins\Plugin {
 		print $driverClass::getContentAfterSpec($this->getOwnerSpec());
 		flush();
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	protected function getDriverClass() {
 		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$outputFormatWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction(config::getOutputFormat());

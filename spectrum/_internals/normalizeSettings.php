@@ -21,7 +21,7 @@ use spectrum\Exception;
  * \spectrum\_internals\normalizeSettings(true);  // see \spectrum\core\plugins\ErrorHandling::setCatchPhpErrors()
  *
  * @access private
- * @param mixed $settings
+ * @param null|int|bool|array $settings
  */
 function normalizeSettings($settings) {
 	$normalizedSettings = array(
@@ -33,18 +33,15 @@ function normalizeSettings($settings) {
 	if ($settings !== null) {
 		if (is_int($settings) || is_bool($settings)) {
 			$normalizedSettings['catchPhpErrors'] = $settings;
-		}
-		else if (is_array($settings)) {
+		} else if (is_array($settings)) {
 			foreach ($settings as $settingName => $settingValue) {
 				if (in_array($settingName, array('catchPhpErrors', 'breakOnFirstPhpError', 'breakOnFirstMatcherFail'))) {
 					$normalizedSettings[$settingName] = $settingValue;
-				}
-				else {
+				} else {
 					throw new Exception('Invalid setting "' . $settingName . '"');
 				}
 			}
-		}
-		else {
+		} else {
 			throw new Exception('Invalid settings variable type ("' . gettype($settings) . '")');
 		}
 	}

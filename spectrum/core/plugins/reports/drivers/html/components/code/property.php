@@ -8,7 +8,7 @@ namespace spectrum\core\plugins\reports\drivers\html\components\code;
 
 class property extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	/**
-	 * @param string $propertyName String in "us-ascii" charset
+	 * @param string $propertyName String in "US-ASCII" charset
 	 * @return string
 	 */
 	static public function getContent($propertyName, $inputCharset = null) {

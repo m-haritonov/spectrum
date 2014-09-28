@@ -9,6 +9,9 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 use spectrum\core\SpecInterface;
 
 class totalInfo extends component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #e5e5e5; }
@@ -17,6 +20,9 @@ class totalInfo extends component {
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		if ($spec->getParentSpecs()) {
 			return null;
@@ -36,6 +42,9 @@ class totalInfo extends component {
 			'</div>';
 	}
 
+	/**
+	 * @return null|string
+	 */
 	static public function getContentForUpdate(SpecInterface $spec) {
 		if ($spec->getParentSpecs()) {
 			return null;

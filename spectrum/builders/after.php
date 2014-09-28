@@ -5,12 +5,14 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\builders;
+
 use spectrum\config;
 use spectrum\Exception;
 
 /**
+ * Adds "after" context modifier.
  * @throws \spectrum\Exception If called not at building state
- * @param  callback $function
+ * @param callable $function
  */
 function after($function) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');

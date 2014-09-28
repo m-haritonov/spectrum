@@ -6,12 +6,15 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\builders;
 
 use spectrum\config;
+use spectrum\core\SpecInterface;
 use spectrum\Exception;
 
 /**
- * @param  string|int|null $name
- * @param  \Closure|array|null $contexts
- * @param  \Closure|null $body
+ * Creates test.
+ * @param null|string|int|float $name
+ * @param null|\Closure|array $contexts
+ * @param null|\Closure $body
+ * @param null|int|bool|array $settings
  * @return \spectrum\core\SpecInterface
  */
 function test($name = null, $contexts = null, $body = null, $settings = null) {
@@ -24,6 +27,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null) {
 	list($name, $contexts, $body, $settings) = $convertArgumentsForSpecFunction(func_get_args(), 'test');
 	
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
+	/** @var SpecInterface $builderSpec */
 	$builderSpec = new $specClass();
 	
 	if ($name !== null) {

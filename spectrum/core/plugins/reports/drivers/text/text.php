@@ -10,6 +10,9 @@ use spectrum\config;
 use spectrum\core\SpecInterface;
 
 class text {
+	/**
+	 * @return string
+	 */
 	static public function getContentBeforeSpec(SpecInterface $spec) {
 		$content = '';
 		
@@ -22,6 +25,9 @@ class text {
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContentAfterSpec(SpecInterface $spec) {
 		$content = '';
 		$content .= static::callComponentMethod('specList', 'getContentEnd', array($spec));
@@ -33,7 +39,10 @@ class text {
 		
 		return $content;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getHeader() {
 		$title = static::translate('Spectrum framework report');
 		return
@@ -42,20 +51,40 @@ class text {
 			str_repeat('=', mb_strlen($title, config::getOutputCharset()));
 	}
 
-	static protected function getFooter() {}
-	
-	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array()) {
+	static protected function getFooter() {
+		
+	}
+
+	/**
+	 * @param string $componentShortName
+	 * @param string $methodName
+	 * @return mixed
+	 */
+	static protected function callComponentMethod($componentShortName, $methodName, array $arguments = array()) {
 		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\plugins\reports\drivers\text\components\\' . $componentShortName), $methodName), $arguments);
 	}
-	
+
+	/**
+	 * @param int $repeat
+	 * @return string
+	 */
 	static protected function getOutputIndention($repeat = 1) {
 		return str_repeat(config::getOutputIndention(), $repeat);
 	}
-	
+
+	/**
+	 * @param int $repeat
+	 * @return string
+	 */
 	static protected function getOutputNewline($repeat = 1) {
 		return str_repeat(config::getOutputNewline(), $repeat);
 	}
-	
+
+	/**
+	 * @param string $text
+	 * @param int $repeat
+	 * @return string
+	 */
 	static protected function prependOutputIndentionToEachOutputNewline($text, $repeat = 1) {
 		if ($text == '') {
 			return $text;
@@ -65,14 +94,23 @@ class text {
 		$newline = static::getOutputNewline();
 		return $indention . str_replace($newline, $newline . $indention, $text);
 	}
-	
+
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	static protected function translate($string, array $replacements = array()) {
 		$translateFunction = config::getFunctionReplacement('\spectrum\_internals\translate');
 		return $translateFunction($string, $replacements);
 	}
-	
+
+	/**
+	 * @param string $string
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
 	static protected function convertToOutputCharset($string, $inputCharset = null) {
-		$function = config::getFunctionReplacement('\spectrum\_internals\convertCharset');
-		return $function($string, $inputCharset);
+		$convertCharsetFunction = config::getFunctionReplacement('\spectrum\_internals\convertCharset');
+		return $convertCharsetFunction($string, $inputCharset);
 	}
 }

@@ -9,10 +9,17 @@ namespace spectrum\core\plugins\reports\drivers\text\components;
 use spectrum\core\SpecInterface;
 
 class totalResult extends component {
+	/**
+	 * @return string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		return static::translate(static::getResultName($spec->getResultBuffer()->getTotalResult()));
 	}
 
+	/**
+	 * @param null|bool $result
+	 * @return string
+	 */
 	static protected function getResultName($result) {
 		if ($result === false) {
 			return 'fail';

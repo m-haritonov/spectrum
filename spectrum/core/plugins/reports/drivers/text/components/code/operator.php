@@ -8,7 +8,8 @@ namespace spectrum\core\plugins\reports\drivers\text\components\code;
 
 class operator extends \spectrum\core\plugins\reports\drivers\text\components\component {
 	/**
-	 * @param string $operator String in "us-ascii" charset
+	 * @param string $operator String in "US-ASCII" charset
+	 * @param null|string $inputCharset
 	 * @return string
 	 */
 	static public function getContent($operator, $inputCharset = null) {

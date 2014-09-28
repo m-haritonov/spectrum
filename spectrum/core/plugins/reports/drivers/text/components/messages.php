@@ -10,6 +10,9 @@ use spectrum\config;
 use spectrum\core\SpecInterface;
 
 class messages extends component {
+	/**
+	 * @return null|string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		$messages = $spec->messages->getAll();
 
@@ -25,8 +28,11 @@ class messages extends component {
 		$content .= static::getContentForMessages($messages);
 		return $content;
 	}
-	
-	static protected function getContentForMessages($messages) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForMessages(array $messages) {
 		$content = '';
 		
 		$num = 0;

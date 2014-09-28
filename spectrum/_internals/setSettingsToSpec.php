@@ -11,6 +11,7 @@ use spectrum\core\SpecInterface;
 
 /**
  * @access private
+ * @param null|int|bool|array $settings
  */
 function setSettingsToSpec(SpecInterface $spec, $settings) {
 	$normalizeSettingsFunction = config::getFunctionReplacement('\spectrum\_internals\normalizeSettings');

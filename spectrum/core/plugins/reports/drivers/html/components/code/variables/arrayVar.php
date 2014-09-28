@@ -7,6 +7,9 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
 class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-code-variables-array { display: inline-block; vertical-align: text-top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); font-size: 12px; }
@@ -26,7 +29,12 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		/*]]>*/</style>', 2);
 	}
 
-	static public function getContent($variable, $depth, $inputCharset = null) {
+	/**
+	 * @param int $depth
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
+	static public function getContent(array $variable, $depth, $inputCharset = null) {
 		$content = '';
 		$content .= '<span class="app-code-variables-array">';
 		$content .= static::getContentForType($variable);
@@ -41,16 +49,24 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		$content .= '</span>';
 		return $content;
 	}
-	
-	static protected function getContentForType($variable) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForType(array $variable) {
 		return
 			'<span class="type">' .
 				static::translateAndEscapeHtml('array') .
 				'<span title="' . static::translateAndEscapeHtml('Elements count') . '">(' . static::escapeHtml(count($variable)) . ')</span>' .
 			'</span> ';
 	}
-	
-	static protected function getContentForElements($variable, $depth, $inputCharset) {
+
+	/**
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
+	static protected function getContentForElements(array $variable, $depth, $inputCharset) {
 		$content = '';
 		if (count($variable)) {
 			$content .= '<span class="elements">';
@@ -63,7 +79,14 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\html\components\co
 		
 		return $content;
 	}
-	
+
+	/**
+	 * @param mixed $key
+	 * @param mixed $value
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForElement($key, $value, $depth, $inputCharset) {
 		return
 			'<span class="element">' .

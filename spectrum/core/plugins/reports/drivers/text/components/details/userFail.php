@@ -9,6 +9,9 @@ namespace spectrum\core\plugins\reports\drivers\text\components\details;
 use spectrum\core\details\UserFailInterface;
 
 class userFail extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getContent(UserFailInterface $details) {
 		return $details->getMessage();
 	}

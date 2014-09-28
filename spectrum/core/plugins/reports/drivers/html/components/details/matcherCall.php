@@ -5,10 +5,13 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\core\plugins\reports\drivers\html\components\details;
-use spectrum\config;
-use \spectrum\core\details\MatcherCallInterface;
+
+use spectrum\core\details\MatcherCallInterface;
 
 class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-details-matcherCall { padding: 7px; }
@@ -22,6 +25,9 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContent(MatcherCallInterface $details) {
 		return
 			'<div class="app-details-matcherCall">' . static::getHtmlEscapedOutputNewline() .
@@ -31,6 +37,9 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 			'</div>';
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForEvaluatedValues(MatcherCallInterface $details) {
 		$content = '';
 		$content .= '<div class="evaluatedValues">' . static::getHtmlEscapedOutputNewline();
@@ -49,7 +58,10 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		$content .= '</div>';
 		return $content;
 	}
-	
+
+	/**
+	 * @return null|string
+	 */
 	static protected function getContentForMatcherException(MatcherCallInterface $details) {
 		if ($details->getMatcherException() === null) {
 			return null;
@@ -66,7 +78,10 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 				'</p>' . static::getHtmlEscapedOutputNewline() .
 			'</div>';
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getContentForSource(MatcherCallInterface $details) {
 		$filename = $details->getFile();
 		$filenameEndLength = 25;

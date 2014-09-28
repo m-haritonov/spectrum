@@ -8,6 +8,7 @@ namespace spectrum\_internals;
 
 /**
  * @access private
+ * @return null|array
  */
 function convertArguments(array $arguments, array $inputArgumentPattern, array $outputArgumentPattern) {
 	$arguments = array_values($arguments);
@@ -27,8 +28,7 @@ function convertArguments(array $arguments, array $inputArgumentPattern, array $
 				
 				if ($isNull || $isScalar || $isArray || $isClosure) {
 					$result[$name] = $arguments[$num];
-				}
-				else {
+				} else {
 					continue(2);
 				}
 			}

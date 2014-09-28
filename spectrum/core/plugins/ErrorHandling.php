@@ -5,22 +5,48 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\core\plugins;
+
 use spectrum\config;
 use spectrum\core\BreakException;
 use spectrum\core\details\MatcherCallInterface;
 use spectrum\Exception;
 
 class ErrorHandling extends \spectrum\core\plugins\Plugin {
+	/**
+	 * @var null|int
+	 */
 	protected $catchPhpErrors;
+
+	/**
+	 * @var null|bool
+	 */
 	protected $breakOnFirstPhpError;
+
+	/**
+	 * @var null|bool
+	 */
 	protected $breakOnFirstMatcherFail;
+
+	/**
+	 * @var null|\Closure
+	 */
 	protected $errorHandler;
+
+	/**
+	 * @var null|int
+	 */
 	protected $errorReportingBackup;
 
+	/**
+	 * @return string
+	 */
 	static public function getAccessName() {
 		return 'errorHandling';
 	}
-	
+
+	/**
+	 * @return array
+	 */
 	static public function getEventListeners() {
 		return array(
 			array('event' => 'onEndingSpecExecuteBefore', 'method' => 'onEndingSpecExecuteBefore', 'order' => 10),
@@ -33,7 +59,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin {
 
 	/**
 	 * False or "0" is turn off PHP errors catching. True = -1 (catches all PHP errors).
-	 * @param int|boolean|null $errorReportingLevel
+	 * @param null|int|boolean $errorReportingLevel
 	 */
 	public function setCatchPhpErrors($errorReportingLevel) {
 		$this->handleModifyDeny(__FUNCTION__);
@@ -51,10 +77,16 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin {
 		$this->catchPhpErrors = $errorReportingLevel;
 	}
 
+	/**
+	 * @return null|int
+	 */
 	public function getCatchPhpErrors() {
 		return $this->catchPhpErrors;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getCatchPhpErrorsThroughRunningAncestors() {
 		return $this->callMethodThroughRunningAncestorSpecs('getCatchPhpErrors', array(), -1);
 	}
@@ -63,6 +95,7 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin {
 
 	/**
 	 * Affected only when getCatchPhpErrorsThroughRunningAncestors() is not "0"
+	 * @param bool $isEnable
 	 */
 	public function setBreakOnFirstPhpError($isEnable) {
 		$this->handleModifyDeny(__FUNCTION__);
@@ -74,16 +107,25 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin {
 		$this->breakOnFirstPhpError = $isEnable;
 	}
 
+	/**
+	 * @return null|bool
+	 */
 	public function getBreakOnFirstPhpError() {
 		return $this->breakOnFirstPhpError;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function getBreakOnFirstPhpErrorThroughRunningAncestors() {
 		return $this->callMethodThroughRunningAncestorSpecs('getBreakOnFirstPhpError', array(), false);
 	}
 
 /**/
 
+	/**
+	 * @param bool $isEnable
+	 */
 	public function setBreakOnFirstMatcherFail($isEnable) {
 		$this->handleModifyDeny(__FUNCTION__);
 		
@@ -94,10 +136,16 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin {
 		$this->breakOnFirstMatcherFail = $isEnable;
 	}
 
+	/**
+	 * @return null|bool
+	 */
 	public function getBreakOnFirstMatcherFail() {
 		return $this->breakOnFirstMatcherFail;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function getBreakOnFirstMatcherFailThroughRunningAncestors() {
 		return $this->callMethodThroughRunningAncestorSpecs('getBreakOnFirstMatcherFail', array(), false);
 	}
@@ -136,7 +184,10 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin {
 		$this->errorHandler = null;
 		error_reporting($this->errorReportingBackup);
 	}
-	
+
+	/**
+	 * @param callable $checkErrorHandler
+	 */
 	protected function removeSubsequentErrorHandlers($checkErrorHandler) {
 		$errorHandlers = array();
 		while ($lastErrorHandler = $this->getLastErrorHandler()) {
@@ -154,7 +205,10 @@ class ErrorHandling extends \spectrum\core\plugins\Plugin {
 			set_error_handler($errorHandler);
 		}
 	}
-	
+
+	/**
+	 * @return null|callable
+	 */
 	protected function getLastErrorHandler() {
 		$lastErrorHandler = set_error_handler(function($errorSeverity, $errorMessage){});
 		restore_error_handler();

@@ -7,6 +7,9 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\matchers;
 
 /**
+ * Matcher for "is_a" function (is_a($actual, $expected, true)).
+ * @param object|string $actual
+ * @param object|string $expected
  * @return bool
  */
 function is($actual, $expected) {

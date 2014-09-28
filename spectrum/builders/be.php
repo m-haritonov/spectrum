@@ -10,9 +10,10 @@ use spectrum\config;
 use spectrum\Exception;
 
 /**
+ * Creates assertion.
  * @throws \spectrum\Exception If called not at running state
- * @param  mixed $testedValue
- * @return \spectrum\core\Assert
+ * @param mixed $testedValue
+ * @return \spectrum\core\AssertInterface
  */
 function be($testedValue) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');

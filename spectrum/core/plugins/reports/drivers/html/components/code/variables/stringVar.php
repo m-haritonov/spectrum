@@ -9,6 +9,9 @@ namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 use spectrum\config;
 
 class stringVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-code-variables-string { font-size: 12px; }
@@ -33,7 +36,12 @@ class stringVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.lf:after { content: "\\0020"; position: absolute; bottom: 2px; right: 2px; left: 2px; border-bottom: 1px solid #bbb; }
 		/*]]>*/</style>', 2);
 	}
-	
+
+	/**
+	 * @param string $variable
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
 	static public function getContent($variable, $inputCharset = null) {
 		return
 			'<span class="app-code-variables-string">' .
@@ -42,6 +50,11 @@ class stringVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'</span>';
 	}
 
+	/**
+	 * @param string $variable
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForType($variable, $inputCharset) {
 		if ($inputCharset === null) {
 			$inputCharset = config::getInputCharset();
@@ -59,6 +72,11 @@ class stringVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'</span> ';
 	}
 
+	/**
+	 * @param string $variable
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForValue($variable, $inputCharset) {
 		return
 			'<span class="quote open">&quot;</span>' .
@@ -66,6 +84,10 @@ class stringVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'<span class="quote close">&quot;</span>';
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	static protected function highlightSpaces($string) {
 		$cr = '<span class="char cr" title="' . static::translateAndEscapeHtml('Carriage return ("\r")') . '"></span>';
 		$lf = '<span class="char lf" title="' . static::translateAndEscapeHtml('Line feed ("\n")') . '"></span>';

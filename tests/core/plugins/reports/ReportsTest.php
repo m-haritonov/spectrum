@@ -5,6 +5,7 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\tests\core\plugins\reports;
+
 use spectrum\config;
 use spectrum\core\Assert;
 use spectrum\core\Spec;

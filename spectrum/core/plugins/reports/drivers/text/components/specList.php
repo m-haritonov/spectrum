@@ -9,10 +9,19 @@ namespace spectrum\core\plugins\reports\drivers\text\components;
 use spectrum\core\SpecInterface;
 
 class specList extends component {
+	/**
+	 * @var int
+	 */
 	static protected $depth = 0;
-	static protected $previousDepth = 0;
+
+	/**
+	 * @var array
+	 */
 	static protected $numbers = array();
-	
+
+	/**
+	 * @return string
+	 */
 	static public function getContentBegin(SpecInterface $spec) {
 		$content = '';
 		
@@ -33,6 +42,9 @@ class specList extends component {
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContentEnd(SpecInterface $spec) {
 		$content = '';
 		
@@ -50,14 +62,23 @@ class specList extends component {
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForSpecTitle(SpecInterface $spec) {
 		return (isset(static::$numbers[static::$depth]) ? static::$numbers[static::$depth] . '. ' : '') . static::convertToOutputCharset($spec->getName());
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getContentForRunResult(SpecInterface $spec) {
 		return ' - ' . static::callComponentMethod('totalResult', 'getContent', array($spec));
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForRunDetails(SpecInterface $spec) {
 		$componentResults = array();
 		if ($spec->getResultBuffer()->getTotalResult() !== true) {

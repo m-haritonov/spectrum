@@ -6,9 +6,12 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\text\components\details;
 
-use \spectrum\core\details\PhpErrorInterface;
+use spectrum\core\details\PhpErrorInterface;
 
 class phpError extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getContent(PhpErrorInterface $details) {
 		return
 			static::getContentForErrorLevel($details) . static::getOutputNewline() .
@@ -16,11 +19,18 @@ class phpError extends \spectrum\core\plugins\reports\drivers\text\components\co
 			static::getContentForSource($details);
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getContentForErrorLevel(PhpErrorInterface $details) {
 		$errorLevel = $details->getErrorLevel();
 		return static::translate('Error level') . ': ' . $errorLevel . ' (' . static::getErrorLevelConstantNameByValue($errorLevel) . ')';
 	}
-	
+
+	/**
+	 * @param int $constantValue
+	 * @return null|string
+	 */
 	static protected function getErrorLevelConstantNameByValue($constantValue) {
 		$constants = get_defined_constants(true);
 		foreach ($constants['Core'] as $name => $value) {
@@ -31,11 +41,17 @@ class phpError extends \spectrum\core\plugins\reports\drivers\text\components\co
 		
 		return null;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getContentForErrorMessage(PhpErrorInterface $details) {
 		return static::translate('Error message') . ': "' . $details->getErrorMessage() . '"';
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getContentForSource(PhpErrorInterface $details) {
 		return
 			static::translate('Source') . ': ' .

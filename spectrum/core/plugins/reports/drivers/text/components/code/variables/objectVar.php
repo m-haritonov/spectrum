@@ -7,6 +7,12 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins\reports\drivers\text\components\code\variables;
 
 class objectVar extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @param object $variable
+	 * @param int $depth
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
 	static public function getContent($variable, $depth, $inputCharset = null) {
 		$properties = static::getProperties($variable);
 		
@@ -23,16 +29,30 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\text\components\c
 		$content .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
 		return $content;
 	}
-	
-	static protected function getContentForType($properties) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForType(array $properties) {
 		return static::translate('object') . '(' . count($properties) . ') ';
 	}
-	
+
+	/**
+	 * @param object $variable
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForClass($variable, $inputCharset) {
 		return '\\' . static::convertToOutputCharset(get_class($variable), $inputCharset) . ' ';
 	}
-	
-	static protected function getContentForElements($variable, $properties, $depth, $inputCharset) {
+
+	/**
+	 * @param object $variable
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
+	static protected function getContentForElements($variable, array $properties, $depth, $inputCharset) {
 		$content = '';
 		if (count($properties)) {
 			foreach ($properties as $key => $value) {
@@ -48,6 +68,13 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\text\components\c
 		return $content;
 	}
 
+	/**
+	 * @param mixed $key
+	 * @param mixed $value
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForElement($key, $value, $depth, $inputCharset) {
 		return
 			static::getOutputIndention($depth + 1) .
@@ -62,6 +89,10 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\text\components\c
 			static::callComponentMethod('code\variable', 'getContent', array($value['value'], $depth + 1, $inputCharset));
 	}
 
+	/**
+	 * @param object $variable
+	 * @return array
+	 */
 	static protected function getProperties($variable) {
 		$result = array();
 		

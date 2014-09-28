@@ -7,6 +7,9 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins\reports\drivers\text\components\code\variables;
 
 class nullVar extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getContent() {
 		return 'null';
 	}

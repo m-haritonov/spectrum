@@ -8,6 +8,8 @@ namespace spectrum\matchers;
 
 /**
  * Matcher for identical operator ($actual === $expected).
+ * @param mixed $actual
+ * @param mixed $expected
  * @return bool
  */
 function ident($actual, $expected) {

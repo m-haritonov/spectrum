@@ -11,6 +11,8 @@ use spectrum\Exception;
 
 /**
  * @access private
+ * @param string $builderName
+ * @return array
  */
 function convertArgumentsForSpec(array $arguments, $builderName) {
 	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\_internals\convertArguments');

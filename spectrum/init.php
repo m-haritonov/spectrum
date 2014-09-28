@@ -38,12 +38,108 @@ require_once __DIR__ . '/_internals/setCurrentBuildingSpec.php';
 require_once __DIR__ . '/_internals/setSettingsToSpec.php';
 require_once __DIR__ . '/_internals/translate.php';
 
-if (!function_exists('addMatcher')) { function addMatcher() { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\addMatcher'), func_get_args()); }}
-if (!function_exists('after'))      { function after()      { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\after'),      func_get_args()); }}
-if (!function_exists('be'))         { function be()         { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\be'),         func_get_args()); }}
-if (!function_exists('before'))     { function before()     { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\before'),     func_get_args()); }}
-if (!function_exists('fail'))       { function fail()       { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\fail'),       func_get_args()); }}
-if (!function_exists('group'))      { function group()      { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\group'),      func_get_args()); }}
-if (!function_exists('message'))    { function message()    { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\message'),    func_get_args()); }}
-if (!function_exists('test'))       { function test()       { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\test'),       func_get_args()); }}
-if (!function_exists('data'))       { function data()       { return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\data'),       func_get_args()); }}
+if (!function_exists('addMatcher')) {
+	/**
+	 * Adds matcher to current group.
+	 * @throws \spectrum\Exception If called not at building state
+	 * @param string $name
+	 * @param callable $function
+	 */
+	function addMatcher($name, $function) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\addMatcher'), func_get_args());
+	}
+}
+
+if (!function_exists('after')) {
+	/**
+	 * Adds "after" context modifier.
+	 * @throws \spectrum\Exception If called not at building state
+	 * @param callable $function
+	 */
+	function after($function) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\after'), func_get_args());
+	}
+}
+
+if (!function_exists('be')) {
+	/**
+	 * Creates assertion.
+	 * @throws \spectrum\Exception If called not at running state
+	 * @param mixed $testedValue
+	 * @return \spectrum\core\AssertInterface
+	 */
+	function be($testedValue) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\be'), func_get_args());
+	}
+}
+
+if (!function_exists('before')) {
+	/**
+	 * Adds "before" context modifier.
+	 * @throws \spectrum\Exception If called not at building state
+	 * @param callable $function
+	 */
+	function before($function) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\before'), func_get_args());
+	}
+}
+
+if (!function_exists('data')) {
+	/**
+	 * Returns data instance of current test.
+	 * @throws \spectrum\Exception If called not at running state
+	 * @return \spectrum\core\DataInterface
+	 */
+	function data() {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\data'), func_get_args());
+	}
+}
+
+if (!function_exists('fail')) {
+	/**
+	 * Adds to result buffer of current test false result wits message as details.
+	 * @throws \spectrum\Exception If called not at running state
+	 * @param null|string $message
+	 */
+	function fail($message = null) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\fail'), func_get_args());
+	}
+}
+
+if (!function_exists('group')) {
+	/**
+	 * Creates group.
+	 * @param null|string|int|float $name
+	 * @param null|\Closure|array $contexts
+	 * @param null|\Closure $body
+	 * @param null|int|bool|array $settings
+	 * @return \spectrum\core\SpecInterface
+	 */
+	function group($name = null, $contexts = null, $body = null, $settings = null) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\group'), func_get_args());
+	}
+}
+
+if (!function_exists('message')) {
+	/**
+	 * Adds message to current test.
+	 * @throws \spectrum\Exception If called not at running state
+	 */
+	function message($message) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\message'), func_get_args());
+	}
+}
+
+if (!function_exists('test')) {
+	/**
+	 * Creates test.
+	 * @param null|string|int|float $name
+	 * @param null|\Closure|array $contexts
+	 * @param null|\Closure $body
+	 * @param null|int|bool|array $settings
+	 * @return \spectrum\core\SpecInterface
+	 */
+	function test($name = null, $contexts = null, $body = null, $settings = null) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\test'), func_get_args());
+	}
+}

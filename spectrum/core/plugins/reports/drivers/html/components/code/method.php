@@ -8,8 +8,9 @@ namespace spectrum\core\plugins\reports\drivers\html\components\code;
 
 class method extends \spectrum\core\plugins\reports\drivers\html\components\component {
 	/**
-	 * @param string $methodName String in "us-ascii" charset
+	 * @param string $methodName String in "US-ASCII" charset
 	 * @param array $arguments Data in input charset
+	 * @param null|string $inputCharset
 	 * @return string
 	 */
 	static public function getContent($methodName, array $arguments, $inputCharset = null) {
@@ -22,6 +23,10 @@ class method extends \spectrum\core\plugins\reports\drivers\html\components\comp
 			'</span>';
 	}
 
+	/**
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static public function getContentForArguments(array $arguments, $inputCharset) {
 		$content = '';
 		

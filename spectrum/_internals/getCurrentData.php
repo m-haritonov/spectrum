@@ -7,11 +7,20 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\_internals;
 
 use spectrum\config;
+use spectrum\core\DataInterface;
+use spectrum\core\SpecInterface;
 
 /**
  * @access private
+ * @return null|DataInterface
  */
 function getCurrentData() {
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentRunningEndingSpec');
-	return $getCurrentRunningEndingSpecFunction()->test->getData();
+	/** @var null|SpecInterface $spec */
+	$spec = $getCurrentRunningEndingSpecFunction();
+	if ($spec) {
+		return $spec->test->getData();
+	} else {
+		return null;
+	}
 }

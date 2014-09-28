@@ -6,38 +6,40 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-use spectrum\config;
-use spectrum\core\SpecInterface;
-use spectrum\core\Spec;
 use spectrum\Exception;
 
 /**
  * @property Assert $not
- * @method eq($expected)
- * @method false()
- * @method gt($expected)
- * @method gte($expected)
- * @method ident($expected)
- * @method instanceof($expected)
- * @method lt($expected)
- * @method lte($expected)
- * @method null()
- * @method throwsException($expectedClass = '\Exception', $expectedStringInMessage = null, $expectedCode = null)
- * @method true()
+ * @method Assert eq($expected)
+ * @method Assert gt($expected)
+ * @method Assert gte($expected)
+ * @method Assert ident($expected)
+ * @method Assert is($expected)
+ * @method Assert lt($expected)
+ * @method Assert lte($expected)
+ * @method Assert throwsException($expectedClass = null, $expectedStringInMessage = null, $expectedCode = null)
  */
 class Assert implements AssertInterface {
 	protected $testedValue;
 	protected $notFlag = false;
+	
 	/**
-	 * @var SpecInterface|Spec
+	 * @var SpecInterface
 	 */
 	protected $ownerSpec;
 
+	/**
+	 * @param mixed $testedValue
+	 */
 	public function __construct(SpecInterface $ownerSpec, $testedValue) {
 		$this->ownerSpec = $ownerSpec;
 		$this->testedValue = $testedValue;
 	}
 
+	/**
+	 * @param string $matcherName
+	 * @return $this
+	 */
 	public function __call($matcherName, array $matcherArguments = array()) {
 		if (!$this->ownerSpec->isRunning()) {
 			throw new Exception('Matcher call is denied on not running spec (now spec "' . $this->ownerSpec->getName() . '" is not running)');
@@ -77,7 +79,10 @@ class Assert implements AssertInterface {
 		$this->dispatchPluginEvent('onMatcherCallFinish', array($matcherCallDetails));
 		return $this;
 	}
-	
+
+	/**
+	 * @param string $name
+	 */
 	public function __get($name) {
 		if ((string) $name === 'not') {
 			$this->notFlag = !$this->notFlag;
@@ -94,7 +99,10 @@ class Assert implements AssertInterface {
 		$callDetailsClass = \spectrum\config::getClassReplacement('\spectrum\core\details\MatcherCall');
 		return new $callDetailsClass();
 	}
-	
+
+	/**
+	 * @param string $eventName
+	 */
 	protected function dispatchPluginEvent($eventName, array $arguments = array()) {
 		$reflectionClass = new \ReflectionClass($this->ownerSpec);
 		$reflectionMethod = $reflectionClass->getMethod('dispatchPluginEvent');

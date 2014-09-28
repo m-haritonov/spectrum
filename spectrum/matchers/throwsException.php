@@ -12,6 +12,10 @@ use spectrum\Exception;
 /**
  * Returns true when code in $functionWithTestCode throws exception instance of $expectedClass (if not null) with
  * $expectedStringInMessage (if not null) and $expectedCode (if not null)
+ * @param callable $functionWithTestCode
+ * @param null|string $expectedClass
+ * @param null|string $expectedStringInMessage
+ * @param null|int $expectedCode
  * @return bool
  */
 function throwsException($functionWithTestCode, $expectedClass = null, $expectedStringInMessage = null, $expectedCode = null) {

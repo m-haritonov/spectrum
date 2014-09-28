@@ -5,11 +5,12 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\builders;
+
 use spectrum\config;
 use spectrum\Exception;
 
 /**
- * Add message to Messages plugin.
+ * Adds message to current test.
  * @throws \spectrum\Exception If called not at running state
  */
 function message($message) {

@@ -8,6 +8,8 @@ namespace spectrum\matchers;
 
 /**
  * Matcher for greater than operator ($actual > $expected).
+ * @param mixed $actual
+ * @param mixed $expected
  * @return bool
  */
 function gt($actual, $expected) {

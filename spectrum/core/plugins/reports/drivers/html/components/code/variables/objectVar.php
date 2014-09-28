@@ -7,6 +7,9 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins\reports\drivers\html\components\code\variables;
 
 class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-code-variables-object { display: inline-block; vertical-align: text-top; border-radius: 4px; background: rgba(255, 255, 255, 0.5); font-size: 12px; }
@@ -27,7 +30,13 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.elements>.element { display: block; }
 		/*]]>*/</style>', 2);
 	}
-	
+
+	/**
+	 * @param object $variable
+	 * @param int $depth
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
 	static public function getContent($variable, $depth, $inputCharset = null) {
 		$properties = static::getProperties($variable);
 		
@@ -46,20 +55,34 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		$content .= '</span>';
 		return $content;
 	}
-	
-	static protected function getContentForType($properties) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForType(array $properties) {
 		return
 			'<span class="type">' .
 				static::translateAndEscapeHtml('object') .
 				'<span title="' . static::translateAndEscapeHtml('Properties count') . '">(' . static::escapeHtml(count($properties)) . ')</span> ' .
 			'</span>';
 	}
-	
+
+	/**
+	 * @param object $variable
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForClass($variable, $inputCharset) {
 		return '<span class="class">\\' . static::escapeHtml(static::convertToOutputCharset(get_class($variable), $inputCharset)) . '</span> ';
 	}
-	
-	static protected function getContentForElements($variable, $properties, $depth, $inputCharset) {
+
+	/**
+	 * @param object $variable
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
+	static protected function getContentForElements($variable, array $properties, $depth, $inputCharset) {
 		$content = '';
 		if (count($properties)) {
 			$content .= '<span class="elements">';
@@ -78,6 +101,13 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 		return $content;
 	}
 
+	/**
+	 * @param mixed $key
+	 * @param mixed $value
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForElement($key, $value, $depth, $inputCharset) {
 		return
 			'<span class="element">' .
@@ -97,6 +127,10 @@ class objectVar extends \spectrum\core\plugins\reports\drivers\html\components\c
 			'</span>';
 	}
 
+	/**
+	 * @param object $variable
+	 * @return array
+	 */
 	static protected function getProperties($variable) {
 		$result = array();
 		

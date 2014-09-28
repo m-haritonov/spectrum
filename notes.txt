@@ -1,5 +1,9 @@
-TODD: http://mkharitonov.net/projects/spectrum/ 
-добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
+TODO: Assert -> Assertion (проверить наличие строки Assert в проекте после переименования)
+
+TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
+
+TODO: http://mkharitonov.net/projects/spectrum/ 
+TODO: добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 
 TODO: convertArrayWithContextsToSpecs — при отсутствии заголовка использовать конкатенацию параметров (key => value) с обрезанием для 100 символов вместо использования только первого параметра
 TODO: test('', array(
@@ -24,8 +28,6 @@ TODO: array context group:
 		test('bbb', function(){});
 	});
 
-TODO: игнорировать пойманные ошибки в случае установки catchPhpErrors в "0" или отображать простам текстом в выводе ???
-TODO: rename setCatchPhpErrors to setErrorLevel/setPhpErrorLevel/setCatchPhpErrorLevel/setPhpErrorCaughtLevel ???
 TODO: Показывать в отчетах null для value1 у оператора throws если исключение не выбрасывалось
 
 TODO: fix reports in all browsers 
@@ -37,9 +39,6 @@ TODO: create plugin OutputCapture (плюс вывод в отчёте в отд
 TODO: create plugin BackupGlobalVariables ???
 TODO: matchers: be(function(){})->outputs/prints('aaa a aaaaa ');
 
-TODO: проверить методы интерфейсов на соответствие методам класса и наоборот
-TODO: написать doc комментарии к методам и функциям (глобальным, расположенным в init.php, в частности)
-TODO: заменить call_user_func_array в глобальных алиасах билдеров на прямой вызов с передачей аргументов
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
 TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
 TODO: be()->throws() vs be()->throwing() vs be()->throw() vs the()->throws()

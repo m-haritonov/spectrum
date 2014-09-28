@@ -10,6 +10,10 @@ use spectrum\config;
 
 /**
  * @access private
+ * @param string $string
+ * @param null|string $inputCharset
+ * @param null|string $outputCharset
+ * @return string
  */
 function convertCharset($string, $inputCharset = null, $outputCharset = null) {
 	if ($inputCharset === null) {
@@ -22,8 +26,7 @@ function convertCharset($string, $inputCharset = null, $outputCharset = null) {
 	
 	if ((string) $inputCharset === (string) $outputCharset) {
 		return $string;
-	}
-	else {
+	} else {
 		return mb_convert_encoding($string, $outputCharset, $inputCharset);
 	}
 }

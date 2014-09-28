@@ -9,12 +9,22 @@ namespace spectrum\core\plugins\reports\drivers\text\components\code\variables;
 use spectrum\config;
 
 class stringVar extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @param string $variable
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
 	static public function getContent($variable, $inputCharset = null) {
 		return
 			static::getContentForType($variable, $inputCharset) .
 			static::getContentForValue($variable, $inputCharset);
 	}
 
+	/**
+	 * @param string $variable
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForType($variable, $inputCharset) {
 		if ($inputCharset === null) {
 			$inputCharset = config::getInputCharset();
@@ -28,10 +38,19 @@ class stringVar extends \spectrum\core\plugins\reports\drivers\text\components\c
 			') ';
 	}
 
+	/**
+	 * @param string $variable
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForValue($variable, $inputCharset) {
 		return '"' . static::highlightSpaces(static::convertToOutputCharset($variable, $inputCharset)) . '"';
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	static protected function highlightSpaces($string) {
 		return strtr($string, array(
 			'\t' => '\\\\t',

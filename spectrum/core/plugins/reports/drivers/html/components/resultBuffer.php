@@ -6,12 +6,15 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components;
 
-use \spectrum\core\details\MatcherCallInterface;
+use spectrum\core\details\MatcherCallInterface;
 use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;
 use spectrum\core\SpecInterface;
 
 class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\components\component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-resultBuffer { position: relative; margin: 0.5em 0 1em 0; }
@@ -55,6 +58,9 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			(function(){
@@ -88,6 +94,9 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		/*]]>*/</script>', 2);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		$results = $spec->getResultBuffer()->getResults();
 		if (count($results) == 0) {
@@ -101,8 +110,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		$content .= '</div>';
 		return $content;
 	}
-	
-	static protected function getContentForResults($results) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForResults(array $results) {
 		$content = '';
 		$content .= '<div class="results">' . static::getHtmlEscapedOutputNewline();
 		
@@ -127,7 +139,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		$content .= '</div>';
 		return $content;
 	}
-	
+
+	/**
+	 * @param mixed $result
+	 * @return string
+	 */
 	static protected function getResultValueName($result) {
 		if ($result === false) {
 			return 'false';
@@ -139,7 +155,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 			return 'unknown';
 		}
 	}
-	
+
+	/**
+	 * @param mixed $details
+	 * @return string
+	 */
 	static protected function getFailType($details) {
 		if (is_object($details) && $details instanceof MatcherCallInterface) {
 			return 'matcher call fail';
@@ -152,6 +172,10 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		}
 	}
 
+	/**
+	 * @param mixed $details
+	 * @return string
+	 */
 	static protected function getContentForResultDetails($details) {
 		if (is_object($details) && $details instanceof MatcherCallInterface) {
 			return static::callComponentMethod('details\matcherCall', 'getContent', array($details));

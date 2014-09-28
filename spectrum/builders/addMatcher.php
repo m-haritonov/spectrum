@@ -5,13 +5,15 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\builders;
+
 use spectrum\config;
 use spectrum\Exception;
 
 /**
+ * Adds matcher to current group.
  * @throws \spectrum\Exception If called not at building state
- * @param  string $name
- * @param  callback $function
+ * @param string $name
+ * @param callable $function
  */
 function addMatcher($name, $function) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');

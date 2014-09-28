@@ -9,6 +9,9 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 use spectrum\core\SpecInterface;
 
 class detailsControl extends component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-detailsControl { display: inline-block; }
@@ -24,6 +27,9 @@ class detailsControl extends component {
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			(function(){
@@ -92,6 +98,9 @@ class detailsControl extends component {
 		/*]]>*/</script>', 2);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		if ($spec->getParentSpecs()) {
 			return null;

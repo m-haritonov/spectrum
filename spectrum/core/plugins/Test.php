@@ -10,39 +10,59 @@ use spectrum\config;
 use spectrum\core\DataInterface;
 
 class Test extends \spectrum\core\plugins\Plugin {
-	/** @var DataInterface */
+	/**
+	 * @var null|DataInterface
+	 */
 	protected $data;
 	
 	/**
-	 * @var \Closure
+	 * @var null|\Closure
 	 */
 	protected $function;
-	
+
+	/**
+	 * @return string
+	 */
 	static public function getAccessName() {
 		return 'test';
 	}
-	
+
+	/**
+	 * @return array
+	 */
 	static public function getEventListeners() {
 		return array(
 			array('event' => 'onEndingSpecExecute', 'method' => 'onEndingSpecExecute', 'order' => 10),
 		);
 	}
-	
+
+	/**
+	 * @param \Closure $function
+	 */
 	public function setFunction($function) {
 		$this->handleModifyDeny(__FUNCTION__);
 		$this->function = $function;
 	}
 
+	/**
+	 * @return null|\Closure
+	 */
 	public function getFunction() {
 		return $this->function;
 	}
-	
+
+	/**
+	 * @return null|\Closure
+	 */
 	public function getFunctionThroughRunningAncestors() {
 		return $this->callMethodThroughRunningAncestorSpecs('getFunction', array(), null, null);
 	}
 
 /**/
-	
+
+	/**
+	 * @return null|DataInterface
+	 */
 	public function getData() {
 		return $this->data;
 	}
@@ -76,9 +96,12 @@ class Test extends \spectrum\core\plugins\Plugin {
 			}
 		}
 	}
-	
+
+	/**
+	 * @return DataInterface
+	 */
 	protected function createData() {
-		$contextClass = config::getClassReplacement('\spectrum\core\Data');
-		return new $contextClass();
+		$dataClass = config::getClassReplacement('\spectrum\core\Data');
+		return new $dataClass();
 	}
 }

@@ -10,6 +10,9 @@ use spectrum\config;
 use spectrum\core\SpecInterface;
 
 class totalInfo extends component {
+	/**
+	 * @return null|string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		if ($spec->getParentSpecs()) {
 			return null;

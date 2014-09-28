@@ -5,14 +5,14 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\builders;
+
 use spectrum\config;
-use spectrum\core\details\UserFail;
 use spectrum\Exception;
 
 /**
- * Add to ResultBuffer of running SpecItem false result wits exception as details.
+ * Adds to result buffer of current test false result wits message as details.
  * @throws \spectrum\Exception If called not at running state
- * @param string|null $message
+ * @param null|string $message
  */
 function fail($message = null) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');

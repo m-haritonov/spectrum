@@ -10,6 +10,13 @@ use spectrum\config;
 
 /**
  * @access private
+ * @param string $text
+ * @param int $indentionToRemoveCount
+ * @param string $inputIndention
+ * @param string $inputNewline
+ * @param null|string $outputIndention
+ * @param null|string $outputNewline
+ * @return string
  */
 function formatTextForOutput($text, $indentionToRemoveCount = 0, $inputIndention = "\t", $inputNewline = "\n", $outputIndention = null, $outputNewline = null) {
 	if ($outputIndention === null) {

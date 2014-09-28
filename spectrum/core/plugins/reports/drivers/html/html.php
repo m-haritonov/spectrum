@@ -10,6 +10,9 @@ use spectrum\config;
 use spectrum\core\SpecInterface;
 
 class html {
+	/**
+	 * @return string
+	 */
 	static public function getContentBeforeSpec(SpecInterface $spec) {
 		$content = '';
 		
@@ -26,6 +29,9 @@ class html {
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContentAfterSpec(SpecInterface $spec) {
 		$content = '';
 		$specListContent = static::callComponentMethod('specList', 'getContentEnd', array($spec));
@@ -41,7 +47,10 @@ class html {
 		
 		return $content;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getHeader() {
 		return
 			static::getHtmlDeclaration() . static::getHtmlEscapedOutputNewline() .
@@ -56,11 +65,17 @@ class html {
 			'</head>' . static::getHtmlEscapedOutputNewline() .
 			'<body><div>';
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getHtmlDeclaration() {
 		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getHtmlOpenTag() {
 		return
 			'<!--[if IE 6]><html class="app-browser-ie6" xmlns="http://www.w3.org/1999/xhtml"><![endif]-->' . static::getHtmlEscapedOutputNewline() .
@@ -70,10 +85,16 @@ class html {
 			'<!--[if !IE]>--><html xmlns="http://www.w3.org/1999/xhtml"><!--<![endif]-->';
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getFooter() {
 		return '</div></body>' . static::getHtmlEscapedOutputNewline() . '</html>';
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function getCommonStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			html { background: #fff; }
@@ -86,6 +107,9 @@ class html {
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function getCommonScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			spectrum = window.spectrum || {};
@@ -145,8 +169,7 @@ class html {
 						for (var i = 0; i < node.length; i++) {
 							arguments.callee(node[i], className);
 						}
-					}
-					else if (spectrum.tools.hasClass(node, className)) {
+					} else if (spectrum.tools.hasClass(node, className)) {
 						node.className = node.className.replace(new RegExp("(\\\\s|^)" + className + "(\\\\s|$)"), " ");
 					}
 				},
@@ -216,7 +239,10 @@ class html {
 			};
 		/*]]>*/</script>', 2);
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static protected function collectAllComponentStyles() {
 		$content = '';
 		foreach (config::getAllClassReplacements() as $class) {
@@ -231,6 +257,9 @@ class html {
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
 	static protected function collectAllComponentScripts() {
 		$content = '';
 		foreach (config::getAllClassReplacements() as $class) {
@@ -244,23 +273,45 @@ class html {
 
 		return $content;
 	}
-	
-	static protected function callComponentMethod($componentShortName, $methodName, $arguments = array()) {
+
+	/**
+	 * @param string $componentShortName
+	 * @param string $methodName
+	 * @return mixed
+	 */
+	static protected function callComponentMethod($componentShortName, $methodName, array $arguments = array()) {
 		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\components\\' . $componentShortName), $methodName), $arguments);
 	}
-	
+
+	/**
+	 * @param string $html
+	 * @return string
+	 */
 	static protected function escapeHtml($html) {
 		return htmlspecialchars($html, ENT_QUOTES, 'iso-8859-1');
 	}
 
+	/**
+	 * @param int $repeat
+	 * @return string
+	 */
 	static protected function getHtmlEscapedOutputIndention($repeat = 1) {
 		return str_repeat(static::escapeHtml(config::getOutputIndention()), $repeat);
 	}
-	
+
+	/**
+	 * @param int $repeat
+	 * @return string
+	 */
 	static protected function getHtmlEscapedOutputNewline($repeat = 1) {
 		return str_repeat(static::escapeHtml(config::getOutputNewline()), $repeat);
 	}
-	
+
+	/**
+	 * @param string $text
+	 * @param int $repeat
+	 * @return string
+	 */
 	static protected function prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($text, $repeat = 1) {
 		if ($text == '') {
 			return $text;
@@ -270,19 +321,33 @@ class html {
 		$newline = static::getHtmlEscapedOutputNewline();
 		return $indention . str_replace($newline, $newline . $indention, $text);
 	}
-	
+
+	/**
+	 * @param string $text
+	 * @param int $indentionToRemoveCount
+	 * @return string
+	 */
 	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0) {
-		$function = config::getFunctionReplacement('\spectrum\_internals\formatTextForOutput');
-		return $function($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
+		$formatTextForOutputFunction = config::getFunctionReplacement('\spectrum\_internals\formatTextForOutput');
+		return $formatTextForOutputFunction($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
 	}
-	
+
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	static protected function translateAndEscapeHtml($string, array $replacements = array()) {
 		$translateFunction = config::getFunctionReplacement('\spectrum\_internals\translate');
 		return static::escapeHtml($translateFunction($string, $replacements));
 	}
-	
+
+	/**
+	 * @param string $string
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
 	static protected function convertToOutputCharset($string, $inputCharset = null) {
-		$function = config::getFunctionReplacement('\spectrum\_internals\convertCharset');
-		return $function($string, $inputCharset);
+		$convertCharsetFunction = config::getFunctionReplacement('\spectrum\_internals\convertCharset');
+		return $convertCharsetFunction($string, $inputCharset);
 	}
 }

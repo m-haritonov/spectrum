@@ -11,6 +11,8 @@ use spectrum\core\SpecInterface;
 
 /**
  * @access private
+ * @param callable $function
+ * @return mixed
  */
 function callFunctionOnCurrentBuildingSpec($function, SpecInterface $spec) {
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentBuildingSpec');

@@ -10,6 +10,7 @@ use spectrum\config;
 
 /**
  * @access private
+ * @return array
  */
 function getTestSpecs() {
 	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internals\addTestSpec'));
@@ -17,8 +18,7 @@ function getTestSpecs() {
 	
 	if (isset($staticVariables['specs'])) {
 		return $staticVariables['specs'];
-	}
-	else {
+	} else {
 		return array();
 	}
 }

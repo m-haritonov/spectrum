@@ -7,12 +7,15 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\builders;
 
 use spectrum\config;
+use spectrum\core\SpecInterface;
 use spectrum\Exception;
 
 /**
- * @param  string|int|null $name
- * @param  \Closure|array|null $contexts
- * @param  \Closure|null $body
+ * Creates group.
+ * @param null|string|int|float $name
+ * @param null|\Closure|array $contexts
+ * @param null|\Closure $body
+ * @param null|int|bool|array $settings
  * @return \spectrum\core\SpecInterface
  */
 function group($name = null, $contexts = null, $body = null, $settings = null) {
@@ -25,6 +28,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null) {
 	list($name, $contexts, $body, $settings) = $convertArgumentsForSpecFunction(func_get_args(), 'group');
 	
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
+	/** @var SpecInterface $builderSpec */
 	$builderSpec = new $specClass();
 	
 	if ($name !== null) {
@@ -42,6 +46,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null) {
 			$contextEndingSpec = new $specClass();
 			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\convertArrayWithContextsToSpecs');
 			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $contextSpec) {
+				/** @var SpecInterface $contextSpec */
 				$builderSpec->bindChildSpec($contextSpec);
 				$contextSpec->bindChildSpec($contextEndingSpec);
 			}
@@ -51,6 +56,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null) {
 			
 			$getTestSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\getTestSpecs');
 			$testSpecs = $getTestSpecsFunction();
+			/** @var SpecInterface $contextEndingSpec */
 			$contextEndingSpec = new $specClass();
 			foreach ($builderSpec->getDescendantEndingSpecs() as $endingSpec) {
 				if (!in_array($endingSpec, $testSpecs, true)) {
@@ -58,8 +64,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null) {
 				}
 			}
 		}
-	}
-	else {
+	} else {
 		$contextEndingSpec = $builderSpec;
 	}
 	

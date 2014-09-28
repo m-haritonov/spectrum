@@ -5,11 +5,13 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\_internals;
+
 use spectrum\config;
+use spectrum\core\SpecInterface;
 
 /**
  * @access private
- * @return \spectrum\core\SpecInterface|null
+ * @return SpecInterface
  */
 function getCurrentBuildingSpec() {
 	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\_internals\setCurrentBuildingSpec'));
@@ -17,9 +19,7 @@ function getCurrentBuildingSpec() {
 	
 	if (isset($staticVariables['buildingSpec'])) {
 		return $staticVariables['buildingSpec'];
-	}
-	else
-	{
+	} else {
 		$getRootSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getRootSpec');
 		return $getRootSpecFunction();
 	}

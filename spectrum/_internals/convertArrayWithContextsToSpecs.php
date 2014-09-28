@@ -7,10 +7,12 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\_internals;
 
 use spectrum\config;
+use spectrum\core\SpecInterface;
 use spectrum\Exception;
 
 /**
  * @access private
+ * @return array
  */
 function convertArrayWithContextsToSpecs(array $contexts) {
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
@@ -25,8 +27,7 @@ function convertArrayWithContextsToSpecs(array $contexts) {
 			if ((!is_string($title) || $title === '') && count($values) >= 1 && is_scalar($firstValue)) {
 				if (mb_strlen($firstValue, config::getInputCharset()) > 100) {
 					$title = mb_substr($firstValue, 0, 100, config::getInputCharset()) . '...';
-				}
-				else {
+				} else {
 					$title = $firstValue;
 				}
 			}
@@ -38,14 +39,13 @@ function convertArrayWithContextsToSpecs(array $contexts) {
 					$data->$propertyName = $value;
 				}
 			};
-		}
-		else if ($values instanceof $closure) {
+		} else if ($values instanceof $closure) {
 			$contextModifierFunction = $values;
-		}
-		else {
+		} else {
 			throw new Exception('The context row #' . $num . ' should be an array');
 		}
 		
+		/** @var SpecInterface $spec */
 		$spec = new $specClass();
 		$spec->setName($title);
 		$spec->contextModifiers->add($contextModifierFunction, 'before');

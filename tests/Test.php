@@ -11,8 +11,7 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/init.php';
 
-abstract class Test extends \PHPUnit_Framework_TestCase
-{
+abstract class Test extends \PHPUnit_Framework_TestCase {
 	static public $temp;
 	static private $classNumber = 0;
 	
@@ -27,16 +26,25 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		$this->backupObjectProperties(\spectrum\_internals\getRootSpec());
 		$this->backupClassStaticProperties('\spectrum\config');
 		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\code\variable');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\specList');
+		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\code\variable');
 		
 		config::unregisterSpecPlugins('\spectrum\core\plugins\reports\Reports');
 		\spectrum\tests\Test::$temp = null;
 	}
 	
 	protected function tearDown() {
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\code\variable');
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\specList');
+		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\code\variable');
 		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
 		$this->restoreClassStaticProperties('\spectrum\config');
 		$this->restoreObjectProperties(\spectrum\_internals\getRootSpec());
 
+		$this->classStaticPropertyBackups = array();
+		$this->objectPropertyBackups = array();
+		
 		parent::tearDown();
 	}
 
@@ -89,7 +97,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @return string Class name string in "us-ascii" charset
+	 * @return string Class name string in "US-ASCII" charset
 	 */
 	final protected function createClass($code) {
 		$namespace = 'spectrum\tests\_testware\_dynamicClasses_';
@@ -144,8 +152,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 		if ($callback === null) {
 			$message = null;
 			$callback = $stringInMessageOrCallback;
-		}
-		else {
+		} else {
 			$message = $stringInMessageOrCallback;
 		}
 
@@ -453,8 +460,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 						$currentLowerElementIndex++;
 						$openedGroup = null;
 					}
-				}
-				else {
+				} else {
 					throw new \Exception('Unknown relation "' . $relation . '" is present on line ' . ($lineIndex + 1));
 				}
 			}

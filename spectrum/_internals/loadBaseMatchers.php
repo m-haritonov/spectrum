@@ -8,6 +8,7 @@ namespace spectrum\_internals;
 
 /**
  * @access private
+ * @return array
  */
 function loadBaseMatchers() {
 	$matchers = array(

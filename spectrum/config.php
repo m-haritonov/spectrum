@@ -7,13 +7,39 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum;
 
 final class config {
+	/**
+	 * @var string
+	 */
 	static private $inputCharset = 'utf-8';
+	
+	/**
+	 * @var string
+	 */
 	static private $outputCharset = 'utf-8';
+	
+	/**
+	 * @var string
+	 */
 	static private $outputFormat = 'html';
+	
+	/**
+	 * @var string
+	 */
 	static private $outputIndention = "\t";
+	
+	/**
+	 * @var string
+	 */
 	static private $outputNewline = "\n";
+	
+	/**
+	 * @var bool
+	 */
 	static private $allowErrorHandlingModify = true;
 
+	/**
+	 * @var array
+	 */
 	static private $classReplacements = array(
 		'\spectrum\core\Assert' => '\spectrum\core\Assert',
 		'\spectrum\core\Data' => '\spectrum\core\Data',
@@ -79,7 +105,10 @@ final class config {
 		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\stringVar'    => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\stringVar',
 		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\unknownVar'   => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\unknownVar',
 	);
-	
+
+	/**
+	 * @var array
+	 */
 	static private $functionReplacements = array(
 		'\spectrum\_internals\addTestSpec' => '\spectrum\_internals\addTestSpec',
 		'\spectrum\_internals\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internals\callFunctionOnCurrentBuildingSpec',
@@ -111,7 +140,10 @@ final class config {
 		'\spectrum\builders\test' => '\spectrum\builders\test',
 		'\spectrum\builders\data' => '\spectrum\builders\data',
 	);
-	
+
+	/**
+	 * @var array
+	 */
 	static private $registeredSpecPlugins = array(
 		'\spectrum\core\plugins\reports\Reports',
 		'\spectrum\core\plugins\ContextModifiers',
@@ -120,7 +152,10 @@ final class config {
 		'\spectrum\core\plugins\Messages',
 		'\spectrum\core\plugins\Test',
 	);
-	
+
+	/**
+	 * @var bool
+	 */
 	static private $locked = false;
 
 	/**
@@ -131,7 +166,6 @@ final class config {
 	/**
 	 * Set charset of tests
 	 * @param string $charsetName
-	 * @return void
 	 */
 	static public function setInputCharset($charsetName) {
 		static::throwExceptionIfLocked();
@@ -148,7 +182,6 @@ final class config {
 	/**
 	 * Set charset for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\reports\*" classes)
 	 * @param string $charsetName
-	 * @return void
 	 */
 	static public function setOutputCharset($charsetName) {
 		static::throwExceptionIfLocked();
@@ -165,7 +198,6 @@ final class config {
 	/**
 	 * Set format for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\reports\*" classes)
 	 * @param $format "html"|"text"
-	 * @return void
 	 */
 	static public function setOutputFormat($format) {
 		static::throwExceptionIfLocked();
@@ -181,7 +213,6 @@ final class config {
 
 	/**
 	 * @param $string String with "\t" or " " chars
-	 * @return void
 	 */
 	static public function setOutputIndention($string) {
 		static::throwExceptionIfLocked();
@@ -202,7 +233,6 @@ final class config {
 
 	/**
 	 * @param $string String with "\r" or "\n" chars
-	 * @return void
 	 */
 	static public function setOutputNewline($string) {
 		static::throwExceptionIfLocked();
@@ -238,7 +268,11 @@ final class config {
 	}
 	
 /**/
-	
+
+	/**
+	 * @param string $className
+	 * @param string $newClassName
+	 */
 	static public function setClassReplacement($className, $newClassName) {
 		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
@@ -254,35 +288,56 @@ final class config {
 		
 		static::$classReplacements[$className] = $newClassName;
 	}
-	
+
+	/**
+	 * @param string $className
+	 * @return string
+	 */
 	static public function getClassReplacement($className) {
 		return static::$classReplacements[$className];
 	}
-	
+
+	/**
+	 * @return array
+	 */
 	static public function getAllClassReplacements() {
 		return static::$classReplacements;
 	}
 	
 /**/
-	
-	static public function setFunctionReplacement($functionName, $newFunctionName) {
+
+	/**
+	 * @param string $functionName
+	 * @param callable $newFunction
+	 */
+	static public function setFunctionReplacement($functionName, $newFunction) {
 		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
 		}
 		
-		static::$functionReplacements[$functionName] = $newFunctionName;
+		static::$functionReplacements[$functionName] = $newFunction;
 	}
-	
+
+	/**
+	 * @param string $functionName
+	 * @return callable
+	 */
 	static public function getFunctionReplacement($functionName) {
 		return static::$functionReplacements[$functionName];
 	}
-	
+
+	/**
+	 * @return array
+	 */
 	static public function getAllFunctionReplacements() {
 		return static::$functionReplacements;
 	}
 	
 /**/
 
+	/**
+	 * @param string $class
+	 */
 	static public function registerSpecPlugin($class) {
 		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
@@ -331,8 +386,10 @@ final class config {
 		static::$registeredSpecPlugins[] = $class;
 	}
 
-	static public function unregisterSpecPlugins($classes = null)
-	{
+	/**
+	 * @param array|string $classes
+	 */
+	static public function unregisterSpecPlugins($classes = array()) {
 		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
 		}
@@ -354,10 +411,17 @@ final class config {
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	static public function getRegisteredSpecPlugins() {
 		return static::$registeredSpecPlugins;
 	}
-	
+
+	/**
+	 * @param string $pluginAccessName
+	 * @return null|string
+	 */
 	static public function getRegisteredSpecPluginClassByAccessName($pluginAccessName) {
 		foreach (static::getRegisteredSpecPlugins() as $pluginClass) {
 			if ((string) $pluginClass::getAccessName() === (string) $pluginAccessName) {
@@ -367,7 +431,11 @@ final class config {
 		
 		return null;
 	}
-	
+
+	/**
+	 * @param string $class
+	 * @return bool
+	 */
 	static public function hasRegisteredSpecPlugin($class) {
 		foreach (static::$registeredSpecPlugins as $registeredPluginClass) {
 			// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
@@ -382,7 +450,10 @@ final class config {
 	static public function lock() {
 		static::$locked = true;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	static public function isLocked() {
 		return static::$locked;
 	}
@@ -394,7 +465,11 @@ final class config {
 			throw new Exception('\spectrum\config is locked');
 		}
 	}
-	
+
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	static private function convertLatinCharsToLowerCase($string) {
 		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		return $convertLatinCharsToLowerCaseFunction($string);

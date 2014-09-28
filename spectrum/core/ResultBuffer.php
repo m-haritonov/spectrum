@@ -9,7 +9,9 @@ namespace spectrum\core;
 use spectrum\Exception;
 
 class ResultBuffer implements ResultBufferInterface {
-	/** @var \spectrum\core\SpecInterface */
+	/**
+	 * @var \spectrum\core\SpecInterface
+	 */
 	protected $ownerSpec;
 	protected $results = array();
 	protected $locked = false;
@@ -18,12 +20,15 @@ class ResultBuffer implements ResultBufferInterface {
 		$this->ownerSpec = $ownerSpec;
 	}
 
+	/**
+	 * @return SpecInterface
+	 */
 	public function getOwnerSpec() {
 		return $this->ownerSpec;
 	}
 
 	/**
-	 * @param bool|null $result true, false or null
+	 * @param null|bool $result
 	 * @param mixed $details Exception object, some string, backtrace info, etc.
 	 */
 	public function addResult($result, $details = null) {
@@ -40,11 +45,17 @@ class ResultBuffer implements ResultBufferInterface {
 			'details' => $details,
 		);
 	}
-	
+
+	/**
+	 * @return array
+	 */
 	public function getResults() {
 		return $this->results;
 	}
 
+	/**
+	 * @return null|bool
+	 */
 	public function getTotalResult() {
 		$hasNull = false;
 		foreach ($this->results as $result) {
@@ -69,7 +80,10 @@ class ResultBuffer implements ResultBufferInterface {
 	public function lock() {
 		$this->locked = true;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function isLocked() {
 		return $this->locked;
 	}

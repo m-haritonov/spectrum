@@ -5,6 +5,7 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\tests\core;
+
 use spectrum\config;
 use spectrum\core\Spec;
 
@@ -3090,8 +3091,7 @@ class SpecTest extends \spectrum\tests\Test {
 	
 /**/
 	
-	public function testEventDispatch_Events_DispatchesEventsInCallSequence()
-	{
+	public function testEventDispatch_Events_DispatchesEventsInCallSequence() {
 		\spectrum\tests\Test::$temp["calledEvents"] = array();
 		
 		$pluginClassName = $this->createClass('

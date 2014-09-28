@@ -7,7 +7,12 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins\reports\drivers\text\components\code\variables;
 
 class arrayVar extends \spectrum\core\plugins\reports\drivers\text\components\component {
-	static public function getContent($variable, $depth, $inputCharset = null) {
+	/**
+	 * @param int $depth
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
+	static public function getContent(array $variable, $depth, $inputCharset = null) {
 		$content = '';
 		$content .= static::getContentForType($variable);
 		$content .= static::callComponentMethod('code\operator', 'getContent', array('{', 'us-ascii')) . static::getOutputNewline();
@@ -20,12 +25,20 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\text\components\co
 		$content .= static::callComponentMethod('code\operator', 'getContent', array('}', 'us-ascii'));
 		return $content;
 	}
-	
-	static protected function getContentForType($variable) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForType(array $variable) {
 		return static::translate('array') . '(' . count($variable) . ') ';
 	}
-	
-	static protected function getContentForElements($variable, $depth, $inputCharset) {
+
+	/**
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
+	static protected function getContentForElements(array $variable, $depth, $inputCharset) {
 		$content = '';
 		if (count($variable)) {
 			foreach ($variable as $key => $value) {
@@ -35,7 +48,14 @@ class arrayVar extends \spectrum\core\plugins\reports\drivers\text\components\co
 		
 		return $content;
 	}
-	
+
+	/**
+	 * @param mixed $key
+	 * @param mixed $value
+	 * @param int $depth
+	 * @param string $inputCharset
+	 * @return string
+	 */
 	static protected function getContentForElement($key, $value, $depth, $inputCharset) {
 		return
 			static::getOutputIndention($depth + 1) .

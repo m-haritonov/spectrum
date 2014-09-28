@@ -6,6 +6,9 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
+/**
+ * @return null|bool
+ */
 function run() {
 	if (!config::isLocked()) {
 		config::lock();

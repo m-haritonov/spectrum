@@ -83,8 +83,7 @@ class AutoloadTest extends Test {
 			foreach ($paths as $path) {
 				$resultFiles = array_merge($resultFiles, $this->getDirectoryFilesRecursively($path));
 			}
-		}
-		else {
+		} else {
 			foreach (scandir($paths) as $file) {
 				if (mb_substr($file, 0, 1, 'us-ascii') === '.') {
 					continue;

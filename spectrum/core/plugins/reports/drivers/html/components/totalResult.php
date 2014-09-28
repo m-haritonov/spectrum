@@ -9,6 +9,9 @@ namespace spectrum\core\plugins\reports\drivers\html\components;
 use spectrum\core\SpecInterface;
 
 class totalResult extends component {
+	/**
+	 * @return string
+	 */
 	static public function getStyles() {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-totalResult-result { color: #aaa; font-weight: bold; }
@@ -20,6 +23,9 @@ class totalResult extends component {
 		/*]]>*/</style>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getScripts() {
 		return static::formatTextForOutput('<script type="text/javascript">/*<![CDATA[*/
 			spectrum = window.spectrum || {};
@@ -42,13 +48,19 @@ class totalResult extends component {
 		/*]]>*/</script>', 2);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		return
 			'<span class="app-totalResult-result id-' . static::escapeHtml($spec->getRunId()) . '">' .
 				static::translateAndEscapeHtml('wait...') .
 			'</span>';
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	static public function getContentForUpdate(SpecInterface $spec) {
 		$resultName = static::getResultName($spec->getResultBuffer()->getTotalResult());
 		return
@@ -59,6 +71,10 @@ class totalResult extends component {
 			'</span>';
 	}
 
+	/**
+	 * @param null|bool $result
+	 * @return string
+	 */
 	static protected function getResultName($result) {
 		if ($result === false) {
 			return 'fail';

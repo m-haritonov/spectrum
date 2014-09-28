@@ -9,8 +9,17 @@ namespace spectrum\core\plugins\reports\drivers\text\components\code;
 use spectrum\config;
 
 class variable extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @var array
+	 */
 	static protected $previousVariables = array();
-	
+
+	/**
+	 * @param mixed $variable
+	 * @param int $depth
+	 * @param null|string $inputCharset
+	 * @return string
+	 */
 	static public function getContent($variable, $depth = 0, $inputCharset = null) {
 		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_internals\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction(gettype($variable));

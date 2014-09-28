@@ -8,7 +8,7 @@ namespace spectrum\_internals;
 
 /**
  * @access private
- * @param string $string String in "us-ascii" charset
+ * @param string $string String in "US-ASCII" charset
  * @param array $replacements Strings in output charset
  * @return string String in output charset
  */

@@ -7,12 +7,15 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\plugins\reports\drivers\text\components;
 
 use spectrum\config;
-use \spectrum\core\details\MatcherCallInterface;
+use spectrum\core\details\MatcherCallInterface;
 use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;
 use spectrum\core\SpecInterface;
 
 class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\components\component {
+	/**
+	 * @return null|string
+	 */
 	static public function getContent(SpecInterface $spec) {
 		$results = $spec->getResultBuffer()->getResults();
 		if (count($results) == 0) {
@@ -27,8 +30,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 		$content .= static::getContentForResults($results);
 		return $content;
 	}
-	
-	static protected function getContentForResults($results) {
+
+	/**
+	 * @return string
+	 */
+	static protected function getContentForResults(array $results) {
 		$content = '';
 		
 		$num = 0;
@@ -50,7 +56,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 
 		return $content;
 	}
-	
+
+	/**
+	 * @param mixed $result
+	 * @return string
+	 */
 	static protected function getResultValueName($result) {
 		if ($result === false) {
 			return 'false';
@@ -62,7 +72,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 			return 'unknown';
 		}
 	}
-	
+
+	/**
+	 * @param mixed $details
+	 * @return string
+	 */
 	static protected function getFailType($details) {
 		if (is_object($details) && $details instanceof MatcherCallInterface) {
 			return 'matcher call fail';
@@ -75,6 +89,10 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 		}
 	}
 
+	/**
+	 * @param mixed $details
+	 * @return string
+	 */
 	static protected function getContentForResultDetails($details) {
 		if (is_object($details) && $details instanceof MatcherCallInterface) {
 			return static::callComponentMethod('details\matcherCall', 'getContent', array($details));

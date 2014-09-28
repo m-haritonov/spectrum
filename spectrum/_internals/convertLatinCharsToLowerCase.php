@@ -8,6 +8,8 @@ namespace spectrum\_internals;
 
 /**
  * @access private
+ * @param string $string
+ * @return string
  */
 function convertLatinCharsToLowerCase($string) {
 	return strtr($string, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
