@@ -64,7 +64,7 @@ class Assertion implements AssertionInterface {
 		}
 		
 		try {
-			$matcherReturnValue = call_user_func_array($matcherFunction, array_merge(array($this->testedValue), $matcherArguments));
+			$matcherReturnValue = call_user_func_array($matcherFunction, array_merge(array($matcherCallDetails, $this->testedValue), $matcherArguments));
 			$matcherCallDetails->setMatcherReturnValue($matcherReturnValue);
 			$result = ($this->notFlag ? !$matcherReturnValue : (bool) $matcherReturnValue);
 		} catch (\Exception $e) {

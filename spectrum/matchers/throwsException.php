@@ -7,6 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\matchers;
 
 use spectrum\config;
+use spectrum\core\types\FunctionType;
 use spectrum\Exception;
 
 /**
@@ -18,7 +19,7 @@ use spectrum\Exception;
  * @param null|int $expectedCode
  * @return bool
  */
-function throwsException($functionWithTestCode, $expectedClass = null, $expectedStringInMessage = null, $expectedCode = null) {
+function throwsException(\spectrum\core\details\MatcherCallInterface $marcherCallDetails, $functionWithTestCode, $expectedClass = null, $expectedStringInMessage = null, $expectedCode = null) {
 	if (!is_callable($functionWithTestCode)) {
 		throw new Exception('Function with test code is not callable');
 	}
@@ -51,6 +52,8 @@ function throwsException($functionWithTestCode, $expectedClass = null, $expected
 	try {
 		$functionWithTestCode();
 	} catch (\Exception $e) {
+		$marcherCallDetails->setTestedValue(new FunctionType($functionWithTestCode, array(array('operator' => 'throw', 'operands' => array($e)))));
+		
 		$actualClass = '\\' . get_class($e);
 		
 		// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)

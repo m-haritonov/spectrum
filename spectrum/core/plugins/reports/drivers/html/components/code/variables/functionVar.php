@@ -20,15 +20,21 @@ class functionVar extends \spectrum\core\plugins\reports\drivers\html\components
 	}
 
 	/**
-	 * @param \Closure $variable
+	 * @param \Closure|\spectrum\core\types\FunctionTypeInterface $variable
 	 * @param null|string $inputCharset
 	 * @return string
 	 */
 	static public function getContent($variable, $inputCharset = null) {
-		return
-			'<span class="app-code-variables-function">' .
-				'<span class="type">function(' . static::getContentForParameters($variable, $inputCharset) . '){}</span>' .
-			'</span>';
+		$content = '';
+		$content .= '<span class="app-code-variables-function">';
+		if ($variable instanceof \spectrum\core\types\FunctionTypeInterface) {
+			$content .= '<span class="type">function(' . static::getContentForParameters($variable->getFunction(), $inputCharset) . '){ ' . static::getContentForBody($variable->getBodyCode(), $inputCharset) . ' }</span>';
+		} else {
+			$content .= '<span class="type">function(' . static::getContentForParameters($variable, $inputCharset) . '){}</span>';
+		}
+		
+		$content .= '</span>';
+		return $content;
 	}
 	
 	static protected function getContentForParameters($variable, $inputCharset) {
@@ -91,5 +97,18 @@ class functionVar extends \spectrum\core\plugins\reports\drivers\html\components
 		}
 		
 		return $content;
+	}
+	
+	static protected function getContentForBody(array $bodyCode, $inputCharset) {
+		foreach ($bodyCode as $expression) {
+			if ($expression['operator'] === 'throw') {
+				$e = $expression['operands'][0];
+				return 'throw new \\' . static::escapeHtml(static::convertToOutputCharset(get_class($e), $inputCharset)) . '(' . static::getContentForExceptionArguments($e, $inputCharset) . ');';
+			}
+		}
+	}
+	
+	static protected function getContentForExceptionArguments(\Exception $e, $inputCharset) {
+		return '"' . static::escapeHtml(static::convertToOutputCharset(strtr($e->getMessage(), array('\\' => '\\\\', '"' => '\"')), $inputCharset)) . '", ' . static::escapeHtml($e->getCode());
 	}
 }

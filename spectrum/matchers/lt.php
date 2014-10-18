@@ -12,6 +12,6 @@ namespace spectrum\matchers;
  * @param mixed $expected
  * @return bool
  */
-function lt($actual, $expected) {
+function lt(\spectrum\core\details\MatcherCallInterface $marcherCallDetails, $actual, $expected) {
 	return ($actual < $expected);
 }

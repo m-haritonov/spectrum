@@ -88,6 +88,6 @@ class IsTest extends \spectrum\tests\Test {
 	 * @dataProvider provider
 	 */
 	public function test($heir, $parent, $result) {
-		$this->assertSame($result, \spectrum\matchers\is($heir, $parent));
+		$this->assertSame($result, \spectrum\matchers\is(new \spectrum\core\details\MatcherCall(), $heir, $parent));
 	}
 }

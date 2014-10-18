@@ -8,12 +8,16 @@ namespace spectrum\core\plugins\reports\drivers\text\components\code\variables;
 
 class functionVar extends \spectrum\core\plugins\reports\drivers\text\components\component {
 	/**
-	 * @param \Closure $variable
+	 * @param \Closure|\spectrum\core\types\FunctionTypeInterface $variable
 	 * @param null|string $inputCharset
 	 * @return string
 	 */
 	static public function getContent($variable, $inputCharset = null) {
-		return 'function(' . static::getContentForParameters($variable, $inputCharset) . '){}';
+		if ($variable instanceof \spectrum\core\types\FunctionTypeInterface) {
+			return 'function(' . static::getContentForParameters($variable->getFunction(), $inputCharset) . '){ ' . static::getContentForBody($variable->getBodyCode(), $inputCharset) . ' }';
+		} else {
+			return 'function(' . static::getContentForParameters($variable, $inputCharset) . '){}';
+		}
 	}
 	
 	static protected function getContentForParameters($variable, $inputCharset) {
@@ -76,5 +80,18 @@ class functionVar extends \spectrum\core\plugins\reports\drivers\text\components
 		}
 		
 		return $content;
+	}
+	
+	static protected function getContentForBody(array $bodyCode, $inputCharset) {
+		foreach ($bodyCode as $expression) {
+			if ($expression['operator'] === 'throw') {
+				$e = $expression['operands'][0];
+				return 'throw new \\' . static::convertToOutputCharset(get_class($e), $inputCharset) . '(' . static::getContentForExceptionArguments($e, $inputCharset) . ');';
+			}
+		}
+	}
+	
+	static protected function getContentForExceptionArguments(\Exception $e, $inputCharset) {
+		return '"' . static::convertToOutputCharset(strtr($e->getMessage(), array('\\' => '\\\\', '"' => '\"')), $inputCharset) . '", ' . $e->getCode();
 	}
 }

@@ -11,9 +11,9 @@ require_once __DIR__ . '/../../spectrum/matchers/lt.php';
 
 class LtTest extends \spectrum\tests\Test {
 	public function test() {
-		$this->assertSame(true, \spectrum\matchers\lt(10, 20));
+		$this->assertSame(true, \spectrum\matchers\lt(new \spectrum\core\details\MatcherCall(), 10, 20));
 
-		$this->assertSame(false, \spectrum\matchers\lt(10, 10));
-		$this->assertSame(false, \spectrum\matchers\lt(20, 10));
+		$this->assertSame(false, \spectrum\matchers\lt(new \spectrum\core\details\MatcherCall(), 10, 10));
+		$this->assertSame(false, \spectrum\matchers\lt(new \spectrum\core\details\MatcherCall(), 20, 10));
 	}
 }

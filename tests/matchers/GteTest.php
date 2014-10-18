@@ -11,9 +11,9 @@ require_once __DIR__ . '/../../spectrum/matchers/gte.php';
 
 class GteTest extends \spectrum\tests\Test {
 	public function test() {
-		$this->assertSame(true, \spectrum\matchers\gte(20, 10));
-		$this->assertSame(true, \spectrum\matchers\gte(20, 20));
+		$this->assertSame(true, \spectrum\matchers\gte(new \spectrum\core\details\MatcherCall(), 20, 10));
+		$this->assertSame(true, \spectrum\matchers\gte(new \spectrum\core\details\MatcherCall(), 20, 20));
 		
-		$this->assertSame(false, \spectrum\matchers\gte(10, 20));
+		$this->assertSame(false, \spectrum\matchers\gte(new \spectrum\core\details\MatcherCall(), 10, 20));
 	}
 }

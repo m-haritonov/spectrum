@@ -8,6 +8,7 @@ namespace spectrum\tests\core;
 
 use spectrum\config;
 use spectrum\core\Assertion;
+use spectrum\core\details\MatcherCall;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
@@ -58,7 +59,7 @@ class AssertionTest extends \spectrum\tests\Test {
 		$this->assertSame(array('bbb', 'ccc', 'ddd', 'aaa'), $calls);
 	}
 	
-	public function testMatcherCall_PassesTestedValueAndArgumentsToMatcher() {
+	public function testMatcherCall_PassesMatcherCallDetailsAndTestedValueAndArgumentsToMatcher() {
 		$this->registerPluginWithCodeInEvent('
 			$assert = new \spectrum\core\Assertion($this->getOwnerSpec(), "aaa");
 			$assert->zzz("bbb", "ccc", "ddd");
@@ -71,7 +72,8 @@ class AssertionTest extends \spectrum\tests\Test {
 		});
 		
 		$spec->run();
-		$this->assertSame(array(array('aaa', 'bbb', 'ccc', 'ddd')), $passedArguments);
+		$this->assertTrue($passedArguments[0][0] instanceof MatcherCall);
+		$this->assertSame(array(array($passedArguments[0][0], 'aaa', 'bbb', 'ccc', 'ddd')), $passedArguments);
 	}
 	
 	public function testMatcherCall_ReturnsAssertionInstance() {

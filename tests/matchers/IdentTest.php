@@ -11,11 +11,11 @@ require_once __DIR__ . '/../../spectrum/matchers/ident.php';
 
 class IdentTest extends \spectrum\tests\Test {
 	public function test() {
-		$this->assertSame(true, \spectrum\matchers\ident('aaa', 'aaa'));
-		$this->assertSame(true, \spectrum\matchers\ident(1, 1));
+		$this->assertSame(true, \spectrum\matchers\ident(new \spectrum\core\details\MatcherCall(), 'aaa', 'aaa'));
+		$this->assertSame(true, \spectrum\matchers\ident(new \spectrum\core\details\MatcherCall(), 1, 1));
 
-		$this->assertSame(false, \spectrum\matchers\ident('aaa', 'bbb'));
-		$this->assertSame(false, \spectrum\matchers\ident(111, '111'));
-		$this->assertSame(false, \spectrum\matchers\ident(0, false));
+		$this->assertSame(false, \spectrum\matchers\ident(new \spectrum\core\details\MatcherCall(), 'aaa', 'bbb'));
+		$this->assertSame(false, \spectrum\matchers\ident(new \spectrum\core\details\MatcherCall(), 111, '111'));
+		$this->assertSame(false, \spectrum\matchers\ident(new \spectrum\core\details\MatcherCall(), 0, false));
 	}
 }
