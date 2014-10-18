@@ -43,8 +43,8 @@ class variable extends \spectrum\core\plugins\reports\drivers\html\components\co
 		} else if ($type === 'array') {
 			$result = static::callComponentMethod('code\variables\arrayVar', 'getContent', array($variable, $depth, $inputCharset));
 		} else if ($type === 'object') {
-			$closure = function(){};
-			if ($variable instanceof $closure) {
+			$function = function(){};
+			if ($variable instanceof $function) {
 				$result = static::callComponentMethod('code\variables\functionVar', 'getContent', array($variable, $inputCharset));
 			} else {
 				$result = static::callComponentMethod('code\variables\objectVar', 'getContent', array($variable, $depth, $inputCharset));

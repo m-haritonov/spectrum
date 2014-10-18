@@ -17,7 +17,7 @@ use spectrum\Exception;
 function convertArrayWithContextsToSpecs(array $contexts) {
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
 	$specs = array();
-	$closure = function(){};
+	$function = function(){};
 	
 	$num = 0;
 	foreach ($contexts as $title => $values) {
@@ -33,7 +33,7 @@ function convertArrayWithContextsToSpecs(array $contexts) {
 					$data->$propertyName = $value;
 				}
 			};
-		} else if ($values instanceof $closure) {
+		} else if ($values instanceof $function) {
 			$contextModifierFunction = $values;
 		} else {
 			throw new Exception('The context row #' . $num . ' should be an array');

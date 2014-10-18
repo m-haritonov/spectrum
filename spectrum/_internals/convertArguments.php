@@ -13,7 +13,7 @@ namespace spectrum\_internals;
 function convertArguments(array $arguments, array $inputArgumentPattern, array $outputArgumentPattern) {
 	$arguments = array_values($arguments);
 	$argumentCount = count($arguments);
-	$closure = function(){};
+	$function = function(){};
 	foreach ($inputArgumentPattern as $pattern) {
 		if ($argumentCount == count($pattern)) {
 			$result = $outputArgumentPattern;
@@ -24,7 +24,7 @@ function convertArguments(array $arguments, array $inputArgumentPattern, array $
 				$isNull = (in_array('null', $types) && is_null($arguments[$num]));
 				$isScalar = (in_array('scalar', $types) && is_scalar($arguments[$num]));
 				$isArray = (in_array('array', $types) && is_array($arguments[$num]));
-				$isClosure = (in_array('closure', $types) && is_object($arguments[$num]) && $arguments[$num] instanceof $closure);
+				$isClosure = (in_array('closure', $types) && is_object($arguments[$num]) && $arguments[$num] instanceof $function);
 				
 				if ($isNull || $isScalar || $isArray || $isClosure) {
 					$result[$name] = $arguments[$num];
