@@ -162,13 +162,15 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 	 */
 	static protected function getFailType($details) {
 		if (is_object($details) && $details instanceof MatcherCallInterface) {
-			return 'matcher call fail';
+			return 'matcher call';
 		} else if (is_object($details) && $details instanceof PhpErrorInterface) {
 			return 'php error';
 		} else if (is_object($details) && $details instanceof UserFailInterface) {
-			return 'user fail';
+			return 'user';
+		} else if (is_object($details) && $details instanceof \Exception) {
+			return 'exception';
 		} else {
-			return 'unknown fail';
+			return 'unknown';
 		}
 	}
 

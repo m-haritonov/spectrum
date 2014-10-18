@@ -3,7 +3,6 @@ TODO: определить минимальную версию PHP. Пока э�
 TODO: http://mkharitonov.net/projects/spectrum/ 
 TODO: добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
-TODO: getFailType - add "exception" type. Remove "fail" postfix
 TODO: fix reports in all browsers 
 
 TODO: test('', array(
