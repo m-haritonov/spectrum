@@ -23,7 +23,7 @@ interface MatcherCallInterface {
 	public function setNot($not);
 	
 	/**
-	 * @return bool|null
+	 * @return null|bool
 	 */
 	public function getNot();
 	
@@ -33,7 +33,7 @@ interface MatcherCallInterface {
 	public function setResult($result);
 	
 	/**
-	 * @return bool|null
+	 * @return null|bool
 	 */
 	public function getResult();
 	
@@ -67,7 +67,7 @@ interface MatcherCallInterface {
 	public function setMatcherException(\Exception $exception = null);
 	
 	/**
-	 * @return \Exception|null
+	 * @return null|\Exception
 	 */
 	public function getMatcherException();
 	
@@ -87,7 +87,7 @@ interface MatcherCallInterface {
 	public function setLine($number);
 	
 	/**
-	 * @return int|null
+	 * @return null|int
 	 */
 	public function getLine();
 }

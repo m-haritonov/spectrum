@@ -68,7 +68,7 @@ class MatcherCall implements MatcherCallInterface {
 	public function setNot($not) { $this->not = $not; }
 
 	/**
-	 * @return bool|null
+	 * @return null|bool
 	 */
 	public function getNot() { return $this->not; }
 
@@ -78,7 +78,7 @@ class MatcherCall implements MatcherCallInterface {
 	public function setResult($result) { $this->result = $result; }
 
 	/**
-	 * @return bool|null
+	 * @return null|bool
 	 */
 	public function getResult() { return $this->result; }
 
@@ -112,7 +112,7 @@ class MatcherCall implements MatcherCallInterface {
 	public function setMatcherException(\Exception $exception = null) { $this->matcherException = $exception; }
 
 	/**
-	 * @return \Exception|null
+	 * @return null|\Exception
 	 */
 	public function getMatcherException() { return $this->matcherException; }
 
@@ -132,7 +132,7 @@ class MatcherCall implements MatcherCallInterface {
 	public function setLine($number) { $this->line = $number; }
 
 	/**
-	 * @return int|null
+	 * @return null|int
 	 */
 	public function getLine() { return $this->line; }
 }

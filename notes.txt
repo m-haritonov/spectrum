@@ -5,8 +5,6 @@ TODO: добавить в конце нижнего блока totalResult (<a h
 
 TODO: fix reports in all browsers 
 
-TODO: correct doc "|null"
-
 TODO: test('', array(
 	array('name', 'name', 'name),
 	array('value', 'value', 'value'),

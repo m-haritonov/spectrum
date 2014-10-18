@@ -43,7 +43,7 @@ abstract class Plugin implements PluginInterface {
 	 * @param mixed $defaultReturnValue
 	 * @param mixed $ignoredReturnValue
 	 * @param bool $useStrictComparison
-	 * @return mixed|null
+	 * @return null|mixed
 	 */
 	protected function callMethodThroughRunningAncestorSpecs($methodName, array $arguments = array(), $defaultReturnValue = null, $ignoredReturnValue = null, $useStrictComparison = true) {
 		$ancestorSpecs = array_merge(array($this->getOwnerSpec()), $this->getOwnerSpec()->getRunningAncestorSpecs());
