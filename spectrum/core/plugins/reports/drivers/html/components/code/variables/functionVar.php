@@ -27,8 +27,69 @@ class functionVar extends \spectrum\core\plugins\reports\drivers\html\components
 	static public function getContent($variable, $inputCharset = null) {
 		return
 			'<span class="app-code-variables-function">' .
-				'<span class="type">' . static::translateAndEscapeHtml('function') . '</span> ' .
-				'<span class="value">\\' . static::escapeHtml(static::convertToOutputCharset(get_class($variable), $inputCharset)) . '</span>' .
+				'<span class="type">function(' . static::getContentForParameters($variable, $inputCharset) . '){}</span>' .
 			'</span>';
+	}
+	
+	static protected function getContentForParameters($variable, $inputCharset) {
+		$content = '';
+		$reflection = new \ReflectionFunction($variable);
+		$parameters = $reflection->getParameters();
+		$parametersCount = count($parameters);
+		
+		$i = 0;
+		foreach ($parameters as $parameter) {
+			$i++;
+			
+			$reflectionClass = $parameter->getClass();
+			if ($reflectionClass) {
+				$content .= '\\' . static::escapeHtml(static::convertToOutputCharset($reflectionClass->getName(), $inputCharset)) . ' ';
+			}
+			
+			if ($parameter->isArray()) {
+				$content .= 'array ';
+			} else if (method_exists($parameter, 'isCallable') && $parameter->isCallable()) {
+				$content .= 'callable ';
+			}
+			
+			if ($parameter->isPassedByReference()) {
+				$content .= '&amp;';
+			}
+			
+			$content .= '$' . static::escapeHtml(static::convertToOutputCharset($parameter->getName(), $inputCharset));
+			
+			if ($parameter->isDefaultValueAvailable()) {
+				$content .= ' = ' . static::getContentForDefaultValue($parameter->getDefaultValue(), $inputCharset);
+			}
+			
+			if ($i < $parametersCount) {
+				$content .= ', ';
+			}
+		}
+		
+		return $content;
+	}
+	
+	static protected function getContentForDefaultValue($defaultValue, $inputCharset) {
+		$content = '';
+		$type = gettype($defaultValue);
+		
+		if ($defaultValue === null) {
+			$content .= 'null';
+		} elseif ($defaultValue === true) {
+			$content .= 'true';
+		} else if ($defaultValue === false) {
+			$content .= 'false';
+		} else if ($type === 'integer' || $type === 'double') {
+			$content .= static::escapeHtml($defaultValue);
+		} else if ($type === 'string') {
+			$content .= '"' . static::escapeHtml(static::convertToOutputCharset(strtr($defaultValue, array('\\' => '\\\\', '"' => '\"')), $inputCharset)) . '"';
+		} else if ($type === 'array') {
+			$content .= 'array';
+		} else {
+			$content .= 'unknown';
+		}
+		
+		return $content;
 	}
 }
