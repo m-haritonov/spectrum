@@ -118,6 +118,7 @@ final class config {
 		'\spectrum\_internals\convertCharset' => '\spectrum\_internals\convertCharset',
 		'\spectrum\_internals\convertLatinCharsToLowerCase' => '\spectrum\_internals\convertLatinCharsToLowerCase',
 		'\spectrum\_internals\formatTextForOutput' => '\spectrum\_internals\formatTextForOutput',
+		'\spectrum\_internals\getArrayWithContextsElementTitle' => '\spectrum\_internals\getArrayWithContextsElementTitle',
 		'\spectrum\_internals\getCurrentBuildingSpec' => '\spectrum\_internals\getCurrentBuildingSpec',
 		'\spectrum\_internals\getCurrentData' => '\spectrum\_internals\getCurrentData',
 		'\spectrum\_internals\getCurrentRunningEndingSpec' => '\spectrum\_internals\getCurrentRunningEndingSpec',

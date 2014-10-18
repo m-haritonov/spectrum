@@ -26,6 +26,7 @@ require_once __DIR__ . '/_internals/convertArrayWithContextsToSpecs.php';
 require_once __DIR__ . '/_internals/convertCharset.php';
 require_once __DIR__ . '/_internals/convertLatinCharsToLowerCase.php';
 require_once __DIR__ . '/_internals/formatTextForOutput.php';
+require_once __DIR__ . '/_internals/getArrayWithContextsElementTitle.php';
 require_once __DIR__ . '/_internals/getCurrentBuildingSpec.php';
 require_once __DIR__ . '/_internals/getCurrentData.php';
 require_once __DIR__ . '/_internals/getCurrentRunningEndingSpec.php';

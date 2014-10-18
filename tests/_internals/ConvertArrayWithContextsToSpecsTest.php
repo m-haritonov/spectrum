@@ -93,13 +93,15 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test {
 	
 	public function providerElementIsArray_FirstValueAsNames() {
 		return array(
-			array(array('aaa'), array('' => array('aaa'))),
-			array(array('aaa'), array(0 => array('aaa'))),
-			array(array('aaa'), array(0 => array('a' => 'aaa'))),
-			array(array('aaa'), array(1 => array('aaa'))),
-			array(array('aaa'), array(1 => array('aaa', 'bbb'))),
+			array(array('/"aaa", 123, 14.3, true, false, null, array, object, Resource id \#\d+, function/s'), array('' => array('aaa', 123, 14.3, true, false, null, array(), new \stdClass(), fopen('php://temp', 'r'), function(){})), true),
+			
+			array(array('"aaa"'), array('' => array('aaa'))),
+			array(array('"aaa"'), array(0 => array('aaa'))),
+			array(array('"aaa"'), array(0 => array('a' => 'aaa'))),
+			array(array('"aaa"'), array(1 => array('aaa'))),
+			array(array('"aaa", "bbb"'), array(1 => array('aaa', 'bbb'))),
 			array(
-				array('aaa', 'ccc', 'eee'),
+				array('"aaa", "bbb"', '"ccc", "ddd"', '"eee"'),
 				array(
 					0 => array('a' => 'aaa', 'b' => 'bbb'),
 					1 => array('c' => 'ccc', 'd' => 'ddd'),
@@ -107,29 +109,35 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\Test {
 				)
 			),
 			
-			array(array('AA bb CC'), array(0 => array('a' => 'AA bb CC', 'b' => 'bbb'))),
+			array(array('"AA bb CC", "bbb"'), array(0 => array('a' => 'AA bb CC', 'b' => 'bbb'))),
 			
-			array(array(123), array('' => array(123))),
-			array(array(123), array(0 => array(123))),
-			array(array(123), array(1 => array(123))),
-			array(array(123), array(1 => array(123, 'aaa'))),
+			array(array('123'), array('' => array(123))),
+			array(array('123'), array(0 => array(123))),
+			array(array('123'), array(1 => array(123))),
+			array(array('123, "aaa"'), array(1 => array(123, 'aaa'))),
 			
-			array(array(str_repeat('a', 100)), array(null => array(str_repeat('a', 100)))),
-			array(array(str_repeat('a', 100) . '...'), array(null => array(str_repeat('a', 101)))),
-			array(array(str_repeat('a', 100) . '...'), array(null => array(str_repeat('a', 200)))),
+			array(array('"' . str_repeat('a', 98) . '"'), array(null => array(str_repeat('a', 98)))),
+			array(array('"' . str_repeat('a', 99) . '...'), array(null => array(str_repeat('a', 99)))),
+			array(array('"' . str_repeat('a', 99) . '...'), array(null => array(str_repeat('a', 200)))),
 		);
 	}
 	
 	/**
 	 * @dataProvider providerElementIsArray_FirstValueAsNames
 	 */
-	public function testCallsAtBuildingState_ElementIsArray_ElementKeyIsIntegerOrEmptyString_SetsFirstValueAsSpecName($expectedNames, $contexts) {
+	public function testCallsAtBuildingState_ElementIsArray_ElementKeyIsIntegerOrEmptyString_SetsConcatenationOfValuesAsSpecName($expectedNames, $contexts, $useRegexp = false) {
 		$names = array();
 		foreach (\spectrum\_internals\convertArrayWithContextsToSpecs($contexts) as $spec) {
 			$names[] = $spec->getName();
 		}
 		
-		$this->assertSame($expectedNames, $names);
+		if ($useRegexp) {
+			foreach ($expectedNames as $key => $expectedName) {
+				$this->assertSame(1, preg_match($expectedName, $names[$key]));
+			}
+		} else {
+			$this->assertSame($expectedNames, $names);
+		}
 	}
 	
 /**/

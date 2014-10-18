@@ -23,14 +23,8 @@ function convertArrayWithContextsToSpecs(array $contexts) {
 	foreach ($contexts as $title => $values) {
 		$num++;
 		if (is_array($values)) {
-			$firstValue = reset($values);
-			if ((!is_string($title) || $title === '') && count($values) >= 1 && is_scalar($firstValue)) {
-				if (mb_strlen($firstValue, config::getInputCharset()) > 100) {
-					$title = mb_substr($firstValue, 0, 100, config::getInputCharset()) . '...';
-				} else {
-					$title = $firstValue;
-				}
-			}
+			$getArrayWithContextsElementTitleFunction = config::getFunctionReplacement('\spectrum\_internals\getArrayWithContextsElementTitle');
+			$title = $getArrayWithContextsElementTitleFunction($title, $values);
 			
 			$contextModifierFunction = function() use($values){
 				$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentData');
