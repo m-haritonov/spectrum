@@ -52,7 +52,7 @@ class messages extends component {
 			$num++;
 			$content .= static::getHtmlEscapedOutputIndention() . '<li>';
 			$content .= '<span class="number">' . $num . '. </span>';
-			$content .= static::escapeHtml(static::convertToOutputCharset($message));
+			$content .= preg_replace("/\r?\n/s", '<br />', static::escapeHtml(static::convertToOutputCharset($message)));
 			$content .= '</li>' . static::getHtmlEscapedOutputNewline();
 		}
 
