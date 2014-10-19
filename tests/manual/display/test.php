@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../init.php';
-//\spectrum\config::setOutputFormat('text');
+if (!function_exists('\spectrum\run')) {
+	exit('This file is not allowed to direct call');
+}
 
 define('SOME_CONST', 'bbb');
 test('Matchers', function(){
