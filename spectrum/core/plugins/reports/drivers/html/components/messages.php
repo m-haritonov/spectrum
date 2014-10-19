@@ -33,9 +33,9 @@ class messages extends component {
 		}
 
 		$content = '';
-		$content .= '<div class="app-messages app-clearFix">' . static::getHtmlEscapedOutputNewline();
-		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Messages') . ':</h1>' . static::getHtmlEscapedOutputNewline();
-		$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForMessages($messages)) . static::getHtmlEscapedOutputNewline();
+		$content .= '<div class="app-messages app-clearFix">';
+		$content .= '<h1>' . static::translateAndEscapeHtml('Messages') . ':</h1>';
+		$content .= static::getContentForMessages($messages);
 		$content .= '</div>';
 		return $content;
 	}
@@ -45,15 +45,15 @@ class messages extends component {
 	 */
 	static protected function getContentForMessages(array $messages) {
 		$content = '';
-		$content .= '<ul>' . static::getHtmlEscapedOutputNewline();
+		$content .= '<ul>';
 		
 		$num = 0;
 		foreach ($messages as $message) {
 			$num++;
-			$content .= static::getHtmlEscapedOutputIndention() . '<li>';
+			$content .= '<li>';
 			$content .= '<span class="number">' . $num . '. </span>';
 			$content .= preg_replace("/\r?\n/s", '<br />', static::escapeHtml(static::convertToOutputCharset($message)));
-			$content .= '</li>' . static::getHtmlEscapedOutputNewline();
+			$content .= '</li>';
 		}
 
 		$content .= '</ul>';

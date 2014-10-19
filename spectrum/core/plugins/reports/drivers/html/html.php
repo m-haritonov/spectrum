@@ -23,7 +23,7 @@ class html {
 
 		$specListContent = static::callComponentMethod('specList', 'getContentBegin', array($spec));
 		if ($specListContent != '') {
-			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListContent) . static::getHtmlEscapedOutputNewline();
+			$content .= $specListContent . static::getHtmlEscapedOutputNewline();
 		}
 		
 		return $content;
@@ -36,7 +36,7 @@ class html {
 		$content = '';
 		$specListContent = static::callComponentMethod('specList', 'getContentEnd', array($spec));
 		if ($specListContent != '') {
-			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($specListContent) . static::getHtmlEscapedOutputNewline();
+			$content .= $specListContent . static::getHtmlEscapedOutputNewline();
 		}
 		
 		if (!$spec->getParentSpecs()) {

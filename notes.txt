@@ -4,8 +4,6 @@ TODO: http://mkharitonov.net/projects/spectrum/
 TODO: добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
 TODO: fix reports in all browsers 
-TODO: fix multiline string output in html output format
-TODO: fix multiline string output in text output format
 
 TODO: test('', array(
 	array('name', 'name', 'name),

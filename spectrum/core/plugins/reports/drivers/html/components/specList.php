@@ -143,7 +143,7 @@ class specList extends component {
 					static::$depth--;
 					$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</ol>' . static::getHtmlEscapedOutputNewline();
 				} else {
-					$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForRunDetails($spec), static::$depth * 2 + 3) . static::getHtmlEscapedOutputNewline();
+					$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . static::getContentForRunDetails($spec) . static::getHtmlEscapedOutputNewline();
 					$content .= static::getHtmlEscapedOutputIndention(static::$depth * 2 + 2) . '</div>' . static::getHtmlEscapedOutputNewline();
 				}
 
@@ -199,13 +199,13 @@ class specList extends component {
 		$content = '';
 		foreach ($componentResults as $result) {
 			if (trim($result) != '') {
-				$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline($result) . static::getHtmlEscapedOutputNewline();
+				$content .= $result;
 			}
 		}
 		
 		if ($content != '') {
 			return
-				'<div class="runDetails app-clearFix">' . static::getHtmlEscapedOutputNewline() .
+				'<div class="runDetails app-clearFix">' .
 					$content .
 				'</div>';
 		}

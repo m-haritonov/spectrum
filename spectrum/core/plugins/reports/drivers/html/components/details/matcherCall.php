@@ -30,10 +30,10 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 	 */
 	static public function getContent(MatcherCallInterface $details) {
 		return
-			'<div class="app-details-matcherCall">' . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForEvaluatedValues($details)) . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForMatcherException($details)) . static::getHtmlEscapedOutputNewline() .
-				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForSource($details)) . static::getHtmlEscapedOutputNewline() .
+			'<div class="app-details-matcherCall">' .
+				static::getContentForEvaluatedValues($details) .
+				static::getContentForMatcherException($details) .
+				static::getContentForSource($details) .
 			'</div>';
 	}
 
@@ -42,9 +42,9 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 	 */
 	static protected function getContentForEvaluatedValues(MatcherCallInterface $details) {
 		$content = '';
-		$content .= '<div class="evaluatedValues">' . static::getHtmlEscapedOutputNewline();
-		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Evaluated values') . '</h1>' . static::getHtmlEscapedOutputNewline();
-		$content .= static::getHtmlEscapedOutputIndention() . '<p>';
+		$content .= '<div class="evaluatedValues">';
+		$content .= '<h1>' . static::translateAndEscapeHtml('Evaluated values') . '</h1>';
+		$content .= '<p>';
 		$content .= static::callComponentMethod('code\method', 'getContent', array('be', array($details->getTestedValue())));
 
 		if ($details->getNot()) {
@@ -54,7 +54,7 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 
 		$content .= static::callComponentMethod('code\operator', 'getContent', array('->', 'us-ascii'));
 		$content .= static::callComponentMethod('code\method', 'getContent', array($details->getMatcherName(), $details->getMatcherArguments()));
-		$content .= '</p>' . static::getHtmlEscapedOutputNewline();
+		$content .= '</p>';
 		$content .= '</div>';
 		return $content;
 	}
@@ -68,14 +68,14 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		}
 		
 		return
-			'<div class="matcherException">' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<h1 title="' . static::translateAndEscapeHtml('Exception thrown by "%matcherName%" matcher', array('%matcherName%' => static::convertToOutputCharset($details->getMatcherName()))) . '">' . 
+			'<div class="matcherException">' .
+				'<h1 title="' . static::translateAndEscapeHtml('Exception thrown by "%matcherName%" matcher', array('%matcherName%' => static::convertToOutputCharset($details->getMatcherName()))) . '">' . 
 					static::translateAndEscapeHtml('Matcher exception') . ':' . 
-				'</h1>' . static::getHtmlEscapedOutputNewline() .
+				'</h1>' .
 				
-				static::getHtmlEscapedOutputIndention() . '<p>' . 
+				'<p>' . 
 					static::callComponentMethod('code\variable', 'getContent', array($details->getMatcherException())) .
-				'</p>' . static::getHtmlEscapedOutputNewline() .
+				'</p>' .
 			'</div>';
 	}
 
@@ -89,9 +89,9 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 		$filenameEnd = mb_substr($filename, -$filenameEndLength, mb_strlen($filename, 'utf-8'), 'utf-8'); // Filenames are come in OS charset (conceivably in "utf-8")
 		
 		return
-			'<div class="source">' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Source') . '</h1>' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<p>' . 
+			'<div class="source">' .
+				'<h1>' . static::translateAndEscapeHtml('Source') . '</h1>' .
+				'<p>' . 
 					static::translateAndEscapeHtml('File') . ' ' .
 					'"<span class="file">' . 
 						($filenameBegin != '' ? '<span class="prefix"><span>' . static::escapeHtml(static::convertToOutputCharset($filenameBegin, 'utf-8')) . '</span></span>' : '') . 
@@ -99,7 +99,7 @@ class matcherCall extends \spectrum\core\plugins\reports\drivers\html\components
 					'</span>", ' .
 					static::translateAndEscapeHtml('line') . ' ' .
 					'<span class="line">' . static::escapeHtml($details->getLine()) . '</span>' .
-				'</p>' . static::getHtmlEscapedOutputNewline() .
+				'</p>' .
 			'</div>';
 	}
 }

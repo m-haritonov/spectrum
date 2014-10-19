@@ -104,9 +104,9 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 		}
 		
 		$content = '';
-		$content .= '<div class="app-resultBuffer app-clearFix">' . static::getHtmlEscapedOutputNewline();
-		$content .= static::getHtmlEscapedOutputIndention() . '<h1>' . static::translateAndEscapeHtml('Result buffer') . ':</h1>' . static::getHtmlEscapedOutputNewline();
-		$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForResults($results)) . static::getHtmlEscapedOutputNewline();
+		$content .= '<div class="app-resultBuffer app-clearFix">';
+		$content .= '<h1>' . static::translateAndEscapeHtml('Result buffer') . ':</h1>';
+		$content .= static::getContentForResults($results);
 		$content .= '</div>';
 		return $content;
 	}
@@ -116,24 +116,24 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 	 */
 	static protected function getContentForResults(array $results) {
 		$content = '';
-		$content .= '<div class="results">' . static::getHtmlEscapedOutputNewline();
+		$content .= '<div class="results">';
 		
 		$num = 0;
 		foreach ($results as $result) {
 			$num++;
-			$content .= static::getHtmlEscapedOutputIndention() . '<div class="result ' . static::getResultValueName($result['result']) . '">' . static::getHtmlEscapedOutputNewline();
-			$content .= static::getHtmlEscapedOutputIndention(2) . '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show/hide full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>' . static::getHtmlEscapedOutputNewline();
-			$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="num" title="' . static::translateAndEscapeHtml('Order in run results buffer') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>' . static::getHtmlEscapedOutputNewline();
-			$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="value" title="' . static::translateAndEscapeHtml('Result, contains in run results buffer') . '">' . static::escapeHtml(static::getResultValueName($result['result'])) . '</div>' . static::getHtmlEscapedOutputNewline();
+			$content .= '<div class="result ' . static::getResultValueName($result['result']) . '">';
+			$content .= '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show/hide full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>';
+			$content .= '<div class="num" title="' . static::translateAndEscapeHtml('Order in run results buffer') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>';
+			$content .= '<div class="value" title="' . static::translateAndEscapeHtml('Result, contains in run results buffer') . '">' . static::escapeHtml(static::getResultValueName($result['result'])) . '</div>';
 			
 			if ($result['result'] === false) {
-				$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="failType" title="' . static::translateAndEscapeHtml('Fail type') . '">' . static::translateAndEscapeHtml(static::getFailType($result['details'])) . '</div>' . static::getHtmlEscapedOutputNewline();
+				$content .= '<div class="failType" title="' . static::translateAndEscapeHtml('Fail type') . '">' . static::translateAndEscapeHtml(static::getFailType($result['details'])) . '</div>';
 			}
 			
-			$content .= static::getHtmlEscapedOutputIndention(2) . '<div class="details">' . static::getHtmlEscapedOutputNewline();
-			$content .= static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getContentForResultDetails($result['details']), 3) . static::getHtmlEscapedOutputNewline();
-			$content .= static::getHtmlEscapedOutputIndention(2) . '</div>' . static::getHtmlEscapedOutputNewline();
-			$content .= static::getHtmlEscapedOutputIndention() . '</div>' . static::getHtmlEscapedOutputNewline();
+			$content .= '<div class="details">';
+			$content .= static::getContentForResultDetails($result['details']);
+			$content .= '</div>';
+			$content .= '</div>';
 		}
 
 		$content .= '</div>';
