@@ -6,6 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components;
 
+use spectrum\config;
 use spectrum\core\SpecInterface;
 
 class totalInfo extends component {
@@ -16,7 +17,8 @@ class totalInfo extends component {
 		return static::formatTextForOutput('<style type="text/css">/*<![CDATA[*/
 			.app-totalInfo { margin: 1em 0; padding: 6px 10px; border-radius: 4px; background: #e5e5e5; }
 			.app-totalInfo>div { display: inline; }
-			.app-totalInfo h1 { display: inline; color: #333; font-size: 1em; }
+			.app-totalInfo>*>h1 { display: inline; color: #333; font-size: 1em; }
+			.app-totalInfo>.about { float: right; }
 		/*]]>*/</style>', 2);
 	}
 
@@ -38,6 +40,10 @@ class totalInfo extends component {
 				static::getHtmlEscapedOutputIndention() . '<div class="details">' . static::getHtmlEscapedOutputNewline() .
 					static::getHtmlEscapedOutputIndention(2) . static::translateAndEscapeHtml('Details') . ': ' . static::getHtmlEscapedOutputNewline() .
 					static::getHtmlEscapedOutputIndention(2) . static::callComponentMethod('detailsControl', 'getContent', array($spec)) . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '</div>' . static::getHtmlEscapedOutputNewline() .
+			
+				static::getHtmlEscapedOutputIndention() . '<div class="about">' . static::getHtmlEscapedOutputNewline() .
+					static::getHtmlEscapedOutputIndention(2) . '<a href="http://m-haritonov.net/projects/spectrum">' . static::translateAndEscapeHtml('Spectrum framework') . ' ' . static::escapeHtml(config::getVersion()) . '</a>' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '</div>' . static::getHtmlEscapedOutputNewline() .
 			'</div>';
 	}

@@ -447,6 +447,10 @@ final class config {
 		
 		return false;
 	}
+	
+	static public function getVersion() {
+		return '1.0 alpha';
+	}
 
 	static public function lock() {
 		static::$locked = true;

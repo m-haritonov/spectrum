@@ -44,7 +44,7 @@ class text {
 	 * @return string
 	 */
 	static protected function getHeader() {
-		$title = static::translate('Spectrum framework report');
+		$title = static::translate('Spectrum framework') . ' ' . config::getVersion() . ' (http://m-haritonov.net/projects/spectrum)';
 		return
 			str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline() .
 			$title . static::getOutputNewline() .

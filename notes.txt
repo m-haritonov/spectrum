@@ -1,10 +1,10 @@
 TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
+TODO: fix reports in all browsers
 
-TODO: http://mkharitonov.net/projects/spectrum/ 
-TODO: добавить в конце нижнего блока totalResult (<a href="http://mkharitonov.net/projects/spectrum/">Spectrum Framework 1.0</a>)
+
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
-TODO: fix reports in all browsers 
-
+TODO: обрезать параметры функции при выводе в reports
+ 
 TODO: test('', array(
 	array('name', 'name', 'name),
 	array('value', 'value', 'value'),

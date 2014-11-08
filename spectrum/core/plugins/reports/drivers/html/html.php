@@ -57,7 +57,7 @@ class html {
 			static::getHtmlOpenTag() . static::getHtmlEscapedOutputNewline() .
 			'<head>' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<meta http-equiv="content-type" content="text/html; charset=' . static::escapeHtml(config::getOutputCharset()) . '" />' . static::getHtmlEscapedOutputNewline() .
-				static::getHtmlEscapedOutputIndention() . '<title>' . static::translateAndEscapeHtml('Spectrum framework report') . '</title>' . static::getHtmlEscapedOutputNewline() .
+				static::getHtmlEscapedOutputIndention() . '<title>' . static::translateAndEscapeHtml('Spectrum framework') . ' ' . static::escapeHtml(config::getVersion()) . '</title>' . static::getHtmlEscapedOutputNewline() .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getCommonStyles()) . static::getHtmlEscapedOutputNewline(2) .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::collectAllComponentStyles()) . static::getHtmlEscapedOutputNewline(2) .
 				static::prependHtmlEscapedOutputIndentionToEachHtmlEscapedOutputNewline(static::getCommonScripts()) . static::getHtmlEscapedOutputNewline(2) .
