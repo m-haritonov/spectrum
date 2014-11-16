@@ -15,6 +15,7 @@ require_once __DIR__ . '/builders/before.php';
 require_once __DIR__ . '/builders/fail.php';
 require_once __DIR__ . '/builders/group.php';
 require_once __DIR__ . '/builders/message.php';
+require_once __DIR__ . '/builders/self.php';
 require_once __DIR__ . '/builders/test.php';
 require_once __DIR__ . '/builders/data.php';
 
@@ -128,6 +129,16 @@ if (!function_exists('message')) {
 	 */
 	function message($message) {
 		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\message'), func_get_args());
+	}
+}
+
+if (!function_exists('self')) {
+	/**
+	 * Returns current group or test spec.
+	 * @return \spectrum\core\SpecInterface
+	 */
+	function self() {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\self'), func_get_args());
 	}
 }
 

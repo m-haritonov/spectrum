@@ -138,6 +138,7 @@ final class config {
 		'\spectrum\builders\fail' => '\spectrum\builders\fail',
 		'\spectrum\builders\group' => '\spectrum\builders\group',
 		'\spectrum\builders\message' => '\spectrum\builders\message',
+		'\spectrum\builders\self' => '\spectrum\builders\self',
 		'\spectrum\builders\test' => '\spectrum\builders\test',
 		'\spectrum\builders\data' => '\spectrum\builders\data',
 	);
