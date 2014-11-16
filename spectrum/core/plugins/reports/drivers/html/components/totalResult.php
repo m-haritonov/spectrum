@@ -80,8 +80,10 @@ class totalResult extends component {
 			return 'fail';
 		} else if ($result === true) {
 			return 'success';
-		} else {
+		} else if ($result === null) {
 			return 'empty';
+		} else {
+			return 'unknown';
 		}
 	}
 }

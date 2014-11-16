@@ -75,7 +75,16 @@ test('Messages', function(){
 	message("aaa\nbbb");
 });
 
-test('Errors', function(){
+/** @var \spectrum\core\SpecInterface $test */
+$test = null;
+$test = test('Result buffer elements', function() use(&$test){
+	$test->getResultBuffer()->addResult(null, 'Some text');
+	$test->getResultBuffer()->addResult(null, new \spectrum\core\details\UserFail('Some text'));
+	
+	$test->getResultBuffer()->addResult(true, 'Some text');
+	be(1)->ident(1);
+	
+	$test->getResultBuffer()->addResult(false, 'Some text');
 	be('')->ident('a');
 	$aaa['a'];
 	trigger_error('some text', E_USER_NOTICE);

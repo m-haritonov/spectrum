@@ -1,6 +1,6 @@
 TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
 TODO: fix reports in all browsers
-
+TODO: config::setOutputResultBufferElements('all fail success empty')
 
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
 TODO: обрезать параметры функции при выводе в reports

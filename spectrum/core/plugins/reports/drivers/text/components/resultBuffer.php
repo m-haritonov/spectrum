@@ -42,12 +42,8 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 		foreach ($results as $result) {
 			$num++;
 			$content .= static::translate('Order') . ': ' . $num . static::getOutputNewline();
-			$content .= static::translate('Result, contains in run results buffer') . ': ' . static::getResultValueName($result['result']) . static::getOutputNewline();
-			
-			if ($result['result'] === false) {
-				$content .= static::translate('Fail type') . ': ' . static::translate(static::getFailType($result['details'])) . static::getOutputNewline();
-			}
-			
+			$content .= static::translate('Result') . ': ' . static::getResultValueName($result['result']) . static::getOutputNewline();
+			$content .= static::translate('Type') . ': ' . static::translate(static::getType($result['details'])) . static::getOutputNewline();
 			$content .= static::getContentForResultDetails($result['details']);
 			if ($num < $resultsCount) {
 				$content .= static::getOutputNewline(2);
@@ -63,11 +59,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 	 */
 	static protected function getResultValueName($result) {
 		if ($result === false) {
-			return 'false';
+			return 'fail';
 		} else if ($result === true) {
-			return 'true';
+			return 'success';
 		} else if ($result === null) {
-			return 'null';
+			return 'empty';
 		} else {
 			return 'unknown';
 		}
@@ -77,13 +73,13 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 	 * @param mixed $details
 	 * @return string
 	 */
-	static protected function getFailType($details) {
+	static protected function getType($details) {
 		if (is_object($details) && $details instanceof MatcherCallInterface) {
 			return 'matcher call';
 		} else if (is_object($details) && $details instanceof PhpErrorInterface) {
 			return 'php error';
 		} else if (is_object($details) && $details instanceof UserFailInterface) {
-			return 'user';
+			return 'user fail';
 		} else if (is_object($details) && $details instanceof \Exception) {
 			return 'exception';
 		} else {
