@@ -17,8 +17,9 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 	 * @return null|string
 	 */
 	static public function getContent(SpecInterface $spec) {
-		$results = $spec->getResultBuffer()->getResults();
-		if (count($results) == 0) {
+		$contentForResults = static::getContentForResults($spec->getResultBuffer()->getResults());
+		
+		if (trim($contentForResults) == '') {
 			return null;
 		}
 		
@@ -27,7 +28,7 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 		$content .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
 		$content .= $title . static::getOutputNewline();
 		$content .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline(2);
-		$content .= static::getContentForResults($results);
+		$content .= $contentForResults;
 		return $content;
 	}
 
@@ -38,16 +39,24 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\text\component
 		$content = '';
 		
 		$num = 0;
-		$resultsCount = count($results);
+		$hasPreviousResult = false;
 		foreach ($results as $result) {
 			$num++;
+			
+			if (!(($result['result'] === false && config::hasOutputResultBufferElements('all fail')) || ($result['result'] === true && config::hasOutputResultBufferElements('all success')) || ($result['result'] === null && config::hasOutputResultBufferElements('all empty')) || ($result['result'] !== false && $result['result'] !== true && $result['result'] !== null && config::hasOutputResultBufferElements('all unknown')))) {
+				continue;
+			}
+			
+			if ($hasPreviousResult) {
+				$content .= static::getOutputNewline(2);
+			}
+			
 			$content .= static::translate('Order') . ': ' . $num . static::getOutputNewline();
 			$content .= static::translate('Result') . ': ' . static::getResultValueName($result['result']) . static::getOutputNewline();
 			$content .= static::translate('Type') . ': ' . static::translate(static::getType($result['details'])) . static::getOutputNewline();
 			$content .= static::getContentForResultDetails($result['details']);
-			if ($num < $resultsCount) {
-				$content .= static::getOutputNewline(2);
-			}
+			
+			$hasPreviousResult = true;
 		}
 
 		return $content;

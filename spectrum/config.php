@@ -33,6 +33,11 @@ final class config {
 	static private $outputNewline = "\n";
 	
 	/**
+	 * @var string Any of (separated by space if multiple): "all", "fail", "success", "empty", "unknown"
+	 */
+	static private $outputResultBufferElements = 'fail empty unknown';
+	
+	/**
 	 * @var bool
 	 */
 	static private $allowErrorHandlingModify = true;
@@ -199,7 +204,7 @@ final class config {
 	
 	/**
 	 * Set format for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\reports\*" classes)
-	 * @param $format "html"|"text"
+	 * @param string $format "html"|"text"
 	 */
 	static public function setOutputFormat($format) {
 		static::throwExceptionIfLocked();
@@ -214,7 +219,7 @@ final class config {
 	}
 
 	/**
-	 * @param $string String with "\t" or " " chars
+	 * @param string $string String with "\t" or " " chars
 	 */
 	static public function setOutputIndention($string) {
 		static::throwExceptionIfLocked();
@@ -234,7 +239,7 @@ final class config {
 	}
 
 	/**
-	 * @param $string String with "\r" or "\n" chars
+	 * @param string $string String with "\r" or "\n" chars
 	 */
 	static public function setOutputNewline($string) {
 		static::throwExceptionIfLocked();
@@ -251,6 +256,43 @@ final class config {
 	 */
 	static public function getOutputNewline() {
 		return static::$outputNewline;
+	}
+	
+	/**
+	 * @param string $value Any of (separated by space if multiple): "all", "fail", "success", "empty", "unknown"
+	 */
+	static public function setOutputResultBufferElements($value) {
+		static::throwExceptionIfLocked();
+		
+		if (!preg_match("/^((all|fail|success|empty|unknown)( |$))+$/s", $value)) {
+			throw new Exception('Incorrect value is passed to "\\' . __METHOD__ . '" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)');
+		}
+		
+		static::$outputResultBufferElements = $value;
+	}
+	
+	/**
+	 * @return string Already set value or "fail empty unknown" by default
+	 */
+	static public function getOutputResultBufferElements() {
+		return static::$outputResultBufferElements;
+	}
+	
+	/**
+	 * @return bool True when set value contains any of values from $string, false otherwise
+	 */
+	static public function hasOutputResultBufferElements($string) {
+		if (!preg_match("/^((all|fail|success|empty|unknown)( |$))+$/s", $string)) {
+			throw new Exception('Incorrect value is passed to "\\' . __METHOD__ . '" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)');
+		}
+		
+		foreach (explode(' ', $string) as $value) {
+			if (preg_match('/(^| )' . preg_quote($value, '/') . '( |$)/s', static::$outputResultBufferElements)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/**

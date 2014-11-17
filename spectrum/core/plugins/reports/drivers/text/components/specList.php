@@ -81,10 +81,7 @@ class specList extends component {
 	 */
 	static protected function getContentForRunDetails(SpecInterface $spec) {
 		$componentResults = array();
-		if ($spec->getResultBuffer()->getTotalResult() !== true) {
-			$componentResults[] = static::callComponentMethod('resultBuffer', 'getContent', array($spec));
-		}
-
+		$componentResults[] = static::callComponentMethod('resultBuffer', 'getContent', array($spec));
 		$componentResults[] = static::callComponentMethod('messages', 'getContent', array($spec));
 
 		$content = '';

@@ -6,6 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\plugins\reports\drivers\html\components;
 
+use spectrum\config;
 use spectrum\core\details\MatcherCallInterface;
 use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;
@@ -98,15 +99,16 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 	 * @return null|string
 	 */
 	static public function getContent(SpecInterface $spec) {
-		$results = $spec->getResultBuffer()->getResults();
-		if (count($results) == 0) {
+		$contentForResults = static::getContentForResults($spec->getResultBuffer()->getResults());
+		
+		if (trim($contentForResults) == '') {
 			return null;
 		}
 		
 		$content = '';
 		$content .= '<div class="app-resultBuffer app-clearFix">';
 		$content .= '<h1>' . static::translateAndEscapeHtml('Result buffer') . ':</h1>';
-		$content .= static::getContentForResults($results);
+		$content .= $contentForResults;
 		$content .= '</div>';
 		return $content;
 	}
@@ -116,11 +118,15 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 	 */
 	static protected function getContentForResults(array $results) {
 		$content = '';
-		$content .= '<div class="results">';
 		
 		$num = 0;
 		foreach ($results as $result) {
 			$num++;
+			
+			if (!(($result['result'] === false && config::hasOutputResultBufferElements('all fail')) || ($result['result'] === true && config::hasOutputResultBufferElements('all success')) || ($result['result'] === null && config::hasOutputResultBufferElements('all empty')) || ($result['result'] !== false && $result['result'] !== true && $result['result'] !== null && config::hasOutputResultBufferElements('all unknown')))) {
+				continue;
+			}
+			
 			$content .= '<div class="result ' . static::getResultValueName($result['result']) . '">';
 			$content .= '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show/hide full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>';
 			$content .= '<div class="num" title="' . static::translateAndEscapeHtml('Order') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>';
@@ -132,8 +138,11 @@ class resultBuffer extends \spectrum\core\plugins\reports\drivers\html\component
 			$content .= '</div>';
 		}
 
-		$content .= '</div>';
-		return $content;
+		if ($content != '') {
+			return '<div class="results">' . $content . '</div>';
+		} else {
+			return null;
+		}
 	}
 
 	/**

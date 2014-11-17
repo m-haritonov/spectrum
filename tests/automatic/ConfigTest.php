@@ -203,6 +203,86 @@ class ConfigTest extends Test {
 	}
 	
 /**/
+	
+	public function testSetOutputResultBufferElements_SetsNewValue() {
+		config::setOutputResultBufferElements('all fail success empty unknown');
+		$this->assertSame('all fail success empty unknown', config::getOutputResultBufferElements());
+		
+		config::setOutputResultBufferElements('empty unknown');
+		$this->assertSame('empty unknown', config::getOutputResultBufferElements());
+		
+		config::setOutputResultBufferElements('all');
+		$this->assertSame('all', config::getOutputResultBufferElements());
+	}
+	
+	public function testSetOutputResultBufferElements_IncorrectValueIsPassed_ThrowsExceptionAndDoesNotChangeValue() {
+		config::setOutputResultBufferElements('all');
+
+		$this->assertThrowsException('\spectrum\Exception', 'Incorrect value is passed to "\spectrum\config::setOutputResultBufferElements" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)', function(){
+			config::setOutputResultBufferElements('z');
+		});
+
+		$this->assertSame('all', config::getOutputResultBufferElements());
+	}
+
+	public function testSetOutputResultBufferElements_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue() {
+		config::setOutputResultBufferElements('all');
+		config::lock();
+
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::setOutputResultBufferElements('fail');
+		});
+
+		$this->assertSame('all', config::getOutputResultBufferElements());
+	}
+
+/**/
+
+	public function testGetOutputResultBufferElements_ReturnsFailEmptyUnknownByDefault() {
+		$this->assertSame('fail empty unknown', config::getOutputResultBufferElements());
+	}
+	
+	public function testGetOutputResultBufferElements_ConfigIsLocked_DoesNotThrowException() {
+		config::lock();
+		config::getOutputResultBufferElements();
+	}
+	
+/**/
+
+	public function testHasOutputResultBufferElements_CheckedValueIsPresentInSetValue_ReturnsTrue() {
+		config::setOutputResultBufferElements('fail');
+		$this->assertSame(true, config::hasOutputResultBufferElements('fail'));
+		
+		config::setOutputResultBufferElements('all fail');
+		$this->assertSame(true, config::hasOutputResultBufferElements('fail'));
+		
+		config::setOutputResultBufferElements('fail all');
+		$this->assertSame(true, config::hasOutputResultBufferElements('fail'));
+		
+		config::setOutputResultBufferElements('all fail all');
+		$this->assertSame(true, config::hasOutputResultBufferElements('fail'));
+		
+		config::setOutputResultBufferElements('empty');
+		$this->assertSame(true, config::hasOutputResultBufferElements('empty'));
+	}
+	
+	public function testHasOutputResultBufferElements_CheckedValueIsNotPresentInSetValue_ReturnsFalse() {
+		config::setOutputResultBufferElements('fail');
+		$this->assertSame(false, config::hasOutputResultBufferElements('empty'));
+	}
+	
+	public function testSetOutputResultBufferElements_IncorrectValueIsPassed_ThrowsException() {
+		$this->assertThrowsException('\spectrum\Exception', 'Incorrect value is passed to "\spectrum\config::hasOutputResultBufferElements" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)', function(){
+			config::hasOutputResultBufferElements('z');
+		});
+	}
+	
+	public function testHasOutputResultBufferElements_ConfigIsLocked_DoesNotThrowException() {
+		config::lock();
+		config::hasOutputResultBufferElements('all');
+	}
+	
+/**/
 
 	public function testSetAllowErrorHandlingModify_SetsNewValue() {
 		config::setAllowErrorHandlingModify(false);
