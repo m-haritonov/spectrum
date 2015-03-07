@@ -46,69 +46,74 @@ final class config {
 	 * @var array
 	 */
 	static private $classReplacements = array(
-		'\spectrum\core\Assertion' => '\spectrum\core\Assertion',
-		'\spectrum\core\Data' => '\spectrum\core\Data',
-		'\spectrum\core\ResultBuffer' => '\spectrum\core\ResultBuffer',
-		'\spectrum\core\Spec' => '\spectrum\core\Spec',
+		'\spectrum\_internals\reports\html\driver'                                 => '\spectrum\_internals\reports\html\driver',
+		'\spectrum\_internals\reports\html\components\detailsControl'              => '\spectrum\_internals\reports\html\components\detailsControl',
+		'\spectrum\_internals\reports\html\components\messages'                    => '\spectrum\_internals\reports\html\components\messages',
+		'\spectrum\_internals\reports\html\components\specList'                    => '\spectrum\_internals\reports\html\components\specList',
+		'\spectrum\_internals\reports\html\components\totalInfo'                   => '\spectrum\_internals\reports\html\components\totalInfo',
+		'\spectrum\_internals\reports\html\components\totalResult'                 => '\spectrum\_internals\reports\html\components\totalResult',
+		'\spectrum\_internals\reports\html\components\resultBuffer'                => '\spectrum\_internals\reports\html\components\resultBuffer',
+		'\spectrum\_internals\reports\html\components\details\matcherCall'         => '\spectrum\_internals\reports\html\components\details\matcherCall',
+		'\spectrum\_internals\reports\html\components\details\phpError'            => '\spectrum\_internals\reports\html\components\details\phpError',
+		'\spectrum\_internals\reports\html\components\details\unknown'             => '\spectrum\_internals\reports\html\components\details\unknown',
+		'\spectrum\_internals\reports\html\components\details\userFail'            => '\spectrum\_internals\reports\html\components\details\userFail',
+		'\spectrum\_internals\reports\html\components\code\keyword'                => '\spectrum\_internals\reports\html\components\code\keyword',
+		'\spectrum\_internals\reports\html\components\code\method'                 => '\spectrum\_internals\reports\html\components\code\method',
+		'\spectrum\_internals\reports\html\components\code\operator'               => '\spectrum\_internals\reports\html\components\code\operator',
+		'\spectrum\_internals\reports\html\components\code\property'               => '\spectrum\_internals\reports\html\components\code\property',
+		'\spectrum\_internals\reports\html\components\code\variable'               => '\spectrum\_internals\reports\html\components\code\variable',
+		'\spectrum\_internals\reports\html\components\code\variables\arrayVar'     => '\spectrum\_internals\reports\html\components\code\variables\arrayVar',
+		'\spectrum\_internals\reports\html\components\code\variables\boolVar'      => '\spectrum\_internals\reports\html\components\code\variables\boolVar',
+		'\spectrum\_internals\reports\html\components\code\variables\floatVar'     => '\spectrum\_internals\reports\html\components\code\variables\floatVar',
+		'\spectrum\_internals\reports\html\components\code\variables\functionVar'  => '\spectrum\_internals\reports\html\components\code\variables\functionVar',
+		'\spectrum\_internals\reports\html\components\code\variables\intVar'       => '\spectrum\_internals\reports\html\components\code\variables\intVar',
+		'\spectrum\_internals\reports\html\components\code\variables\nullVar'      => '\spectrum\_internals\reports\html\components\code\variables\nullVar',
+		'\spectrum\_internals\reports\html\components\code\variables\objectVar'    => '\spectrum\_internals\reports\html\components\code\variables\objectVar',
+		'\spectrum\_internals\reports\html\components\code\variables\recursionVar' => '\spectrum\_internals\reports\html\components\code\variables\recursionVar',
+		'\spectrum\_internals\reports\html\components\code\variables\resourceVar'  => '\spectrum\_internals\reports\html\components\code\variables\resourceVar',
+		'\spectrum\_internals\reports\html\components\code\variables\stringVar'    => '\spectrum\_internals\reports\html\components\code\variables\stringVar',
+		'\spectrum\_internals\reports\html\components\code\variables\unknownVar'   => '\spectrum\_internals\reports\html\components\code\variables\unknownVar',
+		
+		'\spectrum\_internals\reports\text\driver'                                 => '\spectrum\_internals\reports\text\driver',
+		'\spectrum\_internals\reports\text\components\messages'                    => '\spectrum\_internals\reports\text\components\messages',
+		'\spectrum\_internals\reports\text\components\specList'                    => '\spectrum\_internals\reports\text\components\specList',
+		'\spectrum\_internals\reports\text\components\totalInfo'                   => '\spectrum\_internals\reports\text\components\totalInfo',
+		'\spectrum\_internals\reports\text\components\totalResult'                 => '\spectrum\_internals\reports\text\components\totalResult',
+		'\spectrum\_internals\reports\text\components\resultBuffer'                => '\spectrum\_internals\reports\text\components\resultBuffer',
+		'\spectrum\_internals\reports\text\components\details\matcherCall'         => '\spectrum\_internals\reports\text\components\details\matcherCall',
+		'\spectrum\_internals\reports\text\components\details\phpError'            => '\spectrum\_internals\reports\text\components\details\phpError',
+		'\spectrum\_internals\reports\text\components\details\unknown'             => '\spectrum\_internals\reports\text\components\details\unknown',
+		'\spectrum\_internals\reports\text\components\details\userFail'            => '\spectrum\_internals\reports\text\components\details\userFail',
+		'\spectrum\_internals\reports\text\components\code\keyword'                => '\spectrum\_internals\reports\text\components\code\keyword',
+		'\spectrum\_internals\reports\text\components\code\method'                 => '\spectrum\_internals\reports\text\components\code\method',
+		'\spectrum\_internals\reports\text\components\code\operator'               => '\spectrum\_internals\reports\text\components\code\operator',
+		'\spectrum\_internals\reports\text\components\code\property'               => '\spectrum\_internals\reports\text\components\code\property',
+		'\spectrum\_internals\reports\text\components\code\variable'               => '\spectrum\_internals\reports\text\components\code\variable',
+		'\spectrum\_internals\reports\text\components\code\variables\arrayVar'     => '\spectrum\_internals\reports\text\components\code\variables\arrayVar',
+		'\spectrum\_internals\reports\text\components\code\variables\boolVar'      => '\spectrum\_internals\reports\text\components\code\variables\boolVar',
+		'\spectrum\_internals\reports\text\components\code\variables\floatVar'     => '\spectrum\_internals\reports\text\components\code\variables\floatVar',
+		'\spectrum\_internals\reports\text\components\code\variables\functionVar'  => '\spectrum\_internals\reports\text\components\code\variables\functionVar',
+		'\spectrum\_internals\reports\text\components\code\variables\intVar'       => '\spectrum\_internals\reports\text\components\code\variables\intVar',
+		'\spectrum\_internals\reports\text\components\code\variables\nullVar'      => '\spectrum\_internals\reports\text\components\code\variables\nullVar',
+		'\spectrum\_internals\reports\text\components\code\variables\objectVar'    => '\spectrum\_internals\reports\text\components\code\variables\objectVar',
+		'\spectrum\_internals\reports\text\components\code\variables\recursionVar' => '\spectrum\_internals\reports\text\components\code\variables\recursionVar',
+		'\spectrum\_internals\reports\text\components\code\variables\resourceVar'  => '\spectrum\_internals\reports\text\components\code\variables\resourceVar',
+		'\spectrum\_internals\reports\text\components\code\variables\stringVar'    => '\spectrum\_internals\reports\text\components\code\variables\stringVar',
+		'\spectrum\_internals\reports\text\components\code\variables\unknownVar'   => '\spectrum\_internals\reports\text\components\code\variables\unknownVar',
 		
 		'\spectrum\core\details\MatcherCall' => '\spectrum\core\details\MatcherCall',
 		'\spectrum\core\details\PhpError' => '\spectrum\core\details\PhpError',
 		'\spectrum\core\details\UserFail' => '\spectrum\core\details\UserFail',
 		
-		'\spectrum\core\plugins\reports\drivers\html\html'                                   => '\spectrum\core\plugins\reports\drivers\html\html',
-		'\spectrum\core\plugins\reports\drivers\html\components\detailsControl'              => '\spectrum\core\plugins\reports\drivers\html\components\detailsControl',
-		'\spectrum\core\plugins\reports\drivers\html\components\messages'                    => '\spectrum\core\plugins\reports\drivers\html\components\messages',
-		'\spectrum\core\plugins\reports\drivers\html\components\specList'                    => '\spectrum\core\plugins\reports\drivers\html\components\specList',
-		'\spectrum\core\plugins\reports\drivers\html\components\totalInfo'                   => '\spectrum\core\plugins\reports\drivers\html\components\totalInfo',
-		'\spectrum\core\plugins\reports\drivers\html\components\totalResult'                 => '\spectrum\core\plugins\reports\drivers\html\components\totalResult',
-		'\spectrum\core\plugins\reports\drivers\html\components\resultBuffer'                => '\spectrum\core\plugins\reports\drivers\html\components\resultBuffer',
-		'\spectrum\core\plugins\reports\drivers\html\components\details\matcherCall'         => '\spectrum\core\plugins\reports\drivers\html\components\details\matcherCall',
-		'\spectrum\core\plugins\reports\drivers\html\components\details\phpError'            => '\spectrum\core\plugins\reports\drivers\html\components\details\phpError',
-		'\spectrum\core\plugins\reports\drivers\html\components\details\unknown'             => '\spectrum\core\plugins\reports\drivers\html\components\details\unknown',
-		'\spectrum\core\plugins\reports\drivers\html\components\details\userFail'            => '\spectrum\core\plugins\reports\drivers\html\components\details\userFail',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\keyword'                => '\spectrum\core\plugins\reports\drivers\html\components\code\keyword',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\method'                 => '\spectrum\core\plugins\reports\drivers\html\components\code\method',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\operator'               => '\spectrum\core\plugins\reports\drivers\html\components\code\operator',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\property'               => '\spectrum\core\plugins\reports\drivers\html\components\code\property',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variable'               => '\spectrum\core\plugins\reports\drivers\html\components\code\variable',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\arrayVar'     => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\arrayVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\boolVar'      => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\boolVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\floatVar'     => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\floatVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\functionVar'  => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\functionVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\intVar'       => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\intVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\nullVar'      => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\nullVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\objectVar'    => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\objectVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\recursionVar' => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\recursionVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\resourceVar'  => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\resourceVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\stringVar'    => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\stringVar',
-		'\spectrum\core\plugins\reports\drivers\html\components\code\variables\unknownVar'   => '\spectrum\core\plugins\reports\drivers\html\components\code\variables\unknownVar',
-		
-		'\spectrum\core\plugins\reports\drivers\text\text'                                   => '\spectrum\core\plugins\reports\drivers\text\text',
-		'\spectrum\core\plugins\reports\drivers\text\components\messages'                    => '\spectrum\core\plugins\reports\drivers\text\components\messages',
-		'\spectrum\core\plugins\reports\drivers\text\components\specList'                    => '\spectrum\core\plugins\reports\drivers\text\components\specList',
-		'\spectrum\core\plugins\reports\drivers\text\components\totalInfo'                   => '\spectrum\core\plugins\reports\drivers\text\components\totalInfo',
-		'\spectrum\core\plugins\reports\drivers\text\components\totalResult'                 => '\spectrum\core\plugins\reports\drivers\text\components\totalResult',
-		'\spectrum\core\plugins\reports\drivers\text\components\resultBuffer'                => '\spectrum\core\plugins\reports\drivers\text\components\resultBuffer',
-		'\spectrum\core\plugins\reports\drivers\text\components\details\matcherCall'         => '\spectrum\core\plugins\reports\drivers\text\components\details\matcherCall',
-		'\spectrum\core\plugins\reports\drivers\text\components\details\phpError'            => '\spectrum\core\plugins\reports\drivers\text\components\details\phpError',
-		'\spectrum\core\plugins\reports\drivers\text\components\details\unknown'             => '\spectrum\core\plugins\reports\drivers\text\components\details\unknown',
-		'\spectrum\core\plugins\reports\drivers\text\components\details\userFail'            => '\spectrum\core\plugins\reports\drivers\text\components\details\userFail',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\keyword'                => '\spectrum\core\plugins\reports\drivers\text\components\code\keyword',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\method'                 => '\spectrum\core\plugins\reports\drivers\text\components\code\method',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\operator'               => '\spectrum\core\plugins\reports\drivers\text\components\code\operator',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\property'               => '\spectrum\core\plugins\reports\drivers\text\components\code\property',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variable'               => '\spectrum\core\plugins\reports\drivers\text\components\code\variable',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\arrayVar'     => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\arrayVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\boolVar'      => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\boolVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\floatVar'     => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\floatVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\functionVar'  => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\functionVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\intVar'       => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\intVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\nullVar'      => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\nullVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\objectVar'    => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\objectVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\recursionVar' => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\recursionVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\resourceVar'  => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\resourceVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\stringVar'    => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\stringVar',
-		'\spectrum\core\plugins\reports\drivers\text\components\code\variables\unknownVar'   => '\spectrum\core\plugins\reports\drivers\text\components\code\variables\unknownVar',
+		'\spectrum\core\Assertion' => '\spectrum\core\Assertion',
+		'\spectrum\core\ContextModifiers' => '\spectrum\core\ContextModifiers',
+		'\spectrum\core\Data' => '\spectrum\core\Data',
+		'\spectrum\core\ErrorHandling' => '\spectrum\core\ErrorHandling',
+		'\spectrum\core\Matchers' => '\spectrum\core\Matchers',
+		'\spectrum\core\Messages' => '\spectrum\core\Messages',
+		'\spectrum\core\ResultBuffer' => '\spectrum\core\ResultBuffer',
+		'\spectrum\core\Spec' => '\spectrum\core\Spec',
+		'\spectrum\core\Test' => '\spectrum\core\Test',
 	);
 
 	/**
@@ -117,25 +122,31 @@ final class config {
 	static private $functionReplacements = array(
 		'\spectrum\_internals\addTestSpec' => '\spectrum\_internals\addTestSpec',
 		'\spectrum\_internals\callFunctionOnCurrentBuildingSpec' => '\spectrum\_internals\callFunctionOnCurrentBuildingSpec',
+		'\spectrum\_internals\callMethodThroughRunningAncestorSpecs' => '\spectrum\_internals\callMethodThroughRunningAncestorSpecs',
 		'\spectrum\_internals\convertArguments' => '\spectrum\_internals\convertArguments',
 		'\spectrum\_internals\convertArgumentsForSpec' => '\spectrum\_internals\convertArgumentsForSpec',
 		'\spectrum\_internals\convertArrayWithContextsToSpecs' => '\spectrum\_internals\convertArrayWithContextsToSpecs',
 		'\spectrum\_internals\convertCharset' => '\spectrum\_internals\convertCharset',
 		'\spectrum\_internals\convertLatinCharsToLowerCase' => '\spectrum\_internals\convertLatinCharsToLowerCase',
+		'\spectrum\_internals\dispatchEvent' => '\spectrum\_internals\dispatchEvent',
 		'\spectrum\_internals\formatTextForOutput' => '\spectrum\_internals\formatTextForOutput',
 		'\spectrum\_internals\getArrayWithContextsElementTitle' => '\spectrum\_internals\getArrayWithContextsElementTitle',
 		'\spectrum\_internals\getCurrentBuildingSpec' => '\spectrum\_internals\getCurrentBuildingSpec',
 		'\spectrum\_internals\getCurrentData' => '\spectrum\_internals\getCurrentData',
 		'\spectrum\_internals\getCurrentRunningEndingSpec' => '\spectrum\_internals\getCurrentRunningEndingSpec',
+		'\spectrum\_internals\getLastErrorHandler' => '\spectrum\_internals\getLastErrorHandler',
+		'\spectrum\_internals\getReportClass' => '\spectrum\_internals\getReportClass',
 		'\spectrum\_internals\getRootSpec' => '\spectrum\_internals\getRootSpec',
 		'\spectrum\_internals\getTestSpecs' => '\spectrum\_internals\getTestSpecs',
+		'\spectrum\_internals\handleSpecModifyDeny' => '\spectrum\_internals\handleSpecModifyDeny',
 		'\spectrum\_internals\isRunningState' => '\spectrum\_internals\isRunningState',
 		'\spectrum\_internals\loadBaseMatchers' => '\spectrum\_internals\loadBaseMatchers',
 		'\spectrum\_internals\normalizeSettings' => '\spectrum\_internals\normalizeSettings',
+		'\spectrum\_internals\removeSubsequentErrorHandlers' => '\spectrum\_internals\removeSubsequentErrorHandlers',
 		'\spectrum\_internals\setCurrentBuildingSpec' => '\spectrum\_internals\setCurrentBuildingSpec',
 		'\spectrum\_internals\setSettingsToSpec' => '\spectrum\_internals\setSettingsToSpec',
 		'\spectrum\_internals\translate' => '\spectrum\_internals\translate',
-		
+		'\spectrum\_internals\usortWithOriginalSequencePreserving' => '\spectrum\_internals\usortWithOriginalSequencePreserving',
 		'\spectrum\builders\addMatcher' => '\spectrum\builders\addMatcher',
 		'\spectrum\builders\after' => '\spectrum\builders\after',
 		'\spectrum\builders\be' => '\spectrum\builders\be',
@@ -147,18 +158,11 @@ final class config {
 		'\spectrum\builders\test' => '\spectrum\builders\test',
 		'\spectrum\builders\data' => '\spectrum\builders\data',
 	);
-
+	
 	/**
 	 * @var array
 	 */
-	static private $registeredSpecPlugins = array(
-		'\spectrum\core\plugins\reports\Reports',
-		'\spectrum\core\plugins\ContextModifiers',
-		'\spectrum\core\plugins\ErrorHandling',
-		'\spectrum\core\plugins\Matchers',
-		'\spectrum\core\plugins\Messages',
-		'\spectrum\core\plugins\Test',
-	);
+	static private $eventListeners = array();
 
 	/**
 	 * @var bool
@@ -187,7 +191,7 @@ final class config {
 	}
 	
 	/**
-	 * Set charset for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\reports\*" classes)
+	 * Set charset for output text
 	 * @param string $charsetName
 	 */
 	static public function setOutputCharset($charsetName) {
@@ -203,7 +207,7 @@ final class config {
 	}
 	
 	/**
-	 * Set format for output text (now is used in "reports" plugin, see "\spectrum\core\plugins\reports\*" classes)
+	 * Set format for output text
 	 * @param string $format "html"|"text"
 	 */
 	static public function setOutputFormat($format) {
@@ -296,7 +300,7 @@ final class config {
 	}
 	
 	/**
-	 * Allow or deny change of "errorHandling" plugin settings modify (see "\spectrum\core\plugins\ErrorHandling" class)
+	 * Allow or deny error handling settings modify
 	 * @param bool $isEnable
 	 */
 	static public function setAllowErrorHandlingModify($isEnable) {
@@ -378,112 +382,83 @@ final class config {
 	}
 	
 /**/
-
-	/**
-	 * @param string $class
-	 */
-	static public function registerSpecPlugin($class) {
+	
+	static public function registerEventListener($event, $callback, $order = 100) {
 		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
 		}
 		
-		// Get origin class name (in origin case)
-		$reflectionClass = new \ReflectionClass($class);
-		$class = '\\' . $reflectionClass->getName();
+		static::$eventListeners[] = array('event' => $event, 'callback' => $callback, 'order' => $order);
 		
-		$reflection = new \ReflectionClass($class);
-		if (!$reflection->implementsInterface('\spectrum\core\plugins\PluginInterface')) {
-			throw new Exception('Plugin class "' . $class . '" does not implement PluginInterface');
-		}
-		
-		if (static::hasRegisteredSpecPlugin($class)) {
-			throw new Exception('Plugin with class "' . $class . '" is already registered');
-		}
-		
-		$accessName = $class::getAccessName();
-		if ($accessName != '' && static::getRegisteredSpecPluginClassByAccessName($accessName)) {
-			throw new Exception('Plugin with accessName "' . $accessName . '" is already registered (remove registered plugin before register new)');
-		}
-		
-		$activateMoment = $class::getActivateMoment();
-		if (!in_array($activateMoment, array('firstAccess', 'everyAccess'))) {
-			throw new Exception('Wrong activate moment "' . $activateMoment . '" in plugin with class "' . $class . '"');
-		}
-
-		$num = 0;
-		foreach ((array) $class::getEventListeners() as $eventListener) {
-			$num++;
-			
-			if ((string) $eventListener['event'] === '') {
-				throw new Exception('Event for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
+		$usortWithOriginalSequencePreservingFunction = config::getFunctionReplacement('\spectrum\_internals\usortWithOriginalSequencePreserving');
+		$usortWithOriginalSequencePreservingFunction(static::$eventListeners, function($a, $b) {
+			if ($a['order'] == $b['order']) {
+				return 0;
 			}
 			
-			if ((string) $eventListener['method'] === '') {
-				throw new Exception('Method for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
-			}
-			
-			if ((string) $eventListener['order'] === '') {
-				throw new Exception('Order for event listener #' . $num . ' does not set in plugin with class "' . $class . '"');
-			}
-		}
+			return ($a['order'] < $b['order'] ? -1 : 1);
+		});
 		
-		static::$registeredSpecPlugins[] = $class;
+		static::$eventListeners = array_values(static::$eventListeners);
 	}
 
-	/**
-	 * @param array|string $classes
-	 */
-	static public function unregisterSpecPlugins($classes = array()) {
+	static public function unregisterEventListener($event, $callback = null) {
+		if (static::$locked) {
+			throw new Exception('\spectrum\config is locked');
+		}
+		
+		if (is_string($callback)) {
+			// Function names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+			$callback = (string) static::convertLatinCharsToLowerCase($callback);
+		}
+
+		foreach (static::$eventListeners as $key => $registeredEvent) {
+			$registeredEventCallback = $registeredEvent['callback'];
+			if (is_string($registeredEventCallback)) {
+				// Function names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+				$registeredEventCallback = (string) static::convertLatinCharsToLowerCase($registeredEventCallback);
+			}
+			
+			if ($event === $registeredEvent['event'] && ($registeredEventCallback === $callback || $callback === null)) {
+				unset(static::$eventListeners[$key]);
+			}
+		}
+		
+		static::$eventListeners = array_values(static::$eventListeners);
+	}
+	
+	static public function unregisterEventListeners() {
 		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
 		}
 
-		$classes = (array) $classes;
-		if (!$classes) {
-			static::$registeredSpecPlugins = array();
-		} else {
-			foreach (static::$registeredSpecPlugins as $key => $registeredPluginClass) {
-				foreach ($classes as $class) {
-					// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
-					if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass)) {
-						unset(static::$registeredSpecPlugins[$key]);
-					}
-				}
-			}
-			
-			static::$registeredSpecPlugins = array_values(static::$registeredSpecPlugins);
-		}
+		static::$eventListeners = array();
 	}
 
 	/**
 	 * @return array
 	 */
-	static public function getRegisteredSpecPlugins() {
-		return static::$registeredSpecPlugins;
+	static public function getRegisteredEventListeners() {
+		return static::$eventListeners;
 	}
 
 	/**
-	 * @param string $pluginAccessName
-	 * @return null|string
-	 */
-	static public function getRegisteredSpecPluginClassByAccessName($pluginAccessName) {
-		foreach (static::getRegisteredSpecPlugins() as $pluginClass) {
-			if ((string) $pluginClass::getAccessName() === (string) $pluginAccessName) {
-				return $pluginClass;
-			}
-		}
-		
-		return null;
-	}
-
-	/**
-	 * @param string $class
 	 * @return bool
 	 */
-	static public function hasRegisteredSpecPlugin($class) {
-		foreach (static::$registeredSpecPlugins as $registeredPluginClass) {
-			// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
-			if ((string) static::convertLatinCharsToLowerCase($class) === (string) static::convertLatinCharsToLowerCase($registeredPluginClass)) {
+	static public function hasRegisteredEventListener($event, $callback = null) {
+		if (is_string($callback)) {
+			// Function names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+			$callback = (string) static::convertLatinCharsToLowerCase($callback);
+		}
+		
+		foreach (static::$eventListeners as $registeredEvent) {
+			$registeredEventCallback = $registeredEvent['callback'];
+			if (is_string($registeredEventCallback)) {
+				// Function names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
+				$registeredEventCallback = (string) static::convertLatinCharsToLowerCase($registeredEventCallback);
+			}
+			
+			if ($event === $registeredEvent['event'] && ($registeredEventCallback === $callback || $callback === null)) {
 				return true;
 			}
 		}
@@ -491,9 +466,13 @@ final class config {
 		return false;
 	}
 	
+/**/
+	
 	static public function getVersion() {
 		return '1.0 alpha';
 	}
+	
+/**/
 
 	static public function lock() {
 		static::$locked = true;

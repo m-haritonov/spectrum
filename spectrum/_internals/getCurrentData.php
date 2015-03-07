@@ -19,7 +19,7 @@ function getCurrentData() {
 	/** @var null|SpecInterface $spec */
 	$spec = $getCurrentRunningEndingSpecFunction();
 	if ($spec) {
-		return $spec->test->getData();
+		return $spec->getData();
 	} else {
 		return null;
 	}

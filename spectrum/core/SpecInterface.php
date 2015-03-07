@@ -5,23 +5,8 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\core;
-use spectrum\core\plugins\PluginInterface;
 
-/**
- * @property \spectrum\core\plugins\ContextModifiers contextModifiers
- * @property \spectrum\core\plugins\ErrorHandling errorHandling
- * @property \spectrum\core\plugins\reports\Reports reports
- * @property \spectrum\core\plugins\Matchers matchers
- * @property \spectrum\core\plugins\Messages messages
- * @property \spectrum\core\plugins\Test test
- */
 interface SpecInterface {
-	/**
-	 * @param string $pluginAccessName
-	 * @return PluginInterface
-	 */
-	public function __get($pluginAccessName);
-	
 	public function enable();
 	public function disable();
 
@@ -29,6 +14,8 @@ interface SpecInterface {
 	 * @return bool
 	 */
 	public function isEnabled();
+
+/**/
 
 	/**
 	 * @param string $name
@@ -39,17 +26,19 @@ interface SpecInterface {
 	 * @return string
 	 */
 	public function getName();
-	
+
 	/**
 	 * @return bool
 	 */
 	public function isAnonymous();
-	
+
+/**/
+
 	/**
 	 * @return SpecInterface[]
 	 */
 	public function getParentSpecs();
-
+	
 	/**
 	 * @return bool
 	 */
@@ -57,12 +46,14 @@ interface SpecInterface {
 	public function bindParentSpec(SpecInterface $spec);
 	public function unbindParentSpec(SpecInterface $spec);
 	public function unbindAllParentSpecs();
-
+	
+/**/
+	
 	/**
 	 * @return SpecInterface[]
 	 */
 	public function getChildSpecs();
-	
+
 	/**
 	 * @return bool
 	 */
@@ -70,6 +61,8 @@ interface SpecInterface {
 	public function bindChildSpec(SpecInterface $spec);
 	public function unbindChildSpec(SpecInterface $spec);
 	public function unbindAllChildSpecs();
+
+/**/
 	
 	/**
 	 * @return SpecInterface[]
@@ -85,8 +78,9 @@ interface SpecInterface {
 	 * @return null|SpecInterface
 	 */
 	public function getRunningParentSpec();
-	
+
 	/**
+	 * Return running ancestor specs from parent to root
 	 * @return SpecInterface[]
 	 */
 	public function getRunningAncestorSpecs();
@@ -106,21 +100,58 @@ interface SpecInterface {
 	 */
 	public function getSpecsByRunId($runId);
 
-	/**
-	 * @return null|ResultBuffer
-	 */
-	public function getResultBuffer();
+/**/
 
 	/**
-	 * @return string
+	 * @return ContextModifiersInterface
+	 */
+	public function getContextModifiers();
+	
+	/**
+	 * @return DataInterface
+	 */
+	public function getData();
+	
+	/**
+	 * @return ErrorHandlingInterface
+	 */
+	public function getErrorHandling();
+	
+	/**
+	 * @return MatchersInterface
+	 */
+	public function getMatchers();
+	
+	/**
+	 * @return MessagesInterface
+	 */
+	public function getMessages();
+	
+	/**
+	 * @return null|ResultBufferInterface
+	 */
+	public function getResultBuffer();
+	
+	/**
+	 * @return TestInterface
+	 */
+	public function getTest();
+
+/**/
+
+	/*
+	 * format: <ancestor spec index in parent>x<next ancestor spec index in parent>x<etc.>
+	 * example: "0x1x24"
+	 * 
+	 * @return string String in "US-ASCII" charset
 	 */
 	public function getRunId();
-	
+
 	/**
 	 * @return bool
 	 */
 	public function isRunning();
-	
+
 	/**
 	 * @return null|bool
 	 */

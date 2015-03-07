@@ -10,24 +10,21 @@ require_once __DIR__ . '/../../init.php';
 
 class GetCurrentRunningEndingSpecTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_RootSpecHasNoChildren_ReturnsRootSpec() {
-		\spectrum\tests\automatic\Test::$temp["returnValue"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["returnValue"] = \spectrum\_internals\getCurrentRunningEndingSpec();
-		', 'onEndingSpecExecute');
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
+			$returnValue = \spectrum\_internals\getCurrentRunningEndingSpec();
+		});
 		
 		$rootSpec = \spectrum\_internals\getRootSpec();
 		$rootSpec->run();
 		
-		$this->assertSame($rootSpec, \spectrum\tests\automatic\Test::$temp["returnValue"]);
+		$this->assertSame($rootSpec, $returnValue);
 	}
 	
 	public function testCallsAtRunningState_RootSpecHasChildren_ReturnsEndingRunningSpec() {
-		\spectrum\tests\automatic\Test::$temp["returnValues"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["returnValues"][] = \spectrum\_internals\getCurrentRunningEndingSpec();
-		', 'onEndingSpecExecute');
+		$returnValues = array();
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValues) {
+			$returnValues[] = \spectrum\_internals\getCurrentRunningEndingSpec();
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -41,7 +38,7 @@ class GetCurrentRunningEndingSpecTest extends \spectrum\tests\automatic\Test {
 		$rootSpec->bindChildSpec($specs[0]);
 		$rootSpec->run();
 		
-		$this->assertSame(array($specs[1], $specs[3], $specs[4]), \spectrum\tests\automatic\Test::$temp["returnValues"]);
+		$this->assertSame(array($specs[1], $specs[3], $specs[4]), $returnValues);
 	}
 
 	public function testCallsAtBuildingState_ReturnsNull() {

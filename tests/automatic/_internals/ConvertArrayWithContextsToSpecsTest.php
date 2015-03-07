@@ -21,27 +21,27 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		
 		$this->assertSame(6, count($specs));
 		
-		$contexts = $specs[0]->contextModifiers->getAll();
+		$contexts = $specs[0]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[1]->contextModifiers->getAll();
+		$contexts = $specs[1]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[2]->contextModifiers->getAll();
+		$contexts = $specs[2]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[3]->contextModifiers->getAll();
+		$contexts = $specs[3]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[4]->contextModifiers->getAll();
+		$contexts = $specs[4]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[5]->contextModifiers->getAll();
+		$contexts = $specs[5]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
@@ -49,8 +49,8 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		$dataObjects = array();
 		foreach ($specs as $spec) {
 			\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$dataObjects, $spec) {
-				$dataObjects[] = $spec->test->getData();
+			$spec->getTest()->setFunction(function() use(&$dataObjects, $spec) {
+				$dataObjects[] = $spec->getData();
 			});
 		}
 		
@@ -151,15 +151,15 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		
 		$this->assertSame(3, count($specs));
 		
-		$contexts = $specs[0]->contextModifiers->getAll();
+		$contexts = $specs[0]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[1]->contextModifiers->getAll();
+		$contexts = $specs[1]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[2]->contextModifiers->getAll();
+		$contexts = $specs[2]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
@@ -168,8 +168,8 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		$dataObjects = array();
 		foreach ($specs as $spec) {
 			\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$dataObjects, $spec) {
-				$dataObjects[] = $spec->test->getData();
+			$spec->getTest()->setFunction(function() use(&$dataObjects, $spec) {
+				$dataObjects[] = $spec->getData();
 			});
 		}
 		
@@ -227,27 +227,27 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		
 		$this->assertSame(6, count($specs));
 		
-		$contexts = $specs[0]->contextModifiers->getAll();
+		$contexts = $specs[0]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[1]->contextModifiers->getAll();
+		$contexts = $specs[1]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[2]->contextModifiers->getAll();
+		$contexts = $specs[2]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[3]->contextModifiers->getAll();
+		$contexts = $specs[3]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[4]->contextModifiers->getAll();
+		$contexts = $specs[4]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
-		$contexts = $specs[5]->contextModifiers->getAll();
+		$contexts = $specs[5]->getContextModifiers()->getAll();
 		$this->assertSame(1, count($contexts));
 		$this->assertSame('before', $contexts[0]['type']);
 		
@@ -256,8 +256,8 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		$dataObjects = array();
 		foreach ($specs as $spec) {
 			\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
-			$spec->test->setFunction(function() use(&$dataObjects, $spec) {
-				$dataObjects[] = $spec->test->getData();
+			$spec->getTest()->setFunction(function() use(&$dataObjects, $spec) {
+				$dataObjects[] = $spec->getData();
 			});
 		}
 		

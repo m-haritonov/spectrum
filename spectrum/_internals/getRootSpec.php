@@ -23,7 +23,7 @@ function getRootSpec() {
 		
 		$loadBaseMatchersFunction = config::getFunctionReplacement('\spectrum\_internals\loadBaseMatchers');
 		foreach ($loadBaseMatchersFunction() as $name => $function) {
-			$rootSpec->matchers->add($name, $function);
+			$rootSpec->getMatchers()->add($name, $function);
 		}
 	}
 	

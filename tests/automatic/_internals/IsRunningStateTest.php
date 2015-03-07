@@ -14,15 +14,13 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_ReturnsTrue() {
-		\spectrum\tests\automatic\Test::$temp["returnValue"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["returnValue"] = \spectrum\_internals\isRunningState();
-		', 'onEndingSpecExecute');
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
+			$returnValue = \spectrum\_internals\isRunningState();
+		});
 		
 		\spectrum\_internals\getRootSpec()->run();
 		
-		$this->assertSame(true, \spectrum\tests\automatic\Test::$temp["returnValue"]);
+		$this->assertSame(true, $returnValue);
 	}
 	
 	public function testCallsAtRunningState_CallsFromCustomSpecClass_ReturnsTrue() {
@@ -30,8 +28,6 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 		
 		$specClassName = $this->createClass('
 			class ... implements \spectrum\core\SpecInterface {
-				public function __get($pluginAccessName){}
-				
 				public function enable(){}
 				public function disable(){}
 				public function isEnabled(){}
@@ -60,7 +56,14 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 				public function getRunningDescendantEndingSpec(){}
 				public function getSpecsByRunId($id){}
 			
+				public function getContextModifiers(){}
+				public function getData(){}
+				public function getErrorHandling(){}
+				public function getMatchers(){}
+				public function getMessages(){}
 				public function getResultBuffer(){}
+				public function getTest(){}
+	
 				public function getRunId(){}
 				public function isRunning(){}
 				public function run() {

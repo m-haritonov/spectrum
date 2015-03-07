@@ -23,8 +23,8 @@ class GetCurrentDataTest extends \spectrum\tests\automatic\Test {
 		$dataObjects = array();
 		$returnValues = array();
 		foreach ($specs as $spec) {
-			$spec->test->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
-				$dataObjects[] = $spec->test->getData();
+			$spec->getTest()->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
+				$dataObjects[] = $spec->getData();
 				$returnValues[] = \spectrum\_internals\getCurrentData();
 			});
 		}

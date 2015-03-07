@@ -28,6 +28,6 @@ class GetRootSpecTest extends \spectrum\tests\automatic\Test {
 			'lt' => '\spectrum\matchers\lt',
 			'lte' => '\spectrum\matchers\lte',
 			'throwsException' => '\spectrum\matchers\throwsException',
-		), \spectrum\_internals\getRootSpec()->matchers->getAll());
+		), \spectrum\_internals\getRootSpec()->getMatchers()->getAll());
 	}
 }

@@ -24,13 +24,12 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'after'),
 			array('function' => $function2, 'type' => 'after'),
-		), $spec->contextModifiers->getAll());
+		), $spec->getContextModifiers()->getAll());
 	}
 
 	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction() {
-		config::unregisterSpecPlugins('\spectrum\core\plugins\ContextModifiers');
-		config::registerSpecPlugin($this->createClass('
-			class ... extends \spectrum\core\plugins\ContextModifiers {
+		config::setClassReplacement('\spectrum\core\ContextModifiers', $this->createClass('
+			class ... extends \spectrum\core\ContextModifiers {
 				public function add($function, $type = "before") {
 					return "some text";
 				}
@@ -41,19 +40,17 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_ThrowsException() {
-		\spectrum\tests\automatic\Test::$temp["exception"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
 				\spectrum\builders\after(function(){});
 			} catch (\Exception $e) {
-				\spectrum\tests\automatic\Test::$temp["exception"] = $e;
+				$exception = $e;
 			}
-		', 'onEndingSpecExecute');
+		});
 		
 		\spectrum\_internals\getRootSpec()->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\automatic\Test::$temp["exception"]);
-		$this->assertSame('Builder "after" should be call only at building state', \spectrum\tests\automatic\Test::$temp["exception"]->getMessage());
+		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertSame('Builder "after" should be call only at building state', $exception->getMessage());
 	}
 }

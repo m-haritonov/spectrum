@@ -35,7 +35,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null) {
 	}
 	
 	if ($body) {
-		$builderSpec->test->setFunction($body);
+		$builderSpec->getTest()->setFunction($body);
 	}
 	
 	$setSettingsToSpecFunction = config::getFunctionReplacement('\spectrum\_internals\setSettingsToSpec');

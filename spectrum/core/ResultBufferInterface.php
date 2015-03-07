@@ -7,7 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core;
 
 interface ResultBufferInterface {
-	public function __construct(\spectrum\core\SpecInterface $ownerSpec);
+	public function __construct(SpecInterface $ownerSpec);
 	
 	/**
 	 * @return SpecInterface
@@ -29,11 +29,4 @@ interface ResultBufferInterface {
 	 * @return null|bool
 	 */
 	public function getTotalResult();
-	
-	public function lock();
-	
-	/**
-	 * @return bool
-	 */
-	public function isLocked();
 }

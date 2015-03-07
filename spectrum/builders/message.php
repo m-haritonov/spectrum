@@ -20,5 +20,5 @@ function message($message) {
 	}
 	
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentRunningEndingSpec');
-	$getCurrentRunningEndingSpecFunction()->messages->add($message);
+	$getCurrentRunningEndingSpecFunction()->getMessages()->add($message);
 }

@@ -42,7 +42,7 @@ function convertArrayWithContextsToSpecs(array $contexts) {
 		/** @var SpecInterface $spec */
 		$spec = new $specClass();
 		$spec->setName($title);
-		$spec->contextModifiers->add($contextModifierFunction, 'before');
+		$spec->getContextModifiers()->add($contextModifierFunction, 'before');
 		$specs[] = $spec;
 	}
 	

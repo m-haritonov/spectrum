@@ -1,6 +1,45 @@
 TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
 TODO: fix reports in all browsers
-
+TODO: передавать в матчер $matcherArguments
+TODO: \spectrum\run -> \run
+TODO: \spectrum\run должен возвращать строку вместо bool/null?
+TODO: setOutputResultBufferElements -> setOutputMatcherResults??? но в буфере могут содержаться не только результаты вызова матчеров, например fail
+TODO: удалить unknown, в драйверах вместо задания unknown выбрасывать исключение
+TODO: function -> callback
+TODO: remove vs removeAll
+TODO: exceptionHandler.php и autoload.php в _internals
+TODO: register vs add
+TODO: \spectrum\builders\* -> \spectrum\*
+TODO: matchers -> _internals/matchers
+TODO: Test -> Callback/Execution/Execute/ExecutionCallback
+TODO: _internals -> _private
+TODO: config::enableReports(), setOutputFormat(false), setOutputEnable
+TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
+TODO: setOutputFormat(class)
+TODO: disableReports/disableOutput/outputEnable
+TODO: function -> callback
+TODO: accessName должен быть задан
+TODO: BreakException to _private
+TODO: addMatcher -> matcher
+TODO: matchers - вместо передачи details передавать значения по ссылке
+TODO: before, after, matcher should be return null
+TODO: setClassReplacement -> registerClassReplacement
+TODO: getTestSpecs и getCurrentBuildingSpec:
+	function set() {
+		/* @var This variable is used by ... function */
+		static $data;
+	}
+	
+	function get() {
+		static $data;
+		if (!$data) {
+			$data = ...reflection...;
+		}
+	}
+	
+TODO: doc: you can create own functions like describe/it
+TODO: doc: you can use be() in contexts and matchers
+TODO: doc: extension/package use init.php, put private files to _private directory
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
 TODO: обрезать параметры функции при выводе в reports
  
@@ -27,8 +66,8 @@ TODO: array context group:
 
 TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
 TODO: create be()->triggersError($errorType = null, $errorMessage = null)  ???
-TODO: create plugin OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
-TODO: create plugin BackupGlobalVariables ???
+TODO: create OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
+TODO: create BackupGlobalVariables ???
 TODO: matchers: be(function(){})->outputs/prints('aaa a aaaaa ');
 
 TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
@@ -116,7 +155,7 @@ TODO: add parameters to \spectrum\run function:
 	$showFileNameAsGroup
 	$fileNameAsGroupType = linear (all files as root groups), hierarchical (each file group as child of folder group) 
 
-TODO: add "run this test in this context" and "run this test in all contexts" links to "Reports" plugin
+TODO: add "run this test in this context" and "run this test in all contexts" links to "Reports"
 
 TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generateContexts; в "\spectrum\tools\*" или в "\spectrum\builders\*")
 TODO: create "\spectrum\tools\createTree" function and similar auxiliary functions and classes?

@@ -21,5 +21,5 @@ function after($function) {
 	}
 
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentBuildingSpec');
-	return $getCurrentBuildingSpecFunction()->contextModifiers->add($function, 'after');
+	return $getCurrentBuildingSpecFunction()->getContextModifiers()->add($function, 'after');
 }

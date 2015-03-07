@@ -79,17 +79,6 @@ class ResultBufferTest extends \spectrum\tests\automatic\Test {
 		
 		$this->assertSame(array(), $resultBuffer->getResults());
 	}
-	
-	public function testAddResult_ResultBufferIsLocked_ThrowsExceptionAndDoesNotAddResult() {
-		$resultBuffer = new ResultBuffer(new Spec());
-		$resultBuffer->lock();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'ResultBuffer is locked', function() use($resultBuffer){
-			$resultBuffer->addResult(true);
-		});
-		
-		$this->assertSame(array(), $resultBuffer->getResults());
-	}
 
 /**/
 
@@ -224,18 +213,5 @@ class ResultBufferTest extends \spectrum\tests\automatic\Test {
 		$resultBuffer = new ResultBuffer(new Spec());
 		$this->assertSame(array(), $resultBuffer->getResults());
 		$this->assertSame(null, $resultBuffer->getTotalResult());
-	}
-	
-/**/
-	
-	public function testIsLocked_ResultBufferIsNotLocked_ReturnsFalse() {
-		$resultBuffer = new ResultBuffer(new Spec());
-		$this->assertSame(false, $resultBuffer->isLocked());
-	}
-	
-	public function testIsLocked_ResultBufferIsLocked_ReturnsTrue() {
-		$resultBuffer = new ResultBuffer(new Spec());
-		$resultBuffer->lock();
-		$this->assertSame(true, $resultBuffer->isLocked());
 	}
 }

@@ -7,506 +7,47 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\tests\automatic\core;
 
 use spectrum\config;
+use spectrum\core\Assertion;
+use spectrum\core\ContextModifiers;
+use spectrum\core\Data;
+use spectrum\core\ErrorHandling;
+use spectrum\core\Matchers;
+use spectrum\core\Messages;
+use spectrum\core\ResultBuffer;
 use spectrum\core\Spec;
+use spectrum\core\SpecInterface;
+use spectrum\core\Test;
 
 require_once __DIR__ . '/../../init.php';
 
 class SpecTest extends \spectrum\tests\automatic\Test {
-	public function setUp() {
-		parent::setUp();
-		config::unregisterSpecPlugins();
+	public function testConstruct_EventDispatch_OnSpecConstruct_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onSpecConstruct');
 	}
 	
-	public function testPlugins_SupportsAccessToPluginsThroughMagicProperties() {
-		$pluginClassName1 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-			}
-		');
-		
-		$pluginClassName2 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName1);
-		config::registerSpecPlugin($pluginClassName2);
-		
-		$spec = new Spec();
-		$this->assertInstanceOf($pluginClassName1, $spec->aaa);
-		$this->assertInstanceOf($pluginClassName2, $spec->bbb);
+	public function testConstruct_EventDispatch_OnSpecConstruct_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onSpecConstruct');
 	}
 	
-	public function testPlugins_AccessToNotExistingPlugin_ThrowsException() {
-		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Undefined plugin with access name "asdfgscvsadf" in "spectrum\core\Spec" class', function() use($spec){
-			$spec->asdfgscvsadf;
-		});
+	public function testConstruct_EventDispatch_OnSpecConstruct_IsDispatchedOnSpecInstanceCreation() {
+		$createdSpecs = array();
+		config::registerEventListener('onSpecConstruct', function(SpecInterface $spec) use(&$createdSpecs) { $createdSpecs[] = $spec; });
+		$specs = array(new Spec(), new Spec(), new Spec());
+		$this->assertSame($specs, $createdSpecs);
 	}
 	
-	public function testPlugins_AccessToPluginWithEmptyAccessName_ThrowsException() {
-		$pluginClassName1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return ""; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName1);
-		config::registerSpecPlugin($pluginClassName2);
-		$spec = new Spec();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Access to plugins by empty access name is denied', function() use($spec){
-			$spec->{null};
+	public function testConstruct_EventDispatch_OnSpecConstruct_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onSpecConstruct', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
 		});
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Access to plugins by empty access name is denied', function() use($spec){
-			$spec->{''};
-		});
-	}
-	
-/**/
-	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesPluginOnAccessAndReturnsProperPluginInstance() {
-		\spectrum\tests\automatic\Test::$temp["activateCount"] = 0;
-		\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"] = null;
-		
-		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["activateCount"]++;
-					\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
 		');
 		
-		config::registerSpecPlugin($pluginClassName);
-		$spec = new Spec();
-		$this->assertSame(0, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$spec->aaa;
-		$this->assertSame(1, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame($spec->aaa, \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"]);
-	}
-	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_ActivatesAllPluginsWithRespectiveClasses() {
-		\spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = null;
-		\spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = null;
-		\spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = null;
-		
-		$pluginClassName1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$pluginClassName3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName1);
-		config::registerSpecPlugin($pluginClassName2);
-		config::registerSpecPlugin($pluginClassName3);
-		$spec = new Spec();
-		
-		$spec->aaa;
-		$this->assertSame($spec->aaa, \spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
-		
-		$spec->bbb;
-		$this->assertSame($spec->bbb, \spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"]);
-		
-		$spec->ccc;
-		$this->assertSame($spec->ccc, \spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"]);
-		
-		$this->assertInstanceOf($pluginClassName1, \spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
-		$this->assertInstanceOf($pluginClassName2, \spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"]);
-		$this->assertInstanceOf($pluginClassName3, \spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"]);
-		
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"], \spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"], \spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"], \spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
-	}
-	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_PassesRespectiveOwnerSpecToPluginInstance() {
-		\spectrum\tests\automatic\Test::$temp["passedOwnerSpec"] = null;
-		
-		config::registerSpecPlugin($this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["passedOwnerSpec"] = $ownerSpec;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		'));
-		
-		$spec1 = new Spec();
-		$spec2 = new Spec();
-		
-		$spec1->aaa;
-		$this->assertSame($spec1, \spectrum\tests\automatic\Test::$temp["passedOwnerSpec"]);
-		
-		$spec2->aaa;
-		$this->assertSame($spec2, \spectrum\tests\automatic\Test::$temp["passedOwnerSpec"]);
-	}
-	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotActivatePluginOnSpecInstanceCreation() {
-		\spectrum\tests\automatic\Test::$temp["activateCount"] = 0;
-		
-		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["activateCount"]++;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
-		new Spec();
-		$this->assertSame(0, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-	}
-	
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotReactivatePluginOnPluginAccess() {
-		\spectrum\tests\automatic\Test::$temp["activateCount"] = 0;
-		
-		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["activateCount"]++;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
-		$spec = new Spec();
-		$spec->aaa;
-		$spec->aaa;
-		$spec->aaa;
-		$this->assertSame(1, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-	}
-		
-	public function testPlugins_Activation_ActivateMomentIsFirstAccess_DoesNotReactivatePluginOnPluginEventDispatching() {
-		\spectrum\tests\automatic\Test::$temp["activateCount"] = 0;
-		\spectrum\tests\automatic\Test::$temp["eventDispatchCount"] = 0;
-		
-		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners() {
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["activateCount"]++;
-				}
-				
-				public function getOwnerSpec(){}
-				public function onSpecRunStart() {
-					\spectrum\tests\automatic\Test::$temp["eventDispatchCount"]++;
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
-		$spec = new Spec();
-		$spec->run();
-		$this->assertSame(1, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame(1, \spectrum\tests\automatic\Test::$temp["eventDispatchCount"]);
-	}
-	
-/**/
-	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesPluginOnEveryAccessAndReturnsProperPluginInstance() {
-		\spectrum\tests\automatic\Test::$temp["activateCount"] = 0;
-		\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"] = null;
-		
-		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["activateCount"]++;
-					\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$instances = array();
-		
-		config::registerSpecPlugin($pluginClassName);
-		$spec = new Spec();
-		$this->assertSame(0, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		
-		$instance = $spec->aaa;
-		$this->assertSame(1, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame($instance, \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"]);
-		$this->assertFalse(in_array(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"], $instances, true));
-		$instances[] = \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"];
-		
-		$instance = $spec->aaa;
-		$this->assertSame(2, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame($instance, \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"]);
-		$this->assertFalse(in_array(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"], $instances, true));
-		$instances[] = \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"];
-		
-		$instance = $spec->aaa;
-		$this->assertSame(3, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame($instance, \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"]);
-		$this->assertFalse(in_array(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"], $instances, true));
-		$instances[] = \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"];
-	}
-	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_PassesRespectiveOwnerSpecToPluginInstance() {
-		\spectrum\tests\automatic\Test::$temp["passedOwnerSpec"] = null;
-		
-		config::registerSpecPlugin($this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["passedOwnerSpec"] = $ownerSpec;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		'));
-		
-		$spec1 = new Spec();
-		$spec2 = new Spec();
-		
-		$spec1->aaa;
-		$this->assertSame($spec1, \spectrum\tests\automatic\Test::$temp["passedOwnerSpec"]);
-		
-		$spec2->aaa;
-		$this->assertSame($spec2, \spectrum\tests\automatic\Test::$temp["passedOwnerSpec"]);
-	}
-
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ActivatesAllPluginsWithRespectiveClasses() {
-		\spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = null;
-		\spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = null;
-		\spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = null;
-		
-		$pluginClassName1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$pluginClassName3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName1);
-		config::registerSpecPlugin($pluginClassName2);
-		config::registerSpecPlugin($pluginClassName3);
-		$spec = new Spec();
-		
-		$spec->aaa;
-		$this->assertSame($spec->aaa, \spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
-		
-		$spec->bbb;
-		$this->assertSame($spec->bbb, \spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"]);
-		
-		$spec->ccc;
-		$this->assertSame($spec->ccc, \spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"]);
-		
-		$this->assertInstanceOf($pluginClassName1, \spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
-		$this->assertInstanceOf($pluginClassName2, \spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"]);
-		$this->assertInstanceOf($pluginClassName3, \spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"]);
-		
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"], \spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["plugin2"]["pluginInstanceOnActivate"], \spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["plugin3"]["pluginInstanceOnActivate"], \spectrum\tests\automatic\Test::$temp["plugin1"]["pluginInstanceOnActivate"]);
-	}
-	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_ReactivatesPluginOnEveryEventDispatching() {
-		\spectrum\tests\automatic\Test::$temp["activateCount"] = 0;
-		\spectrum\tests\automatic\Test::$temp["eventDispatchCount"] = 0;
-		\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"] = null;
-		\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"] = null;
-
-		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners() {
-					return array(
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 100),
-					);
-				}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["activateCount"]++;
-					\spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"] = $this;
-				}
-				
-				public function getOwnerSpec(){}
-				public function onSpecRunStart() {
-					\spectrum\tests\automatic\Test::$temp["eventDispatchCount"]++;
-					\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"] = $this;
-				}
-			}
-		');
-		
-		$instances = array();
-		config::registerSpecPlugin($pluginClassName);
-		$this->assertSame(0, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$spec = new Spec();
-		
-		$spec->run();
-		$this->assertSame(1, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame(1, \spectrum\tests\automatic\Test::$temp["eventDispatchCount"]);
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"], \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"]);
-		$this->assertFalse(in_array(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"], $instances, true));
-		$instances[] = \spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"];
-		
-		$spec->run();
-		$this->assertSame(2, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame(2, \spectrum\tests\automatic\Test::$temp["eventDispatchCount"]);
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"], \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"]);
-		$this->assertFalse(in_array(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"], $instances, true));
-		$instances[] = \spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"];
-		
-		$spec->run();
-		$this->assertSame(3, \spectrum\tests\automatic\Test::$temp["activateCount"]);
-		$this->assertSame(3, \spectrum\tests\automatic\Test::$temp["eventDispatchCount"]);
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"], \spectrum\tests\automatic\Test::$temp["pluginInstanceOnActivate"]);
-		$this->assertFalse(in_array(\spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"], $instances, true));
-		$instances[] = \spectrum\tests\automatic\Test::$temp["pluginInstanceOnEventDispatch"];
-	}
-	
-	public function testPlugins_Activation_ActivateMomentIsEveryAccess_DoesNotActivatePluginOnSpecInstanceCreation() {
-		\spectrum\tests\automatic\Test::$temp["activateCount"] = 0;
-		
-		$pluginClassName = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["activateCount"]++;
-				}
-				
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
-		new Spec();
-		$this->assertSame(0, \spectrum\tests\automatic\Test::$temp["activateCount"]);
+		$this->assertSame(array(array($specs[0]), array($specs[1])), $passedArguments);
 	}
 	
 /**/
@@ -520,22 +61,22 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testEnable_CallOnRun_ThrowsExceptionAndDoesNotEnableSpec() {
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["specs"][1]->enable();
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"][1]->disable();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::enable" method is forbidden on run', function(){
-			\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		config::registerEventListener('onSpecRunStart', function() use($specs) {
+			$specs[1]->enable();
 		});
 		
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["specs"][1]->isEnabled());
+		$specs[1]->disable();
+		
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::enable" method is forbidden on run', function() use($specs) {
+			$specs[0]->run();
+		});
+		
+		$this->assertSame(false, $specs[1]->isEnabled());
 	}
 	
 /**/
@@ -549,9 +90,12 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testDisable_CallOnRun_ThrowsExceptionAndDoesNotDisableSpec() {
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->disable();');
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) {
+			$spec->disable();
+		});
+		
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::disable" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::disable" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -585,7 +129,9 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testSetName_CallOnRun_ThrowsExceptionAndDoesNotChangeName() {
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->setName("bbb");');
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) {
+			$spec->setName("bbb");
+		});
 		$spec = new Spec();
 		$spec->setName('aaa');
 		
@@ -720,7 +266,9 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testBindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec() {
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindParentSpec(new \spectrum\core\Spec());');
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) {
+			$spec->bindParentSpec(new \spectrum\core\Spec());
+		});
 		$spec = new Spec();
 		
 		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindParentSpec" method is forbidden on run', function() use($spec) {
@@ -800,16 +348,18 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testUnbindParentSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec() {
-		\spectrum\tests\automatic\Test::$temp["newSpec"] = new Spec();
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindParentSpec(\spectrum\tests\automatic\Test::$temp["newSpec"]);');
+		$newSpec = new Spec();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use($newSpec) {
+			$spec->unbindParentSpec($newSpec);
+		});
 		$spec = new Spec();
-		$spec->bindParentSpec(\spectrum\tests\automatic\Test::$temp["newSpec"]);
+		$spec->bindParentSpec($newSpec);
 		
 		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindParentSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
-		$this->assertSame(array(\spectrum\tests\automatic\Test::$temp["newSpec"]), $spec->getParentSpecs());
+		$this->assertSame(array($newSpec), $spec->getParentSpecs());
 	}
 	
 /**/
@@ -863,7 +413,10 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testUnbindAllParentSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs() {
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindAllParentSpecs();');
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) {
+			$spec->unbindAllParentSpecs();
+		});
+		
 		$newSpec = new Spec();
 		$spec = new Spec();
 		$spec->bindParentSpec($newSpec);
@@ -921,7 +474,10 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testBindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotBindSpec() {
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->bindChildSpec(new \spectrum\core\Spec());');
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) {
+			$spec->bindChildSpec(new \spectrum\core\Spec());
+		});
+		
 		$spec = new Spec();
 		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindChildSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
@@ -1000,16 +556,18 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 
 	public function testUnbindChildSpec_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpec() {
-		\spectrum\tests\automatic\Test::$temp["newSpec"] = new Spec();
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindChildSpec(\spectrum\tests\automatic\Test::$temp["newSpec"]);');
+		$newSpec = new Spec();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use($newSpec) {
+			$spec->unbindChildSpec($newSpec);
+		});
 		$spec = new Spec();
-		$spec->bindChildSpec(\spectrum\tests\automatic\Test::$temp["newSpec"]);
+		$spec->bindChildSpec($newSpec);
 		
 		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindChildSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
-		$this->assertSame(array(\spectrum\tests\automatic\Test::$temp["newSpec"]), $spec->getChildSpecs());
+		$this->assertSame(array($newSpec), $spec->getChildSpecs());
 	}
 	
 /**/
@@ -1063,7 +621,10 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 
 	public function testUnbindAllChildSpecs_CallOnRun_ThrowsExceptionAndDoesNotUnbindSpecs() {
-		$this->registerPluginWithCodeInEvent('$this->getOwnerSpec()->unbindAllChildSpecs();');
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) {
+			$spec->unbindAllChildSpecs();
+		});
+		
 		$newSpec = new Spec();
 		$spec = new Spec();
 		$spec->bindChildSpec($newSpec);
@@ -1180,28 +741,25 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testGetRunningParentSpec_ReturnsRunningParentSpec() {
-		\spectrum\tests\automatic\Test::$temp["specs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\automatic\Test::$temp["checkpoint"] === $this->getOwnerSpec()) {
-				\spectrum\tests\automatic\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningParentSpec();
-			}
-		');
-		
 		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec
 		');
 		
+		$runningParentSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$runningParentSpecs) {
+			if ($specs[2] === $spec) {
+				$runningParentSpecs[] = $spec->getRunningParentSpec();
+			}
+		});
+		
 		$rootSpec = new Spec();
 		$rootSpec->bindChildSpec($specs[0]);
 		$rootSpec->bindChildSpec($specs[1]);
-		
-		\spectrum\tests\automatic\Test::$temp["checkpoint"] = $specs[2];
 		$rootSpec->run();
 		
-		$this->assertSame(array($specs[0], $specs[1]), \spectrum\tests\automatic\Test::$temp["specs"]);
+		$this->assertSame(array($specs[0], $specs[1]), $runningParentSpecs);
 	}
 	
 	public function testGetRunningParentSpec_NoRunningParentSpec_ReturnsNull() {
@@ -1216,31 +774,28 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 
 	public function testGetRunningAncestorSpecs_ReturnsRunningAncestorSpecs() {
-		\spectrum\tests\automatic\Test::$temp["specs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\automatic\Test::$temp["checkpoint"] === $this->getOwnerSpec()) {
-				\spectrum\tests\automatic\Test::$temp["specs"][] = $this->getOwnerSpec()->getRunningAncestorSpecs();
-			}
-		');
-		
 		$specs = $this->createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec
 		');
 		
+		$runningAncestorSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$runningAncestorSpecs) {
+			if ($specs[2] === $spec) {
+				$runningAncestorSpecs[] = $spec->getRunningAncestorSpecs();
+			}
+		});
+		
 		$rootSpec = new Spec();
 		$rootSpec->bindChildSpec($specs[0]);
 		$rootSpec->bindChildSpec($specs[1]);
-		
-		\spectrum\tests\automatic\Test::$temp["checkpoint"] = $specs[2];
 		$rootSpec->run();
 		
 		$this->assertSame(array(
 			array($specs[0], $rootSpec),
 			array($specs[1], $rootSpec),
-		), \spectrum\tests\automatic\Test::$temp["specs"]);
+		), $runningAncestorSpecs);
 	}
 	
 	public function testGetRunningAncestorSpecs_NoRunningParentSpec_ReturnsEmptyArray() {
@@ -1255,22 +810,24 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testGetRunningDescendantEndingSpec_ReturnsRunningEndingSpec() {
-		\spectrum\tests\automatic\Test::$temp["runningEndingSpecs"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runningEndingSpecs"][] = \spectrum\tests\automatic\Test::$temp["specs"][0]->getRunningDescendantEndingSpec();');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		$runningEndingSpecs = array();
+		config::registerEventListener('onSpecRunStart', function() use(&$specs, &$runningEndingSpecs) {
+			$runningEndingSpecs[] = $specs[0]->getRunningDescendantEndingSpec();
+		});
+		
+		$specs[0]->run();
 		
 		$this->assertSame(array(
 			null,
 			null,
-			\spectrum\tests\automatic\Test::$temp["specs"][2],
-		), \spectrum\tests\automatic\Test::$temp["runningEndingSpecs"]);
+			$specs[2],
+		), $runningEndingSpecs);
 	}
 	
 	public function testGetRunningDescendantEndingSpec_NoRunningChildren_ReturnsNull() {
@@ -1279,51 +836,48 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetRunningDescendantEndingSpec_NoRunningChildrenAndSelfIsRunning_ReturnsNull() {
-		\spectrum\tests\automatic\Test::$temp["runningEndingSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\automatic\Test::$temp["checkpoint"] === $this->getOwnerSpec()) {
-				\spectrum\tests\automatic\Test::$temp["runningEndingSpecs"][] = $this->getOwnerSpec()->getRunningDescendantEndingSpec();
-			}
-		');
-		
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["checkpoint"] = $specs[0];
+		$runningEndingSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$runningEndingSpecs) {
+			if ($specs[0] === $spec) {
+				$runningEndingSpecs[] = $spec->getRunningDescendantEndingSpec();
+			}
+		});
+		
 		$specs[0]->run();
 		
-		$this->assertSame(array(null), \spectrum\tests\automatic\Test::$temp["runningEndingSpecs"]);
+		$this->assertSame(array(null), $runningEndingSpecs);
 	}	
 	
 /**/
 	
 	public function testGetRunningChildSpec_ReturnsRunningChildSpec() {
-		\spectrum\tests\automatic\Test::$temp["returnSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"]["checkpoint"]) {
-				\spectrum\tests\automatic\Test::$temp["returnSpecs"][] = \spectrum\tests\automatic\Test::$temp["specs"][0]->getRunningChildSpec();
-				\spectrum\tests\automatic\Test::$temp["returnSpecs"][] = \spectrum\tests\automatic\Test::$temp["specs"][1]->getRunningChildSpec();
-				\spectrum\tests\automatic\Test::$temp["returnSpecs"][] = \spectrum\tests\automatic\Test::$temp["specs"]["checkpoint"]->getRunningChildSpec();
-			}
-		', 'onEndingSpecExecute');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec(checkpoint)
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		$returnSpecs = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$specs, &$returnSpecs) {
+			if ($spec === $specs["checkpoint"]) {
+				$returnSpecs[] = $specs[0]->getRunningChildSpec();
+				$returnSpecs[] = $specs[1]->getRunningChildSpec();
+				$returnSpecs[] = $specs["checkpoint"]->getRunningChildSpec();
+			}
+		});
+		
+		$specs[0]->run();
 		
 		$this->assertSame(array(
-			\spectrum\tests\automatic\Test::$temp["specs"][1],
-			\spectrum\tests\automatic\Test::$temp["specs"]["checkpoint"],
+			$specs[1],
+			$specs["checkpoint"],
 			null,
-		), \spectrum\tests\automatic\Test::$temp["returnSpecs"]);
+		), $returnSpecs);
 	}	
 	
 	public function testGetRunningChildSpec_NoRunningChildren_ReturnsNull() {
@@ -1649,14 +1203,119 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$specs['0']->getSpecsByRunId('r_1_0');
 		});
 	}
-
+	
 /**/
 	
-	public function testGetResultBuffer_ReturnsNullByDefault() {
+	public function testGetContextModifiers_ReturnsSameContextModifiersForEachCall() {
 		$spec = new Spec();
-		$this->assertSame(null, $spec->getResultBuffer());
+		$contextModifiers = $spec->getContextModifiers();
+		$this->assertTrue($contextModifiers instanceof ContextModifiers);
+		$this->assertSame($contextModifiers, $spec->getContextModifiers());
 	}
 	
+	public function testGetContextModifiers_UsesConfigForContextModifiersClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\ContextModifiers {}');
+		config::setClassReplacement('\spectrum\core\ContextModifiers', $className);
+		$spec = new Spec();
+		$this->assertInstanceOf($className, $spec->getContextModifiers());
+	}
+	
+/**/
+	
+	public function testGetData_ReturnsSameDataForEachCall() {
+		$spec = new Spec();
+		$data = $spec->getData();
+		$this->assertTrue($data instanceof Data);
+		$this->assertSame($data, $spec->getData());
+	}
+	
+	public function testGetData_UsesConfigForDataClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\Data {}');
+		config::setClassReplacement('\spectrum\core\Data', $className);
+		$spec = new Spec();
+		$this->assertInstanceOf($className, $spec->getData());
+	}
+	
+/**/
+	
+	public function testGetErrorHandling_ReturnsSameErrorHandlingForEachCall() {
+		$spec = new Spec();
+		$errorHandling = $spec->getErrorHandling();
+		$this->assertTrue($errorHandling instanceof ErrorHandling);
+		$this->assertSame($errorHandling, $spec->getErrorHandling());
+	}
+	
+	public function testGetErrorHandling_UsesConfigForErrorHandlingClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\ErrorHandling {}');
+		config::setClassReplacement('\spectrum\core\ErrorHandling', $className);
+		$spec = new Spec();
+		$this->assertInstanceOf($className, $spec->getErrorHandling());
+	}
+	
+/**/
+	
+	public function testGetMatchers_ReturnsSameMatchersForEachCall() {
+		$spec = new Spec();
+		$matchers = $spec->getMatchers();
+		$this->assertTrue($matchers instanceof Matchers);
+		$this->assertSame($matchers, $spec->getMatchers());
+	}
+	
+	public function testGetMatchers_UsesConfigForMatchersClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\Matchers {}');
+		config::setClassReplacement('\spectrum\core\Matchers', $className);
+		$spec = new Spec();
+		$this->assertInstanceOf($className, $spec->getMatchers());
+	}
+	
+/**/
+	
+	public function testGetMessages_ReturnsSameMessagesForEachCall() {
+		$spec = new Spec();
+		$messages = $spec->getMessages();
+		$this->assertTrue($messages instanceof Messages);
+		$this->assertSame($messages, $spec->getMessages());
+	}
+
+	public function testGetMessages_UsesConfigForMessagesClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\Messages {}');
+		config::setClassReplacement('\spectrum\core\Messages', $className);
+		$spec = new Spec();
+		$this->assertInstanceOf($className, $spec->getMessages());
+	}
+	
+/**/
+	
+	public function testGetResultBuffer_ReturnsSameResultBufferForEachCall() {
+		$spec = new Spec();
+		$resultBuffer = $spec->getResultBuffer();
+		$this->assertTrue($resultBuffer instanceof ResultBuffer);
+		$this->assertSame($resultBuffer, $spec->getResultBuffer());
+	}
+	
+	public function testGetResultBuffer_UsesConfigForResultBufferClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\ResultBuffer {}');
+		config::setClassReplacement('\spectrum\core\ResultBuffer', $className);
+		$spec = new Spec();
+		$this->assertInstanceOf($className, $spec->getResultBuffer());
+	}
+	
+/**/
+	
+	public function testGetTest_ReturnsSameTestForEachCall() {
+		$spec = new Spec();
+		$test = $spec->getTest();
+		$this->assertTrue($test instanceof Test);
+		$this->assertSame($test, $spec->getTest());
+	}
+	
+	public function testGetTest_UsesConfigForTestClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\Test {}');
+		config::setClassReplacement('\spectrum\core\Test', $className);
+		$spec = new Spec();
+		$this->assertInstanceOf($className, $spec->getTest());
+	}
+
 /**/
 	
 	public function providerGetRunId() {
@@ -1854,18 +1513,17 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerGetRunId
 	 */
 	public function testGetRunId_SpecIsRunning_ReturnsUniqueId($pattern, $expectedRunIds) {
-		$this->registerPluginWithCodeInEvent('
-			$ownerSpec = $this->getOwnerSpec();
-			if ($ownerSpec === \spectrum\tests\automatic\Test::$temp["specs"]["spec"]) {
-				\spectrum\tests\automatic\Test::$temp["results"][] = $ownerSpec->getRunId();
-			}
-		', 'onEndingSpecExecute');
+		$specs = $this->createSpecsByVisualPattern($pattern);
+		$results = array();
 		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByVisualPattern($pattern);
-		\spectrum\tests\automatic\Test::$temp["results"] = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$specs, &$results) {
+			if ($spec === $specs["spec"]) {
+				$results[] = $spec->getRunId();
+			}
+		});
 
-		\spectrum\tests\automatic\Test::$temp["specs"]['spec']->run();
-		$this->assertSame($expectedRunIds, \spectrum\tests\automatic\Test::$temp["results"]);
+		$specs['spec']->run();
+		$this->assertSame($expectedRunIds, $results);
 	}
 	
 	public function testGetRunId_SpecIsNotRunning_ThrowsException() {
@@ -1919,141 +1577,134 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_SpecHasMoreThanOneRootAncestors_StopsRunByExceptionThrowing() {
-		\spectrum\tests\automatic\Test::$temp["calledSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
-			
-			if (\spectrum\tests\automatic\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
-				\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->run();
-			}
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			->->Spec(caller)
 			->Spec
 			->Spec
 			Spec(callee)
 			->Spec
 		');
+		
+		$calledSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$calledSpecs) {
+			$calledSpecs[] = $spec;
+			
+			if ($specs["caller"] === $spec) {
+				$specs["callee"]->run();
+			}
+		});
 
-		\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->setName('aaa');
+		$specs["callee"]->setName('aaa');
 
-		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function(){
-			\spectrum\tests\automatic\Test::$temp["specs"]["caller"]->run();
+		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use(&$specs) {
+			$specs["caller"]->run();
 		});
 		
 		$this->assertSame(array(
-			\spectrum\tests\automatic\Test::$temp["specs"]["caller"],
-		), \spectrum\tests\automatic\Test::$temp["calledSpecs"]);
+			$specs["caller"],
+		), $calledSpecs);
 	}
 	
 /**/
 	
 	public function testRun_SpecIsAlreadyRunning_ThrowsException() {
-		\spectrum\tests\automatic\Test::$temp["exception"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
 			try {
-				$this->getOwnerSpec()->run();
+				$spec->run();
 			} catch (\Exception $e) {
-				\spectrum\tests\automatic\Test::$temp["exception"] = $e;
+				$exception = $e;
 			}
-		');
+		});
 		
 		$spec = new Spec();
 		$spec->setName('aaa');
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\automatic\Test::$temp["exception"]);
-		$this->assertSame('Spec "aaa" is already running', \spectrum\tests\automatic\Test::$temp["exception"]->getMessage());
+		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertSame('Spec "aaa" is already running', $exception->getMessage());
 	}
 	
 	public function testRun_SpecIsAlreadyRunning_StopsRunByExceptionThrowing() {
-		\spectrum\tests\automatic\Test::$temp["calledSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
-			
-			if (\spectrum\tests\automatic\Test::$temp["specs"]["spec"] === $this->getOwnerSpec()) {
-				\spectrum\tests\automatic\Test::$temp["specs"]["spec"]->run();
-			}
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(spec)
 			->->Spec
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"]["spec"]->setName('aaa');
+		$calledSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$calledSpecs) {
+			$calledSpecs[] = $spec;
+			
+			if ($spec === $specs["spec"]) {
+				$spec->run();
+			}
+		});
+		
+		$specs["spec"]->setName('aaa');
 
-		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" is already running', function(){
-			\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" is already running', function() use($specs) {
+			$specs[0]->run();
 		});
 		
 		$this->assertSame(array(
-			\spectrum\tests\automatic\Test::$temp["specs"][0],
-			\spectrum\tests\automatic\Test::$temp["specs"]["spec"],
-		), \spectrum\tests\automatic\Test::$temp["calledSpecs"]);
+			$specs[0],
+			$specs["spec"],
+		), $calledSpecs);
 	}
 	
 /**/
 	
 	public function testRun_SpecHasAlreadyRunningSibling_ThrowsException() {
-		\spectrum\tests\automatic\Test::$temp["exception"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\automatic\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
-				try {
-					\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->run();
-				} catch (\Exception $e) {
-					\spectrum\tests\automatic\Test::$temp["exception"] = $e;
-				}
-			}
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(caller)
 			->Spec(callee)
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"]['callee']->setName('aaa');
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$exception) {
+			if ($specs["caller"] === $spec) {
+				try {
+					$specs["callee"]->run();
+				} catch (\Exception $e) {
+					$exception = $e;
+				}
+			}
+		});
 		
-		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\automatic\Test::$temp["exception"]);
-		$this->assertSame('Sibling spec of spec "aaa" is already running', \spectrum\tests\automatic\Test::$temp["exception"]->getMessage());
+		$specs['callee']->setName('aaa');
+		$specs[0]->run();
+		
+		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertSame('Sibling spec of spec "aaa" is already running', $exception->getMessage());
 	}
 	
 	public function testRun_SpecHasAlreadyRunningSibling_StopsRunByExceptionThrowing() {
-		\spectrum\tests\automatic\Test::$temp["calledSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
+		$calledSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$calledSpecs) {
+			$calledSpecs[] = $spec;
 			
-			if (\spectrum\tests\automatic\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
-				\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->run();
+			if ($specs["caller"] === $spec) {
+				$specs["callee"]->run();
 			}
-		');
+		});
 		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(caller)
 			->->Spec
 			->Spec(callee)
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->setName('aaa');
+		$specs["callee"]->setName('aaa');
 
-		$this->assertThrowsException('\spectrum\Exception', 'Sibling spec of spec "aaa" is already running', function(){
-			\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		$this->assertThrowsException('\spectrum\Exception', 'Sibling spec of spec "aaa" is already running', function() use(&$specs) {
+			$specs[0]->run();
 		});
 		
 		$this->assertSame(array(
-			\spectrum\tests\automatic\Test::$temp["specs"][0],
-			\spectrum\tests\automatic\Test::$temp["specs"]["caller"],
-		), \spectrum\tests\automatic\Test::$temp["calledSpecs"]);
+			$specs[0],
+			$specs["caller"],
+		), $calledSpecs);
 	}
 	
 /**/
@@ -2332,26 +1983,24 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerChildSpecRunWithoutRunningParent
 	 */
 	public function testRun_ChildSpecRunWithoutRunningParent_DisablesSiblingSpecsUpToRootAndRunRootSpec($specTreePattern, $specStates, $calledSpecs, $specBindings = array()) {
-		\spectrum\tests\automatic\Test::$temp["specStates"] = array();
-		\spectrum\tests\automatic\Test::$temp["calledSpecs"] = array();
+		$specStates = array();
+		$calledSpecs = array();
 		
-		$this->registerPluginWithCodeInEvent('
-			$ownerSpec = $this->getOwnerSpec();
-			
-			if ($ownerSpec === \spectrum\tests\automatic\Test::$temp["specs"]["checkpoint"]) {
-				foreach (\spectrum\tests\automatic\Test::$temp["specs"] as $spec) {
-					\spectrum\tests\automatic\Test::$temp["specStates"][] = $spec->isEnabled();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$specStates, &$calledSpecs) {
+			if ($spec === $specs["checkpoint"]) {
+				foreach ($specs as $spec) {
+					$specStates[] = $spec->isEnabled();
 				}
 			}
 			
-			\spectrum\tests\automatic\Test::$temp["calledSpecs"][] = array_search($ownerSpec, \spectrum\tests\automatic\Test::$temp["specs"], true);
-		');
+			$calledSpecs[] = array_search($spec, $specs, true);
+		});
 		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern($specTreePattern, $specBindings);
-		\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->run();
+		$specs = $this->createSpecsByListPattern($specTreePattern, $specBindings);
+		$specs["callee"]->run();
 		
-		$this->assertSame($specStates, \spectrum\tests\automatic\Test::$temp["specStates"]);
-		$this->assertSame($calledSpecs, \spectrum\tests\automatic\Test::$temp["calledSpecs"]);
+		$this->assertSame($specStates, $specStates);
+		$this->assertSame($calledSpecs, $calledSpecs);
 	}
 	
 	/**
@@ -2419,105 +2068,89 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_ThrowsException() {
-		\spectrum\tests\automatic\Test::$temp["exception"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			if (\spectrum\tests\automatic\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$exception) {
+			if ($specs["caller"] === $spec) {
 				try {
-					\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->run();
+					$specs["callee"]->run();
 				} catch (\Exception $e) {
-					\spectrum\tests\automatic\Test::$temp["exception"] = $e;
+					$exception = $e;
 				}
 			}
-		');
+		});
 		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec(caller)
 			->Spec
 			->->Spec
 			->->->Spec(callee)
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->setName('aaa');
-		\spectrum\tests\automatic\Test::$temp["specs"]["caller"]->run();
+		$specs["callee"]->setName('aaa');
+		$specs["caller"]->run();
 
-		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\automatic\Test::$temp["exception"]);
-		$this->assertSame('Root spec of spec "aaa" is already running', \spectrum\tests\automatic\Test::$temp["exception"]->getMessage());
+		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertSame('Root spec of spec "aaa" is already running', $exception->getMessage());
 	}
 	
 	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_StopsRunByExceptionThrowing() {
-		\spectrum\tests\automatic\Test::$temp["calledSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["calledSpecs"][] = $this->getOwnerSpec();
-			
-			if (\spectrum\tests\automatic\Test::$temp["specs"]["caller"] === $this->getOwnerSpec()) {
-				\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->run();
-			}
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec(caller)
 			->Spec
 			->->Spec
 			->->->Spec(callee)
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"]["callee"]->setName('aaa');
-
-		$this->assertThrowsException('\spectrum\Exception', 'Root spec of spec "aaa" is already running', function(){
-			\spectrum\tests\automatic\Test::$temp["specs"]["caller"]->run();
+		$calledSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$specs, &$calledSpecs) {
+			$calledSpecs[] = $spec;
+			
+			if ($specs["caller"] === $spec) {
+				$specs["callee"]->run();
+			}
 		});
 		
-		$this->assertSame(array(\spectrum\tests\automatic\Test::$temp["specs"]["caller"]), \spectrum\tests\automatic\Test::$temp["calledSpecs"]);
+		$specs["callee"]->setName('aaa');
+
+		$this->assertThrowsException('\spectrum\Exception', 'Root spec of spec "aaa" is already running', function() use(&$specs) {
+			$specs["caller"]->run();
+		});
+		
+		$this->assertSame(array($specs["caller"]), $calledSpecs);
 	}
 	
 /**/
 	
 	public function testRun_RootSpecRun_EnablesRunningFlagDuringRun() {
-		\spectrum\tests\automatic\Test::$temp["isRunningCallResults"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][2]) {
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][0]->isRunning();
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][1]->isRunning();
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][2]->isRunning();
-			}
-		', 'onEndingSpecExecute');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
 		');
 		
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["specs"][0]->isRunning());
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["specs"][1]->isRunning());
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["specs"][2]->isRunning());
+		$isRunningCallResults = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$specs, &$isRunningCallResults) {
+			if ($spec === $specs[2]) {
+				$isRunningCallResults[] = $specs[0]->isRunning();
+				$isRunningCallResults[] = $specs[1]->isRunning();
+				$isRunningCallResults[] = $specs[2]->isRunning();
+			}
+		});
 		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		$this->assertSame(false, $specs[0]->isRunning());
+		$this->assertSame(false, $specs[1]->isRunning());
+		$this->assertSame(false, $specs[2]->isRunning());
 		
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["specs"][0]->isRunning());
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["specs"][1]->isRunning());
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["specs"][2]->isRunning());
+		$specs[0]->run();
 		
-		$this->assertSame(array(true, true, true), \spectrum\tests\automatic\Test::$temp["isRunningCallResults"]);
+		$this->assertSame(false, $specs[0]->isRunning());
+		$this->assertSame(false, $specs[1]->isRunning());
+		$this->assertSame(false, $specs[2]->isRunning());
+		
+		$this->assertSame(array(true, true, true), $isRunningCallResults);
 	}
 	
 	public function testRun_RootSpecRun_DisablesRunningFlagAfterEachChildSpecRun() {
-		\spectrum\tests\automatic\Test::$temp["isRunningCallResults"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][4]) {
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][0]->isRunning();
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][1]->isRunning();
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][2]->isRunning();
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][3]->isRunning();
-				\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = \spectrum\tests\automatic\Test::$temp["specs"][4]->isRunning();
-			}
-		', 'onEndingSpecExecute');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2525,14 +2158,26 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			->->Spec
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
-		$this->assertSame(array(true, false, false, true, true), \spectrum\tests\automatic\Test::$temp["isRunningCallResults"]);
+		$isRunningCallResults = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$specs, &$isRunningCallResults) {
+			if ($spec === $specs[4]) {
+				$isRunningCallResults[] = $specs[0]->isRunning();
+				$isRunningCallResults[] = $specs[1]->isRunning();
+				$isRunningCallResults[] = $specs[2]->isRunning();
+				$isRunningCallResults[] = $specs[3]->isRunning();
+				$isRunningCallResults[] = $specs[4]->isRunning();
+			}
+		});
+		
+		$specs[0]->run();
+		$this->assertSame(array(true, false, false, true, true), $isRunningCallResults);
 	}
 
 	public function testRun_RootSpecRun_RunsChildSpecsForNotEndingSpecsSequentially() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -2545,13 +2190,14 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3], $specs[4], $specs[5], $specs[6]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3], $specs[4], $specs[5], $specs[6]), $runSpecs);
 	}
 	
 	public function testRun_RootSpecRun_RunsEnabledSpecsOnly() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -2566,13 +2212,14 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs[2]->disable();
 		$specs[5]->disable();
 		$specs[0]->run();
-		$this->assertSame(array($specs[0], $specs[3], $specs[4]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[0], $specs[3], $specs[4]), $runSpecs);
 	}
 	
 	public function testRun_RootSpecRun_DoesNotRunChildrenOfDisabledSpecs() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -2584,7 +2231,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$specs[1]->disable();
 		$specs[0]->run();
-		$this->assertSame(array($specs[0], $specs[4]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[0], $specs[4]), $runSpecs);
 	}
 	
 	public function testRun_RootSpecRun_ReturnsResultBufferTotalResult() {
@@ -2612,23 +2259,417 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 /**/
 	
-	public function testRun_RootSpecRun_ResultBuffer_UsesConfigForResultBufferClassGetting() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		$resultBufferClassName = $this->createClass('class ... extends \spectrum\core\ResultBuffer {}');
-		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
+	public function testRun_RootSpecRun_Data_UnsetLinkToDataBeforeRun() {
+		$spec = new Spec();
+		$data1 = $spec->getData();
+		$spec->getTest()->setFunction(function() use(&$spec, &$data2) {
+			$data2 = $spec->getData();
+		});
+		$spec->run();
+		
+		$this->assertNotSame($data1, $data2);
+	}
+	
+	public function testRun_RootSpecRun_Data_UnsetLinkToDataAfterRun() {
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() use(&$spec, &$data) {
+			$data = $spec->getData();
+		});
+		$spec->run();
+		
+		$this->assertNotSame($data, $spec->getData());
+	}
+	
+	public function testRun_RootSpecRun_Data_DoesNotClearDataContentsAfterRun() {
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() use(&$spec, &$data) {
+			$data = $spec->getData();
+			$data->aaa = 111;
+		});
+		$spec->run();
+		
+		$this->assertSame(111, $data->aaa);
+	}
+	
+/**/
+	
+	public function testRun_RootSpecRun_ErrorHandling_GetsPhpErrorDetailsClassFromConfig() {
+		$phpErrorDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\PhpError {}');
+		config::setClassReplacement('\spectrum\core\details\PhpError', $phpErrorDetailsClassName);
+
+		error_reporting(E_USER_WARNING);
+		
+		$spec = new Spec();
+		$spec->getErrorHandling()->setCatchPhpErrors(-1);
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+			trigger_error("aaa", E_USER_NOTICE);
+		});
+		$spec->run();
+		
+		$results = $resultBuffer->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf($phpErrorDetailsClassName, $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_GetsErrorTypeFromAncestorOrSelf() {
+		$resultBuffers = array();
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->Spec
+			->Spec
+			->->Spec
+		', array(2 => 4));
+		
+		$specs[1]->getErrorHandling()->setCatchPhpErrors(E_USER_NOTICE);
+		$specs[2]->getErrorHandling()->setCatchPhpErrors(E_USER_WARNING);
+		$specs[3]->getErrorHandling()->setCatchPhpErrors(E_USER_ERROR);
+		$specs[0]->getTest()->setFunction(function() use(&$specs, &$resultBuffers) {
+			$resultBuffers[] = $specs[0]->getRunningDescendantEndingSpec()->getResultBuffer();
+			trigger_error("aaa", E_USER_NOTICE);
+			trigger_error("bbb", E_USER_WARNING);
+			trigger_error("ccc", E_USER_ERROR);
+		});
+		$specs[0]->run();
+		
+		$this->assertSame(3, count($resultBuffers));
+
+		$results = $resultBuffers[0]->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+		
+		$results = $resultBuffers[1]->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(E_USER_WARNING, $results[0]['details']->getErrorLevel());
+		
+		$results = $resultBuffers[2]->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(E_USER_ERROR, $results[0]['details']->getErrorLevel());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_TakesInAccountDefinedOnRunErrorReportingValue() {
+		$spec = new Spec();
+		$spec->getErrorHandling()->setCatchPhpErrors(-1);
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+			error_reporting(E_USER_WARNING);
+			trigger_error("aaa", E_USER_NOTICE);
+		});
+		$spec->run();
+		
+		$this->assertSame(array(), $resultBuffer->getResults());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_DoesNotTakeInAccountDefinedBeforeRunErrorReportingValue() {
+		error_reporting(E_USER_WARNING);
+		
+		$spec = new Spec();
+		$spec->getErrorHandling()->setCatchPhpErrors(-1);
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+			trigger_error("aaa", E_USER_NOTICE);
+		});
+		$spec->run();
+		
+		$results = $resultBuffer->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_RestoreErrorReportingValueAfterRun() {
+		error_reporting(E_NOTICE);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(E_NOTICE, error_reporting());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_RemovesErrorHandlerAfterRun() {
+		$errorHandler = function($errorSeverity, $errorMessage){};
+		set_error_handler($errorHandler);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame($errorHandler, $this->getLastErrorHandler());
+		
+		restore_error_handler();
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_RemovesAlienErrorHandlersAddedOnExecute() {
+		$errorHandler = function($errorSeverity, $errorMessage){};
+		set_error_handler($errorHandler);
+		
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() {
+			set_error_handler(function($errorSeverity, $errorMessage){});
+			set_error_handler(function($errorSeverity, $errorMessage){});
+			set_error_handler(function($errorSeverity, $errorMessage){});
+		});
+		$spec->run();
+		
+		$this->assertSame($errorHandler, $this->getLastErrorHandler());
+		
+		restore_error_handler();
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_CatchesPhpErrorsFromContextModifiers() {
+		$spec = new Spec();
+		$spec->getErrorHandling()->setCatchPhpErrors(-1);
+		$spec->getContextModifiers()->add(function(){ trigger_error("aaa", E_USER_NOTICE); }, 'before');
+		$spec->getContextModifiers()->add(function(){ trigger_error("bbb", E_USER_WARNING); }, 'after');
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+		});
+		$spec->run();
+		
+		$results = $resultBuffer->getResults();
+		$this->assertSame(2, count($results));
+		
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+		
+		$this->assertSame(false, $results[1]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
+		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_CatchesPhpErrorsFromTest() {
+		\spectrum\tests\automatic\Test::$temp["resultBuffer"] = null;
+		
+		$spec = new Spec();
+		$spec->getErrorHandling()->setCatchPhpErrors(-1);
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+			trigger_error("aaa", E_USER_NOTICE);
+		});
+		$spec->run();
+		
+		$results = $resultBuffer->getResults();
+		$this->assertSame(1, count($results));
+		
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_ErrorHandlerWasRemovedOnExecute_AddsFalseToResultBufferAndDoesNotRemoveOtherErrorHandlers() {
+		$errorHandler1 = function($errorSeverity, $errorMessage){};
+		set_error_handler($errorHandler1);
+		
+		$errorHandler2 = function($errorSeverity, $errorMessage){};
+		set_error_handler($errorHandler2);
+		
+		$errorHandler3 = function($errorSeverity, $errorMessage){};
+		set_error_handler($errorHandler3);
+		
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+			restore_error_handler();
+		});
+		$spec->run();
+		
+		$this->assertSame(array(
+			array('result' => false, 'details' => 'Spectrum error handler was removed'),
+		), $resultBuffer->getResults());
+		
+		$this->assertSame($errorHandler3, $this->getLastErrorHandler());
+		restore_error_handler();
+		
+		$this->assertSame($errorHandler2, $this->getLastErrorHandler());
+		restore_error_handler();
+		
+		$this->assertSame($errorHandler1, $this->getLastErrorHandler());
+		restore_error_handler();
+	}
+		
+	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsIncludeTriggeredErrorType_CatchesPhpErrorsAndAddsFalseResultToResultBuffer() {
+		$resultBuffers = array();
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec
-		');
+			->Spec
+			->Spec
+			->Spec
+			->->Spec
+		', array(1 => 5, 2 => 5, 3 => 5));
 		
+		$specs[1]->getErrorHandling()->setCatchPhpErrors(E_NOTICE);
+		$specs[2]->getErrorHandling()->setCatchPhpErrors(E_USER_WARNING);
+		$specs[3]->getErrorHandling()->setCatchPhpErrors(E_ALL);
+		$specs[4]->getErrorHandling()->setCatchPhpErrors(-1);
+		$specs[0]->getTest()->setFunction(function() use(&$specs, &$resultBuffers) {
+			$resultBuffers[] = $specs[0]->getRunningDescendantEndingSpec()->getResultBuffer();
+			trim($aaa);
+			trigger_error("bbb", E_USER_WARNING);
+		});
 		$specs[0]->run();
 		
-		$this->assertSame(2, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]);
+		$this->assertSame(4, count($resultBuffers));
+		
+		$results = $resultBuffers[0]->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
+		
+		$results = $resultBuffers[1]->getResults();
+		$this->assertSame(1, count($results));
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('bbb', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[0]['details']->getErrorLevel());
+		
+		$results = $resultBuffers[2]->getResults();
+		$this->assertSame(2, count($results));
+		
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
+		
+		$this->assertSame(false, $results[1]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
+		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
+		
+		$results = $resultBuffers[3]->getResults();
+		$this->assertSame(2, count($results));
+		
+		$this->assertSame(false, $results[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
+		
+		$this->assertSame(false, $results[1]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
+		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
 	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsNotIncludeTriggeredErrorType_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
+		$spec = new Spec();
+		$spec->getErrorHandling()->setCatchPhpErrors(0);
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+			trigger_error("aaa", E_USER_WARNING);
+		});
+		$spec->run();
+		
+		$this->assertSame(array(), $resultBuffer->getResults());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_ExpressionWithErrorControlOperator_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
+		$spec = new Spec();
+		$spec->getErrorHandling()->setCatchPhpErrors(-1);
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+			@trim($aaa);
+			@trigger_error("aaa");
+		});
+		$spec->run();
+		
+		$this->assertSame(array(), $resultBuffer->getResults());
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_BreakOnFirstPhpErrorIsEnabled_BreaksExecutionOnFirstPhpError() {
+		$spec = new Spec();
+		$spec->getErrorHandling()->setBreakOnFirstPhpError(true);
+		$spec->getErrorHandling()->setCatchPhpErrors(-1);
+		$spec->getTest()->setFunction(function() use(&$isExecuted) {
+			trigger_error("aaa");
+			$isExecuted = true;
+		});
+		$spec->run();
+		
+		$this->assertSame(null, $isExecuted);
+	}
+	
+	public function testRun_RootSpecRun_ErrorHandling_BreakOnFirstPhpErrorIsEnabled_GetsValueFromAncestorOrSelf() {
+		$callCount = -1;
+		$isExecuted = array();
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->Spec
+			->Spec
+			->Spec
+			->->Spec
+		', array(3 => 5));
+		
+		$specs[0]->getErrorHandling()->setCatchPhpErrors(-1);
+		$specs[1]->getErrorHandling()->setBreakOnFirstPhpError(true);
+		$specs[2]->getErrorHandling()->setBreakOnFirstPhpError(false);
+		$specs[3]->getErrorHandling()->setBreakOnFirstPhpError(true);
+		$specs[4]->getErrorHandling()->setBreakOnFirstPhpError(false);
+		$specs[0]->getTest()->setFunction(function() use(&$callCount, &$isExecuted) {
+			$callCount++;
+			
+			$isExecuted[$callCount][] = 1;
+			trigger_error("aaa");
+			$isExecuted[$callCount][] = 2;
+		});
+		$specs[0]->run();
+		
+		$this->assertSame(array(
+			array(1),
+			array(1, 2),
+			array(1),
+			array(1, 2),
+		), $isExecuted);
+	}
+	
+/**/
+	
+	public function testRun_RootSpecRun_Messages_UnsetLinkToMessagesBeforeRun() {
+		$spec = new Spec();
+		$messages1 = $spec->getMessages();
+		$spec->getTest()->setFunction(function() use(&$spec, &$messages2) {
+			$messages2 = $spec->getMessages();
+		});
+		$spec->run();
+		
+		$this->assertNotSame($messages1, $messages2);
+	}
+	
+	public function testRun_RootSpecRun_Messages_UnsetLinkToMessagesAfterRun() {
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() use(&$spec, &$messages) {
+			$messages = $spec->getMessages();
+		});
+		$spec->run();
+		
+		$this->assertNotSame($messages, $spec->getMessages());
+	}
+	
+	public function testRun_RootSpecRun_Messages_DoesNotClearMessagesContentsAfterRun() {
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() use(&$spec, &$messages) {
+			$messages = $spec->getMessages();
+			$messages->add('aaa');
+		});
+		$spec->run();
+		
+		$this->assertSame(array('aaa'), $messages->getAll());
+	}
+
+/**/
 	
 	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferWithProperLinkToOwnerSpecForEachSpec() {
 		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
@@ -2725,9 +2766,6 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 				public function addResult($result, $details = null){}
 				public function getResults(){}
 				public function getTotalResult(){}
-				
-				public function lock(){}
-				public function isLocked(){}
 			}
 		');
 		
@@ -2750,50 +2788,43 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["resultBuffers"][2], \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]);
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_UnsetResultBufferLinkAfterRun() {
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-			->->Spec
-			->->Spec
-		');
+	public function testRun_RootSpecRun_ResultBuffer_UnsetLinkToResultBufferBeforeRun() {
+		$spec = new Spec();
+		$resultBuffer1 = $spec->getResultBuffer();
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer2) {
+			$resultBuffer2 = $spec->getResultBuffer();
+		});
+		$spec->run();
 		
-		$specs[0]->run();
-		$this->assertSame(null, $specs[0]->getResultBuffer());
-		$this->assertSame(null, $specs[1]->getResultBuffer());
-		$this->assertSame(null, $specs[2]->getResultBuffer());
-		$this->assertSame(null, $specs[3]->getResultBuffer());
+		$this->assertNotSame($resultBuffer1, $resultBuffer2);
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_DoesNotClearResultBufferDataAfterRun() {
-		\spectrum\tests\automatic\Test::$temp["counter"] = 0;
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
+	public function testRun_RootSpecRun_ResultBuffer_UnsetLinkToResultBufferAfterRun() {
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
+		});
+		$spec->run();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin {
-				static public function getEventListeners() {
-					return array(
-						array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => 100),
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 100),
-					);
-				}
-				
-				public function onEndingSpecExecute() {
-					\spectrum\tests\automatic\Test::$temp["counter"]++;
-				
-					$resultBuffer = $this->getOwnerSpec()->getResultBuffer();
-					$resultBuffer->addResult(false, "aaa" . \spectrum\tests\automatic\Test::$temp["counter"] . "aaa");
-					$resultBuffer->addResult(true, "bbb" . \spectrum\tests\automatic\Test::$temp["counter"] . "bbb");
-					$resultBuffer->addResult(null, "ccc" . \spectrum\tests\automatic\Test::$temp["counter"] . "ccc");
-				}
-				
-				public function onSpecRunFinish() {
-					\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-				}
-			}
-		');
+		$this->assertNotSame($resultBuffer, $spec->getResultBuffer());
+	}
+	
+	public function testRun_RootSpecRun_ResultBuffer_DoesNotClearResultBufferContentsAfterRun() {
+		$counter = 0;
+		$resultBuffers = array();
 		
-		config::registerSpecPlugin($pluginClassName);
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$counter) {
+			$counter++;
+		
+			$resultBuffer = $spec->getResultBuffer();
+			$resultBuffer->addResult(false, "aaa" . $counter . "aaa");
+			$resultBuffer->addResult(true, "bbb" . $counter . "bbb");
+			$resultBuffer->addResult(null, "ccc" . $counter . "ccc");
+		});
+		
+		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$resultBuffers) {
+			$resultBuffers[] = $spec->getResultBuffer();
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -2802,66 +2833,27 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$specs[0]->run();
 		
-		$this->assertSame(2, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
+		$this->assertSame(2, count($resultBuffers));
 		
 		$this->assertSame(array(
 			array('result' => false, 'details' => 'aaa1aaa'),
 			array('result' => true, 'details' => 'bbb1bbb'),
 			array('result' => null, 'details' => 'ccc1ccc'),
-		), \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getResults());
+		), $resultBuffers[0]->getResults());
 		
 		$this->assertSame(array(
 			array('result' => false, 'details' => $specs[1]),
-		), \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]->getResults());
-	}
-	
-	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_CreatesLockedResultBufferAfterChildSpecsRun() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][0]) {
-				\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = \spectrum\tests\automatic\Test::$temp["specs"][0]->getResultBuffer();
-			}
-		', 'onSpecRunFinish');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp["specs"][0], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getOwnerSpec());
-		$this->assertSame(true, \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->isLocked());
-	}
-	
-	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_DoesNotCreateResultBufferWhileChildSpecsRun() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][1]) {
-				\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = \spectrum\tests\automatic\Test::$temp["specs"][0]->getResultBuffer();
-			}
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
-		$this->assertSame(array(null), \spectrum\tests\automatic\Test::$temp["resultBuffers"]);
+		), $resultBuffers[1]->getResults());
 	}
 	
 	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_PutsChildSpecRunResultWithChildSpecObjectToResultBufferForEachChildSpec() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][0]) {
-				\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = \spectrum\tests\automatic\Test::$temp["specs"][0]->getResultBuffer();
+		$resultBuffers = array();
+		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$resultBuffers) {
+			if ($spec === \spectrum\tests\automatic\Test::$temp["specs"][0]) {
+				$resultBuffers[] = \spectrum\tests\automatic\Test::$temp["specs"][0]->getResultBuffer();
 			}
-		', 'onSpecRunFinish');
-		
+		});
+
 		$resultBufferClassName = $this->createClass('
 			class ... extends \spectrum\core\ResultBuffer {
 				public function getTotalResult() {
@@ -2888,328 +2880,252 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
+		$this->assertSame(1, count($resultBuffers));
 		$this->assertSame(array(
 			array('result' => true, 'details' => \spectrum\tests\automatic\Test::$temp["specs"][1]),
 			array('result' => false, 'details' => \spectrum\tests\automatic\Test::$temp["specs"][2]),
 			array('result' => null, 'details' => \spectrum\tests\automatic\Test::$temp["specs"][3]),
-		), \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getResults());
-	}
-	
-	public function testRun_RootSpecRun_ResultBuffer_EndingSpec_CreatesEmptyAndNotLockedResultBuffer() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][1]) {
-				\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = \spectrum\tests\automatic\Test::$temp["specs"][1]->getResultBuffer();
-			}
-		', 'onSpecRunFinish');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp["specs"][1], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getOwnerSpec());
-		$this->assertSame(array(), \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getResults());
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->isLocked());
+		), $resultBuffers[0]->getResults());
 	}
 
 /**/
 	
-	public function testEventDispatch_DispatchPluginEvent_CallsSpecifiedMethodWithPassedArguments() {
-		\spectrum\tests\automatic\Test::$temp["calledMethods"] = array();
-		
-		$pluginClassName1 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin {
-				static public function getAccessName(){ return "abc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				public function dispatchPluginEvent($eventName, array $arguments = array()) {
-					return parent::dispatchPluginEvent($eventName, $arguments);
-				}
-			}
+	public function testRun_RootSpecRun_Test_CallsFunctionOnEndingSpec() {
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
 		');
+
+		$callCount = 0;
+		$specs[1]->getTest()->setFunction(function() use(&$callCount){ $callCount++; });
+		$specs[0]->run();
 		
-		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners() {
-					return array(
-						array("event" => "testEvent1", "method" => "methodForTestEvent1", "order" => 100),
-						array("event" => "testEvent2", "method" => "methodForTestEvent2", "order" => 100),
-						array("event" => "testEvent3", "method" => "methodForTestEvent3", "order" => 100),
-					);
-				}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-				
-				public function methodForTestEvent1() {
-					\spectrum\tests\automatic\Test::$temp["calledMethods"][] = array(__FUNCTION__, func_get_args());
-				}
-				
-				public function methodForTestEvent2() {
-					\spectrum\tests\automatic\Test::$temp["calledMethods"][] = array(__FUNCTION__, func_get_args());
-				}
-				
-				public function methodForTestEvent3() {
-					\spectrum\tests\automatic\Test::$temp["calledMethods"][] = array(__FUNCTION__, func_get_args());
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName1);
-		config::registerSpecPlugin($pluginClassName2);
-		$spec = new Spec();
-		
-		$spec->abc->dispatchPluginEvent('testEvent1', array('aaa1', 'bbb1', 'ccc1'));
-		$this->assertSame(array(
-			array('methodForTestEvent1', array('aaa1', 'bbb1', 'ccc1')),
-		), \spectrum\tests\automatic\Test::$temp["calledMethods"]);
-		
-		$spec->abc->dispatchPluginEvent('testEvent2', array('aaa2', 'bbb2', 'ccc2'));
-		$this->assertSame(array(
-			array('methodForTestEvent1', array('aaa1', 'bbb1', 'ccc1')),
-			array('methodForTestEvent2', array('aaa2', 'bbb2', 'ccc2')),
-		), \spectrum\tests\automatic\Test::$temp["calledMethods"]);
-		
-		$spec->abc->dispatchPluginEvent('testEvent3', array('aaa3', 'bbb3', 'ccc3'));
-		$this->assertSame(array(
-			array('methodForTestEvent1', array('aaa1', 'bbb1', 'ccc1')),
-			array('methodForTestEvent2', array('aaa2', 'bbb2', 'ccc2')),
-			array('methodForTestEvent3', array('aaa3', 'bbb3', 'ccc3')),
-		), \spectrum\tests\automatic\Test::$temp["calledMethods"]);
+		$this->assertSame(1, $callCount);
 	}
 	
-	public function testEventDispatch_DispatchPluginEvent_CallsSpecifiedMethodInOrderFromLowerNegativeToHigherPositiveNumber() {
-		\spectrum\tests\automatic\Test::$temp["calledMethods"] = array();
-		
-		$pluginClassName1 = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin {
-				static public function getAccessName(){ return "abc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				public function dispatchPluginEvent($eventName, array $arguments = array()) {
-					return parent::dispatchPluginEvent($eventName, $arguments);
-				}
-			}
+	public function testRun_RootSpecRun_Test_DoesNotCallsFunctionOnNotEndingSpecs() {
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
 		');
+
+		$callCount = array('notEndingSpec' => 0, 'endingSpec' => 0);
+		$specs[0]->getTest()->setFunction(function() use(&$callCount){ $callCount['notEndingSpec']++; });
+		$specs[1]->getTest()->setFunction(function() use(&$callCount){ $callCount['endingSpec']++; });
+		$specs[0]->run();
 		
-		$pluginClassName2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners() {
-					return array(
-						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => 10),
-					);
-				}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-				
-				public function methodForTestEvent() {
-					\spectrum\tests\automatic\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
-				}
-			}
-		');
-		
-		$pluginClassName3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners() {
-					return array(
-						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => 0),
-					);
-				}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-				
-				public function methodForTestEvent() {
-					\spectrum\tests\automatic\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
-				}
-			}
-		');
-		
-		$pluginClassName4 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners() {
-					return array(
-						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => -20),
-					);
-				}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-				
-				public function methodForTestEvent() {
-					\spectrum\tests\automatic\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
-				}
-			}
-		');
-		
-		$pluginClassName5 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners() {
-					return array(
-						array("event" => "testEvent", "method" => "methodForTestEvent", "order" => -10),
-					);
-				}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-				
-				public function methodForTestEvent() {
-					\spectrum\tests\automatic\Test::$temp["calledMethods"][] = "\\\\" . __METHOD__;
-				}
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName1);
-		config::registerSpecPlugin($pluginClassName2);
-		config::registerSpecPlugin($pluginClassName3);
-		config::registerSpecPlugin($pluginClassName4);
-		config::registerSpecPlugin($pluginClassName5);
+		$this->assertSame(array('notEndingSpec' => 0, 'endingSpec' => 1), $callCount);
+	}
+	
+	public function testRun_RootSpecRun_Test_DoesNotPassArgumentsToFunction() {
 		$spec = new Spec();
+		$passedArguments = array();
+		$spec->getTest()->setFunction(function() use(&$passedArguments){
+			$passedArguments[] = func_get_args();
+		});
 		
-		$spec->abc->dispatchPluginEvent('testEvent');
-		$this->assertSame(array(
-			$pluginClassName4 . '::methodForTestEvent',
-			$pluginClassName5 . '::methodForTestEvent',
-			$pluginClassName3 . '::methodForTestEvent',
-			$pluginClassName2 . '::methodForTestEvent',
-		), \spectrum\tests\automatic\Test::$temp["calledMethods"]);
+		$spec->run();
+		$this->assertSame(array(array()), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_Test_GetsFunctionFromAncestorOrSelf() {
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->Spec
+			->Spec
+			->->Spec
+		', array(2 => 4));
+
+		$calls = array();
+		$specs[0]->getTest()->setFunction(function() use(&$calls){ $calls[] = 0; });
+		$specs[1]->getTest()->setFunction(function() use(&$calls){ $calls[] = 1; });
+		$specs[2]->getTest()->setFunction(function() use(&$calls){ $calls[] = 2; });
+		$specs[0]->run();
+		
+		$this->assertSame(array(1, 2, 0), $calls);
+	}
+	
+	public function testRun_RootSpecRun_Test_ApplyBeforeContextModifiersToDataBeforeFunctionCallAndInDirectOrder(){
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+		');
+		
+		$appendValueToDataVariable = function($value) use(&$specs) {
+			if (!isset($specs[1]->getData()->aaa)) {
+				$specs[1]->getData()->aaa = '';
+			}
+			
+			$specs[1]->getData()->aaa .= $value;
+		};
+		
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('1'); }, 'before');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('2'); }, 'before');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('3'); }, 'after');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('4'); }, 'before');
+		
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('5'); }, 'before');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('6'); }, 'before');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('7'); }, 'after');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'before');
+		
+		$properties = array();
+		$specs[1]->getTest()->setFunction(function() use(&$properties, $specs) {
+			$properties[] = get_object_vars($specs[1]->getData());
+		});
+		
+		$specs[0]->run();
+		
+		$this->assertSame(array(array('aaa' => '124568')), $properties);
+	}
+	
+	public function testRun_RootSpecRun_Test_ApplyAfterContextModifiersToDataAfterFunctionCallAndInBackwardOrder() {
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+		');
+		
+		$appendValueToDataVariable = function($value) use(&$specs) {
+			if (!isset($specs[1]->getData()->aaa)) {
+				$specs[1]->getData()->aaa = '';
+			}
+			
+			$specs[1]->getData()->aaa .= $value;
+		};
+		
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('1'); }, 'after');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('2'); }, 'after');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('3'); }, 'before');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('4'); }, 'after');
+		
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('5'); }, 'after');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('6'); }, 'after');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('7'); }, 'before');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'after');
+		
+		$properties = array();
+		$dataItems = array();
+		$specs[1]->getTest()->setFunction(function() use(&$properties, &$dataItems, $specs) {
+			$properties[] = get_object_vars($specs[1]->getData());
+			$dataItems[] = $specs[1]->getData();
+		});
+		
+		$specs[0]->run();
+		
+		$this->assertSame(array(array('aaa' => '37')), $properties);
+		$this->assertSame(array('aaa' => '37865421'), get_object_vars($dataItems[0]));
+	}
+	
+	public function testRun_RootSpecRun_Test_FunctionIsNotSet_DoesNotTryToCallFunction() {
+		$spec = new Spec();
+		$spec->getTest()->setFunction(null);
+		$spec->run();
+	}
+	
+	public function testRun_RootSpecRun_Test_FunctionThrowsException_ApplyAfterContextModifiersToDataAfterFunctionCallAndInBackwardOrder() {
+		$specs = $this->createSpecsByVisualPattern('
+			0
+			|
+			1
+		');
+		
+		$appendValueToDataVariable = function($value) use(&$specs) {
+			if (!isset($specs[1]->getData()->aaa)) {
+				$specs[1]->getData()->aaa = '';
+			}
+			
+			$specs[1]->getData()->aaa .= $value;
+		};
+		
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('1'); }, 'after');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('2'); }, 'after');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('3'); }, 'before');
+		$specs[0]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('4'); }, 'after');
+		
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('5'); }, 'after');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('6'); }, 'after');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('7'); }, 'before');
+		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'after');
+		
+		$properties = array();
+		$dataItems = array();
+		$specs[1]->getTest()->setFunction(function() use(&$properties, &$dataItems, $specs){
+			$properties[] = get_object_vars($specs[1]->getData());
+			$dataItems[] = $specs[1]->getData();
+			throw new \Exception();
+		});
+		
+		$specs[0]->run();
+		
+		$this->assertSame(array(array('aaa' => '37')), $properties);
+		$this->assertSame(array('aaa' => '37865421'), get_object_vars($dataItems[0]));
 	}
 	
 /**/
 	
-	public function testEventDispatch_Events_DispatchesEventsInCallSequence() {
-		\spectrum\tests\automatic\Test::$temp["calledEvents"] = array();
+	public function testRun_RootSpecRun_EventDispatch_DispatchesEventsInCorrectSequence() {
+		$dispatchedEvents = array();
 		
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin {
-				static public function getEventListeners() {
-					return array(
-						array("event" => "onRootSpecRunBefore", "method" => "onRootSpecRunBefore", "order" => 4),
-						array("event" => "onSpecRunStart", "method" => "onSpecRunStart", "order" => 6),
-						
-						array("event" => "onEndingSpecExecuteBefore", "method" => "onEndingSpecExecuteBefore", "order" => 1),
-						array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => 3),
-						array("event" => "onEndingSpecExecuteAfter", "method" => "onEndingSpecExecuteAfter", "order" => 2),
-						
-						array("event" => "onSpecRunFinish", "method" => "onSpecRunFinish", "order" => 5),
-						array("event" => "onRootSpecRunAfter", "method" => "onRootSpecRunAfter", "order" => 7),
-					);
-				}
-				
-				public function onRootSpecRunBefore(){ \spectrum\tests\automatic\Test::$temp["calledEvents"][] = __FUNCTION__; }
-				public function onSpecRunStart(){ \spectrum\tests\automatic\Test::$temp["calledEvents"][] = __FUNCTION__; }
-				
-				public function onEndingSpecExecuteBefore(){ \spectrum\tests\automatic\Test::$temp["calledEvents"][] = __FUNCTION__; }
-				public function onEndingSpecExecute(){ \spectrum\tests\automatic\Test::$temp["calledEvents"][] = __FUNCTION__; }
-				public function onEndingSpecExecuteAfter(){ \spectrum\tests\automatic\Test::$temp["calledEvents"][] = __FUNCTION__; }
-				
-				public function onSpecRunFinish(){ \spectrum\tests\automatic\Test::$temp["calledEvents"][] = __FUNCTION__; }
-				public function onRootSpecRunAfter(){ \spectrum\tests\automatic\Test::$temp["calledEvents"][] = __FUNCTION__; }
-			}
-		');
-		
-		config::registerSpecPlugin($pluginClassName);
+		config::registerEventListener('onRootSpecRunBefore', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onRootSpecRunBefore'; });
+		config::registerEventListener('onSpecRunBefore', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onSpecRunBefore'; });
+		config::registerEventListener('onSpecRunStart', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onSpecRunStart'; });
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onEndingSpecExecuteBefore'; });
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onEndingSpecExecuteAfter'; });
+		config::registerEventListener('onSpecRunFinish', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onSpecRunFinish'; });
+		config::registerEventListener('onSpecRunAfter', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onSpecRunAfter'; });
+		config::registerEventListener('onRootSpecRunAfter', function() use(&$dispatchedEvents) { $dispatchedEvents[] = 'onRootSpecRunAfter'; });
 		
 		$spec = new Spec();
 		$spec->run();
 		
 		$this->assertSame(array(
 			'onRootSpecRunBefore',
+			'onSpecRunBefore',
 			'onSpecRunStart',
 			
 			'onEndingSpecExecuteBefore',
-			'onEndingSpecExecute',
 			'onEndingSpecExecuteAfter',
 			
 			'onSpecRunFinish',
+			'onSpecRunAfter',
 			'onRootSpecRunAfter',
-		), \spectrum\tests\automatic\Test::$temp["calledEvents"]);
-	}
-	
-	public function providerAllEvents() {
-		return array(
-			array('onSpecConstruct'),
-			array('onRootSpecRunBefore'),
-			array('onRootSpecRunAfter'),
-			array('onSpecRunStart'),
-			array('onSpecRunFinish'),
-			array('onEndingSpecExecute'),
-			array('onEndingSpecExecuteBefore'),
-			array('onEndingSpecExecuteAfter'),
-		);
-	}
-
-	/**
-	 * @dataProvider providerAllEvents
-	 */
-	public function testEventDispatch_Events_DispatchesSameEventsInSequenceSpecifiedByOrderValue($testEventName) {
-		\spectrum\tests\automatic\Test::$temp["result"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 20;', $testEventName, 20);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 30;', $testEventName, 30);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 10;', $testEventName, 10);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 50;', $testEventName, 50);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 40;', $testEventName, 40);
-		
-		$spec = new Spec();
-		$spec->run();
-		
-		$this->assertSame(array(10, 20, 30, 40, 50), \spectrum\tests\automatic\Test::$temp["result"]);
-	}
-	
-	/**
-	 * @dataProvider providerAllEvents
-	 */
-	public function testEventDispatch_Events_DispatchesSameEventsWithSameOrderValueInRegistrationSequence($testEventName) {
-		\spectrum\tests\automatic\Test::$temp["result"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 1;', $testEventName, 10);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 2;', $testEventName, 10);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 3;', $testEventName, 10);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 4;', $testEventName, 10);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["result"][] = 5;', $testEventName, 10);
-		
-		$spec = new Spec();
-		$spec->run();
-		
-		$this->assertSame(array(1, 2, 3, 4, 5), \spectrum\tests\automatic\Test::$temp["result"]);
+		), $dispatchedEvents);
 	}
 	
 /**/
 	
-	public function testEventDispatch_Events_OnSpecConstruct_IsDispatchedOnSpecInstanceCreation() {
-		\spectrum\tests\automatic\Test::$temp["createdSpecs"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["createdSpecs"][] = $this->getOwnerSpec();', 'onSpecConstruct');
-		$specs = array(new Spec(), new Spec(), new Spec());
-		$this->assertSame($specs, \spectrum\tests\automatic\Test::$temp["createdSpecs"]);
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunBefore_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onRootSpecRunBefore');
 	}
 	
-	public function testEventDispatch_Events_OnSpecConstruct_DoesNotPassArgumentsToCalleeMethod() {
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["passedArguments"][] = func_get_args();', 'onSpecConstruct');
-		new Spec();
-		new Spec();
-		$this->assertSame(array(array(), array()), \spectrum\tests\automatic\Test::$temp["passedArguments"]);
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunBefore_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onRootSpecRunBefore');
 	}
 	
-/**/
-	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedOnRunOfRootSpecOnly() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunBefore_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onRootSpecRunBefore', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
 		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunBefore');
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		
+		$this->assertSame(array(array($specs[0])), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunBefore_IsDispatchedOnRootSpecRunOnly() {
+		$runSpecs = array();
+		config::registerEventListener('onRootSpecRunBefore', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3218,13 +3134,14 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array($specs[0]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[0]), $runSpecs);
 	}
 	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_DoesNotPassArgumentsToCalleeMethod() {
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunBefore');
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunBefore_IsDispatchedWhenRunningFlagIsDisabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onRootSpecRunBefore', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3232,43 +3149,39 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array(array()), \spectrum\tests\automatic\Test::$temp["passedArguments"]);
-	}
-	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedBeforeRunningFlagEnable() {
-		\spectrum\tests\automatic\Test::$temp["isRunningCallResults"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunBefore');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array(false), \spectrum\tests\automatic\Test::$temp["isRunningCallResults"]);
-	}
-	
-	public function testEventDispatch_Events_OnRootSpecRunBefore_IsDispatchedBeforeResultBufferCreate() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunBefore');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array(null), \spectrum\tests\automatic\Test::$temp["resultBuffers"]);
+		$this->assertSame(array(false), $isRunningCallResults);
 	}
 
 /**/
 	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedOnRunOfRootSpecOnly() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunAfter_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onRootSpecRunAfter');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunAfter_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onRootSpecRunAfter');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunAfter_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onRootSpecRunAfter', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
 		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onRootSpecRunAfter');
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array(array($specs[0])), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunAfter_IsDispatchedOnRootSpecRunOnly() {
+		$runSpecs = array();
+		config::registerEventListener('onRootSpecRunAfter', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3277,13 +3190,14 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array($specs[0]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[0]), $runSpecs);
 	}
-	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_DoesNotPassArgumentsToCalleeMethod() {
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["passedArguments"][] = func_get_args();', 'onRootSpecRunAfter');
+
+	public function testRun_RootSpecRun_EventDispatch_OnRootSpecRunAfter_IsDispatchedWhenRunningFlagIsDisabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onRootSpecRunAfter', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3291,47 +3205,39 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array(array()), \spectrum\tests\automatic\Test::$temp["passedArguments"]);
-	}
-	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedAfterRunningFlagDisabled() {
-		\spectrum\tests\automatic\Test::$temp["isRunningCallResults"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onRootSpecRunAfter');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array(false), \spectrum\tests\automatic\Test::$temp["isRunningCallResults"]);
-	}
-	
-	public function testEventDispatch_Events_OnRootSpecRunAfter_IsDispatchedBeforeResultBufferLinkUnset() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onRootSpecRunAfter');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
-		
-		$this->assertInstanceOf('\spectrum\core\ResultBufferInterface', \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]);
-		$this->assertSame($specs[0], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getOwnerSpec());
+		$this->assertSame(array(false), $isRunningCallResults);
 	}
 	
 /**/
 	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedOnRunOfEverySpecs() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunBefore_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onSpecRunBefore');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunBefore_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onSpecRunBefore');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunBefore_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onSpecRunBefore', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
 		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array(array($specs[0]), array($specs[1])), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunBefore_IsDispatchedOnEverySpecRun() {
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunBefore', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3341,13 +3247,14 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3]), $runSpecs);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunStart_DoesNotPassArgumentsToCalleeMethod() {
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["passedArguments"][] = func_get_args();');
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunBefore_IsDispatchedWhenRunningFlagIsDisabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onSpecRunBefore', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3355,58 +3262,39 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array(array(), array()), \spectrum\tests\automatic\Test::$temp["passedArguments"]);
-	}
-	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedAfterRunningFlagEnable() {
-		\spectrum\tests\automatic\Test::$temp["isRunningCallResults"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array(true, true), \spectrum\tests\automatic\Test::$temp["isRunningCallResults"]);
-	}
-	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedBeforeChildSpecRun() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array($specs[0], $specs[1], $specs[2]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
-	}
-	
-	public function testEventDispatch_Events_OnSpecRunStart_IsDispatchedBeforeResultBufferCreate() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array(null, null), \spectrum\tests\automatic\Test::$temp["resultBuffers"]);
+		$this->assertSame(array(false, false), $isRunningCallResults);
 	}
 	
 /**/
 	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedOnRunOfEverySpecs() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunAfter_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onSpecRunAfter');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunAfter_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onSpecRunAfter');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunAfter_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onSpecRunAfter', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
 		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array(array($specs[1]), array($specs[0])), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunAfter_IsDispatchedOnEverySpecRun() {
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunAfter', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3416,13 +3304,14 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array($specs[2], $specs[1], $specs[3], $specs[0]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[2], $specs[1], $specs[3], $specs[0]), $runSpecs);
 	}
 	
-	public function testEventDispatch_Events_OnSpecRunFinish_DoesNotPassArgumentsToCalleeMethod() {
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["passedArguments"][] = func_get_args();', 'onSpecRunFinish');
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunAfter_IsDispatchedWhenRunningFlagIsDisabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onSpecRunAfter', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3430,76 +3319,182 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array(array(), array()), \spectrum\tests\automatic\Test::$temp["passedArguments"]);
-	}
-	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedBeforeRunningFlagDisable() {
-		\spectrum\tests\automatic\Test::$temp["isRunningCallResults"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', 'onSpecRunFinish');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array(true, true), \spectrum\tests\automatic\Test::$temp["isRunningCallResults"]);
-	}
-	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedAfterChildSpecsRun() {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', 'onSpecRunFinish');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		$this->assertSame(array($specs[1], $specs[2], $specs[0]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
-	}
-	
-	public function testEventDispatch_Events_OnSpecRunFinish_IsDispatchedBeforeResultBufferLinkUnset() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', 'onSpecRunFinish');
-		
-		$specs = $this->createSpecsByListPattern('
-			Spec
-			->Spec
-		');
-		
-		$specs[0]->run();
-		
-		$this->assertSame(2, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
-		
-		$this->assertInstanceOf('\spectrum\core\ResultBufferInterface', \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]);
-		$this->assertSame($specs[1], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getOwnerSpec());
-		
-		$this->assertInstanceOf('\spectrum\core\ResultBufferInterface', \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]);
-		$this->assertSame($specs[0], \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]->getOwnerSpec());
+		$this->assertSame(array(false, false), $isRunningCallResults);
 	}
 	
 /**/
 	
-	public function providerEndingSpecExecuteEvents() {
-		return array(
-			array('onEndingSpecExecuteBefore'),
-			array('onEndingSpecExecute'),
-			array('onEndingSpecExecuteAfter'),
-		);
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunStart_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onSpecRunStart');
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedOnExecuteOfEndingSpecsOnly($eventName) {
-		\spectrum\tests\automatic\Test::$temp["runSpecs"] = array();
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunStart_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onSpecRunStart');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunStart_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onSpecRunStart', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
 		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["runSpecs"][] = $this->getOwnerSpec();', $eventName);
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array(array($specs[0]), array($specs[1])), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunStart_IsDispatchedOnEverySpecRun() {
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->->Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array($specs[0], $specs[1], $specs[2], $specs[3]), $runSpecs);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunStart_IsDispatchedWhenRunningFlagIsEnabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array(true, true), $isRunningCallResults);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunStart_IsDispatchedBeforeChildSpecRun() {
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array($specs[0], $specs[1], $specs[2]), $runSpecs);
+	}
+	
+/**/
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunFinish_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onSpecRunFinish');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunFinish_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onSpecRunFinish');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunFinish_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onSpecRunFinish', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array(array($specs[1]), array($specs[0])), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunFinish_IsDispatchedOnEverySpecRun() {
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->->Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array($specs[2], $specs[1], $specs[3], $specs[0]), $runSpecs);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunFinish_IsDispatchedWhenRunningFlagIsEnabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array(true, true), $isRunningCallResults);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnSpecRunFinish_IsDispatchedAfterChildSpecsRun() {
+		$runSpecs = array();
+		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array($specs[1], $specs[2], $specs[0]), $runSpecs);
+	}
+	
+/**/
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onEndingSpecExecuteBefore');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onEndingSpecExecuteBefore');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(array(array($spec)), $passedArguments);
+	}
+		
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_IsDispatchedOnEndingSpecExecuteOnly() {
+		$runSpecs = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
 		
 		$specs = $this->createSpecsByListPattern('
 			Spec
@@ -3511,173 +3506,440 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		$specs[0]->run();
-		$this->assertSame(array($specs[2], $specs[3], $specs[4], $specs[5]), \spectrum\tests\automatic\Test::$temp["runSpecs"]);
+		$this->assertSame(array($specs[2], $specs[3], $specs[4], $specs[5]), $runSpecs);
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotPassArgumentsToCalleeMethod($eventName) {
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["passedArguments"][] = func_get_args();', $eventName);
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_IsDispatchedWhenRunningFlagIsEnabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
 		
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame(array(array()), \spectrum\tests\automatic\Test::$temp["passedArguments"]);
+		$this->assertSame(array(true), $isRunningCallResults);
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedAfterRunningFlagEnable($eventName) {
-		\spectrum\tests\automatic\Test::$temp["isRunningCallResults"] = array();
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CatchesExceptionsAndAddsItToResultBufferAsFail() {
+		$thrownExceptions = array();
+		$resultBuffers = array();
 		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["isRunningCallResults"][] = $this->getOwnerSpec()->isRunning();', $eventName);
-		
-		$spec = new Spec();
-		$spec->run();
-		
-		$this->assertSame(array(true), \spectrum\tests\automatic\Test::$temp["isRunningCallResults"]);
-	}
-	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_IsDispatchedAfterResultBufferCreate($eventName) {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();', $eventName);
-		
-		$spec = new Spec();
-		$spec->run();
-		
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
-		$this->assertInstanceOf('\spectrum\core\ResultBufferInterface', \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]);
-	}
-	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_CatchesExceptionsAndAddsItToResultBufferAsFail($eventName) {
-		\spectrum\tests\automatic\Test::$temp["thrownExceptions"] = array();
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
 			$e = new \Exception("aaa");
-			\spectrum\tests\automatic\Test::$temp["thrownExceptions"][] = $e;
-			\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
+			$thrownExceptions[] = $e;
+			$resultBuffers[] = $spec->getResultBuffer();
 			
 			throw $e;
-		', $eventName);
+		});
 		
 				$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["thrownExceptions"]));
+		$this->assertSame(1, count($thrownExceptions));
 		
-		$results = \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getResults();
+		$results = $resultBuffers[0]->getResults();
 		$this->assertSame(array(
-			array('result' => false, 'details' => \spectrum\tests\automatic\Test::$temp["thrownExceptions"][0]),
+			array('result' => false, 'details' => $thrownExceptions[0]),
 		), $results);
 		
 		$this->assertSame('aaa', $results[0]['details']->getMessage());
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_CatchesBreakExceptionAndDoesNotAddResultsToResultBuffer($eventName) {
-		\spectrum\tests\automatic\Test::$temp["thrownExceptions"] = array();
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CatchesBreakExceptionAndDoesNotAddResultToResultBuffer() {
+		$thrownExceptions = array();
+		$resultBuffers = array();
 		
-		$this->registerPluginWithCodeInEvent('
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
 			$e = new \spectrum\core\BreakException();
-			\spectrum\tests\automatic\Test::$temp["thrownExceptions"][] = $e;
-			\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
+			$thrownExceptions[] = $e;
+			$resultBuffers[] = $spec->getResultBuffer();
+			throw $e;
+		});
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(1, count($thrownExceptions));
+		$this->assertSame(array(), $resultBuffers[0]->getResults());
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_DoesNotBreakOtherEventListenersByException() {
+		$calls = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$calls) { $calls[] = 1; throw new \Exception(); }, 10);
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$calls) { $calls[] = 2; throw new \Exception(); }, 20);
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$calls) { $calls[] = 3; throw new \Exception(); }, 30);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(array(1, 2, 3), $calls);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_DoesNotBreakOtherEventListenersByBreakException() {
+		$calls = array();
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$calls) { $calls[] = 1; throw new \spectrum\core\BreakException(); }, 10);
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$calls) { $calls[] = 2; throw new \spectrum\core\BreakException(); }, 20);
+		config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$calls) { $calls[] = 3; throw new \spectrum\core\BreakException(); }, 30);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(array(1, 2, 3), $calls);
+	}
+	
+/**/
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CallsEventListenersInSpecifiedSequence() {
+		$this->patternCallsEventListenersInSpecifiedSequence('onEndingSpecExecuteAfter');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CallsEventListenersWithSameOrderInRegistrationSequence() {
+		$this->patternCallsEventListenersWithSameOrderInRegistrationSequence('onEndingSpecExecuteAfter');
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_PassesSpecToEventListeners() {
+		$passedArguments = array();
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$passedArguments) {
+			$passedArguments[] = func_get_args();
+		});
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(array(array($spec)), $passedArguments);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_IsDispatchedOnEndingSpecExecuteOnly() {
+		$runSpecs = array();
+		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$runSpecs) {
+			$runSpecs[] = $spec;
+		});
+		
+		$specs = $this->createSpecsByListPattern('
+			Spec
+			->Spec
+			->->Spec
+			->->Spec
+			->Spec
+			->Spec
+		');
+		
+		$specs[0]->run();
+		$this->assertSame(array($specs[2], $specs[3], $specs[4], $specs[5]), $runSpecs);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_IsDispatchedWhenRunningFlagIsEnabled() {
+		$isRunningCallResults = array();
+		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$isRunningCallResults) {
+			$isRunningCallResults[] = $spec->isRunning();
+		});
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(array(true), $isRunningCallResults);
+	}
+	
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CatchesExceptionsAndAddsItToResultBufferAsFail() {
+		$thrownExceptions = array();
+		$resultBuffers = array();
+		
+		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
+			$e = new \Exception("aaa");
+			$thrownExceptions[] = $e;
+			$resultBuffers[] = $spec->getResultBuffer();
 			
 			throw $e;
-		', $eventName);
+		});
 		
-		$spec = new Spec();
+				$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["thrownExceptions"]));
-		$this->assertSame(array(), \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getResults());
+		$this->assertSame(1, count($thrownExceptions));
+		
+		$results = $resultBuffers[0]->getResults();
+		$this->assertSame(array(
+			array('result' => false, 'details' => $thrownExceptions[0]),
+		), $results);
+		
+		$this->assertSame('aaa', $results[0]['details']->getMessage());
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByException($testEventName) {
-		$this->registerPluginWithCodeInEvent('throw new \Exception("aaa");', $testEventName);
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CatchesBreakExceptionAndDoesNotAddResultToResultBuffer() {
+		$thrownExceptions = array();
+		$resultBuffers = array();
 		
-		\spectrum\tests\automatic\Test::$temp["calledEvents"] = array();
-		
-		$otherEvents = array('onEndingSpecExecuteBefore', 'onEndingSpecExecute', 'onEndingSpecExecuteAfter');
-		unset($otherEvents[array_search($testEventName, $otherEvents)]);
-		$otherEvents = array_values($otherEvents);
-		
-		foreach ($otherEvents as $otherEventName) {
-			$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledEvents"][] = "' . $otherEventName . '";', $otherEventName);
-		}
+		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
+			$e = new \spectrum\core\BreakException();
+			$thrownExceptions[] = $e;
+			$resultBuffers[] = $spec->getResultBuffer();
+			throw $e;
+		});
 		
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame($otherEvents, \spectrum\tests\automatic\Test::$temp["calledEvents"]);
+		$this->assertSame(1, count($thrownExceptions));
+		$this->assertSame(array(), $resultBuffers[0]->getResults());
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherEventsByBreakException($testEventName) {
-		$this->registerPluginWithCodeInEvent('throw new \spectrum\core\BreakException();', $testEventName);
-		
-		\spectrum\tests\automatic\Test::$temp["calledEvents"] = array();
-		
-		$otherEvents = array('onEndingSpecExecuteBefore', 'onEndingSpecExecute', 'onEndingSpecExecuteAfter');
-		unset($otherEvents[array_search($testEventName, $otherEvents)]);
-		$otherEvents = array_values($otherEvents);
-		
-		foreach ($otherEvents as $otherEventName) {
-			$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledEvents"][] = "' . $otherEventName . '";', $otherEventName);
-		}
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_DoesNotBreakOtherEventListenersByException() {
+		$calls = array();
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$calls) { $calls[] = 1; throw new \Exception(); }, 10);
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$calls) { $calls[] = 2; throw new \Exception(); }, 20);
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$calls) { $calls[] = 3; throw new \Exception(); }, 30);
 		
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame($otherEvents, \spectrum\tests\automatic\Test::$temp["calledEvents"]);
+		$this->assertSame(array(1, 2, 3), $calls);
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherPluginsInSameEventByException($testEventName) {
-		\spectrum\tests\automatic\Test::$temp["calledPlugins"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledPlugins"][] = 1; throw new \Exception();', $testEventName, 10);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledPlugins"][] = 2; throw new \Exception();', $testEventName, 20);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledPlugins"][] = 3; throw new \Exception();', $testEventName, 30);
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_DoesNotBreakOtherEventListenersByBreakException() {
+		$calls = array();
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$calls) { $calls[] = 1; throw new \spectrum\core\BreakException(); }, 10);
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$calls) { $calls[] = 2; throw new \spectrum\core\BreakException(); }, 20);
+		config::registerEventListener('onEndingSpecExecuteAfter', function() use(&$calls) { $calls[] = 3; throw new \spectrum\core\BreakException(); }, 30);
 		
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame(array(1, 2, 3), \spectrum\tests\automatic\Test::$temp["calledPlugins"]);
+		$this->assertSame(array(1, 2, 3), $calls);
 	}
 	
-	/**
-	 * @dataProvider providerEndingSpecExecuteEvents
-	 */
-	public function testEventDispatch_Events_EndingSpecExecuteEvents_DoesNotBreakOtherPluginsInSameEventByBreakException($testEventName) {
-		\spectrum\tests\automatic\Test::$temp["calledPlugins"] = array();
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledPlugins"][] = 1; throw new \spectrum\core\BreakException();', $testEventName, 10);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledPlugins"][] = 2; throw new \spectrum\core\BreakException();', $testEventName, 20);
-		$this->registerPluginWithCodeInEvent('\spectrum\tests\automatic\Test::$temp["calledPlugins"][] = 3; throw new \spectrum\core\BreakException();', $testEventName, 30);
+/**/
+	
+	public function testRun_RootSpecRun_Reports_OutputFormatIsHtml_AllowsOutputDataBuffering() {
+		ob_start(function($buffer) use(&$html) {
+			$html .= $buffer;
+			return ''; 
+		});
+		
+		config::setOutputFormat('html');
+		$spec = new Spec();
+		$spec->getTest()->setFunction(function() { throw new \Exception('<>&"\''); });
+		$spec->run();
+		
+		ob_end_clean();
+		
+		$this->assertNotEquals('', $html);
+		$this->assertContains('<html', $html);
+		$this->assertContains('<body', $html);
+		$this->assertContains('</body>', $html);
+		$this->assertContains('</html>', $html);
+	}
+	
+	public function testRun_RootSpecRun_Reports_OutputFormatIsHtml_GeneratesValidXhtml1StrictCode() {
+		ob_start(function($buffer) use(&$html) {
+			$html .= $buffer;
+			return ''; 
+		});
+		
+		config::setOutputFormat('html');
+		config::setOutputIndention("\t");
+		config::setOutputNewline("\r\n");
+		
+		$groupSpec = new Spec();
+		
+		// Tests for generating data by test
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getMatchers()->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
+		$spec->getTest()->setFunction(function() use($spec) {
+			$assert = new Assertion($spec, null);
+			$assert->__call('<>&"\'');
+		});
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getMatchers()->add('<>&"\'', function(){ return '<>&"\''; });
+		$spec->getTest()->setFunction(function() use($spec) {
+			$object = new \stdClass();
+			$object->{'<>&"\''} = '<>&"\'';
+			$object->aaa = array('<>&"\'' => '<>&"\'');
+			
+			$assert = new Assertion($spec, '<>&"\'');
+			$assert->__call('<>&"\'', array(
+				'<>&"\'',
+				array('<>&"\'' => '<>&"\''),
+				$object,
+			));
+		});
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){ throw new \Exception('<>&"\''); });
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getErrorHandling()->setCatchPhpErrors(true);
+		$spec->getTest()->setFunction(function(){ trigger_error('<>&"\''); });
+		
+		// Tests for generating data by context modifiers with "before" type
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getMatchers()->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
+		$spec->getContextModifiers()->add(function() use($spec) {
+			$assert = new Assertion($spec, null);
+			$assert->__call('<>&"\'');
+		}, 'before');
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getMatchers()->add('<>&"\'', function(){ return '<>&"\''; });
+		$spec->getContextModifiers()->add(function() use($spec) {
+			$object = new \stdClass();
+			$object->{'<>&"\''} = '<>&"\'';
+			$object->aaa = array('<>&"\'' => '<>&"\'');
+			
+			$assert = new Assertion($spec, '<>&"\'');
+			$assert->__call('<>&"\'', array(
+				'<>&"\'',
+				array('<>&"\'' => '<>&"\''),
+				$object,
+			));
+		}, 'before');
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getContextModifiers()->add(function(){ throw new \Exception('<>&"\''); }, 'before');
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getErrorHandling()->setCatchPhpErrors(true);
+		$spec->getContextModifiers()->add(function(){ trigger_error('<>&"\''); }, 'before');
+		
+		// Tests for generating data by context modifiers with "after" type
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getMatchers()->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
+		$spec->getContextModifiers()->add(function() use($spec){
+			$assert = new Assertion($spec, null);
+			$assert->__call('<>&"\'');
+		}, 'after');
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getMatchers()->add('<>&"\'', function(){ return '<>&"\''; });
+		$spec->getContextModifiers()->add(function() use($spec){
+			$object = new \stdClass();
+			$object->{'<>&"\''} = '<>&"\'';
+			$object->aaa = array('<>&"\'' => '<>&"\'');
+			
+			$assert = new Assertion($spec, '<>&"\'');
+			$assert->__call('<>&"\'', array(
+				'<>&"\'',
+				array('<>&"\'' => '<>&"\''),
+				$object,
+			));
+		}, 'after');
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getContextModifiers()->add(function(){ throw new \Exception('<>&"\''); }, 'after');
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function(){});
+		$spec->getErrorHandling()->setCatchPhpErrors(true);
+		$spec->getContextModifiers()->add(function(){ trigger_error('<>&"\''); }, 'after');
+		
+		// Tests for generating data by "\spectrum\core\details\*" classes
+		
+		$spec = new Spec();
+		$spec->bindParentSpec($groupSpec);
+		$spec->getTest()->setFunction(function() use($spec){
+			$details = new \spectrum\core\details\MatcherCall();
+			$details->setTestedValue('<>&"\'');
+			$details->setNot('<>&"\'');
+			$details->setResult('<>&"\'');
+			$details->setMatcherName('<>&"\'');
+			$details->setMatcherArguments(array('<>&"\'', '<>&"\'', '<>&"\''));
+			$details->setMatcherReturnValue('<>&"\'');
+			$details->setMatcherException('<>&"\'');
+			$details->setFile('<>&"\'');
+			$details->setLine('<>&"\'');
+			$spec->getResultBuffer()->addResult(false, $details);
+			
+			$spec->getResultBuffer()->addResult(false, new \spectrum\core\details\PhpError('<>&"\'', '<>&"\'', '<>&"\'', '<>&"\''));
+			$spec->getResultBuffer()->addResult(false, new \spectrum\core\details\UserFail('<>&"\''));
+		});
+		
+		// Tests for "id" attribute uniqueness
+		
+		$spec1 = new Spec();
+		$spec1->bindParentSpec($groupSpec);
+		
+		$spec2 = new Spec();
+		$spec2->bindParentSpec($groupSpec);
+		
+		$spec3 = new Spec();
+		$spec3->bindParentSpec($spec1);
+		$spec3->bindParentSpec($spec2);
+		$spec3->getTest()->setFunction(function(){});
+		
+		//
+		
+		$groupSpec->run();
+		
+		ob_end_clean();
+		
+		libxml_clear_errors();
+		$domDocument = new \DOMDocument();
+		
+		$this->assertNotEquals('', $html);
+		$this->assertTrue($domDocument->loadHTML($html));
+		$this->assertTrue($domDocument->loadXML($html));
+		$this->assertTrue($domDocument->schemaValidate(__DIR__ . '/../../_testware/xhtml1-strict.xsd'));
+		$this->assertSame(array(), libxml_get_errors());
+	}
+	
+	public function testRun_RootSpecRun_Reports_OutputFormatIsNotSupported_ThrowsException() {
+		config::setOutputFormat('aaa');
+		$spec = new Spec();
+		$this->assertThrowsException('\spectrum\Exception', 'Output format "aaa" is not supported', function() use($spec) {
+			$spec->run();
+		});
+	}
+	
+/**/
+	
+	public function patternCallsEventListenersInSpecifiedSequence($testEventName) {
+		$result = array();
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 20; }, 20);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 30; }, 30);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 10; }, 10);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 50; }, 50);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 40; }, 40);
 		
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame(array(1, 2, 3), \spectrum\tests\automatic\Test::$temp["calledPlugins"]);
+		$this->assertSame(array(10, 20, 30, 40, 50), $result);
+	}
+	
+	public function patternCallsEventListenersWithSameOrderInRegistrationSequence($testEventName) {
+		$result = array();
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 1; }, 10);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 2; }, 10);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 3; }, 10);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 4; }, 10);
+		config::registerEventListener($testEventName, function() use(&$result) { $result[] = 5; }, 10);
+		
+		$spec = new Spec();
+		$spec->run();
+		
+		$this->assertSame(array(1, 2, 3, 4, 5), $result);
 	}
 }

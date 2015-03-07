@@ -8,6 +8,7 @@ namespace spectrum\tests\automatic;
 
 use spectrum\config;
 use spectrum\core\Spec;
+use spectrum\core\SpecInterface;
 
 require_once __DIR__ . '/../init.php';
 
@@ -25,20 +26,19 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		
 		$this->backupObjectProperties(\spectrum\_internals\getRootSpec());
 		$this->backupClassStaticProperties('\spectrum\config');
-		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
-		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\code\variable');
-		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\specList');
-		$this->backupClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\code\variable');
+		$this->backupClassStaticProperties('\spectrum\_internals\reports\html\components\specList');
+		$this->backupClassStaticProperties('\spectrum\_internals\reports\html\components\code\variable');
+		$this->backupClassStaticProperties('\spectrum\_internals\reports\text\components\specList');
+		$this->backupClassStaticProperties('\spectrum\_internals\reports\text\components\code\variable');
 		
-		config::unregisterSpecPlugins('\spectrum\core\plugins\reports\Reports');
 		\spectrum\tests\automatic\Test::$temp = null;
 	}
 	
 	protected function tearDown() {
-		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\code\variable');
-		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\text\components\specList');
-		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\code\variable');
-		$this->restoreClassStaticProperties('\spectrum\core\plugins\reports\drivers\html\components\specList');
+		$this->restoreClassStaticProperties('\spectrum\_internals\reports\text\components\code\variable');
+		$this->restoreClassStaticProperties('\spectrum\_internals\reports\text\components\specList');
+		$this->restoreClassStaticProperties('\spectrum\_internals\reports\html\components\code\variable');
+		$this->restoreClassStaticProperties('\spectrum\_internals\reports\html\components\specList');
 		$this->restoreClassStaticProperties('\spectrum\config');
 		$this->restoreObjectProperties(\spectrum\_internals\getRootSpec());
 
@@ -62,6 +62,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 	}
 	
 	final protected function backupObjectProperties($object) {
+		var_dump(serialize($object));
 		$this->objectPropertyBackups[spl_object_hash($object)] = serialize($object);
 	}
 
@@ -94,6 +95,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		}
 		
 		return $newArray;
+	}
+	
+	final protected function getLastErrorHandler() {
+		$lastErrorHandler = set_error_handler(function($errorSeverity, $errorMessage){});
+		restore_error_handler();
+		return $lastErrorHandler;
 	}
 
 	/**
@@ -128,25 +135,6 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		eval($code);
 		return '\\' . $namespace . '\\' . $className;
 	}
-	
-	final protected function registerPluginWithCodeInEvent($code, $eventName = 'onSpecRunStart', $order = 100) {
-		$pluginClassName = $this->createClass('
-			class ... extends \spectrum\core\plugins\Plugin {
-				static public function getEventListeners() {
-					return array(
-						array("event" => "' . $eventName . '", "method" => "' . $eventName . '", "order" => ' . $order . '),
-					);
-				}
-				
-				public function ' . $eventName . '() {
-					' . $code . '
-				}
-			}
-		');
-		
-		\spectrum\config::registerSpecPlugin($pluginClassName);
-		return $pluginClassName;
-	}
 
 	/**
 	 * @param null|\Closure $callback
@@ -171,6 +159,8 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 				
 				return null;
 			}
+			
+			throw $e;
 		}
 
 		$this->fail('Exception "' . $expectedClass . '" not thrown');
@@ -370,8 +360,10 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 	 * 5   6  7
 	 * 
 	 * See "self::providerCreateSpecsByVisualPattern" method for more examples.
+	 * 
+	 * @return SpecInterface[]
 	 */
-	final protected function createSpecsByVisualPattern($pattern, array $additionalRelations = array()) {
+	final protected function createSpecsByVisualPattern($pattern, array $additionalRelations = array(), $specClass = '\spectrum\core\Spec') {
 		$specs = array();
 		$lines = preg_split('/[\r\n]+/s', trim($pattern));
 		
@@ -390,7 +382,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 					throw new \Exception('Duplicate name is present on line ' . ($lineIndex + 1));
 				}
 
-				$specs[$elementName] = new Spec();
+				$specs[$elementName] = new $specClass();
 			}
 			
 			$lines[$lineIndex] = $elements;
@@ -509,7 +501,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 	 *                          5 => array('zzz'),
 	 *                      );
 	 * 
-	 * @return array
+	 * @return SpecInterface[]
 	 */
 	final protected function createSpecsByListPattern($pattern, array $additionalRelations = array()) {
 		$pattern = trim($pattern);

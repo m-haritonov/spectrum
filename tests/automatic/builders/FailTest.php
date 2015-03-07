@@ -7,6 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\tests\automatic\builders;
 
 use spectrum\config;
+use spectrum\core\SpecInterface;
 
 require_once __DIR__ . '/../../init.php';
 
@@ -15,31 +16,20 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		$userFailDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\UserFail {}');
 		config::setClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
 
-		\spectrum\tests\automatic\Test::$temp["resultBuffer"] = null;
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["resultBuffer"] = $this->getOwnerSpec()->getResultBuffer();
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$resultBuffer) {
+			$resultBuffer = $spec->getResultBuffer();
 			\spectrum\builders\fail("some fail message");
-		', 'onEndingSpecExecute');
+		});
 		
 		\spectrum\_internals\getRootSpec()->run();
 		
-		$results = \spectrum\tests\automatic\Test::$temp["resultBuffer"]->getResults();
+		$results = $resultBuffer->getResults();
 		$this->assertInstanceOf($userFailDetailsClassName, $results[0]['details']);
 		$this->assertSame('some fail message', $results[0]['details']->getMessage());
 	}
 	
 	public function testCallsAtRunningState_AddsFalseResultWithUserFailDetailsAndPassedMessageToResultBufferOfCurrentRunningSpec() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
-			
-			$selfSpecKey = array_search($this->getOwnerSpec(), \spectrum\tests\automatic\Test::$temp["specs"], true);
-			$parentSpecKey = array_search($this->getOwnerSpec()->getRunningParentSpec(), \spectrum\tests\automatic\Test::$temp["specs"], true);
-			\spectrum\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
-		', 'onEndingSpecExecute');
-		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		$specs = $this->createSpecsByListPattern('
 			Spec
 			->Spec(ending1)
 			->Spec(parent1)
@@ -47,24 +37,33 @@ class FailTest extends \spectrum\tests\automatic\Test {
 			->->Spec(ending2)
 		', array('parent1' => 'ending2'));
 		
-		\spectrum\_internals\getRootSpec()->bindChildSpec(\spectrum\tests\automatic\Test::$temp["specs"][0]);
+		$resultBuffers = array();
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$resultBuffers, $specs) {
+			$resultBuffers[] = $spec->getResultBuffer();
+			
+			$selfSpecKey = array_search($spec, $specs, true);
+			$parentSpecKey = array_search($spec->getRunningParentSpec(), $specs, true);
+			\spectrum\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
+		});
+		
+		\spectrum\_internals\getRootSpec()->bindChildSpec($specs[0]);
 		\spectrum\_internals\getRootSpec()->run();
 
-		$this->assertSame(3, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
+		$this->assertSame(3, count($resultBuffers));
 		
-		$results = \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getResults();
+		$results = $resultBuffers[0]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
 		$this->assertInstanceOf('\spectrum\core\details\UserFail', $results[0]['details']);
 		$this->assertSame('some fail message for spec ending1 of spec 0', $results[0]['details']->getMessage());
 		
-		$results = \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]->getResults();
+		$results = $resultBuffers[1]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
 		$this->assertInstanceOf('\spectrum\core\details\UserFail', $results[0]['details']);
 		$this->assertSame('some fail message for spec ending2 of spec parent1', $results[0]['details']->getMessage());
 		
-		$results = \spectrum\tests\automatic\Test::$temp["resultBuffers"][2]->getResults();
+		$results = $resultBuffers[2]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
 		$this->assertInstanceOf('\spectrum\core\details\UserFail', $results[0]['details']);
@@ -72,18 +71,17 @@ class FailTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_MessageIsNotSet_AddsFalseResultWithUserFailDetailsAndEmptyMessageToResultBufferOfCurrentRunningSpec() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this->getOwnerSpec()->getResultBuffer();
+		$resultBuffers = array();
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$resultBuffers) {
+			$resultBuffers[] = $spec->getResultBuffer();
 			\spectrum\builders\fail();
-		', 'onEndingSpecExecute');
+		});
 		
 		\spectrum\_internals\getRootSpec()->run();
 
-		$this->assertSame(1, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
+		$this->assertSame(1, count($resultBuffers));
 		
-		$results = \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]->getResults();
+		$results = $resultBuffers[0]->getResults();
 		$this->assertSame(1, count($results));
 		$this->assertSame(false, $results[0]['result']);
 		$this->assertInstanceOf('\spectrum\core\details\UserFail', $results[0]['details']);

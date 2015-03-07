@@ -11,13 +11,6 @@ use spectrum\config;
 require_once __DIR__ . '/../init.php';
 
 class ConfigTest extends Test {
-	public function setUp() {
-		parent::setUp();
-		config::unregisterSpecPlugins();
-	}
-
-/**/
-
 	public function testSetInputCharset_SetsNewValue() {
 		config::setInputCharset('windows-1251');
 		$this->assertSame('windows-1251', config::getInputCharset());
@@ -336,30 +329,30 @@ class ConfigTest extends Test {
 	}
 
 	public function testSetClassReplacement_ClassHasNoInterface_NewClassDoesNotImplementInterface_SetsNewClass() {
-		config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\aaa');
-		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html'));
+		config::setClassReplacement('\spectrum\_internals\reports\html\driver', '\aaa');
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\_internals\reports\html\driver'));
 	}
 	
 	public function testSetClassReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue() {
-		config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\aaa');
+		config::setClassReplacement('\spectrum\_internals\reports\html\driver', '\aaa');
 		config::lock();
 
 		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
-			config::setClassReplacement('\spectrum\core\plugins\reports\drivers\html\html', '\bbb');
+			config::setClassReplacement('\spectrum\_internals\reports\html\driver', '\bbb');
 		});
 
-		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html'));
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\_internals\reports\html\driver'));
 	}
 	
 /**/
 	
 	public function testGetClassReplacement_ReturnsSpectrumClassByDefault() {
-		$this->assertSame('\spectrum\core\plugins\reports\drivers\html\html', config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html'));
+		$this->assertSame('\spectrum\_internals\reports\html\driver', config::getClassReplacement('\spectrum\_internals\reports\html\driver'));
 	}
 	
 	public function testGetClassReplacement_ConfigIsLocked_DoesNotThrowException() {
 		config::lock();
-		config::getClassReplacement('\spectrum\core\plugins\reports\drivers\html\html');
+		config::getClassReplacement('\spectrum\_internals\reports\html\driver');
 	}
 	
 /**/
@@ -392,807 +385,330 @@ class ConfigTest extends Test {
 	}
 	
 /**/
-
-	public function testRegisterSpecPlugin_AddsPluginClassToRegisteredPlugins() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+	
+	public function testRegisterEventListener_AddsEventListenerToRegisteredEventListeners() {
+		config::unregisterEventListeners();
 		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+		$function1 = function(){};
+		$function2 = function(){};
+		$function3 = function(){};
 		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		$this->assertSame(array($className1), config::getRegisteredSpecPlugins());
+		config::registerEventListener('onSpecRunStart', $function1, 110);
+		$this->assertSame(array(
+			array('event' => 'onSpecRunStart', 'callback' => $function1, 'order' => 110),
+		), config::getRegisteredEventListeners());
 		
-		config::registerSpecPlugin($className2);
-		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
+		config::registerEventListener('onSpecRunFinish', $function2, 120);
+		$this->assertSame(array(
+			array('event' => 'onSpecRunStart', 'callback' => $function1, 'order' => 110),
+			array('event' => 'onSpecRunFinish', 'callback' => $function2, 'order' => 120),
+		), config::getRegisteredEventListeners());
 		
-		config::registerSpecPlugin($className3);
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
+		config::registerEventListener('onEndingSpecExecuteBefore', $function3, 130);
+		$this->assertSame(array(
+			array('event' => 'onSpecRunStart', 'callback' => $function1, 'order' => 110),
+			array('event' => 'onSpecRunFinish', 'callback' => $function2, 'order' => 120),
+			array('event' => 'onEndingSpecExecuteBefore', 'callback' => $function3, 'order' => 130),
+		), config::getRegisteredEventListeners());
 	}
 	
-	public function testRegisterSpecPlugin_AddsPluginClassInOriginCase() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin(mb_strtoupper($className, 'us-ascii'));
-		$this->assertSame(array($className), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_AcceptsUnlimitedCountOfPluginsWithEmptyAccessName() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+	public function testRegisterEventListener_OrderEventListeners() {
+		config::unregisterEventListeners();
 		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return null; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+		$function1 = function(){};
+		$function2 = function(){};
+		$function3 = function(){};
 		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return ""; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className4 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return ""; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
-		config::registerSpecPlugin($className4);
+		config::registerEventListener('onSpecRunAfter', $function1, 200);
+		config::registerEventListener('onSpecRunFinish', $function2, -100);
+		config::registerEventListener('onEndingSpecExecuteBefore', $function3, 100);
 		
 		$this->assertSame(array(
-			$className1,
-			$className2,
-			$className3,
-			$className4,
-		), config::getRegisteredSpecPlugins());
+			array('event' => 'onSpecRunFinish', 'callback' => $function2, 'order' => -100),
+			array('event' => 'onEndingSpecExecuteBefore', 'callback' => $function3, 'order' => 100),
+			array('event' => 'onSpecRunAfter', 'callback' => $function1, 'order' => 200),
+		), config::getRegisteredEventListeners());
 	}
 	
-	public function testRegisterSpecPlugin_ConfigIsLocked_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+	public function testRegisterEventListener_ConfigIsLocked_ThrowsExceptionAndDoesNotRegisterEventListener() {
+		config::unregisterEventListeners();
 		
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
+		$backup = config::getRegisteredEventListeners();
 		config::lock();
 		
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() use($className){
-			config::registerSpecPlugin($className);
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() {
+			config::registerEventListener('onSpecRunAfter', function(){}, 100);
 		});
 
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginClassDoesNotImplementInterface_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-
-		$this->assertThrowsException('\spectrum\Exception', 'Plugin class "\stdClass" does not implement PluginInterface', function(){
-			config::registerSpecPlugin('\stdClass');
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginWithSameClassIsAlreadyRegistered_PluginClassInSameCase_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className);
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Plugin with class "' . $className . '" is already registered', function() use($className){
-			config::registerSpecPlugin($className);
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginWithSameClassIsAlreadyRegistered_PluginClassInDifferentCase_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className);
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Plugin with class "' . $className . '" is already registered', function() use($className){
-			config::registerSpecPlugin(mb_strtoupper($className, 'us-ascii'));
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginWithSameAccessNameIsAlreadyRegistered_AccessNameInSameCase_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className1);
-		
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Plugin with accessName "aaa" is already registered (remove registered plugin before register new)', function() use($className2){
-			config::registerSpecPlugin($className2);
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginWithAllowedActivateMoment_RegistersPlugin() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "everyAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		
-		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginWithWrongActivateMoment_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "AAAAAAA"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Wrong activate moment "AAAAAAA" in plugin with class "' . $className . '"', function() use($className){
-			config::registerSpecPlugin($className);
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginEventListenerWithoutEventValue_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){ return array(array("event" => "", "method" => "onEndingSpecExecute", "order" => 100)); }
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Event for event listener #1 does not set in plugin with class "' . $className . '"', function() use($className){
-			config::registerSpecPlugin($className);
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginEventListenerWithoutMethodValue_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){ return array(array("event" => "onEndingSpecExecute", "method" => "", "order" => 100)); }
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Method for event listener #1 does not set in plugin with class "' . $className . '"', function() use($className){
-			config::registerSpecPlugin($className);
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-	public function testRegisterSpecPlugin_PluginEventListenerWithoutOrderValue_ThrowsExceptionAndDoesNotRegisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){ return array(array("event" => "onEndingSpecExecute", "method" => "onEndingSpecExecute", "order" => "")); }
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		$this->assertThrowsException('\spectrum\Exception', 'Order for event listener #1 does not set in plugin with class "' . $className . '"', function() use($className){
-			config::registerSpecPlugin($className);
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
+		$this->assertSame($backup, config::getRegisteredEventListeners());
 	}
 	
 /**/
 	
-	public function testUnregisterSpecPlugins_ResetsArrayIndexes() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+	public function testUnregisterEventListener_CallbackIsSet_CallbackIsClosure_RemovesEventListenersWithSpecifiedEventAndCallback() {
+		config::unregisterEventListeners();
 		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
+		$function1 = function(){};
+		$function2 = function(){};
 		
-		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
-		config::unregisterSpecPlugins($className1);
-		$this->assertSame(array($className2), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testUnregisterSpecPlugins_NoArguments_RemovesAllPluginClassesFromRegisteredPlugins() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+		config::registerEventListener('onSpecRunAfter', $function1, 100);
+		config::registerEventListener('onSpecRunAfter', $function1, 100);
+		config::registerEventListener('onSpecRunFinish', $function2, 200);
 		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
-		
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins();
-		$this->assertSame(array(), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testUnregisterSpecPlugins_StringWithClassAsFirstArgument_PluginClassInSameCase_RemovesPluginClassFromRegisteredPlugins() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
-		
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins($className3);
-		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins($className2);
-		$this->assertSame(array($className1), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins($className1);
-		$this->assertSame(array(), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testUnregisterSpecPlugins_StringWithClassAsFirstArgument_PluginClassInDifferentCase_RemovesPluginClassFromRegisteredPlugins() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
-		
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins(mb_strtoupper($className3, 'us-ascii'));
-		$this->assertSame(array($className1, $className2), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins(mb_strtoupper($className2, 'us-ascii'));
-		$this->assertSame(array($className1), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins(mb_strtoupper($className1, 'us-ascii'));
-		$this->assertSame(array(), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testUnregisterSpecPlugins_ArrayWithManyClassesAsFirstArgument_PluginClassInSameCase_RemovesPluginClassFromRegisteredPlugins() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
-		
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins(array($className1, $className3));
-		$this->assertSame(array($className2), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testUnregisterSpecPlugins_ArrayWithManyClassesAsFirstArgument_PluginClassInDifferentCase_RemovesPluginClassFromRegisteredPlugins() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
-		
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
-		
-		config::unregisterSpecPlugins(array(mb_strtoupper($className1, 'us-ascii'), mb_strtoupper($className3, 'us-ascii')));
-		$this->assertSame(array($className2), config::getRegisteredSpecPlugins());
-	}
-	
-	public function testUnregisterSpecPlugins_ConfigIsLocked_ThrowsExceptionAndDoesNotUnregisterPlugin() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-
-		config::registerSpecPlugin($className);
-		$backupOfRegisteredPlugins = config::getRegisteredSpecPlugins();
-		
-		config::lock();
-		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() use($className){
-			config::unregisterSpecPlugins($className);
-		});
-
-		$this->assertSame($backupOfRegisteredPlugins, config::getRegisteredSpecPlugins());
-	}
-	
-/**/
-	
-	public function testGetRegisteredSpecPlugins_ReturnsBasePluginsByDefault() {
-		$this->restoreClassStaticProperties('\spectrum\config');
+		config::unregisterEventListener('onSpecRunAfter', $function1);
 		
 		$this->assertSame(array(
-			'\spectrum\core\plugins\reports\Reports',
-			'\spectrum\core\plugins\ContextModifiers',
-			'\spectrum\core\plugins\ErrorHandling',
-			'\spectrum\core\plugins\Matchers',
-			'\spectrum\core\plugins\Messages',
-			'\spectrum\core\plugins\Test',
-		), config::getRegisteredSpecPlugins());
+			array('event' => 'onSpecRunFinish', 'callback' => $function2, 'order' => 200),
+		), config::getRegisteredEventListeners());
 	}
 	
-	public function testGetRegisteredSpecPlugins_ReturnsRegisteredPlugins() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+	public function testUnregisterEventListener_CallbackIsSet_CallbackIsClosure_DoesNotRemoveEventListenersWithSameEventAndDifferentCallback() {
+		config::unregisterEventListeners();
 		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+		$function1 = function(){};
+		$function2 = function(){};
 		
-		$className3 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "ccc"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+		config::registerEventListener('onSpecRunAfter', $function1, 100);
+		config::registerEventListener('onSpecRunAfter', $function2, 100);
 		
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		config::registerSpecPlugin($className3);
+		config::unregisterEventListener('onSpecRunAfter', $function1);
 		
-		$this->assertSame(array($className1, $className2, $className3), config::getRegisteredSpecPlugins());
+		$this->assertSame(array(
+			array('event' => 'onSpecRunAfter', 'callback' => $function2, 'order' => 100),
+		), config::getRegisteredEventListeners());
 	}
 	
-	public function testGetRegisteredSpecPlugins_ConfigIsLocked_DoesNotThrowException() {
+	public function testUnregisterEventListener_CallbackIsSet_CallbackIsClosure_ResetsEventListenerIndexes() {
+		config::unregisterEventListeners();
+		
+		$function1 = function(){};
+		$function2 = function(){};
+		
+		config::registerEventListener('onSpecRunAfter', $function1, 100);
+		config::registerEventListener('onSpecRunFinish', $function2, 200);
+		
+		config::unregisterEventListener('onSpecRunAfter', $function1);
+		
+		$this->assertSame(array(
+			array('event' => 'onSpecRunFinish', 'callback' => $function2, 'order' => 200),
+		), config::getRegisteredEventListeners());
+	}
+	
+	public function providerUnregisterEventListener_CallbackIsSet_CallbackIsString() {
+		return array(
+			array(
+				array(
+					array('onSpecRunAfter', 'trim'),
+					array('onSpecRunAfter', 'trim'),
+				),
+				array('onSpecRunAfter', 'trim'),
+			),
+			
+			array(
+				array(
+					array('onSpecRunAfter', 'trim'),
+					array('onSpecRunAfter', 'trim'),
+				),
+				array('onSpecRunAfter', 'TRIM'),
+			),
+			
+			array(
+				array(
+					array('onSpecRunAfter', 'TRIM'),
+					array('onSpecRunAfter', 'TRIM'),
+				),
+				array('onSpecRunAfter', 'trim'),
+			),
+			
+			array(
+				array(
+					array('onSpecRunAfter', 'TRIM'),
+					array('onSpecRunAfter', 'TRIM'),
+				),
+				array('onSpecRunAfter', 'TRIM'),
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider providerUnregisterEventListener_CallbackIsSet_CallbackIsString
+	 */
+	public function testUnregisterEventListener_CallbackIsSet_CallbackIsString_RemovesSpecifiedEventListeners($registeredEventListeners, $expectedEventListener) {
+		config::unregisterEventListeners();
+		
+		foreach ($registeredEventListeners as $registeredEventListener) {
+			config::registerEventListener($registeredEventListener[0], $registeredEventListener[1]);
+		}
+		
+		config::unregisterEventListener($expectedEventListener[0], $expectedEventListener[1]);
+		
+		$this->assertSame(array(), config::getRegisteredEventListeners());
+	}
+	
+	public function testUnregisterEventListener_CallbackIsNotSet_RemovesAllEventListenersWithSpecifiedEvent() {
+		config::unregisterEventListeners();
+		
+		$function1 = function(){};
+		$function2 = function(){};
+		
+		config::registerEventListener('onSpecRunAfter', $function1, 100);
+		config::registerEventListener('onSpecRunAfter', $function2, 100);
+		config::registerEventListener('onSpecRunFinish', $function2, 200);
+		
+		config::unregisterEventListener('onSpecRunAfter');
+		
+		$this->assertSame(array(
+			array('event' => 'onSpecRunFinish', 'callback' => $function2, 'order' => 200),
+		), config::getRegisteredEventListeners());
+	}
+	
+	public function testUnregisterEventListener_ConfigIsLocked_ThrowsExceptionAndDoesNotUnregisterEventListeners() {
+		config::unregisterEventListeners();
+		
+		$function = function() {};
+		
+		config::registerEventListener('onSpecRunAfter', $function);
+		$backup = config::getRegisteredEventListeners();
+		
 		config::lock();
-		config::getRegisteredSpecPlugins();
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function() use($function){
+			config::unregisterEventListener('onSpecRunAfter', $function);
+		});
+
+		$this->assertSame($backup, config::getRegisteredEventListeners());
+	}
+	
+/**/
+	
+	public function testUnregisterEventListeners_RemovesAllEventListeners() {
+		config::unregisterEventListeners();
+		
+		config::registerEventListener('onSpecRunAfter', function(){}, 100);
+		config::registerEventListener('onSpecRunFinish', function(){}, 200);
+		
+		config::unregisterEventListeners();
+		
+		$this->assertSame(array(), config::getRegisteredEventListeners());
+	}
+	
+	public function testUnregisterEventListeners_ConfigIsLocked_ThrowsExceptionAndDoesNotUnregisterEventListeners() {
+		config::unregisterEventListeners();
+		
+		config::registerEventListener('onSpecRunAfter', function() {});
+		$backup = config::getRegisteredEventListeners();
+		
+		config::lock();
+		$this->assertThrowsException('\spectrum\Exception', '\spectrum\config is locked', function(){
+			config::unregisterEventListeners();
+		});
+
+		$this->assertSame($backup, config::getRegisteredEventListeners());
+	}
+	
+/**/
+	
+	public function testGetRegisteredEventListeners_ReturnsRegisteredEventListeners() {
+		config::unregisterEventListeners();
+		
+		$function = function(){};
+		
+		config::registerEventListener('onSpecRunAfter', $function, 100);
+		config::registerEventListener('onSpecRunFinish', 'trim', 200);
+		
+		$this->assertSame(array(
+			array('event' => 'onSpecRunAfter', 'callback' => $function, 'order' => 100),
+			array('event' => 'onSpecRunFinish', 'callback' => 'trim', 'order' => 200),
+		), config::getRegisteredEventListeners());
+	}
+	
+	public function testGetRegisteredEventListeners_ConfigIsLocked_DoesNotThrowException() {
+		config::lock();
+		config::getRegisteredEventListeners();
 	}
 
 /**/
+	
+	public function testHasRegisteredEventListener_CallbackIsSet_CallbackIsClosure_SoughtEventListenerIsRegistered_ReturnsTrue() {
+		config::unregisterEventListeners();
+		$function = function(){};
+		config::registerEventListener('onSpecRunAfter', $function, 100);
+		$this->assertSame(true, config::hasRegisteredEventListener('onSpecRunAfter', $function));
+	}
+	
+	public function testHasRegisteredEventListener_CallbackIsSet_CallbackIsClosure_SoughtEventListenerIsNotRegistered_ReturnsFalse() {
+		config::unregisterEventListeners();
+		$this->assertSame(false, config::hasRegisteredEventListener('onSpecRunAfter', function(){}));
+	}
+	
+	public function providerHasRegisteredEventListener_CallbackIsSet_CallbackIsString_SoughtEventListenerIsRegistered() {
+		return array(
+			array(
+				array(
+					array('onSpecRunAfter', 'trim'),
+					array('onSpecRunAfter', 'trim'),
+				),
+				array('onSpecRunAfter', 'trim'),
+			),
+			
+			array(
+				array(
+					array('onSpecRunAfter', 'trim'),
+					array('onSpecRunAfter', 'trim'),
+				),
+				array('onSpecRunAfter', 'TRIM'),
+			),
+			
+			array(
+				array(
+					array('onSpecRunAfter', 'TRIM'),
+					array('onSpecRunAfter', 'TRIM'),
+				),
+				array('onSpecRunAfter', 'trim'),
+			),
+			
+			array(
+				array(
+					array('onSpecRunAfter', 'TRIM'),
+					array('onSpecRunAfter', 'TRIM'),
+				),
+				array('onSpecRunAfter', 'TRIM'),
+			),
+		);
+	}
 
-	public function testGetRegisteredSpecPluginClassByAccessName_AccessNameInSameCase_ReturnsProperClass() {
-		$className1 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+	/**
+	 * @dataProvider providerHasRegisteredEventListener_CallbackIsSet_CallbackIsString_SoughtEventListenerIsRegistered
+	 */
+	public function testHasRegisteredEventListener_CallbackIsSet_CallbackIsString_SoughtEventListenerIsRegistered_ReturnsTrue($registeredEventListeners, $expectedEventListener) {
+		config::unregisterEventListeners();
 		
-		$className2 = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "bbb"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
+		foreach ($registeredEventListeners as $registeredEventListener) {
+			config::registerEventListener($registeredEventListener[0], $registeredEventListener[1]);
+		}
 		
-		config::registerSpecPlugin($className1);
-		config::registerSpecPlugin($className2);
-		
-		$this->assertSame($className1, config::getRegisteredSpecPluginClassByAccessName('aaa'));
-		$this->assertSame($className2, config::getRegisteredSpecPluginClassByAccessName('bbb'));
+		$this->assertSame(true, config::hasRegisteredEventListener($expectedEventListener[0], $expectedEventListener[1]));
 	}
 	
-	public function testGetRegisteredSpecPluginClassByAccessName_ReturnsNullWhenNoMatches() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className);
-		
-		$this->assertSame(null, config::getRegisteredSpecPluginClassByAccessName('zzz'));
+	public function testHasRegisteredEventListener_CallbackIsSet_CallbackIsString_SoughtEventListenerIsNotRegistered_ReturnsFalse() {
+		config::unregisterEventListeners();
+		$this->assertSame(false, config::hasRegisteredEventListener('onSpecRunAfter', 'trim'));
 	}
 	
-	public function testGetRegisteredSpecPluginClassByAccessName_ConfigIsLocked_DoesNotThrowException() {
+	public function testHasRegisteredEventListener_CallbackIsNotSet_SoughtEventListenerIsRegistered_ReturnsTrue() {
+		config::unregisterEventListeners();
+		config::registerEventListener('onSpecRunAfter', function() {}, 100);
+		$this->assertSame(true, config::hasRegisteredEventListener('onSpecRunAfter'));
+	}
+	
+	public function testHasRegisteredEventListener_CallbackIsNotSet_SoughtEventListenerIsNotRegistered_ReturnsFalse() {
+		config::unregisterEventListeners();
+		$this->assertSame(false, config::hasRegisteredEventListener('onSpecRunAfter'));
+	}
+	
+	public function testHasRegisteredEventListener_ConfigIsLocked_DoesNotThrowException() {
+		config::unregisterEventListeners();
 		config::lock();
-		config::getRegisteredSpecPluginClassByAccessName('zzz');
-	}
-	
-/**/
-
-	public function testHasRegisteredSpecPlugin_SoughtPluginClassIsRegistered_PluginClassInSameCase_ReturnsTrue() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className);
-		
-		$this->assertSame(true, config::hasRegisteredSpecPlugin($className));
-	}
-	
-	public function testHasRegisteredSpecPlugin_SoughtPluginClassIsRegistered_PluginClassInDifferentCase_ReturnsTrue() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className);
-		
-		$this->assertSame(true, config::hasRegisteredSpecPlugin(mb_strtoupper($className, 'us-ascii')));
-	}
-	
-	public function testHasRegisteredSpecPlugin_SoughtPluginClassIsNotRegistered_ReturnsFalse() {
-		$className = $this->createClass('
-			class ... implements \spectrum\core\plugins\PluginInterface {
-				static public function getAccessName(){ return "aaa"; }
-				static public function getActivateMoment(){ return "firstAccess"; }
-				static public function getEventListeners(){}
-				
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec){}
-				public function getOwnerSpec(){}
-			}
-		');
-		
-		config::registerSpecPlugin($className);
-		
-		$this->assertSame(false, config::hasRegisteredSpecPlugin('\stdClass'));
-	}
-	
-	public function testHasRegisteredSpecPlugin_ConfigIsLocked_DoesNotThrowException() {
-		config::lock();
-		config::hasRegisteredSpecPlugin('\stdClass');
+		config::hasRegisteredEventListener('onSpecRunAfter');
 	}
 	
 /**/

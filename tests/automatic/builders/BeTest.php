@@ -13,39 +13,37 @@ require_once __DIR__ . '/../../init.php';
 
 class BeTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_ReturnsNewAssertionInstance() {
-		\spectrum\tests\automatic\Test::$temp["returnValues"] = array();
+		$returnValues = array();
 		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["returnValues"][] = \spectrum\builders\be("aaa");
-			\spectrum\tests\automatic\Test::$temp["returnValues"][] = \spectrum\builders\be("aaa");
-		', 'onEndingSpecExecute');
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValues) {
+			$returnValues[] = \spectrum\builders\be("aaa");
+			$returnValues[] = \spectrum\builders\be("aaa");
+		});
 		
 		\spectrum\_internals\getRootSpec()->run();
 		
-		$this->assertSame(2, count(\spectrum\tests\automatic\Test::$temp["returnValues"]));
-		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\automatic\Test::$temp["returnValues"][0]);
-		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\automatic\Test::$temp["returnValues"][1]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["returnValues"][0], \spectrum\tests\automatic\Test::$temp["returnValues"][1]);
+		$this->assertSame(2, count($returnValues));
+		$this->assertInstanceOf('\spectrum\core\Assertion', $returnValues[0]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', $returnValues[1]);
+		$this->assertNotSame($returnValues[0], $returnValues[1]);
 	}
 	
 	public function testCallsAtRunningState_UsesConfigForAssertionClassGetting() {
 		$assertClassName = $this->createClass('class ... extends \spectrum\core\Assertion {}');
 		config::setClassReplacement('\spectrum\core\Assertion', $assertClassName);
 
-		\spectrum\tests\automatic\Test::$temp["returnValue"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["returnValue"] = \spectrum\builders\be("aaa");
-		', 'onEndingSpecExecute');
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
+			$returnValue = \spectrum\builders\be("aaa");
+		});
 		
 		\spectrum\_internals\getRootSpec()->run();
 		
-		$this->assertInstanceOf($assertClassName, \spectrum\tests\automatic\Test::$temp["returnValue"]);
+		$this->assertInstanceOf($assertClassName, $returnValue);
 	}
 	
 	public function testCallsAtRunningState_PassesToAssertionInstanceCurrentRunningSpecAndTestedValue() {
 		\spectrum\tests\automatic\Test::$temp["assertion"] = null;
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
+		\spectrum\tests\automatic\Test::$temp["passedArguments"] = null;
 		
 		config::setClassReplacement('\spectrum\core\Assertion', $this->createClass('
 			class ... extends \spectrum\core\Assertion {
@@ -56,18 +54,16 @@ class BeTest extends \spectrum\tests\automatic\Test {
 			}
 		'));
 		
-		\spectrum\tests\automatic\Test::$temp["returnValue"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
-			\spectrum\tests\automatic\Test::$temp["returnValue"] = \spectrum\builders\be("aaa");
-		', 'onEndingSpecExecute');
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
+			$returnValue = \spectrum\builders\be("aaa");
+		});
 		
 		$spec = new Spec();
 		\spectrum\_internals\getRootSpec()->bindChildSpec($spec);
 		\spectrum\_internals\getRootSpec()->run();
 
 		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\automatic\Test::$temp["assertion"]);
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp["assertion"], \spectrum\tests\automatic\Test::$temp["returnValue"]);
+		$this->assertSame(\spectrum\tests\automatic\Test::$temp["assertion"], $returnValue);
 		$this->assertSame(2, count(\spectrum\tests\automatic\Test::$temp["passedArguments"]));
 		$this->assertInstanceOf('\spectrum\core\Spec', \spectrum\tests\automatic\Test::$temp["passedArguments"][0]);
 		$this->assertSame($spec, \spectrum\tests\automatic\Test::$temp["passedArguments"][0]);

@@ -18,14 +18,14 @@ function setSettingsToSpec(SpecInterface $spec, $settings) {
 	$settings = $normalizeSettingsFunction($settings);
 	
 	if ($settings['catchPhpErrors'] !== null) {
-		$spec->errorHandling->setCatchPhpErrors($settings['catchPhpErrors']);
+		$spec->getErrorHandling()->setCatchPhpErrors($settings['catchPhpErrors']);
 	}
 	
 	if ($settings['breakOnFirstPhpError'] !== null) {
-		$spec->errorHandling->setBreakOnFirstPhpError($settings['breakOnFirstPhpError']);
+		$spec->getErrorHandling()->setBreakOnFirstPhpError($settings['breakOnFirstPhpError']);
 	}
 	
 	if ($settings['breakOnFirstMatcherFail'] !== null) {
-		$spec->errorHandling->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
+		$spec->getErrorHandling()->setBreakOnFirstMatcherFail($settings['breakOnFirstMatcherFail']);
 	}
 }

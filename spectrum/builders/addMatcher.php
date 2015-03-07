@@ -22,5 +22,5 @@ function addMatcher($name, $function) {
 	}
 
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentBuildingSpec');
-	return $getCurrentBuildingSpecFunction()->matchers->add($name, $function);
+	return $getCurrentBuildingSpecFunction()->getMatchers()->add($name, $function);
 }

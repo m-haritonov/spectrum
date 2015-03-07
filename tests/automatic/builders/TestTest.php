@@ -198,8 +198,8 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame('aaa', $contextSpecs[0]->getName());
 		$this->assertSame(array(), $contextSpecs[0]->getChildSpecs());
 		
-		$bodyFunction = $contextSpecs[0]->test->getFunction();
-		$this->assertNotSame($testSpec->test->getFunction(), $bodyFunction);
+		$bodyFunction = $contextSpecs[0]->getTest()->getFunction();
+		$this->assertNotSame($testSpec->getTest()->getFunction(), $bodyFunction);
 		$this->assertSame('zzz', $bodyFunction());
 	}
 	
@@ -211,11 +211,11 @@ class TestTest extends \spectrum\tests\automatic\Test {
 	/**
 	 * @dataProvider providerVariantsOfArguments_BodyArgumentIsFunction
 	 */
-	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsBodyFunctionToTestPlugin($arguments) {
+	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsBodyFunctionToTest($arguments) {
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
-		$this->assertInstanceOf('\Closure', $testSpec->test->getFunction());
+		$this->assertInstanceOf('\Closure', $testSpec->getTest()->getFunction());
 		
-		$function = $testSpec->test->getFunction();
+		$function = $testSpec->getTest()->getFunction();
 		$this->assertSame($function(), $function);
 	}
 	
@@ -246,8 +246,8 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
-		$this->assertNotSame(8, $parentSpec->errorHandling->getCatchPhpErrors());
-		$this->assertSame(8, $testSpec->errorHandling->getCatchPhpErrors());
+		$this->assertNotSame(8, $parentSpec->getErrorHandling()->getCatchPhpErrors());
+		$this->assertSame(8, $testSpec->getErrorHandling()->getCatchPhpErrors());
 	}
 	
 	public function providerVariantsOfArguments_SettingsArgumentIsTrue() {
@@ -262,8 +262,8 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
-		$this->assertNotSame(-1, $parentSpec->errorHandling->getCatchPhpErrors());
-		$this->assertSame(-1, $testSpec->errorHandling->getCatchPhpErrors());
+		$this->assertNotSame(-1, $parentSpec->getErrorHandling()->getCatchPhpErrors());
+		$this->assertSame(-1, $testSpec->getErrorHandling()->getCatchPhpErrors());
 	}
 	
 	public function providerVariantsOfArguments_SettingsArgumentIsFalse() {
@@ -278,8 +278,8 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
-		$this->assertNotSame(0, $parentSpec->errorHandling->getCatchPhpErrors());
-		$this->assertSame(0, $testSpec->errorHandling->getCatchPhpErrors());
+		$this->assertNotSame(0, $parentSpec->getErrorHandling()->getCatchPhpErrors());
+		$this->assertSame(0, $testSpec->getErrorHandling()->getCatchPhpErrors());
 	}
 	
 	public function providerVariantsOfArguments_SettingsArgumentIsArray() {
@@ -298,13 +298,13 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_internals\setCurrentBuildingSpec($parentSpec);
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
 
-		$this->assertNotSame(8, $parentSpec->errorHandling->getCatchPhpErrors());
-		$this->assertNotSame(true, $parentSpec->errorHandling->getBreakOnFirstPhpError());
-		$this->assertNotSame(true, $parentSpec->errorHandling->getBreakOnFirstMatcherFail());
+		$this->assertNotSame(8, $parentSpec->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(true, $parentSpec->getErrorHandling()->getBreakOnFirstPhpError());
+		$this->assertNotSame(true, $parentSpec->getErrorHandling()->getBreakOnFirstMatcherFail());
 		
-		$this->assertSame(8, $testSpec->errorHandling->getCatchPhpErrors());
-		$this->assertSame(true, $testSpec->errorHandling->getBreakOnFirstPhpError());
-		$this->assertSame(true, $testSpec->errorHandling->getBreakOnFirstMatcherFail());
+		$this->assertSame(8, $testSpec->getErrorHandling()->getCatchPhpErrors());
+		$this->assertSame(true, $testSpec->getErrorHandling()->getBreakOnFirstPhpError());
+		$this->assertSame(true, $testSpec->getErrorHandling()->getBreakOnFirstMatcherFail());
 	}
 	
 /**/
@@ -318,19 +318,17 @@ class TestTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testCallsAtRunningState_ThrowsException() {
-		\spectrum\tests\automatic\Test::$temp["exception"] = null;
-		
-		$this->registerPluginWithCodeInEvent('
+		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
 				\spectrum\builders\test();
 			} catch (\Exception $e) {
-				\spectrum\tests\automatic\Test::$temp["exception"] = $e;
+				$exception = $e;
 			}
-		', 'onEndingSpecExecute');
+		});
 		
 		\spectrum\_internals\getRootSpec()->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', \spectrum\tests\automatic\Test::$temp["exception"]);
-		$this->assertSame('Builder "test" should be call only at building state', \spectrum\tests\automatic\Test::$temp["exception"]->getMessage());
+		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertSame('Builder "test" should be call only at building state', $exception->getMessage());
 	}
 }

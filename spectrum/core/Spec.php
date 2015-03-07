@@ -7,23 +7,9 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core;
 
 use spectrum\config;
-use spectrum\core\plugins\PluginInterface;
 use spectrum\Exception;
 
-/**
- * @property \spectrum\core\plugins\ContextModifiers contextModifiers
- * @property \spectrum\core\plugins\ErrorHandling errorHandling
- * @property \spectrum\core\plugins\reports\Reports reports
- * @property \spectrum\core\plugins\Matchers matchers
- * @property \spectrum\core\plugins\Messages messages
- * @property \spectrum\core\plugins\Test test
- */
 class Spec implements SpecInterface {
-	/**
-	 * @var array
-	 */
-	protected $activatedPlugins = array();
-
 	/**
 	 * @var bool
 	 */
@@ -45,128 +31,73 @@ class Spec implements SpecInterface {
 	protected $childSpecs = array();
 
 	/**
+	 * @var null|ContextModifiersInterface
+	 */
+	protected $contextModifiers;
+
+	/**
+	 * @var null|DataInterface
+	 */
+	protected $data;
+	
+	/**
+	 * @var null|ErrorHandlingInterface
+	 */
+	protected $errorHandling;
+
+	/**
+	 * @var null|MatchersInterface
+	 */
+	protected $matchers;
+
+	/**
+	 * @var null|MessagesInterface
+	 */
+	protected $messages;
+
+	/**
 	 * @var null|ResultBufferInterface
 	 */
 	protected $resultBuffer;
+	
+	/**
+	 * @var null|TestInterface
+	 */
+	protected $test;
 
 	/**
 	 * @var bool
 	 */
 	protected $isRunning = false;
 
+	/**
+	 * @var null|\Closure
+	 */
+	protected $errorHandler;
+
+	/**
+	 * @var null|int
+	 */
+	protected $previousErrorReporting;
+	
 	public function __construct() {
-		$this->dispatchPluginEvent('onSpecConstruct');
-	}
-
-	/**
-	 * @param string $pluginAccessName
-	 * @return PluginInterface
-	 */
-	public function __get($pluginAccessName) {
-		if ($pluginAccessName == '') {
-			throw new Exception('Access to plugins by empty access name is denied');
-		}
-		
-		$pluginClass = config::getRegisteredSpecPluginClassByAccessName($pluginAccessName);
-		if ($pluginClass) {
-			return $this->activatePluginByAccess($pluginClass);
-		}
-		
-		throw new Exception('Undefined plugin with access name "' . $pluginAccessName . '" in "' . __CLASS__ . '" class');
-	}
-
-	/**
-	 * @param string $pluginClass
-	 * @return PluginInterface
-	 */
-	protected function activatePluginByAccess($pluginClass) {
-		if (!array_key_exists($pluginClass, $this->activatedPlugins) || (string) $pluginClass::getActivateMoment() === 'everyAccess') {
-			$this->activatedPlugins[$pluginClass] = new $pluginClass($this);
-		}
-		
-		return $this->activatedPlugins[$pluginClass];
-	}
-
-	/**
-	 * @param string $eventName
-	 */
-	protected function dispatchPluginEvent($eventName, array $arguments = array()) {
-		foreach ($this->getPluginEventMethods($eventName) as $method) {
-			$reflectionClass = new \ReflectionClass($method['class']);
-			$reflectionMethod = $reflectionClass->getMethod($method['method']);
-			$reflectionMethod->setAccessible(true);
-			$reflectionMethod->invokeArgs($this->activatePluginByAccess($method['class']), $arguments);
-		}
-	}
-
-	/**
-	 * @param string $eventName
-	 * @return array
-	 */
-	protected function getPluginEventMethods($eventName) {
-		$methods = array();
-		foreach (config::getRegisteredSpecPlugins() as $pluginClass) {
-			foreach ((array) $pluginClass::getEventListeners() as $eventListener) {
-				if ((string) $eventListener['event'] === (string) $eventName) {
-					$methods[] = array(
-						'class' => $pluginClass,
-						'method' => $eventListener['method'],
-						'order' => $eventListener['order'],
-					);
-				}
-			}
-		}
-		
-		$this->usortWithOriginalSequencePreserving($methods, function($a, $b) {
-			if ($a['order'] == $b['order']) {
-				return 0;
-			}
-			
-			return ($a['order'] < $b['order'] ? -1 : 1);
-		});
-		
-		return $methods;
-	}
-
-	/**
-	 * @param array $array
-	 * @param callable $cmpFunction
-	 * @param bool $reverseEqualElementSequence
-	 */
-	protected function usortWithOriginalSequencePreserving(&$array, $cmpFunction, $reverseEqualElementSequence = false) {
-		$indexes = array();
-		$num = 0;
-		foreach ($array as $key => $value) {
-			$indexes[$key] = $num;
-			$num++;
-		}
-		
-		uksort($array, function($keyA, $keyB) use($array, &$indexes, &$cmpFunction, &$reverseEqualElementSequence) {
-			$result = $cmpFunction($array[$keyA], $array[$keyB]);
-			
-			// Keep equal elements in original sequence
-			if ($result == 0) {
-				// Equal indexes are not existed
-				if ($reverseEqualElementSequence) {
-					return ($indexes[$keyA] < $indexes[$keyB] ? 1 : -1);
-				} else {
-					return ($indexes[$keyA] < $indexes[$keyB] ? -1 : 1);
-				}
-			}
-			
-			return $result;
-		});
+		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\_internals\dispatchEvent');
+		$dispatchEventFunction('onSpecConstruct', array($this));
 	}
 
 /**/
 
 	public function enable() {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
+		
 		$this->isEnabled = true;
 	}
 
 	public function disable() {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
+		
 		$this->isEnabled = false;
 	}
 
@@ -183,7 +114,9 @@ class Spec implements SpecInterface {
 	 * @param string $name
 	 */
 	public function setName($name) {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
+		
 		$this->name = $name;
 	}
 
@@ -222,7 +155,8 @@ class Spec implements SpecInterface {
 	}
 
 	public function bindParentSpec(SpecInterface $spec) {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		if (!$this->hasParentSpec($spec)) {
 			$this->parentSpecs[] = $spec;
@@ -234,7 +168,8 @@ class Spec implements SpecInterface {
 	}
 	
 	public function unbindParentSpec(SpecInterface $spec) {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		$parentSpecKey = array_search($spec, $this->parentSpecs, true);
 		if ($parentSpecKey !== false) {
@@ -248,7 +183,8 @@ class Spec implements SpecInterface {
 	}
 
 	public function unbindAllParentSpecs() {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		foreach ($this->parentSpecs as $spec) {
 			$this->unbindParentSpec($spec);
@@ -278,7 +214,8 @@ class Spec implements SpecInterface {
 	}
 	
 	public function bindChildSpec(SpecInterface $spec) {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		if (!$this->hasChildSpec($spec)) {
 			$this->childSpecs[] = $spec;
@@ -290,7 +227,8 @@ class Spec implements SpecInterface {
 	}
 	
 	public function unbindChildSpec(SpecInterface $spec) {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		$childSpecKey = array_search($spec, $this->childSpecs, true);
 		if ($childSpecKey !== false) {
@@ -304,7 +242,8 @@ class Spec implements SpecInterface {
 	}
 
 	public function unbindAllChildSpecs() {
-		$this->handleModifyDeny(__FUNCTION__);
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		foreach ($this->childSpecs as $spec) {
 			$this->unbindChildSpec($spec);
@@ -448,10 +387,87 @@ class Spec implements SpecInterface {
 /**/
 
 	/**
-	 * @return null|ResultBufferInterface
+	 * @return ContextModifiersInterface
+	 */
+	public function getContextModifiers() {
+		if (!$this->contextModifiers) {
+			$contextModifiersClass = config::getClassReplacement('\spectrum\core\ContextModifiers');
+			$this->contextModifiers = new $contextModifiersClass($this);
+		}
+		
+		return $this->contextModifiers;
+	}
+	
+	/**
+	 * @return DataInterface
+	 */
+	public function getData() {
+		if (!$this->data) {
+			$dataClass = config::getClassReplacement('\spectrum\core\Data');
+			$this->data = new $dataClass();
+		}
+		
+		return $this->data;
+	}
+	
+	/**
+	 * @return ErrorHandlingInterface
+	 */
+	public function getErrorHandling() {
+		if (!$this->errorHandling) {
+			$errorHandlingClass = config::getClassReplacement('\spectrum\core\ErrorHandling');
+			$this->errorHandling = new $errorHandlingClass($this);
+		}
+		
+		return $this->errorHandling;
+	}
+	
+	/**
+	 * @return MatchersInterface
+	 */
+	public function getMatchers() {
+		if (!$this->matchers) {
+			$matchersClass = config::getClassReplacement('\spectrum\core\Matchers');
+			$this->matchers = new $matchersClass($this);
+		}
+		
+		return $this->matchers;
+	}
+	
+	/**
+	 * @return MessagesInterface
+	 */
+	public function getMessages() {
+		if (!$this->messages) {
+			$messagesClass = config::getClassReplacement('\spectrum\core\Messages');
+			$this->messages = new $messagesClass($this);
+		}
+		
+		return $this->messages;
+	}
+	
+	/**
+	 * @return ResultBufferInterface
 	 */
 	public function getResultBuffer() {
+		if (!$this->resultBuffer) {
+			$resultBufferClass = config::getClassReplacement('\spectrum\core\ResultBuffer');
+			$this->resultBuffer = new $resultBufferClass($this);
+		}
+		
 		return $this->resultBuffer;
+	}
+	
+	/**
+	 * @return TestInterface
+	 */
+	public function getTest() {
+		if (!$this->test) {
+			$testClass = config::getClassReplacement('\spectrum\core\Test');
+			$this->test = new $testClass($this);
+		}
+		
+		return $this->test;
 	}
 
 /**/
@@ -505,103 +521,181 @@ class Spec implements SpecInterface {
 		if ($this->isRunning()) {
 			throw new Exception('Spec "' . $this->getName() . '" is already running');
 		}
-			
+		
 		if ($runningParentSpec && $runningParentSpec->getRunningChildSpec()) {
 			throw new Exception('Sibling spec of spec "' . $this->getName() . '" is already running');
 		}
 		
 		if ($this->parentSpecs && !$runningParentSpec) {
-			if ($rootSpecs[0]->isRunning()) {
-				throw new Exception('Root spec of spec "' . $this->getName() . '" is already running');
-			}
-			
-			$siblingSpecs = $this->getEnabledSiblingSpecsUpToRoot();
-			
-			foreach ($siblingSpecs as $spec) {
-				$spec->disable();
-			}
-			
-			$result = $rootSpecs[0]->run();
-			
-			foreach ($siblingSpecs as $spec) {
-				$spec->enable();
-			}
-			
-			return $result;
+			return $this->runFromRoot($rootSpecs);
 		}
 
 		// Now (after foregoing checks) we knows that this spec is spec without parent or with running parent (and the 
 		// parent for a while has no running children)
 		
+		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\_internals\dispatchEvent');
+		
 		if (!$this->parentSpecs) {
-			$this->dispatchPluginEvent('onRootSpecRunBefore');
+			$dispatchEventFunction('onRootSpecRunBefore', array($this));
 		}
 		
+		$dispatchEventFunction('onSpecRunBefore', array($this));
 		$this->isRunning = true;
-		$this->dispatchPluginEvent('onSpecRunStart');
+		$this->data = null;
+		$this->messages = null;
+		$this->resultBuffer = null;
+		$dispatchEventFunction('onSpecRunStart', array($this));
+		$this->outputReportBefore();
 		
 		if ($this->childSpecs) {
-			$this->executeAsNotEndingSpec();
+			$this->runChildSpecs();
 		} else {
-			$this->executeAsEndingSpec();
+			$this->execute();
 		}
 		
-		$this->dispatchPluginEvent('onSpecRunFinish');
+		$this->outputReportAfter();
+		$dispatchEventFunction('onSpecRunFinish', array($this));
 		$this->isRunning = false;
-		
-		if (!$this->parentSpecs) {
-			$this->dispatchPluginEvent('onRootSpecRunAfter');
-		}
-
+		$this->data = null;
+		$this->messages = null;
 		$result = $this->getResultBuffer()->getTotalResult();
 		$this->resultBuffer = null;
+		$dispatchEventFunction('onSpecRunAfter', array($this));
+		
+		if (!$this->parentSpecs) {
+			$dispatchEventFunction('onRootSpecRunAfter', array($this));
+		}
+		
+		return $result;
+	}
+
+	/**
+	 * @param SpecInterface[] $rootSpecs
+	 */
+	protected function runFromRoot($rootSpecs) {
+		if ($rootSpecs[0]->isRunning()) {
+			throw new Exception('Root spec of spec "' . $this->getName() . '" is already running');
+		}
+		
+		$siblingSpecs = $this->getEnabledSiblingSpecsUpToRoot();
+		
+		foreach ($siblingSpecs as $spec) {
+			$spec->disable();
+		}
+		
+		$result = $rootSpecs[0]->run();
+		
+		foreach ($siblingSpecs as $spec) {
+			$spec->enable();
+		}
+		
 		return $result;
 	}
 	
-	protected function executeAsNotEndingSpec() {
-		$resultBuffer = $this->createResultBuffer();
-		
-		foreach ($this->childSpecs as $childSpec) {
-			if ($childSpec->isEnabled()) {
-				$resultBuffer->addResult($childSpec->run(), $childSpec);
-			}
-		}
-		
-		$resultBuffer->lock();
-		$this->resultBuffer = $resultBuffer;
+	protected function outputReportBefore() {
+		$getReportClassFunction = config::getFunctionReplacement('\spectrum\_internals\getReportClass');
+		$reportClass = $getReportClassFunction();
+		print $reportClass::getContentBeforeSpec($this);
+		flush();
 	}
 	
-	protected function executeAsEndingSpec() {
-		$this->resultBuffer = $this->createResultBuffer();
-		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteBefore');
-		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecute');
-		$this->dispatchPluginEventAndCatchExceptions('onEndingSpecExecuteAfter');
+	protected function outputReportAfter() {
+		$getReportClassFunction = config::getFunctionReplacement('\spectrum\_internals\getReportClass');
+		$reportClass = $getReportClassFunction();
+		print $reportClass::getContentAfterSpec($this);
+		flush();
 	}
-
-	/**
-	 * @param string $eventName
-	 */
-	protected function dispatchPluginEventAndCatchExceptions($eventName, array $arguments = array()) {
-		foreach ($this->getPluginEventMethods($eventName) as $method) {
-			try {
-				$reflectionClass = new \ReflectionClass($method['class']);
-				$reflectionMethod = $reflectionClass->getMethod($method['method']);
-				$reflectionMethod->setAccessible(true);
-				$reflectionMethod->invokeArgs($this->activatePluginByAccess($method['class']), $arguments);
-			} catch (BreakException $e) {
-				// Just ignore special break exception
-			} catch (\Exception $e) {
-				$this->getResultBuffer()->addResult(false, $e);
+	
+	protected function runChildSpecs() {
+		$resultBuffer = $this->getResultBuffer();
+		foreach ($this->childSpecs as $spec) {
+			if ($spec->isEnabled()) {
+				$resultBuffer->addResult($spec->run(), $spec);
 			}
 		}
 	}
+	
+	protected function execute() {
+		$this->registerErrorHandler();
+		$this->dispatchEventAndCatchExceptions('onEndingSpecExecuteBefore', array($this));
+		
+		$function = $this->getTest()->getFunctionThroughRunningAncestors();
+		if ($function) {
+			foreach ($this->getContextModifiers()->getAllThroughRunningAncestors('before') as $contextModifier) {
+				$this->executeCallback($contextModifier['function']);
+			}
+			
+			$this->executeCallback($function);
+			
+			foreach ($this->getContextModifiers()->getAllThroughRunningAncestors('after') as $contextModifier) {
+				$this->executeCallback($contextModifier['function']);
+			}
+		}
+		
+		$this->dispatchEventAndCatchExceptions('onEndingSpecExecuteAfter', array($this));
+		$this->restoreErrorHandler();
+	}
 
+	protected function registerErrorHandler() {
+		$thisObj = $this;
+		$this->errorHandler = function($errorLevel, $errorMessage, $file, $line) use($thisObj) {
+			if (!($errorLevel & error_reporting())) {
+				return;
+			}
+			
+			$phpErrorDetailsClass = config::getClassReplacement('\spectrum\core\details\PhpError');
+			$thisObj->getResultBuffer()->addResult(false, new $phpErrorDetailsClass($errorLevel, $errorMessage, $file, $line));
+
+			if ($thisObj->getErrorHandling()->getBreakOnFirstPhpErrorThroughRunningAncestors()) {
+				throw new BreakException();
+			}
+		};
+		
+		$this->previousErrorReporting = error_reporting($this->getErrorHandling()->getCatchPhpErrorsThroughRunningAncestors());
+		set_error_handler($this->errorHandler, -1);
+	}
+	
+	protected function restoreErrorHandler() {
+		$removeSubsequentErrorHandlersFunction = config::getFunctionReplacement('\spectrum\_internals\removeSubsequentErrorHandlers');
+		$getLastErrorHandlerFunction = config::getFunctionReplacement('\spectrum\_internals\getLastErrorHandler');
+		
+		$removeSubsequentErrorHandlersFunction($this->errorHandler);
+		
+		if ($getLastErrorHandlerFunction() === $this->errorHandler) {
+			restore_error_handler();
+		} else {
+			$this->getResultBuffer()->addResult(false, 'Spectrum error handler was removed');
+		}
+		
+		error_reporting($this->previousErrorReporting);
+		
+		$this->errorHandler = null;
+		$this->previousErrorReporting = null;
+	}
+	
+	protected function executeCallback($callback) {
+		try {
+			$callback();
+		} catch (BreakException $e) {
+			// Just ignore special break exception
+		} catch (\Exception $e) {
+			$this->getResultBuffer()->addResult(false, $e);
+		}
+	}
+	
 	/**
-	 * @return ResultBufferInterface
+	 * @param string $event
 	 */
-	protected function createResultBuffer() {
-		$resultBufferClass = config::getClassReplacement('\spectrum\core\ResultBuffer');
-		return new $resultBufferClass($this);
+	protected function dispatchEventAndCatchExceptions($event, array $arguments = array()) {
+		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\_internals\dispatchEvent');
+		$spec = $this;
+		$dispatchEventFunction($event, $arguments, function(\Exception $e) use($spec) {
+			if ($e instanceof BreakException) {
+				// Just ignore special break exception
+			} else {
+				$spec->getResultBuffer()->addResult(false, $e);
+			}
+		});
 	}
 
 	/**
@@ -646,19 +740,5 @@ class Spec implements SpecInterface {
 		}
 
 		return $ancestorSpecs;
-	}
-	
-/**/
-
-	/**
-	 * @param string $functionName
-	 */
-	protected function handleModifyDeny($functionName) {
-		foreach (array_merge(array($this), $this->getAncestorRootSpecs()) as $spec) {
-			/** @var SpecInterface $spec */
-			if ($spec->isRunning()) {
-				throw new Exception('Call of "\\' . get_class($this) . '::' . $functionName . '" method is forbidden on run');
-			}
-		}
 	}
 }

@@ -6,6 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
+use spectrum\config;
 use spectrum\Exception;
 
 /**
@@ -55,9 +56,10 @@ class Assertion implements AssertionInterface {
 		$matcherCallDetails->setFile($trace[0]['file']);
 		$matcherCallDetails->setLine($trace[0]['line']);
 		
-		$this->dispatchPluginEvent('onMatcherCallStart', array($matcherCallDetails));
+		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\_internals\dispatchEvent');
+		$dispatchEventFunction('onMatcherCallStart', array($this->ownerSpec, $this, $matcherCallDetails));
 		
-		$matcherFunction = $this->ownerSpec->matchers->getThroughRunningAncestors($matcherName);
+		$matcherFunction = $this->ownerSpec->getMatchers()->getThroughRunningAncestors($matcherName);
 		if ($matcherFunction === null) {
 			$this->ownerSpec->getResultBuffer()->addResult(false, new Exception('Matcher "' . $matcherName . '" not exists'));
 			return $this;
@@ -74,9 +76,13 @@ class Assertion implements AssertionInterface {
 		
 		$matcherCallDetails->setResult($result);
 		$this->ownerSpec->getResultBuffer()->addResult($result, $matcherCallDetails);
-		
 		$this->notFlag = false;
-		$this->dispatchPluginEvent('onMatcherCallFinish', array($matcherCallDetails));
+		$dispatchEventFunction('onMatcherCallFinish', array($this->ownerSpec, $this, $matcherCallDetails));
+		
+		if (!$matcherCallDetails->getResult() && $this->ownerSpec->getErrorHandling()->getBreakOnFirstMatcherFailThroughRunningAncestors()) {
+			throw new BreakException();
+		}
+		
 		return $this;
 	}
 
@@ -98,15 +104,5 @@ class Assertion implements AssertionInterface {
 	protected function createMatcherCallDetails() {
 		$callDetailsClass = \spectrum\config::getClassReplacement('\spectrum\core\details\MatcherCall');
 		return new $callDetailsClass();
-	}
-
-	/**
-	 * @param string $eventName
-	 */
-	protected function dispatchPluginEvent($eventName, array $arguments = array()) {
-		$reflectionClass = new \ReflectionClass($this->ownerSpec);
-		$reflectionMethod = $reflectionClass->getMethod('dispatchPluginEvent');
-		$reflectionMethod->setAccessible(true);
-		$reflectionMethod->invokeArgs($this->ownerSpec, array($eventName, $arguments));
 	}
 }
