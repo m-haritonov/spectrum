@@ -1,26 +1,27 @@
+TODO: move notes.txt content to README.md "Development notes" section
 TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
 TODO: fix reports in all browsers
 TODO: передавать в матчер $matcherArguments
-TODO: \spectrum\run -> \run
 TODO: \spectrum\run должен возвращать строку вместо bool/null?
 TODO: setOutputResultBufferElements -> setOutputMatcherResults??? но в буфере могут содержаться не только результаты вызова матчеров, например fail
 TODO: удалить unknown, в драйверах вместо задания unknown выбрасывать исключение
 TODO: function -> callback
 TODO: remove vs removeAll
-TODO: exceptionHandler.php и autoload.php в _internals
 TODO: register vs add
+
+TODO: \spectrum\run -> \run
 TODO: \spectrum\builders\* -> \spectrum\*
 TODO: matchers -> _internals/matchers
+TODO: rename _testware to _private???
 TODO: Test -> Callback/Execution/Execute/ExecutionCallback
 TODO: _internals -> _private
-TODO: config::enableReports(), setOutputFormat(false), setOutputEnable
-TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
-TODO: setOutputFormat(class)
-TODO: disableReports/disableOutput/outputEnable
-TODO: function -> callback
-TODO: accessName должен быть задан
-TODO: BreakException to _private
 TODO: addMatcher -> matcher
+TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
+TODO: BreakException to _private
+
+TODO: config::enableReports(), setOutputFormat(false), setOutputEnable, disableReports/disableOutput/outputEnable
+TODO: setOutputFormat(class), \core\ReportsInterface
+TODO: accessName должен быть задан
 TODO: matchers - вместо передачи details передавать значения по ссылке
 TODO: before, after, matcher should be return null
 TODO: setClassReplacement -> registerClassReplacement
@@ -40,9 +41,23 @@ TODO: getTestSpecs и getCurrentBuildingSpec:
 TODO: doc: you can create own functions like describe/it
 TODO: doc: you can use be() in contexts and matchers
 TODO: doc: extension/package use init.php, put private files to _private directory
+
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
 TODO: обрезать параметры функции при выводе в reports
- 
+
+
+TODO: be()->throwsException vs be()->throws() vs be()->throwing() vs be()->throw()
+TODO: create be()->triggersError/triggers($errorType = null, $errorMessage = null)  ???
+TODO: create settings.captureOutput/Print (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов)
+TODO: create settings.backupGlobalVariables ???
+TODO: be(function(){})->outputs/prints('aaa a aaaaa ');
+
+TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
+TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
+TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
+TODO: set breakOnFirstMatcherFail to true by default
+TODO: add tests for charset usages
+
 TODO: test('', array(
 	array('name', 'name', 'name),
 	array('value', 'value', 'value'),
@@ -50,8 +65,6 @@ TODO: test('', array(
 	array('value', 'value', 'value'),
 	array('value', 'value', 'value'),
 ), function(){}); ???
-
-TODO: add tests for charset usages
 
 TODO: array context group:
 	group('aaa', array(
@@ -63,64 +76,52 @@ TODO: array context group:
 	), function(){
 		test('bbb', function(){});
 	});
-
-TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
-TODO: create be()->triggersError($errorType = null, $errorMessage = null)  ???
-TODO: create OutputCapture (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов), onEndingSpecExecuteBefore/After or onSpecRunStart/Finish
-TODO: create BackupGlobalVariables ???
-TODO: matchers: be(function(){})->outputs/prints('aaa a aaaaa ');
-
-TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
-TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
-TODO: be()->throws() vs be()->throwing() vs be()->throw() vs the()->throws()
-TODO: set breakOnFirstMatcherFail to true by default
-
-TODO: change context declaration style???
-
-// from:
-group('', function(){}, function(){});
-
-// to:
-contexts(function(){});
-group('', function(){});
-
-
-// from:
-test('', function(){}, function(){});
-
-// to:
-group(function(){
-	contexts(function(){});
-	test('', function(){});
-});
-
-
-// from:
-test('', array(
-	array('aaa' => 'bbb'),
-	array('aaa' => 'bbb'),
-	array('aaa' => 'bbb'),
-	array('aaa' => 'bbb'),
-), function(){});
-
-// to:
-group(function(){
-	contexts(array(
-		array('aaa' => 'bbb'),
-    	array('aaa' => 'bbb'),
-    	array('aaa' => 'bbb'),
-    	array('aaa' => 'bbb'),
-	), $addType = null);
 	
-	// Values: null, "up/wrap", "down/inject", "next"
-	// When $addType is "up", then specs is bound to contexts as children (to all descendant ending contexts)
-	// When $addType is "down", then contexts is bound to specs as children (to all descendant ending specs)
-	// When $addType is "next", then contexts is bound to next spec as children (to all descendant ending specs)
-	// When $addType is null, then:
-	// When there are many specs in group, then uses "up" type
-	// When there is one spec in group, then uses "down" type
-	test('', function(){});
-});
+TODO: change context declaration style???
+	// from:
+	group('', function(){}, function(){});
+	
+	// to:
+	contexts(function(){});
+	group('', function(){});
+	
+	
+	// from:
+	test('', function(){}, function(){});
+	
+	// to:
+	group(function(){
+		contexts(function(){});
+		test('', function(){});
+	});
+	
+	
+	// from:
+	test('', array(
+		array('aaa' => 'bbb'),
+		array('aaa' => 'bbb'),
+		array('aaa' => 'bbb'),
+		array('aaa' => 'bbb'),
+	), function(){});
+	
+	// to:
+	group(function(){
+		contexts(array(
+			array('aaa' => 'bbb'),
+			array('aaa' => 'bbb'),
+			array('aaa' => 'bbb'),
+			array('aaa' => 'bbb'),
+		), $addType = null);
+		
+		// Values: null, "up/wrap", "down/inject", "next"
+		// When $addType is "up", then specs is bound to contexts as children (to all descendant ending contexts)
+		// When $addType is "down", then contexts is bound to specs as children (to all descendant ending specs)
+		// When $addType is "next", then contexts is bound to next spec as children (to all descendant ending specs)
+		// When $addType is null, then:
+		// When there are many specs in group, then uses "up" type
+		// When there is one spec in group, then uses "down" type
+		test('', function(){});
+	});
 
 
 
@@ -128,24 +129,19 @@ group(function(){
 
 
 TODO: добавить возможность перевода??? Пример: 
-test('Makes something', function(){}, function(){
-	// ...
-	// ...
-	// ...
-	// ...
-	// ...
-}, array(
-	'translations/langs' => array(
-		'ru' => 'Делает что-либо',
-	)
-));
-
-или:
-translate('Делает что-либо', 'ru');
-it('Makes something'), function(){});
-
-установка используемого для отображения языка:
-config::setOutputLanguage('ru');
+	test('Makes something', function(){}, function(){
+	}, array(
+		'translations/langs' => array(
+			'ru' => 'Делает что-либо',
+		)
+	));
+	
+	или:
+	translate('Делает что-либо', 'ru');
+	it('Makes something'), function(){});
+	
+	установка используемого для отображения языка:
+	config::setOutputLanguage('ru');
 
 TODO: add parameters to \spectrum\run function:
 	$paths/$files — for example, "/aaa.php", "/abc/*.php", "/abc/**.php", array("./aaa.php", "./abc/*.php") 
@@ -158,8 +154,12 @@ TODO: add parameters to \spectrum\run function:
 TODO: add "run this test in this context" and "run this test in all contexts" links to "Reports"
 
 TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generateContexts; в "\spectrum\tools\*" или в "\spectrum\builders\*")
-TODO: create "\spectrum\tools\createTree" function and similar auxiliary functions and classes?
-TODO: create "\spectrum\tools\incrementCounter($counterName)" and "\spectrum\tools\getCounterValue($counterName)" functions?
+TODO: create \spectrum\tools\createTree function and similar auxiliary functions and classes?
+TODO: create \spectrum\tools\validateHtml('4.01', 'strict')
+TODO: create \spectrum\tools\validateXml('xhtml')
+TODO: create $mock = new \spectrum\tools\Mock(new Spec); $mock->__calls; $mock->__sets; $mock->__gets;
+
+
 
 === Multi-charset support problems ===
 
@@ -211,55 +211,3 @@ group(function(){
 }, 'utf-8');
 
 TODO: add limited multi-charset support (with using input charset of each test/group for output/etc. and without using input charset for inner string transformation)???
-
-=== Mocks ===
-
-Spy
-FileSystemMockReal
-FileSystemMockVirtual
-
-=== Additional matchers ===
-
-TODO: create additional matchers? List:
-
-spectrum_DefaultMatchers_Base_BePhpError(level)
-
-spectrum_DefaultMatchers_File_BeFileExists
-spectrum_DefaultMatchers_File_BeFileContentEqual
-spectrum_DefaultMatchers_File_BeFileIsDir
-spectrum_DefaultMatchers_File_BeFileIsFile
-spectrum_DefaultMatchers_File_BeFileIsLink
-spectrum_DefaultMatchers_File_BeFileIsExecutable
-spectrum_DefaultMatchers_File_BeFileIsReadable
-spectrum_DefaultMatchers_File_BeFileIsUploaded
-spectrum_DefaultMatchers_File_BeFileIsWritable
-
-spectrum_DefaultMatchers_Array_BeArrayHasKey
-spectrum_DefaultMatchers_Array_BeArrayHasValue
-spectrum_DefaultMatchers_Array_BeArrayHasAllKeys
-spectrum_DefaultMatchers_Array_BeArrayHasAllValues
-spectrum_DefaultMatchers_Array_BeArrayHasAnyKey
-spectrum_DefaultMatchers_Array_BeArrayHasAnyValue
-spectrum_DefaultMatchers_Array_BeArrayUnsortedEqual
-spectrum_DefaultMatchers_Array_BeArrayUnsortedEqualRecursive
-spectrum_DefaultMatchers_Array_BeArrayUnsortedIdentical
-spectrum_DefaultMatchers_Array_BeArrayUnsortedIdenticalRecursive
-spectrum_DefaultMatchers_Array_BeArrayCountEqual
-
-spectrum_DefaultMatchers_String_BeStringContain
-spectrum_DefaultMatchers_String_BeStringContainInPosition
-spectrum_DefaultMatchers_String_BeStringStartWith
-spectrum_DefaultMatchers_String_BeStringEndWith
-spectrum_DefaultMatchers_File_BeStringEndWithAnySlash
-spectrum_DefaultMatchers_File_BeStringStartWithAnySlash
-
-spectrum_DefaultMatchers_RegExp_BePregMatch
-
-spectrum_DefaultMatchers_Xml_BeXmlWellFormed
-spectrum_DefaultMatchers_Xml_BeXmlValid
-
-spectrum_DefaultMatchers_Html_BeHtmlAttributeEqual
-spectrum_DefaultMatchers_Html_BeHtmlContainTag
-spectrum_DefaultMatchers_Html_BeHtmlCorrect
-spectrum_DefaultMatchers_Html_BeHtmlWellFormed
-spectrum_DefaultMatchers_Html_BeHtmlValid

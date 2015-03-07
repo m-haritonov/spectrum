@@ -4,8 +4,8 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-require_once __DIR__ . '/autoload.php';
-require_once __DIR__ . '/exceptionHandler.php';
+require_once __DIR__ . '/_internals/autoload.php';
+require_once __DIR__ . '/_internals/exceptionHandler.php';
 
 require_once __DIR__ . '/run.php';
 require_once __DIR__ . '/builders/addMatcher.php';
