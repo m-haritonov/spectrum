@@ -29,8 +29,8 @@ class MessageTest extends \spectrum\tests\automatic\Test {
 			$messages[] = $spec->getMessages()->getAll();
 		});
 		
-		\spectrum\_internals\getRootSpec()->bindChildSpec($specs[0]);
-		\spectrum\_internals\getRootSpec()->run();
+		\spectrum\_private\getRootSpec()->bindChildSpec($specs[0]);
+		\spectrum\_private\getRootSpec()->run();
 
 		$this->assertSame(3, count($messages));
 		

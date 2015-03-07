@@ -27,7 +27,7 @@ class Test implements TestInterface {
 	 * @param \Closure $function
 	 */
 	public function setFunction($function) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		$this->function = $function;
@@ -44,7 +44,7 @@ class Test implements TestInterface {
 	 * @return null|\Closure
 	 */
 	public function getFunctionThroughRunningAncestors() {
-		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\callMethodThroughRunningAncestorSpecs');
+		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_private\callMethodThroughRunningAncestorSpecs');
 		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getTest->getFunction');
 	}
 }

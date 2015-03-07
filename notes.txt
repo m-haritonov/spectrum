@@ -9,15 +9,14 @@ TODO: function -> callback
 TODO: remove vs removeAll
 TODO: register vs add
 
-TODO: \spectrum\run -> \run
-TODO: \spectrum\builders\* -> \spectrum\*
-TODO: matchers -> _internals/matchers
-TODO: rename _testware to _private???
-TODO: Test -> Callback/Execution/Execute/ExecutionCallback
-TODO: _internals -> _private
-TODO: addMatcher -> matcher
-TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
 TODO: BreakException to _private
+TODO: Test -> Callback/Execution/Execute/ExecutionCallback
+TODO: \spectrum\builders\* -> \spectrum\*
+TODO: \spectrum\run -> \run
+TODO: matchers -> _private/matchers
+TODO: addMatcher -> matcher
+TODO: rename _testware to _private???
+TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
 
 TODO: config::enableReports(), setOutputFormat(false), setOutputEnable, disableReports/disableOutput/outputEnable
 TODO: setOutputFormat(class), \core\ReportsInterface

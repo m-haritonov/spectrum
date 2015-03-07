@@ -18,12 +18,12 @@ use spectrum\Exception;
  * @return \spectrum\core\SpecInterface
  */
 function test($name = null, $contexts = null, $body = null, $settings = null) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_internals\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if ($isRunningStateFunction()) {
 		throw new Exception('Builder "test" should be call only at building state');
 	}
 
-	$convertArgumentsForSpecFunction = config::getFunctionReplacement('\spectrum\_internals\convertArgumentsForSpec');
+	$convertArgumentsForSpecFunction = config::getFunctionReplacement('\spectrum\_private\convertArgumentsForSpec');
 	list($name, $contexts, $body, $settings) = $convertArgumentsForSpecFunction(func_get_args(), 'test');
 	
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
@@ -38,23 +38,23 @@ function test($name = null, $contexts = null, $body = null, $settings = null) {
 		$builderSpec->getTest()->setFunction($body);
 	}
 	
-	$setSettingsToSpecFunction = config::getFunctionReplacement('\spectrum\_internals\setSettingsToSpec');
+	$setSettingsToSpecFunction = config::getFunctionReplacement('\spectrum\_private\setSettingsToSpec');
 	$setSettingsToSpecFunction($builderSpec, $settings);
 	
-	$addTestSpecFunction = config::getFunctionReplacement('\spectrum\_internals\addTestSpec');
+	$addTestSpecFunction = config::getFunctionReplacement('\spectrum\_private\addTestSpec');
 	$addTestSpecFunction($builderSpec);
 	
-	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\getCurrentBuildingSpec');
+	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentBuildingSpec');
 	$getCurrentBuildingSpecFunction()->bindChildSpec($builderSpec);
 	
 	if ($contexts) {
 		if (is_array($contexts)) {
-			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\convertArrayWithContextsToSpecs');
+			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\_private\convertArrayWithContextsToSpecs');
 			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $contextSpec) {
 				$builderSpec->bindChildSpec($contextSpec);
 			}
 		} else {
-			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_internals\callFunctionOnCurrentBuildingSpec');
+			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\callFunctionOnCurrentBuildingSpec');
 			$callFunctionOnCurrentBuildingSpecFunction($contexts, $builderSpec);
 		}
 	}

@@ -39,7 +39,7 @@ class ErrorHandling implements ErrorHandlingInterface {
 	 * @param null|int|boolean $errorReportingLevel
 	 */
 	public function setCatchPhpErrors($errorReportingLevel) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		if (!config::getAllowErrorHandlingModify()) {
@@ -66,7 +66,7 @@ class ErrorHandling implements ErrorHandlingInterface {
 	 * @return int
 	 */
 	public function getCatchPhpErrorsThroughRunningAncestors() {
-		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\callMethodThroughRunningAncestorSpecs');
+		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_private\callMethodThroughRunningAncestorSpecs');
 		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getErrorHandling->getCatchPhpErrors', array(), -1);
 	}
 	
@@ -77,7 +77,7 @@ class ErrorHandling implements ErrorHandlingInterface {
 	 * @param bool $isEnable
 	 */
 	public function setBreakOnFirstPhpError($isEnable) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		if (!config::getAllowErrorHandlingModify()) {
@@ -98,7 +98,7 @@ class ErrorHandling implements ErrorHandlingInterface {
 	 * @return bool
 	 */
 	public function getBreakOnFirstPhpErrorThroughRunningAncestors() {
-		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\callMethodThroughRunningAncestorSpecs');
+		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_private\callMethodThroughRunningAncestorSpecs');
 		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getErrorHandling->getBreakOnFirstPhpError', array(), false);
 	}
 
@@ -108,7 +108,7 @@ class ErrorHandling implements ErrorHandlingInterface {
 	 * @param bool $isEnable
 	 */
 	public function setBreakOnFirstMatcherFail($isEnable) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		if (!config::getAllowErrorHandlingModify()) {
@@ -129,7 +129,7 @@ class ErrorHandling implements ErrorHandlingInterface {
 	 * @return bool
 	 */
 	public function getBreakOnFirstMatcherFailThroughRunningAncestors() {
-		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\callMethodThroughRunningAncestorSpecs');
+		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_private\callMethodThroughRunningAncestorSpecs');
 		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getErrorHandling->getBreakOnFirstMatcherFail', array(), false);
 	}
 }

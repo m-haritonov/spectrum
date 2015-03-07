@@ -28,7 +28,7 @@ class Matchers implements MatchersInterface {
 	 * @param callable $function
 	 */
 	public function add($name, $function) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		$this->items[$name] = $function;
@@ -51,7 +51,7 @@ class Matchers implements MatchersInterface {
 	 * @return null|callable
 	 */
 	public function getThroughRunningAncestors($name) {
-		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_internals\callMethodThroughRunningAncestorSpecs');
+		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_private\callMethodThroughRunningAncestorSpecs');
 		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getMatchers->get', array($name));
 	}
 
@@ -66,14 +66,14 @@ class Matchers implements MatchersInterface {
 	 * @param string $name
 	 */
 	public function remove($name) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		unset($this->items[$name]);
 	}
 	
 	public function removeAll() {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_internals\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		$this->items = array();

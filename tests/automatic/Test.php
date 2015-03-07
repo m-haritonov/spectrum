@@ -22,25 +22,25 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 		
-		\spectrum\_internals\setCurrentBuildingSpec(null);
+		\spectrum\_private\setCurrentBuildingSpec(null);
 		
-		$this->backupObjectProperties(\spectrum\_internals\getRootSpec());
+		$this->backupObjectProperties(\spectrum\_private\getRootSpec());
 		$this->backupClassStaticProperties('\spectrum\config');
-		$this->backupClassStaticProperties('\spectrum\_internals\reports\html\components\specList');
-		$this->backupClassStaticProperties('\spectrum\_internals\reports\html\components\code\variable');
-		$this->backupClassStaticProperties('\spectrum\_internals\reports\text\components\specList');
-		$this->backupClassStaticProperties('\spectrum\_internals\reports\text\components\code\variable');
+		$this->backupClassStaticProperties('\spectrum\_private\reports\html\components\specList');
+		$this->backupClassStaticProperties('\spectrum\_private\reports\html\components\code\variable');
+		$this->backupClassStaticProperties('\spectrum\_private\reports\text\components\specList');
+		$this->backupClassStaticProperties('\spectrum\_private\reports\text\components\code\variable');
 		
 		\spectrum\tests\automatic\Test::$temp = null;
 	}
 	
 	protected function tearDown() {
-		$this->restoreClassStaticProperties('\spectrum\_internals\reports\text\components\code\variable');
-		$this->restoreClassStaticProperties('\spectrum\_internals\reports\text\components\specList');
-		$this->restoreClassStaticProperties('\spectrum\_internals\reports\html\components\code\variable');
-		$this->restoreClassStaticProperties('\spectrum\_internals\reports\html\components\specList');
+		$this->restoreClassStaticProperties('\spectrum\_private\reports\text\components\code\variable');
+		$this->restoreClassStaticProperties('\spectrum\_private\reports\text\components\specList');
+		$this->restoreClassStaticProperties('\spectrum\_private\reports\html\components\code\variable');
+		$this->restoreClassStaticProperties('\spectrum\_private\reports\html\components\specList');
 		$this->restoreClassStaticProperties('\spectrum\config');
-		$this->restoreObjectProperties(\spectrum\_internals\getRootSpec());
+		$this->restoreObjectProperties(\spectrum\_private\getRootSpec());
 
 		$this->classStaticPropertyBackups = array();
 		$this->objectPropertyBackups = array();

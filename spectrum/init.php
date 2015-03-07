@@ -4,8 +4,8 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-require_once __DIR__ . '/_internals/autoload.php';
-require_once __DIR__ . '/_internals/exceptionHandler.php';
+require_once __DIR__ . '/_private/autoload.php';
+require_once __DIR__ . '/_private/exceptionHandler.php';
 
 require_once __DIR__ . '/run.php';
 require_once __DIR__ . '/builders/addMatcher.php';
@@ -19,33 +19,33 @@ require_once __DIR__ . '/builders/self.php';
 require_once __DIR__ . '/builders/test.php';
 require_once __DIR__ . '/builders/data.php';
 
-require_once __DIR__ . '/_internals/addTestSpec.php';
-require_once __DIR__ . '/_internals/callFunctionOnCurrentBuildingSpec.php';
-require_once __DIR__ . '/_internals/callMethodThroughRunningAncestorSpecs.php';
-require_once __DIR__ . '/_internals/convertArguments.php';
-require_once __DIR__ . '/_internals/convertArgumentsForSpec.php';
-require_once __DIR__ . '/_internals/convertArrayWithContextsToSpecs.php';
-require_once __DIR__ . '/_internals/convertCharset.php';
-require_once __DIR__ . '/_internals/convertLatinCharsToLowerCase.php';
-require_once __DIR__ . '/_internals/dispatchEvent.php';
-require_once __DIR__ . '/_internals/formatTextForOutput.php';
-require_once __DIR__ . '/_internals/getArrayWithContextsElementTitle.php';
-require_once __DIR__ . '/_internals/getCurrentBuildingSpec.php';
-require_once __DIR__ . '/_internals/getCurrentData.php';
-require_once __DIR__ . '/_internals/getCurrentRunningEndingSpec.php';
-require_once __DIR__ . '/_internals/getLastErrorHandler.php';
-require_once __DIR__ . '/_internals/getReportClass.php';
-require_once __DIR__ . '/_internals/getRootSpec.php';
-require_once __DIR__ . '/_internals/getTestSpecs.php';
-require_once __DIR__ . '/_internals/handleSpecModifyDeny.php';
-require_once __DIR__ . '/_internals/isRunningState.php';
-require_once __DIR__ . '/_internals/loadBaseMatchers.php';
-require_once __DIR__ . '/_internals/normalizeSettings.php';
-require_once __DIR__ . '/_internals/removeSubsequentErrorHandlers.php';
-require_once __DIR__ . '/_internals/setCurrentBuildingSpec.php';
-require_once __DIR__ . '/_internals/setSettingsToSpec.php';
-require_once __DIR__ . '/_internals/translate.php';
-require_once __DIR__ . '/_internals/usortWithOriginalSequencePreserving.php';
+require_once __DIR__ . '/_private/addTestSpec.php';
+require_once __DIR__ . '/_private/callFunctionOnCurrentBuildingSpec.php';
+require_once __DIR__ . '/_private/callMethodThroughRunningAncestorSpecs.php';
+require_once __DIR__ . '/_private/convertArguments.php';
+require_once __DIR__ . '/_private/convertArgumentsForSpec.php';
+require_once __DIR__ . '/_private/convertArrayWithContextsToSpecs.php';
+require_once __DIR__ . '/_private/convertCharset.php';
+require_once __DIR__ . '/_private/convertLatinCharsToLowerCase.php';
+require_once __DIR__ . '/_private/dispatchEvent.php';
+require_once __DIR__ . '/_private/formatTextForOutput.php';
+require_once __DIR__ . '/_private/getArrayWithContextsElementTitle.php';
+require_once __DIR__ . '/_private/getCurrentBuildingSpec.php';
+require_once __DIR__ . '/_private/getCurrentData.php';
+require_once __DIR__ . '/_private/getCurrentRunningEndingSpec.php';
+require_once __DIR__ . '/_private/getLastErrorHandler.php';
+require_once __DIR__ . '/_private/getReportClass.php';
+require_once __DIR__ . '/_private/getRootSpec.php';
+require_once __DIR__ . '/_private/getTestSpecs.php';
+require_once __DIR__ . '/_private/handleSpecModifyDeny.php';
+require_once __DIR__ . '/_private/isRunningState.php';
+require_once __DIR__ . '/_private/loadBaseMatchers.php';
+require_once __DIR__ . '/_private/normalizeSettings.php';
+require_once __DIR__ . '/_private/removeSubsequentErrorHandlers.php';
+require_once __DIR__ . '/_private/setCurrentBuildingSpec.php';
+require_once __DIR__ . '/_private/setSettingsToSpec.php';
+require_once __DIR__ . '/_private/translate.php';
+require_once __DIR__ . '/_private/usortWithOriginalSequencePreserving.php';
 
 if (!function_exists('addMatcher')) {
 	/**
