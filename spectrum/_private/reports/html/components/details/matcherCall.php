@@ -20,8 +20,8 @@ class matcherCall extends \spectrum\_private\reports\html\components\component {
 			.app-details-matcherCall>*>h1 { margin-bottom: 0.2em; font-size: 1em; }
 			.app-details-matcherCall>.source>p .file .prefix:before { content: "\2026"; }
 			.app-details-matcherCall>.source>p .file .prefix>span { display: none; }
-			.app-resultBuffer>.results>.result.expanded .app-details-matcherCall>.source>p .file .prefix:before { display: none; }
-			.app-resultBuffer>.results>.result.expanded .app-details-matcherCall>.source>p .file .prefix>span { display: inline; }
+			.app-results>.results>.result.expanded .app-details-matcherCall>.source>p .file .prefix:before { display: none; }
+			.app-results>.results>.result.expanded .app-details-matcherCall>.source>p .file .prefix>span { display: inline; }
 		/*]]>*/</style>', 2);
 	}
 

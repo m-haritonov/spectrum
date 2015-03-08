@@ -61,7 +61,7 @@ class Assertion implements AssertionInterface {
 		
 		$matcherFunction = $this->ownerSpec->getMatchers()->getThroughRunningAncestors($matcherName);
 		if ($matcherFunction === null) {
-			$this->ownerSpec->getResultBuffer()->addResult(false, new Exception('Matcher "' . $matcherName . '" not exists'));
+			$this->ownerSpec->getResults()->add(false, new Exception('Matcher "' . $matcherName . '" not exists'));
 			return $this;
 		}
 		
@@ -75,7 +75,7 @@ class Assertion implements AssertionInterface {
 		}
 		
 		$matcherCallDetails->setResult($result);
-		$this->ownerSpec->getResultBuffer()->addResult($result, $matcherCallDetails);
+		$this->ownerSpec->getResults()->add($result, $matcherCallDetails);
 		$this->notFlag = false;
 		$dispatchEventFunction('onMatcherCallFinish', array($this->ownerSpec, $this, $matcherCallDetails));
 		

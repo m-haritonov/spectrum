@@ -8,7 +8,7 @@ namespace spectrum\core;
 
 use spectrum\Exception;
 
-class ResultBuffer implements ResultBufferInterface {
+class Results implements ResultsInterface {
 	protected $results = array();
 
 	/**
@@ -31,9 +31,9 @@ class ResultBuffer implements ResultBufferInterface {
 	 * @param null|bool $result
 	 * @param mixed $details Exception object, some string, backtrace info, etc.
 	 */
-	public function addResult($result, $details = null) {
+	public function add($result, $details = null) {
 		if ($result !== true && $result !== false && $result !== null) {
-			throw new Exception('ResultBuffer is accept only "true", "false" or "null"');
+			throw new Exception('Results is accept only "true", "false" or "null"');
 		}
 		
 		$this->results[] = array(
@@ -45,14 +45,14 @@ class ResultBuffer implements ResultBufferInterface {
 	/**
 	 * @return array
 	 */
-	public function getResults() {
+	public function getAll() {
 		return $this->results;
 	}
 
 	/**
 	 * @return null|bool
 	 */
-	public function getTotalResult() {
+	public function getTotal() {
 		$hasNull = false;
 		foreach ($this->results as $result) {
 			if ($result['result'] === false) {
@@ -60,7 +60,7 @@ class ResultBuffer implements ResultBufferInterface {
 			} else if ($result['result'] === null) {
 				$hasNull = true;
 			} else if ($result['result'] !== true) {
-				throw new Exception('ResultBuffer should be contain "true", "false" or "null" values only (now it is contain value of "' . gettype($result['result']) . '" type)');
+				throw new Exception('Results should be contain "true", "false" or "null" values only (now it is contain value of "' . gettype($result['result']) . '" type)');
 			}
 		}
 

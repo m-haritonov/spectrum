@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-interface ResultBufferInterface {
+interface ResultsInterface {
 	public function __construct(SpecInterface $ownerSpec);
 	
 	/**
@@ -18,15 +18,15 @@ interface ResultBufferInterface {
 	 * @param null|bool $result
 	 * @param mixed $details
 	 */
-	public function addResult($result, $details = null);
+	public function add($result, $details = null);
 	
 	/**
 	 * @return array
 	 */
-	public function getResults();
+	public function getAll();
 
 	/**
 	 * @return null|bool
 	 */
-	public function getTotalResult();
+	public function getTotal();
 }

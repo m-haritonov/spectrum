@@ -23,11 +23,11 @@ class objectVar extends \spectrum\_private\reports\html\components\component {
 			.app-code-variables-object .app-code-variables-object,
 			.app-code-variables-object .app-code-variables-array { display: inline; vertical-align: baseline; background: transparent; }
 			
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.app-code-operator.curlyBrace { display: inline; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.elements:before { display: none; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-object>.elements>.element { display: block; }
+			.app-results>.results>.result.expanded .app-code-variables-object>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.app-results>.results>.result.expanded .app-code-variables-object>.class { display: inline; overflow: visible; max-width: none; white-space: normal; vertical-align: baseline; }
+			.app-results>.results>.result.expanded .app-code-variables-object>.app-code-operator.curlyBrace { display: inline; }
+			.app-results>.results>.result.expanded .app-code-variables-object>.elements:before { display: none; }
+			.app-results>.results>.result.expanded .app-code-variables-object>.elements>.element { display: block; }
 		/*]]>*/</style>', 2);
 	}
 

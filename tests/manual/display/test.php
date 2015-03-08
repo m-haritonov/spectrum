@@ -3,7 +3,7 @@ if (!function_exists('\spectrum\run')) {
 	exit('This file is not allowed to direct call');
 }
 
-config::setOutputResultBufferElements('all');
+config::setOutputResults('all');
 
 define('SOME_CONST', 'bbb');
 
@@ -84,27 +84,27 @@ test('Messages', function(){
 	message("aaa\nbbb");
 });
 
-group('Result buffer', function(){
+group('Results', function(){
 	test('Fail element only', function(){
-		self()->getResultBuffer()->addResult(false, 'Some text');
+		self()->getResults()->add(false, 'Some text');
 	});
 	
 	test('Success element only', function(){
-		self()->getResultBuffer()->addResult(true, 'Some text');
+		self()->getResults()->add(true, 'Some text');
 	});
 	
 	test('Empty element only', function(){
-		self()->getResultBuffer()->addResult(null, 'Some text');
+		self()->getResults()->add(null, 'Some text');
 	});
 	
 	test('Elements', function() use(&$test){
-		self()->getResultBuffer()->addResult(null, 'Some text');
-		self()->getResultBuffer()->addResult(null, new \spectrum\core\details\UserFail('Some text'));
+		self()->getResults()->add(null, 'Some text');
+		self()->getResults()->add(null, new \spectrum\core\details\UserFail('Some text'));
 		
-		self()->getResultBuffer()->addResult(true, 'Some text');
+		self()->getResults()->add(true, 'Some text');
 		be(1)->ident(1);
 		
-		self()->getResultBuffer()->addResult(false, 'Some text');
+		self()->getResults()->add(false, 'Some text');
 		be('')->ident('a');
 		$aaa['a'];
 		trigger_error('some text', E_USER_NOTICE);

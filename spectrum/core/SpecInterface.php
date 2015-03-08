@@ -133,9 +133,9 @@ interface SpecInterface {
 	public function getMessages();
 	
 	/**
-	 * @return null|ResultBufferInterface
+	 * @return null|ResultsInterface
 	 */
-	public function getResultBuffer();
+	public function getResults();
 
 /**/
 

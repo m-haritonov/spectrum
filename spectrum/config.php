@@ -35,7 +35,7 @@ class config {
 	/**
 	 * @var string Any of (separated by space if multiple): "all", "fail", "success", "empty", "unknown"
 	 */
-	static protected $outputResultBufferElements = 'fail empty unknown';
+	static protected $outputResults = 'fail empty unknown';
 	
 	/**
 	 * @var bool
@@ -52,7 +52,7 @@ class config {
 		'\spectrum\_private\reports\html\components\specList'                    => '\spectrum\_private\reports\html\components\specList',
 		'\spectrum\_private\reports\html\components\totalInfo'                   => '\spectrum\_private\reports\html\components\totalInfo',
 		'\spectrum\_private\reports\html\components\totalResult'                 => '\spectrum\_private\reports\html\components\totalResult',
-		'\spectrum\_private\reports\html\components\resultBuffer'                => '\spectrum\_private\reports\html\components\resultBuffer',
+		'\spectrum\_private\reports\html\components\results'                     => '\spectrum\_private\reports\html\components\results',
 		'\spectrum\_private\reports\html\components\details\matcherCall'         => '\spectrum\_private\reports\html\components\details\matcherCall',
 		'\spectrum\_private\reports\html\components\details\phpError'            => '\spectrum\_private\reports\html\components\details\phpError',
 		'\spectrum\_private\reports\html\components\details\unknown'             => '\spectrum\_private\reports\html\components\details\unknown',
@@ -79,7 +79,7 @@ class config {
 		'\spectrum\_private\reports\text\components\specList'                    => '\spectrum\_private\reports\text\components\specList',
 		'\spectrum\_private\reports\text\components\totalInfo'                   => '\spectrum\_private\reports\text\components\totalInfo',
 		'\spectrum\_private\reports\text\components\totalResult'                 => '\spectrum\_private\reports\text\components\totalResult',
-		'\spectrum\_private\reports\text\components\resultBuffer'                => '\spectrum\_private\reports\text\components\resultBuffer',
+		'\spectrum\_private\reports\text\components\results'                     => '\spectrum\_private\reports\text\components\results',
 		'\spectrum\_private\reports\text\components\details\matcherCall'         => '\spectrum\_private\reports\text\components\details\matcherCall',
 		'\spectrum\_private\reports\text\components\details\phpError'            => '\spectrum\_private\reports\text\components\details\phpError',
 		'\spectrum\_private\reports\text\components\details\unknown'             => '\spectrum\_private\reports\text\components\details\unknown',
@@ -102,18 +102,18 @@ class config {
 		'\spectrum\_private\reports\text\components\code\variables\unknownVar'   => '\spectrum\_private\reports\text\components\code\variables\unknownVar',
 		
 		'\spectrum\core\details\MatcherCall' => '\spectrum\core\details\MatcherCall',
-		'\spectrum\core\details\PhpError' => '\spectrum\core\details\PhpError',
-		'\spectrum\core\details\UserFail' => '\spectrum\core\details\UserFail',
+		'\spectrum\core\details\PhpError'    => '\spectrum\core\details\PhpError',
+		'\spectrum\core\details\UserFail'    => '\spectrum\core\details\UserFail',
 		
-		'\spectrum\core\Assertion' => '\spectrum\core\Assertion',
+		'\spectrum\core\Assertion'        => '\spectrum\core\Assertion',
 		'\spectrum\core\ContextModifiers' => '\spectrum\core\ContextModifiers',
-		'\spectrum\core\Data' => '\spectrum\core\Data',
-		'\spectrum\core\ErrorHandling' => '\spectrum\core\ErrorHandling',
-		'\spectrum\core\Executor' => '\spectrum\core\Executor',
-		'\spectrum\core\Matchers' => '\spectrum\core\Matchers',
-		'\spectrum\core\Messages' => '\spectrum\core\Messages',
-		'\spectrum\core\ResultBuffer' => '\spectrum\core\ResultBuffer',
-		'\spectrum\core\Spec' => '\spectrum\core\Spec',
+		'\spectrum\core\Data'             => '\spectrum\core\Data',
+		'\spectrum\core\ErrorHandling'    => '\spectrum\core\ErrorHandling',
+		'\spectrum\core\Executor'         => '\spectrum\core\Executor',
+		'\spectrum\core\Matchers'         => '\spectrum\core\Matchers',
+		'\spectrum\core\Messages'         => '\spectrum\core\Messages',
+		'\spectrum\core\Results'          => '\spectrum\core\Results',
+		'\spectrum\core\Spec'             => '\spectrum\core\Spec',
 	);
 
 	/**
@@ -261,33 +261,33 @@ class config {
 	/**
 	 * @param string $value Any of (separated by space if multiple): "all", "fail", "success", "empty", "unknown"
 	 */
-	static public function setOutputResultBufferElements($value) {
+	static public function setOutputResults($value) {
 		static::throwExceptionIfLocked();
 		
 		if (!preg_match("/^((all|fail|success|empty|unknown)( |$))+$/s", $value)) {
 			throw new Exception('Incorrect value is passed to "\\' . __METHOD__ . '" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)');
 		}
 		
-		static::$outputResultBufferElements = $value;
+		static::$outputResults = $value;
 	}
 	
 	/**
 	 * @return string Already set value or "fail empty unknown" by default
 	 */
-	static public function getOutputResultBufferElements() {
-		return static::$outputResultBufferElements;
+	static public function getOutputResults() {
+		return static::$outputResults;
 	}
 	
 	/**
 	 * @return bool True when set value contains any of values from $string, false otherwise
 	 */
-	static public function hasOutputResultBufferElements($string) {
+	static public function hasOutputResults($string) {
 		if (!preg_match("/^((all|fail|success|empty|unknown)( |$))+$/s", $string)) {
 			throw new Exception('Incorrect value is passed to "\\' . __METHOD__ . '" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)');
 		}
 		
 		foreach (explode(' ', $string) as $value) {
-			if (preg_match('/(^| )' . preg_quote($value, '/') . '( |$)/s', static::$outputResultBufferElements)) {
+			if (preg_match('/(^| )' . preg_quote($value, '/') . '( |$)/s', static::$outputResults)) {
 				return true;
 			}
 		}

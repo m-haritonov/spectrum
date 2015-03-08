@@ -190,7 +190,7 @@ class specList extends component {
 	 */
 	static protected function getContentForRunDetails(SpecInterface $spec) {
 		$componentResults = array();
-		$componentResults[] = static::callComponentMethod('resultBuffer', 'getContent', array($spec));
+		$componentResults[] = static::callComponentMethod('results', 'getContent', array($spec));
 		$componentResults[] = static::callComponentMethod('messages', 'getContent', array($spec));
 
 		$content = '';

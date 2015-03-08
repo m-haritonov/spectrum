@@ -62,7 +62,7 @@ class totalResult extends component {
 	 * @return string
 	 */
 	static public function getContentForUpdate(SpecInterface $spec) {
-		$resultName = static::getResultName($spec->getResultBuffer()->getTotalResult());
+		$resultName = static::getResultName($spec->getResults()->getTotal());
 		return
 			'<span class="app-totalResult-update id-' . static::escapeHtml($spec->getRunId()) . '">' . static::getHtmlEscapedOutputNewline() .
 				static::getHtmlEscapedOutputIndention() . '<span class="result">' . static::escapeHtml($resultName) . '</span>' . static::getHtmlEscapedOutputNewline() .

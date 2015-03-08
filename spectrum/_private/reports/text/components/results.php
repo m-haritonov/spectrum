@@ -12,18 +12,18 @@ use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;
 use spectrum\core\SpecInterface;
 
-class resultBuffer extends \spectrum\_private\reports\text\components\component {
+class results extends \spectrum\_private\reports\text\components\component {
 	/**
 	 * @return null|string
 	 */
 	static public function getContent(SpecInterface $spec) {
-		$contentForResults = static::getContentForResults($spec->getResultBuffer()->getResults());
+		$contentForResults = static::getContentForResults($spec->getResults()->getAll());
 		
 		if (trim($contentForResults) == '') {
 			return null;
 		}
 		
-		$title = static::translate('Result buffer');
+		$title = static::translate('Results');
 		$content = '';
 		$content .= str_repeat('=', mb_strlen($title, config::getOutputCharset())) . static::getOutputNewline();
 		$content .= $title . static::getOutputNewline();
@@ -43,7 +43,7 @@ class resultBuffer extends \spectrum\_private\reports\text\components\component 
 		foreach ($results as $result) {
 			$num++;
 			
-			if (!(($result['result'] === false && config::hasOutputResultBufferElements('all fail')) || ($result['result'] === true && config::hasOutputResultBufferElements('all success')) || ($result['result'] === null && config::hasOutputResultBufferElements('all empty')) || ($result['result'] !== false && $result['result'] !== true && $result['result'] !== null && config::hasOutputResultBufferElements('all unknown')))) {
+			if (!(($result['result'] === false && config::hasOutputResults('all fail')) || ($result['result'] === true && config::hasOutputResults('all success')) || ($result['result'] === null && config::hasOutputResults('all empty')) || ($result['result'] !== false && $result['result'] !== true && $result['result'] !== null && config::hasOutputResults('all unknown')))) {
 				continue;
 			}
 			

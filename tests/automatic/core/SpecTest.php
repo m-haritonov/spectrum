@@ -13,7 +13,8 @@ use spectrum\core\Data;
 use spectrum\core\ErrorHandling;
 use spectrum\core\Matchers;
 use spectrum\core\Messages;
-use spectrum\core\ResultBuffer;
+use spectrum\core\Results;
+use spectrum\core\ResultsInterface;
 use spectrum\core\Spec;
 use spectrum\core\SpecInterface;
 use spectrum\core\Executor;
@@ -1286,18 +1287,18 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 /**/
 	
-	public function testGetResultBuffer_ReturnsSameResultBufferForEachCall() {
+	public function testGetResults_ReturnsSameResultsForEachCall() {
 		$spec = new Spec();
-		$resultBuffer = $spec->getResultBuffer();
-		$this->assertTrue($resultBuffer instanceof ResultBuffer);
-		$this->assertSame($resultBuffer, $spec->getResultBuffer());
+		$results = $spec->getResults();
+		$this->assertTrue($results instanceof Results);
+		$this->assertSame($results, $spec->getResults());
 	}
 	
-	public function testGetResultBuffer_UsesConfigForResultBufferClassGetting() {
-		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\ResultBuffer {}');
-		config::setClassReplacement('\spectrum\core\ResultBuffer', $className);
+	public function testGetResults_UsesConfigForResultsClassGetting() {
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Results {}');
+		config::setClassReplacement('\spectrum\core\Results', $className);
 		$spec = new Spec();
-		$this->assertInstanceOf($className, $spec->getResultBuffer());
+		$this->assertInstanceOf($className, $spec->getResults());
 	}
 	
 /**/
@@ -2044,9 +2045,9 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_ChildSpecRunWithoutRunningParent_ReturnsRootSpecRunResult() {
-		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\ResultBuffer {
-				public function getTotalResult() {
+		$resultsClassName = \spectrum\tests\_testware\tools::createClass('
+			class ... extends \spectrum\core\Results {
+				public function getTotal() {
 					if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][0]) {
 						return true;
 					} else {
@@ -2056,7 +2057,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		\spectrum\tests\_testware\tools::$temp["specs"] = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
@@ -2234,16 +2235,16 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame(array($specs[0], $specs[4]), $runSpecs);
 	}
 	
-	public function testRun_RootSpecRun_ReturnsResultBufferTotalResult() {
-		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\ResultBuffer {
-				public function getTotalResult() {
+	public function testRun_RootSpecRun_ReturnsResultsTotal() {
+		$resultsClassName = \spectrum\tests\_testware\tools::createClass('
+			class ... extends \spectrum\core\Results {
+				public function getTotal() {
 					return \spectrum\tests\_testware\tools::$temp["totalResult"];
 				}
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		$spec = new Spec();
 		
@@ -2301,22 +2302,23 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 			trigger_error("aaa", E_USER_NOTICE);
 		});
 		$spec->run();
 		
-		$results = $resultBuffer->getResults();
-		$this->assertSame(1, count($results));
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf($phpErrorDetailsClassName, $results[0]['details']);
-		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+		$resultsContent = $results->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf($phpErrorDetailsClassName, $resultsContent[0]['details']);
+		$this->assertSame('aaa', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 	}
 	
 	public function testRun_RootSpecRun_ErrorHandling_GetsErrorTypeFromAncestorOrSelf() {
-		$resultBuffers = array();
+		/** @var ResultsInterface[] $results */
+		$results = array();
 		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
@@ -2328,40 +2330,40 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs[1]->getErrorHandling()->setCatchPhpErrors(E_USER_NOTICE);
 		$specs[2]->getErrorHandling()->setCatchPhpErrors(E_USER_WARNING);
 		$specs[3]->getErrorHandling()->setCatchPhpErrors(E_USER_ERROR);
-		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$resultBuffers) {
-			$resultBuffers[] = $specs[0]->getRunningDescendantEndingSpec()->getResultBuffer();
+		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$results) {
+			$results[] = $specs[0]->getRunningDescendantEndingSpec()->getResults();
 			trigger_error("aaa", E_USER_NOTICE);
 			trigger_error("bbb", E_USER_WARNING);
 			trigger_error("ccc", E_USER_ERROR);
 		});
 		$specs[0]->run();
 		
-		$this->assertSame(3, count($resultBuffers));
+		$this->assertSame(3, count($results));
 
-		$results = $resultBuffers[0]->getResults();
-		$this->assertSame(1, count($results));
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+		$resultsContent = $results[0]->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertSame(E_USER_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 		
-		$results = $resultBuffers[1]->getResults();
-		$this->assertSame(1, count($results));
-		$this->assertSame(E_USER_WARNING, $results[0]['details']->getErrorLevel());
+		$resultsContent = $results[1]->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertSame(E_USER_WARNING, $resultsContent[0]['details']->getErrorLevel());
 		
-		$results = $resultBuffers[2]->getResults();
-		$this->assertSame(1, count($results));
-		$this->assertSame(E_USER_ERROR, $results[0]['details']->getErrorLevel());
+		$resultsContent = $results[2]->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertSame(E_USER_ERROR, $resultsContent[0]['details']->getErrorLevel());
 	}
 	
 	public function testRun_RootSpecRun_ErrorHandling_TakesInAccountDefinedOnRunErrorReportingValue() {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 			error_reporting(E_USER_WARNING);
 			trigger_error("aaa", E_USER_NOTICE);
 		});
 		$spec->run();
 		
-		$this->assertSame(array(), $resultBuffer->getResults());
+		$this->assertSame(array(), $results->getAll());
 	}
 	
 	public function testRun_RootSpecRun_ErrorHandling_DoesNotTakeInAccountDefinedBeforeRunErrorReportingValue() {
@@ -2369,18 +2371,18 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 			trigger_error("aaa", E_USER_NOTICE);
 		});
 		$spec->run();
 		
-		$results = $resultBuffer->getResults();
-		$this->assertSame(1, count($results));
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
-		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+		$resultsContent = $results->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[0]['details']);
+		$this->assertSame('aaa', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 	}
 	
 	public function testRun_RootSpecRun_ErrorHandling_RestoreErrorReportingValueAfterRun() {
@@ -2426,46 +2428,46 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
 		$spec->getContextModifiers()->add(function(){ trigger_error("aaa", E_USER_NOTICE); }, 'before');
 		$spec->getContextModifiers()->add(function(){ trigger_error("bbb", E_USER_WARNING); }, 'after');
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 		});
 		$spec->run();
 		
-		$results = $resultBuffer->getResults();
-		$this->assertSame(2, count($results));
+		$resultsContent = $results->getAll();
+		$this->assertSame(2, count($resultsContent));
 		
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
-		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[0]['details']);
+		$this->assertSame('aaa', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 		
-		$this->assertSame(false, $results[1]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
-		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
-		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
+		$this->assertSame(false, $resultsContent[1]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[1]['details']);
+		$this->assertSame('bbb', $resultsContent[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $resultsContent[1]['details']->getErrorLevel());
 	}
 	
 	public function testRun_RootSpecRun_ErrorHandling_CatchesPhpErrorsFromTest() {
-		\spectrum\tests\_testware\tools::$temp["resultBuffer"] = null;
+		\spectrum\tests\_testware\tools::$temp["results"] = null;
 		
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 			trigger_error("aaa", E_USER_NOTICE);
 		});
 		$spec->run();
 		
-		$results = $resultBuffer->getResults();
-		$this->assertSame(1, count($results));
+		$resultsContent = $results->getAll();
+		$this->assertSame(1, count($resultsContent));
 		
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
-		$this->assertSame('aaa', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_USER_NOTICE, $results[0]['details']->getErrorLevel());
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[0]['details']);
+		$this->assertSame('aaa', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 	}
 	
-	public function testRun_RootSpecRun_ErrorHandling_ErrorHandlerWasRemovedOnExecute_AddsFalseToResultBufferAndDoesNotRemoveOtherErrorHandlers() {
+	public function testRun_RootSpecRun_ErrorHandling_ErrorHandlerWasRemovedOnExecute_AddsFalseToResultsAndDoesNotRemoveOtherErrorHandlers() {
 		$errorHandler1 = function($errorSeverity, $errorMessage){};
 		set_error_handler($errorHandler1);
 		
@@ -2476,15 +2478,15 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		set_error_handler($errorHandler3);
 		
 		$spec = new Spec();
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 			restore_error_handler();
 		});
 		$spec->run();
 		
 		$this->assertSame(array(
 			array('result' => false, 'details' => 'Spectrum error handler was removed'),
-		), $resultBuffer->getResults());
+		), $results->getAll());
 		
 		$this->assertSame($errorHandler3, \spectrum\tests\_testware\tools::getLastErrorHandler());
 		restore_error_handler();
@@ -2496,8 +2498,9 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		restore_error_handler();
 	}
 		
-	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsIncludeTriggeredErrorType_CatchesPhpErrorsAndAddsFalseResultToResultBuffer() {
-		$resultBuffers = array();
+	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsIncludeTriggeredErrorType_CatchesPhpErrorsAndAddsFalseResultToResults() {
+		/** @var ResultsInterface[] $results */
+		$results = array();
 		
 		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
@@ -2512,79 +2515,79 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs[2]->getErrorHandling()->setCatchPhpErrors(E_USER_WARNING);
 		$specs[3]->getErrorHandling()->setCatchPhpErrors(E_ALL);
 		$specs[4]->getErrorHandling()->setCatchPhpErrors(-1);
-		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$resultBuffers) {
-			$resultBuffers[] = $specs[0]->getRunningDescendantEndingSpec()->getResultBuffer();
+		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$results) {
+			$results[] = $specs[0]->getRunningDescendantEndingSpec()->getResults();
 			trim($aaa);
 			trigger_error("bbb", E_USER_WARNING);
 		});
 		$specs[0]->run();
 		
-		$this->assertSame(4, count($resultBuffers));
+		$this->assertSame(4, count($results));
 		
-		$results = $resultBuffers[0]->getResults();
-		$this->assertSame(1, count($results));
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
-		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
+		$resultsContent = $results[0]->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 		
-		$results = $resultBuffers[1]->getResults();
-		$this->assertSame(1, count($results));
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
-		$this->assertSame('bbb', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_USER_WARNING, $results[0]['details']->getErrorLevel());
+		$resultsContent = $results[1]->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[0]['details']);
+		$this->assertSame('bbb', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $resultsContent[0]['details']->getErrorLevel());
 		
-		$results = $resultBuffers[2]->getResults();
-		$this->assertSame(2, count($results));
+		$resultsContent = $results[2]->getAll();
+		$this->assertSame(2, count($resultsContent));
 		
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
-		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 		
-		$this->assertSame(false, $results[1]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
-		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
-		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
+		$this->assertSame(false, $resultsContent[1]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[1]['details']);
+		$this->assertSame('bbb', $resultsContent[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $resultsContent[1]['details']->getErrorLevel());
 		
-		$results = $resultBuffers[3]->getResults();
-		$this->assertSame(2, count($results));
+		$resultsContent = $results[3]->getAll();
+		$this->assertSame(2, count($resultsContent));
 		
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[0]['details']);
-		$this->assertSame('Undefined variable: aaa', $results[0]['details']->getErrorMessage());
-		$this->assertSame(E_NOTICE, $results[0]['details']->getErrorLevel());
+		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[0]['details']);
+		$this->assertSame('Undefined variable: aaa', $resultsContent[0]['details']->getErrorMessage());
+		$this->assertSame(E_NOTICE, $resultsContent[0]['details']->getErrorLevel());
 		
-		$this->assertSame(false, $results[1]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\PhpError', $results[1]['details']);
-		$this->assertSame('bbb', $results[1]['details']->getErrorMessage());
-		$this->assertSame(E_USER_WARNING, $results[1]['details']->getErrorLevel());
+		$this->assertSame(false, $resultsContent[1]['result']);
+		$this->assertInstanceOf('\spectrum\core\details\PhpError', $resultsContent[1]['details']);
+		$this->assertSame('bbb', $resultsContent[1]['details']->getErrorMessage());
+		$this->assertSame(E_USER_WARNING, $resultsContent[1]['details']->getErrorLevel());
 	}
 	
-	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsNotIncludeTriggeredErrorType_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
+	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsNotIncludeTriggeredErrorType_CatchesPhpErrorsAndDoesNotAddResultsToResults() {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(0);
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 			trigger_error("aaa", E_USER_WARNING);
 		});
 		$spec->run();
 		
-		$this->assertSame(array(), $resultBuffer->getResults());
+		$this->assertSame(array(), $results->getAll());
 	}
 	
-	public function testRun_RootSpecRun_ErrorHandling_ExpressionWithErrorControlOperator_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
+	public function testRun_RootSpecRun_ErrorHandling_ExpressionWithErrorControlOperator_CatchesPhpErrorsAndDoesNotAddResultsToResults() {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 			@trim($aaa);
 			@trigger_error("aaa");
 		});
 		$spec->run();
 		
-		$this->assertSame(array(), $resultBuffer->getResults());
+		$this->assertSame(array(), $results->getAll());
 	}
 	
 	public function testRun_RootSpecRun_ErrorHandling_BreakOnFirstPhpErrorIsEnabled_BreaksExecutionOnFirstPhpError() {
@@ -2671,14 +2674,14 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 
 /**/
 	
-	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferWithProperLinkToOwnerSpecForEachSpec() {
-		\spectrum\tests\_testware\tools::$temp["resultBuffers"] = array();
+	public function testRun_RootSpecRun_Results_CreatesNewResultsWithProperLinkToOwnerSpecForEachSpec() {
+		\spectrum\tests\_testware\tools::$temp["results"] = array();
 		
-		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\ResultBuffer {
+		$resultsClassName = \spectrum\tests\_testware\tools::createClass('
+			class ... extends \spectrum\core\Results {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\_testware\tools::$temp["resultBuffers"][] = array(
-						"resultBuffer" => $this,
+					\spectrum\tests\_testware\tools::$temp["results"][] = array(
+						"results" => $this,
 						"ownerSpec" => $ownerSpec,
 					);
 					
@@ -2687,7 +2690,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
@@ -2705,125 +2708,126 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs['parent1']->bindChildSpec($specs['childSpec2']);
 		$specs[0]->run();
 		
-		$this->assertSame(11, count(\spectrum\tests\_testware\tools::$temp["resultBuffers"]));
+		$this->assertSame(11, count(\spectrum\tests\_testware\tools::$temp["results"]));
 		
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][3]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][4]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][5]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][6]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][7]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][8]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][9]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][10]["resultBuffer"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][0]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][1]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][2]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][3]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][4]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][5]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][6]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][7]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][8]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][9]["results"]);
+		$this->assertInstanceOf($resultsClassName, \spectrum\tests\_testware\tools::$temp["results"][10]["results"]);
 		
-		$this->assertSame($specs[0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]["ownerSpec"]);
-		$this->assertSame($specs[1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]["ownerSpec"]);
-		$this->assertSame($specs[2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]["ownerSpec"]);
-		$this->assertSame($specs[3], \spectrum\tests\_testware\tools::$temp["resultBuffers"][3]["ownerSpec"]);
-		$this->assertSame($specs[4], \spectrum\tests\_testware\tools::$temp["resultBuffers"][4]["ownerSpec"]);
-		$this->assertSame($specs['parent1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][5]["ownerSpec"]);
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][6]["ownerSpec"]);
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][7]["ownerSpec"]);
-		$this->assertSame($specs['parent2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][8]["ownerSpec"]);
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][9]["ownerSpec"]);
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][10]["ownerSpec"]);
+		$this->assertSame($specs[0], \spectrum\tests\_testware\tools::$temp["results"][0]["ownerSpec"]);
+		$this->assertSame($specs[1], \spectrum\tests\_testware\tools::$temp["results"][1]["ownerSpec"]);
+		$this->assertSame($specs[2], \spectrum\tests\_testware\tools::$temp["results"][2]["ownerSpec"]);
+		$this->assertSame($specs[3], \spectrum\tests\_testware\tools::$temp["results"][3]["ownerSpec"]);
+		$this->assertSame($specs[4], \spectrum\tests\_testware\tools::$temp["results"][4]["ownerSpec"]);
+		$this->assertSame($specs['parent1'], \spectrum\tests\_testware\tools::$temp["results"][5]["ownerSpec"]);
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["results"][6]["ownerSpec"]);
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["results"][7]["ownerSpec"]);
+		$this->assertSame($specs['parent2'], \spectrum\tests\_testware\tools::$temp["results"][8]["ownerSpec"]);
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["results"][9]["ownerSpec"]);
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["results"][10]["ownerSpec"]);
 		
-		$this->assertSame($specs[0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[3], \spectrum\tests\_testware\tools::$temp["resultBuffers"][3]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[4], \spectrum\tests\_testware\tools::$temp["resultBuffers"][4]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['parent1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][5]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][6]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][7]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['parent2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][8]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][9]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][10]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs[0], \spectrum\tests\_testware\tools::$temp["results"][0]["results"]->getOwnerSpec());
+		$this->assertSame($specs[1], \spectrum\tests\_testware\tools::$temp["results"][1]["results"]->getOwnerSpec());
+		$this->assertSame($specs[2], \spectrum\tests\_testware\tools::$temp["results"][2]["results"]->getOwnerSpec());
+		$this->assertSame($specs[3], \spectrum\tests\_testware\tools::$temp["results"][3]["results"]->getOwnerSpec());
+		$this->assertSame($specs[4], \spectrum\tests\_testware\tools::$temp["results"][4]["results"]->getOwnerSpec());
+		$this->assertSame($specs['parent1'], \spectrum\tests\_testware\tools::$temp["results"][5]["results"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["results"][6]["results"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["results"][7]["results"]->getOwnerSpec());
+		$this->assertSame($specs['parent2'], \spectrum\tests\_testware\tools::$temp["results"][8]["results"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["results"][9]["results"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["results"][10]["results"]->getOwnerSpec());
 		
-		foreach (\spectrum\tests\_testware\tools::$temp["resultBuffers"] as $key => $val) {
-			foreach (\spectrum\tests\_testware\tools::$temp["resultBuffers"] as $key2 => $val2) {
+		foreach (\spectrum\tests\_testware\tools::$temp["results"] as $key => $val) {
+			foreach (\spectrum\tests\_testware\tools::$temp["results"] as $key2 => $val2) {
 				if ($key != $key2) {
-					$this->assertNotSame($val2["resultBuffer"], $val["resultBuffer"]);
+					$this->assertNotSame($val2["results"], $val["results"]);
 				}
 			}
 		}
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferForEachRun() {
-		\spectrum\tests\_testware\tools::$temp["resultBuffers"] = array();
+	public function testRun_RootSpecRun_Results_CreatesNewResultsForEachRun() {
+		\spectrum\tests\_testware\tools::$temp["results"] = array();
 		
-		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
-			class ... implements \spectrum\core\ResultBufferInterface {
+		$resultsClassName = \spectrum\tests\_testware\tools::createClass('
+			class ... implements \spectrum\core\ResultsInterface {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\_testware\tools::$temp["resultBuffers"][] = $this;
+					\spectrum\tests\_testware\tools::$temp["results"][] = $this;
 				}
 			
 				public function getOwnerSpec(){}
 				
-				public function addResult($result, $details = null){}
-				public function getResults(){}
-				public function getTotalResult(){}
+				public function add($result, $details = null){}
+				public function getAll(){}
+				public function getTotal(){}
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		$spec = new Spec();
 		$spec->run();
 		$spec->run();
 		$spec->run();
 		
-		$this->assertSame(3, count(\spectrum\tests\_testware\tools::$temp["resultBuffers"]));
+		$this->assertSame(3, count(\spectrum\tests\_testware\tools::$temp["results"]));
 
-		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]);
-		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["results"][0], \spectrum\tests\_testware\tools::$temp["results"][1]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["results"][0], \spectrum\tests\_testware\tools::$temp["results"][2]);
 		
-		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]);
-		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["results"][1], \spectrum\tests\_testware\tools::$temp["results"][0]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["results"][1], \spectrum\tests\_testware\tools::$temp["results"][2]);
 		
-		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]);
-		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["results"][2], \spectrum\tests\_testware\tools::$temp["results"][0]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["results"][2], \spectrum\tests\_testware\tools::$temp["results"][1]);
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_UnsetLinkToResultBufferBeforeRun() {
+	public function testRun_RootSpecRun_Results_UnsetLinkToResultsBeforeRun() {
 		$spec = new Spec();
-		$resultBuffer1 = $spec->getResultBuffer();
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer2) {
-			$resultBuffer2 = $spec->getResultBuffer();
+		$results1 = $spec->getResults();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results2) {
+			$results2 = $spec->getResults();
 		});
 		$spec->run();
 		
-		$this->assertNotSame($resultBuffer1, $resultBuffer2);
+		$this->assertNotSame($results1, $results2);
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_UnsetLinkToResultBufferAfterRun() {
+	public function testRun_RootSpecRun_Results_UnsetLinkToResultsAfterRun() {
 		$spec = new Spec();
-		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
-			$resultBuffer = $spec->getResultBuffer();
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$results) {
+			$results = $spec->getResults();
 		});
 		$spec->run();
 		
-		$this->assertNotSame($resultBuffer, $spec->getResultBuffer());
+		$this->assertNotSame($results, $spec->getResults());
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_DoesNotClearResultBufferContentsAfterRun() {
+	public function testRun_RootSpecRun_Results_DoesNotClearResultsContentsAfterRun() {
 		$counter = 0;
-		$resultBuffers = array();
+		/** @var ResultsInterface[] $results */
+		$results = array();
 		
 		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$counter) {
 			$counter++;
 		
-			$resultBuffer = $spec->getResultBuffer();
-			$resultBuffer->addResult(false, "aaa" . $counter . "aaa");
-			$resultBuffer->addResult(true, "bbb" . $counter . "bbb");
-			$resultBuffer->addResult(null, "ccc" . $counter . "ccc");
+			$results = $spec->getResults();
+			$results->add(false, "aaa" . $counter . "aaa");
+			$results->add(true, "bbb" . $counter . "bbb");
+			$results->add(null, "ccc" . $counter . "ccc");
 		});
 		
-		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$resultBuffers) {
-			$resultBuffers[] = $spec->getResultBuffer();
+		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$results) {
+			$results[] = $spec->getResults();
 		});
 		
 		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
@@ -2833,30 +2837,31 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$specs[0]->run();
 		
-		$this->assertSame(2, count($resultBuffers));
+		$this->assertSame(2, count($results));
 		
 		$this->assertSame(array(
 			array('result' => false, 'details' => 'aaa1aaa'),
 			array('result' => true, 'details' => 'bbb1bbb'),
 			array('result' => null, 'details' => 'ccc1ccc'),
-		), $resultBuffers[0]->getResults());
+		), $results[0]->getAll());
 		
 		$this->assertSame(array(
 			array('result' => false, 'details' => $specs[1]),
-		), $resultBuffers[1]->getResults());
+		), $results[1]->getAll());
 	}
 	
-	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_PutsChildSpecRunResultWithChildSpecObjectToResultBufferForEachChildSpec() {
-		$resultBuffers = array();
-		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$resultBuffers) {
+	public function testRun_RootSpecRun_Results_NotEndingSpec_PutsChildSpecRunResultWithChildSpecObjectToResultsForEachChildSpec() {
+		/** @var ResultsInterface[] $results */
+		$results = array();
+		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$results) {
 			if ($spec === \spectrum\tests\_testware\tools::$temp["specs"][0]) {
-				$resultBuffers[] = \spectrum\tests\_testware\tools::$temp["specs"][0]->getResultBuffer();
+				$results[] = \spectrum\tests\_testware\tools::$temp["specs"][0]->getResults();
 			}
 		});
 
-		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\ResultBuffer {
-				public function getTotalResult() {
+		$resultsClassName = \spectrum\tests\_testware\tools::createClass('
+			class ... extends \spectrum\core\Results {
+				public function getTotal() {
 					if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][1]) {
 						return true;
 					} else if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][2]) {
@@ -2864,13 +2869,13 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 					} else if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][3]) {
 						return null;
 					} else {
-						return call_user_func_array("parent::getTotalResult", func_get_args());
+						return call_user_func_array("parent::getTotal", func_get_args());
 					}
 				}
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
+		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		\spectrum\tests\_testware\tools::$temp["specs"] = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
@@ -2880,12 +2885,12 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 		
 		\spectrum\tests\_testware\tools::$temp["specs"][0]->run();
-		$this->assertSame(1, count($resultBuffers));
+		$this->assertSame(1, count($results));
 		$this->assertSame(array(
 			array('result' => true, 'details' => \spectrum\tests\_testware\tools::$temp["specs"][1]),
 			array('result' => false, 'details' => \spectrum\tests\_testware\tools::$temp["specs"][2]),
 			array('result' => null, 'details' => \spectrum\tests\_testware\tools::$temp["specs"][3]),
-		), $resultBuffers[0]->getResults());
+		), $results[0]->getAll());
 	}
 
 /**/
@@ -3521,14 +3526,15 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame(array(true), $isRunningCallResults);
 	}
 	
-	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CatchesExceptionsAndAddsItToResultBufferAsFail() {
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CatchesExceptionsAndAddsItToResultsAsFail() {
 		$thrownExceptions = array();
-		$resultBuffers = array();
+		/** @var ResultsInterface[] $results */
+		$results = array();
 		
-		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$thrownExceptions, &$results) {
 			$e = new \Exception("aaa");
 			$thrownExceptions[] = $e;
-			$resultBuffers[] = $spec->getResultBuffer();
+			$results[] = $spec->getResults();
 			
 			throw $e;
 		});
@@ -3538,22 +3544,23 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$this->assertSame(1, count($thrownExceptions));
 		
-		$results = $resultBuffers[0]->getResults();
+		$resultsContent = $results[0]->getAll();
 		$this->assertSame(array(
 			array('result' => false, 'details' => $thrownExceptions[0]),
-		), $results);
+		), $resultsContent);
 		
-		$this->assertSame('aaa', $results[0]['details']->getMessage());
+		$this->assertSame('aaa', $resultsContent[0]['details']->getMessage());
 	}
 	
-	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CatchesBreakExceptionAndDoesNotAddResultToResultBuffer() {
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_CatchesBreakExceptionAndDoesNotAddResultToResults() {
 		$thrownExceptions = array();
-		$resultBuffers = array();
+		/** @var ResultsInterface[] $results */
+		$results = array();
 		
-		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$thrownExceptions, &$results) {
 			$e = new \spectrum\core\BreakException();
 			$thrownExceptions[] = $e;
-			$resultBuffers[] = $spec->getResultBuffer();
+			$results[] = $spec->getResults();
 			throw $e;
 		});
 		
@@ -3561,7 +3568,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec->run();
 		
 		$this->assertSame(1, count($thrownExceptions));
-		$this->assertSame(array(), $resultBuffers[0]->getResults());
+		$this->assertSame(array(), $results[0]->getAll());
 	}
 	
 	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteBefore_DoesNotBreakOtherEventListenersByException() {
@@ -3641,14 +3648,15 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame(array(true), $isRunningCallResults);
 	}
 	
-	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CatchesExceptionsAndAddsItToResultBufferAsFail() {
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CatchesExceptionsAndAddsItToResultsAsFail() {
 		$thrownExceptions = array();
-		$resultBuffers = array();
+		/** @var ResultsInterface[] $results */
+		$results = array();
 		
-		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
+		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$thrownExceptions, &$results) {
 			$e = new \Exception("aaa");
 			$thrownExceptions[] = $e;
-			$resultBuffers[] = $spec->getResultBuffer();
+			$results[] = $spec->getResults();
 			
 			throw $e;
 		});
@@ -3658,22 +3666,23 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$this->assertSame(1, count($thrownExceptions));
 		
-		$results = $resultBuffers[0]->getResults();
+		$resultsContent = $results[0]->getAll();
 		$this->assertSame(array(
 			array('result' => false, 'details' => $thrownExceptions[0]),
-		), $results);
+		), $resultsContent);
 		
-		$this->assertSame('aaa', $results[0]['details']->getMessage());
+		$this->assertSame('aaa', $resultsContent[0]['details']->getMessage());
 	}
 	
-	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CatchesBreakExceptionAndDoesNotAddResultToResultBuffer() {
+	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_CatchesBreakExceptionAndDoesNotAddResultToResults() {
 		$thrownExceptions = array();
-		$resultBuffers = array();
+		/** @var ResultsInterface[] $results */
+		$results = array();
 		
-		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$thrownExceptions, &$resultBuffers) {
+		config::registerEventListener('onEndingSpecExecuteAfter', function(SpecInterface $spec) use(&$thrownExceptions, &$results) {
 			$e = new \spectrum\core\BreakException();
 			$thrownExceptions[] = $e;
-			$resultBuffers[] = $spec->getResultBuffer();
+			$results[] = $spec->getResults();
 			throw $e;
 		});
 		
@@ -3681,7 +3690,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec->run();
 		
 		$this->assertSame(1, count($thrownExceptions));
-		$this->assertSame(array(), $resultBuffers[0]->getResults());
+		$this->assertSame(array(), $results[0]->getAll());
 	}
 	
 	public function testRun_RootSpecRun_EventDispatch_OnEndingSpecExecuteAfter_DoesNotBreakOtherEventListenersByException() {
@@ -3870,10 +3879,10 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$details->setMatcherException('<>&"\'');
 			$details->setFile('<>&"\'');
 			$details->setLine('<>&"\'');
-			$spec->getResultBuffer()->addResult(false, $details);
+			$spec->getResults()->add(false, $details);
 			
-			$spec->getResultBuffer()->addResult(false, new \spectrum\core\details\PhpError('<>&"\'', '<>&"\'', '<>&"\'', '<>&"\''));
-			$spec->getResultBuffer()->addResult(false, new \spectrum\core\details\UserFail('<>&"\''));
+			$spec->getResults()->add(false, new \spectrum\core\details\PhpError('<>&"\'', '<>&"\'', '<>&"\'', '<>&"\''));
+			$spec->getResults()->add(false, new \spectrum\core\details\UserFail('<>&"\''));
 		});
 		
 		// Tests for "id" attribute uniqueness

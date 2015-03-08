@@ -1,23 +1,22 @@
 TODO: move notes.txt content to README.md "Development notes" section
 TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
 TODO: fix reports in all browsers
-TODO: передавать в матчер $matcherArguments
 TODO: \spectrum\run должен возвращать строку вместо bool/null?
-TODO: setOutputResultBufferElements -> setOutputMatcherResults??? но в буфере могут содержаться не только результаты вызова матчеров, например fail
 TODO: удалить unknown, в драйверах вместо задания unknown выбрасывать исключение
 TODO: function -> callback
 TODO: remove vs removeAll
-TODO: register vs add
 
-TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
+TODO: remove unusual uses from builders
+TODO: js spectrum.tools.* -> spectrum.*
+TODO: Result(result, details)
+TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener
 TODO: test matchers through Assertion
+TODO: избавиться от _private тестов
 
 TODO: config::enableReports(), setOutputFormat(false), setOutputEnable, disableReports/disableOutput/outputEnable
 TODO: setOutputFormat(class), \core\ReportsInterface
-TODO: accessName должен быть задан
 TODO: matchers - вместо передачи details передавать значения по ссылке
 TODO: before, after, matcher should be return null
-TODO: setClassReplacement -> registerClassReplacement
 TODO: getTestSpecs и getCurrentBuildingSpec:
 	function set() {
 		/* @var This variable is used by ... function */
@@ -161,7 +160,7 @@ group(function(){
 	group(function(){
 		before(function(){ $this->bbb = 'text in cp1251'; });
 		test(function(){
-			// What is result must be added to ResultBuffer (true or false)?
+			// What is result must be added to Results (true or false)?
 			// How to detect correct charset for output and compare variables?
 			be($this->aaa)->eq($this->bbb);
 		});

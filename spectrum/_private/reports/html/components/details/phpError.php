@@ -20,8 +20,8 @@ class phpError extends \spectrum\_private\reports\html\components\component {
 			.app-details-phpError>*>h1 { margin-bottom: 0.2em; font-size: 1em; }
 			.app-details-phpError>.source>p .file .prefix:before { content: "\2026"; }
 			.app-details-phpError>.source>p .file .prefix>span { display: none; }
-			.app-resultBuffer>.results>.result.expanded .app-details-phpError>.source>p .file .prefix:before { display: none; }
-			.app-resultBuffer>.results>.result.expanded .app-details-phpError>.source>p .file .prefix>span { display: inline; }
+			.app-results>.results>.result.expanded .app-details-phpError>.source>p .file .prefix:before { display: none; }
+			.app-results>.results>.result.expanded .app-details-phpError>.source>p .file .prefix>span { display: inline; }
 		/*]]>*/</style>', 2);
 	}
 

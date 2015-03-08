@@ -13,7 +13,7 @@ class totalResult extends component {
 	 * @return string
 	 */
 	static public function getContent(SpecInterface $spec) {
-		return static::translate(static::getResultName($spec->getResultBuffer()->getTotalResult()));
+		return static::translate(static::getResultName($spec->getResults()->getTotal()));
 	}
 
 	/**

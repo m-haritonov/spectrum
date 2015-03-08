@@ -55,7 +55,7 @@ class detailsControl extends component {
 	
 							spectrum.tools.removeClass(".app-specList>li.notEnding", "expanded");
 							spectrum.tools.removeClass(".app-specList>li.ending", "expanded");
-							spectrum.tools.removeClass(".app-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.removeClass(".app-results>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state2"), "click", function(e){
@@ -64,7 +64,7 @@ class detailsControl extends component {
 	
 							spectrum.tools.addClass(".app-specList>li.notEnding", "expanded");
 							spectrum.tools.removeClass(".app-specList>li.ending", "expanded");
-							spectrum.tools.removeClass(".app-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.removeClass(".app-results>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state3"), "click", function(e){
@@ -73,7 +73,7 @@ class detailsControl extends component {
 	
 							spectrum.tools.addClass(".app-specList>li.notEnding", "expanded");
 							spectrum.tools.addClass(".app-specList>li.ending", "expanded");
-							spectrum.tools.removeClass(".app-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.removeClass(".app-results>.results>.result", "expanded");
 						});
 	
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector("a.state4"), "click", function(e){
@@ -82,7 +82,7 @@ class detailsControl extends component {
 	
 							spectrum.tools.addClass(".app-specList>li.notEnding", "expanded");
 							spectrum.tools.addClass(".app-specList>li.ending", "expanded");
-							spectrum.tools.addClass(".app-resultBuffer>.results>.result", "expanded");
+							spectrum.tools.addClass(".app-results>.results>.result", "expanded");
 						});
 						
 						spectrum.tools.addEventListener(detailsControlNodes[i].querySelector(".next"), "click", function(e){

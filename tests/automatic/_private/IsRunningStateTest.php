@@ -62,7 +62,7 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 				public function getExecutor(){}
 				public function getMatchers(){}
 				public function getMessages(){}
-				public function getResultBuffer(){}
+				public function getResults(){}
 	
 				public function getRunId(){}
 				public function isRunning(){}

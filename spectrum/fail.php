@@ -7,10 +7,11 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum;
 
 use spectrum\config;
+use spectrum\core\SpecInterface;
 use spectrum\Exception;
 
 /**
- * Adds to result buffer of current test false result wits message as details.
+ * Adds to results of current test false result wits message as details.
  * @throws \spectrum\Exception If called not at running state
  * @param null|string $message
  */
@@ -22,5 +23,7 @@ function fail($message = null) {
 
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');
 	$userFailDetailsClass = config::getClassReplacement('\spectrum\core\details\UserFail');
-	$getCurrentRunningEndingSpecFunction()->getResultBuffer()->addResult(false, new $userFailDetailsClass($message));
+	/** @var SpecInterface $spec */
+	$spec = $getCurrentRunningEndingSpecFunction();
+	$spec->getResults()->add(false, new $userFailDetailsClass($message));
 }

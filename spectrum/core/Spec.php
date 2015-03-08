@@ -61,9 +61,9 @@ class Spec implements SpecInterface {
 	protected $messages;
 
 	/**
-	 * @var null|ResultBufferInterface
+	 * @var null|ResultsInterface
 	 */
-	protected $resultBuffer;
+	protected $results;
 
 	/**
 	 * @var bool
@@ -459,15 +459,15 @@ class Spec implements SpecInterface {
 	}
 	
 	/**
-	 * @return ResultBufferInterface
+	 * @return ResultsInterface
 	 */
-	public function getResultBuffer() {
-		if (!$this->resultBuffer) {
-			$resultBufferClass = config::getClassReplacement('\spectrum\core\ResultBuffer');
-			$this->resultBuffer = new $resultBufferClass($this);
+	public function getResults() {
+		if (!$this->results) {
+			$resultsClass = config::getClassReplacement('\spectrum\core\Results');
+			$this->results = new $resultsClass($this);
 		}
 		
-		return $this->resultBuffer;
+		return $this->results;
 	}
 
 /**/
@@ -543,7 +543,7 @@ class Spec implements SpecInterface {
 		$this->isRunning = true;
 		$this->data = null;
 		$this->messages = null;
-		$this->resultBuffer = null;
+		$this->results = null;
 		$dispatchEventFunction('onSpecRunStart', array($this));
 		$this->outputReportBefore();
 		
@@ -558,8 +558,8 @@ class Spec implements SpecInterface {
 		$this->isRunning = false;
 		$this->data = null;
 		$this->messages = null;
-		$result = $this->getResultBuffer()->getTotalResult();
-		$this->resultBuffer = null;
+		$result = $this->getResults()->getTotal();
+		$this->results = null;
 		$dispatchEventFunction('onSpecRunAfter', array($this));
 		
 		if (!$this->parentSpecs) {
@@ -607,10 +607,10 @@ class Spec implements SpecInterface {
 	}
 	
 	protected function runChildSpecs() {
-		$resultBuffer = $this->getResultBuffer();
+		$results = $this->getResults();
 		foreach ($this->childSpecs as $spec) {
 			if ($spec->isEnabled()) {
-				$resultBuffer->addResult($spec->run(), $spec);
+				$results->add($spec->run(), $spec);
 			}
 		}
 	}
@@ -644,7 +644,7 @@ class Spec implements SpecInterface {
 			}
 			
 			$phpErrorDetailsClass = config::getClassReplacement('\spectrum\core\details\PhpError');
-			$thisObj->getResultBuffer()->addResult(false, new $phpErrorDetailsClass($errorLevel, $errorMessage, $file, $line));
+			$thisObj->getResults()->add(false, new $phpErrorDetailsClass($errorLevel, $errorMessage, $file, $line));
 
 			if ($thisObj->getErrorHandling()->getBreakOnFirstPhpErrorThroughRunningAncestors()) {
 				throw new BreakException();
@@ -664,7 +664,7 @@ class Spec implements SpecInterface {
 		if ($getLastErrorHandlerFunction() === $this->errorHandler) {
 			restore_error_handler();
 		} else {
-			$this->getResultBuffer()->addResult(false, 'Spectrum error handler was removed');
+			$this->getResults()->add(false, 'Spectrum error handler was removed');
 		}
 		
 		error_reporting($this->previousErrorReporting);
@@ -679,7 +679,7 @@ class Spec implements SpecInterface {
 		} catch (BreakException $e) {
 			// Just ignore special break exception
 		} catch (\Exception $e) {
-			$this->getResultBuffer()->addResult(false, $e);
+			$this->getResults()->add(false, $e);
 		}
 	}
 	
@@ -693,7 +693,7 @@ class Spec implements SpecInterface {
 			if ($e instanceof BreakException) {
 				// Just ignore special break exception
 			} else {
-				$spec->getResultBuffer()->addResult(false, $e);
+				$spec->getResults()->add(false, $e);
 			}
 		});
 	}

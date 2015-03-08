@@ -23,19 +23,19 @@ class RunTest extends Test {
 	
 	public function testReturnsRootSpecRunResult() {
 		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
-			\spectrum\_private\getRootSpec()->getResultBuffer()->addResult(false);
+			\spectrum\_private\getRootSpec()->getResults()->add(false);
 		});
 		
 		$this->assertFalse(\spectrum\run());
 		
 		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
-			\spectrum\_private\getRootSpec()->getResultBuffer()->addResult(true);
+			\spectrum\_private\getRootSpec()->getResults()->add(true);
 		});
 		
 		$this->assertTrue(\spectrum\run());
 		
 		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
-			\spectrum\_private\getRootSpec()->getResultBuffer()->addResult(null);
+			\spectrum\_private\getRootSpec()->getResults()->add(null);
 		});
 		
 		$this->assertNull(\spectrum\run());

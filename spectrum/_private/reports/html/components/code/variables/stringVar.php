@@ -19,21 +19,21 @@ class stringVar extends \spectrum\_private\reports\html\components\component {
 			.app-code-variables-string .value { display: inline-block; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; max-width: 5em; border-radius: 4px; background: rgba(255, 255, 255, 0.5); white-space: nowrap; vertical-align: text-top; }
 			.app-code-variables-string .quote { color: rgba(0, 0, 0, 0.6); }
 		
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value { overflow: visible; max-width: none; white-space: pre; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char { display: inline-block; overflow: hidden; position: relative; height: 12px; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value { overflow: visible; max-width: none; white-space: pre; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char { display: inline-block; overflow: hidden; position: relative; height: 12px; }
 
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.space { width: 8px; height: 10px; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.space:before { content: "\\0020"; position: absolute; bottom: 1px; left: 49%; width: 2px; height: 2px; background: #bbb; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.space { width: 8px; height: 10px; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.space:before { content: "\\0020"; position: absolute; bottom: 1px; left: 49%; width: 2px; height: 2px; background: #bbb; }
 
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.tab { width: 15px; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.tab:before { content: "\\21E5"; position: absolute; right: 0; left: 0; text-align: center; color: #aaa; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.tab { width: 15px; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.tab:before { content: "\\21E5"; position: absolute; right: 0; left: 0; text-align: center; color: #aaa; }
 
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.cr { width: 14px; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.cr:before { content: "\\21A9"; position: absolute; bottom: -1px; right: 0; left: 0; text-align: center; color: #aaa; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.cr { width: 14px; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.cr:before { content: "\\21A9"; position: absolute; bottom: -1px; right: 0; left: 0; text-align: center; color: #aaa; }
 
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.lf { width: 10px; height: 11px; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.lf:before { content: "\\2193"; position: absolute; bottom: 3px; right: 0; left: 0; text-align: center; color: #aaa; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-string .value .char.lf:after { content: "\\0020"; position: absolute; bottom: 2px; right: 2px; left: 2px; border-bottom: 1px solid #bbb; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.lf { width: 10px; height: 11px; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.lf:before { content: "\\2193"; position: absolute; bottom: 3px; right: 0; left: 0; text-align: center; color: #aaa; }
+			.app-results>.results>.result.expanded .app-code-variables-string .value .char.lf:after { content: "\\0020"; position: absolute; bottom: 2px; right: 2px; left: 2px; border-bottom: 1px solid #bbb; }
 		/*]]>*/</style>', 2);
 	}
 

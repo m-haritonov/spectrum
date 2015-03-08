@@ -22,10 +22,10 @@ class arrayVar extends \spectrum\_private\reports\html\components\component {
 			.app-code-variables-array .app-code-variables-array,
 			.app-code-variables-array .app-code-variables-object { display: inline; vertical-align: baseline; background: transparent; }
 		
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-array>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-array>.app-code-operator.curlyBrace { display: inline; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-array>.elements:before { display: none; }
-			.app-resultBuffer>.results>.result.expanded .app-code-variables-array>.elements>.element { display: block; }
+			.app-results>.results>.result.expanded .app-code-variables-array>.indention { display: inline-block; overflow: hidden; width: 25px; white-space: pre; }
+			.app-results>.results>.result.expanded .app-code-variables-array>.app-code-operator.curlyBrace { display: inline; }
+			.app-results>.results>.result.expanded .app-code-variables-array>.elements:before { display: none; }
+			.app-results>.results>.result.expanded .app-code-variables-array>.elements>.element { display: block; }
 		/*]]>*/</style>', 2);
 	}
 

@@ -98,7 +98,7 @@ if (!function_exists('data')) {
 
 if (!function_exists('fail')) {
 	/**
-	 * Adds to result buffer of current test false result wits message as details.
+	 * Adds to results of current test false result wits message as details.
 	 * @throws \spectrum\Exception If called not at running state
 	 * @param null|string $message
 	 */
