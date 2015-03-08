@@ -6,9 +6,6 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
-use spectrum\config;
-use spectrum\Exception;
-
 /**
  * Creates assertion.
  * @throws \spectrum\Exception If called not at running state

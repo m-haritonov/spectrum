@@ -6,7 +6,6 @@ TODO: удалить unknown, в драйверах вместо задания 
 TODO: function -> callback
 TODO: remove vs removeAll
 
-TODO: remove unusual uses from builders
 TODO: js spectrum.tools.* -> spectrum.*
 TODO: Result(result, details)
 TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener

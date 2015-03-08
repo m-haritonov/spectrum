@@ -11,6 +11,4 @@ use spectrum\Exception;
 /**
  * Be carefully, this exception not adds to Results and should be throw only for softly break execution.
  */
-class BreakException extends Exception {
-	
-}
+class BreakException extends Exception {}

@@ -5,9 +5,7 @@ see the "README.md" file that was distributed with this source code.
 */
 namespace spectrum;
 
-use spectrum\config;
 use spectrum\core\SpecInterface;
-use spectrum\Exception;
 
 /**
  * Creates test.
