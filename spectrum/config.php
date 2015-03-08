@@ -6,46 +6,46 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
-final class config {
+class config {
 	/**
 	 * @var string
 	 */
-	static private $inputCharset = 'utf-8';
+	static protected $inputCharset = 'utf-8';
 	
 	/**
 	 * @var string
 	 */
-	static private $outputCharset = 'utf-8';
+	static protected $outputCharset = 'utf-8';
 	
 	/**
 	 * @var string
 	 */
-	static private $outputFormat = 'html';
+	static protected $outputFormat = 'html';
 	
 	/**
 	 * @var string
 	 */
-	static private $outputIndention = "\t";
+	static protected $outputIndention = "\t";
 	
 	/**
 	 * @var string
 	 */
-	static private $outputNewline = "\n";
+	static protected $outputNewline = "\n";
 	
 	/**
 	 * @var string Any of (separated by space if multiple): "all", "fail", "success", "empty", "unknown"
 	 */
-	static private $outputResultBufferElements = 'fail empty unknown';
+	static protected $outputResultBufferElements = 'fail empty unknown';
 	
 	/**
 	 * @var bool
 	 */
-	static private $allowErrorHandlingModify = true;
+	static protected $allowErrorHandlingModify = true;
 
 	/**
 	 * @var array
 	 */
-	static private $classReplacements = array(
+	static protected $classReplacements = array(
 		'\spectrum\_private\reports\html\driver'                                 => '\spectrum\_private\reports\html\driver',
 		'\spectrum\_private\reports\html\components\detailsControl'              => '\spectrum\_private\reports\html\components\detailsControl',
 		'\spectrum\_private\reports\html\components\messages'                    => '\spectrum\_private\reports\html\components\messages',
@@ -119,7 +119,7 @@ final class config {
 	/**
 	 * @var array
 	 */
-	static private $functionReplacements = array(
+	static protected $functionReplacements = array(
 		'\spectrum\_private\addTestSpec' => '\spectrum\_private\addTestSpec',
 		'\spectrum\_private\callFunctionOnCurrentBuildingSpec' => '\spectrum\_private\callFunctionOnCurrentBuildingSpec',
 		'\spectrum\_private\callMethodThroughRunningAncestorSpecs' => '\spectrum\_private\callMethodThroughRunningAncestorSpecs',
@@ -163,17 +163,12 @@ final class config {
 	/**
 	 * @var array
 	 */
-	static private $eventListeners = array();
+	static protected $eventListeners = array();
 
 	/**
 	 * @var bool
 	 */
-	static private $locked = false;
-
-	/**
-	 * Use private constructor for abstract class imitation (using of "abstract" and "final" keywords together is not allowed)
-	 */
-	private function __construct(){}
+	static protected $locked = false;
 
 	/**
 	 * Set charset of tests
@@ -488,7 +483,7 @@ final class config {
 
 /**/
 
-	static private function throwExceptionIfLocked() {
+	static protected function throwExceptionIfLocked() {
 		if (static::$locked) {
 			throw new Exception('\spectrum\config is locked');
 		}
@@ -498,7 +493,7 @@ final class config {
 	 * @param string $string
 	 * @return string
 	 */
-	static private function convertLatinCharsToLowerCase($string) {
+	static protected function convertLatinCharsToLowerCase($string) {
 		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\_private\convertLatinCharsToLowerCase');
 		return $convertLatinCharsToLowerCaseFunction($string);
 	}

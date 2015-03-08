@@ -3,7 +3,7 @@ if (!function_exists('\spectrum\run')) {
 	exit('This file is not allowed to direct call');
 }
 
-\spectrum\config::setOutputResultBufferElements('all');
+config::setOutputResultBufferElements('all');
 
 define('SOME_CONST', 'bbb');
 

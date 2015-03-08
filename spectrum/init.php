@@ -81,6 +81,10 @@ if (!function_exists('before')) {
 	}
 }
 
+if (!class_exists('config')) {
+	class config extends \spectrum\config {}
+}
+
 if (!function_exists('data')) {
 	/**
 	 * Returns data instance of current test.
