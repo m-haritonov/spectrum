@@ -6,6 +6,10 @@ if (!function_exists('\spectrum\run')) {
 \spectrum\config::setOutputResultBufferElements('all');
 
 define('SOME_CONST', 'bbb');
+
+matcher('mySuccess', function(){ return true; });
+matcher('myFail', function(){ return false; });
+
 test('Matchers', function(){
 	be('')->eq(null);
 	be('')->not->eq('a');
@@ -33,6 +37,9 @@ test('Matchers', function(){
 	be(function(){
 		throw new \Exception('aaa', 123);
 	})->throwsException('\Exception', 'aaa', 123);
+	
+	be(null)->mySuccess();
+	be(null)->myFail();
 });
 
 test('Values output', function(){
