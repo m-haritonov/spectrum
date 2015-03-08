@@ -11,13 +11,13 @@ use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
 
-class AddMatcherTest extends \spectrum\tests\automatic\Test {
+class MatcherTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtBuildingState_AddsMatcherFunctionToCurrentBuildingSpec() {
 		$spec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($spec);
 		
 		$function = function(){};
-		\spectrum\builders\addMatcher('aaa', $function);
+		\spectrum\builders\matcher('aaa', $function);
 
 		$this->assertSame($function, $spec->getMatchers()->get('aaa'));
 	}
@@ -33,13 +33,13 @@ class AddMatcherTest extends \spectrum\tests\automatic\Test {
 		
 		\spectrum\_private\setCurrentBuildingSpec(new Spec());
 		
-		$this->assertSame('some text', \spectrum\builders\addMatcher('aaa', function(){}));
+		$this->assertSame('some text', \spectrum\builders\matcher('aaa', function(){}));
 	}
 	
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
-				\spectrum\builders\addMatcher("aaa", function(){});
+				\spectrum\builders\matcher("aaa", function(){});
 			} catch (\Exception $e) {
 				$exception = $e;
 			}
@@ -48,6 +48,6 @@ class AddMatcherTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_private\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\Exception', $exception);
-		$this->assertSame('Builder "addMatcher" should be call only at building state', $exception->getMessage());
+		$this->assertSame('Builder "matcher" should be call only at building state', $exception->getMessage());
 	}
 }

@@ -15,10 +15,10 @@ use spectrum\Exception;
  * @param string $name
  * @param callable $function
  */
-function addMatcher($name, $function) {
+function matcher($name, $function) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if ($isRunningStateFunction()) {
-		throw new Exception('Builder "addMatcher" should be call only at building state');
+		throw new Exception('Builder "matcher" should be call only at building state');
 	}
 
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentBuildingSpec');

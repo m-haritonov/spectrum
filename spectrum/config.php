@@ -147,16 +147,16 @@ final class config {
 		'\spectrum\_private\setSettingsToSpec' => '\spectrum\_private\setSettingsToSpec',
 		'\spectrum\_private\translate' => '\spectrum\_private\translate',
 		'\spectrum\_private\usortWithOriginalSequencePreserving' => '\spectrum\_private\usortWithOriginalSequencePreserving',
-		'\spectrum\builders\addMatcher' => '\spectrum\builders\addMatcher',
 		'\spectrum\builders\after' => '\spectrum\builders\after',
 		'\spectrum\builders\be' => '\spectrum\builders\be',
 		'\spectrum\builders\before' => '\spectrum\builders\before',
+		'\spectrum\builders\data' => '\spectrum\builders\data',
 		'\spectrum\builders\fail' => '\spectrum\builders\fail',
 		'\spectrum\builders\group' => '\spectrum\builders\group',
+		'\spectrum\builders\matcher' => '\spectrum\builders\matcher',
 		'\spectrum\builders\message' => '\spectrum\builders\message',
 		'\spectrum\builders\self' => '\spectrum\builders\self',
 		'\spectrum\builders\test' => '\spectrum\builders\test',
-		'\spectrum\builders\data' => '\spectrum\builders\data',
 	);
 	
 	/**
