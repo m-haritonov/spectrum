@@ -11,7 +11,6 @@ TODO: register vs add
 
 TODO: \spectrum\builders\* -> \spectrum\*
 TODO: \spectrum\run -> \run
-TODO: matchers -> _private/matchers
 TODO: addMatcher -> matcher
 TODO: rename _testware to _private???
 TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add

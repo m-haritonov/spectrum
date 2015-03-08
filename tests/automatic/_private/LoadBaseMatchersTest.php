@@ -12,24 +12,24 @@ class LoadBaseMatchersTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtBuildingState_IncludesBaseMatcherFunctionsAndReturnsBaseMatchers() {
 		$matchers = \spectrum\_private\loadBaseMatchers();
 		
-		$this->assertTrue(function_exists('\spectrum\matchers\eq'));
-		$this->assertTrue(function_exists('\spectrum\matchers\gt'));
-		$this->assertTrue(function_exists('\spectrum\matchers\gte'));
-		$this->assertTrue(function_exists('\spectrum\matchers\ident'));
-		$this->assertTrue(function_exists('\spectrum\matchers\is'));
-		$this->assertTrue(function_exists('\spectrum\matchers\lt'));
-		$this->assertTrue(function_exists('\spectrum\matchers\lte'));
-		$this->assertTrue(function_exists('\spectrum\matchers\throwsException'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\eq'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\gt'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\gte'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\ident'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\is'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\lt'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\lte'));
+		$this->assertTrue(function_exists('\spectrum\_private\matchers\throwsException'));
 		
 		$this->assertSame(array(
-			'eq' => '\spectrum\matchers\eq',
-			'gt' => '\spectrum\matchers\gt',
-			'gte' => '\spectrum\matchers\gte',
-			'ident' => '\spectrum\matchers\ident',
-			'is' => '\spectrum\matchers\is',
-			'lt' => '\spectrum\matchers\lt',
-			'lte' => '\spectrum\matchers\lte',
-			'throwsException' => '\spectrum\matchers\throwsException',
+			'eq' => '\spectrum\_private\matchers\eq',
+			'gt' => '\spectrum\_private\matchers\gt',
+			'gte' => '\spectrum\_private\matchers\gte',
+			'ident' => '\spectrum\_private\matchers\ident',
+			'is' => '\spectrum\_private\matchers\is',
+			'lt' => '\spectrum\_private\matchers\lt',
+			'lte' => '\spectrum\_private\matchers\lte',
+			'throwsException' => '\spectrum\_private\matchers\throwsException',
 		), $matchers);
 	}
 	
