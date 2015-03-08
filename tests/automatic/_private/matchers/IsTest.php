@@ -11,20 +11,20 @@ require_once __DIR__ . '/../../../../spectrum/_private/matchers/is.php';
 
 class IsTest extends \spectrum\tests\automatic\Test {
 	public function provider() {
-		$ancestor['interface'] = $this->createInterface('interface ... {}');
-		$ancestor['class'] = $this->createClass('class ... implements ' . $ancestor['interface'] . ' {}');
+		$ancestor['interface'] = \spectrum\tests\_testware\tools::createInterface('interface ... {}');
+		$ancestor['class'] = \spectrum\tests\_testware\tools::createClass('class ... implements ' . $ancestor['interface'] . ' {}');
 		$ancestor['instance'] = new $ancestor['class']();
 		
-		$parent['interface'] = $this->createInterface('interface ... extends ' . $ancestor['interface'] . ' {}');
-		$parent['class'] = $this->createClass('class ... extends ' . $ancestor['class'] . ' implements ' . $parent['interface'] . ' {}');
+		$parent['interface'] = \spectrum\tests\_testware\tools::createInterface('interface ... extends ' . $ancestor['interface'] . ' {}');
+		$parent['class'] = \spectrum\tests\_testware\tools::createClass('class ... extends ' . $ancestor['class'] . ' implements ' . $parent['interface'] . ' {}');
 		$parent['instance'] = new $parent['class']();
 		
-		$heir['interface'] = $this->createInterface('interface ... extends ' . $parent['interface'] . ' {}');
-		$heir['class'] = $this->createClass('class ... extends ' . $parent['class'] . ' implements ' . $heir['interface'] . ' {}');
+		$heir['interface'] = \spectrum\tests\_testware\tools::createInterface('interface ... extends ' . $parent['interface'] . ' {}');
+		$heir['class'] = \spectrum\tests\_testware\tools::createClass('class ... extends ' . $parent['class'] . ' implements ' . $heir['interface'] . ' {}');
 		$heir['instance'] = new $heir['class']();
 		
-		$other['interface'] = $this->createInterface('interface ... {}');
-		$other['class'] = $this->createClass('class ... implements ' . $other['interface'] . ' {}');
+		$other['interface'] = \spectrum\tests\_testware\tools::createInterface('interface ... {}');
+		$other['class'] = \spectrum\tests\_testware\tools::createClass('class ... implements ' . $other['interface'] . ' {}');
 		$other['instance'] = new $other['class']();
 
 		return array(

@@ -86,7 +86,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 	public function testGetThroughRunningAncestors_ReturnsMatcherFunctionFromRunningAncestorOrFromSelf() {
 		$returnValues = array();
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)

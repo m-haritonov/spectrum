@@ -42,7 +42,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$passedArguments[] = func_get_args();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -61,7 +61,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testEnable_CallOnRun_ThrowsExceptionAndDoesNotEnableSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -694,7 +694,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerGetAncestorRootSpecs
 	 */
 	public function testGetAncestorRootSpecs_ReturnsAllRootSpecs($pattern, $expectedSpecKeys) {
-		$specs = $this->createSpecsByVisualPattern($pattern);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($pattern);
 		
 		$expectedSpecs = array();
 		foreach ($expectedSpecKeys as $specKey) {
@@ -716,7 +716,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testGetDescendantEndingSpecs_ReturnsAllEndingSpecs() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec
@@ -741,7 +741,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testGetRunningParentSpec_ReturnsRunningParentSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec
@@ -763,7 +763,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetRunningParentSpec_NoRunningParentSpec_ReturnsNull() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec(aaa)
@@ -774,7 +774,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 
 	public function testGetRunningAncestorSpecs_ReturnsRunningAncestorSpecs() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec
@@ -799,7 +799,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetRunningAncestorSpecs_NoRunningParentSpec_ReturnsEmptyArray() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			->Spec
 			->Spec
 			Spec(aaa)
@@ -810,7 +810,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testGetRunningDescendantEndingSpec_ReturnsRunningEndingSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -836,7 +836,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetRunningDescendantEndingSpec_NoRunningChildrenAndSelfIsRunning_ReturnsNull() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -856,7 +856,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testGetRunningChildSpec_ReturnsRunningChildSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec(checkpoint)
@@ -1132,7 +1132,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerGetSpecsByRunId_CorrectIds
 	 */
 	public function testGetSpecsByRunId_ReturnsProperSpecs($pattern, array $expectedRunIdsAndSpecKeys) {
-		$specs = $this->createSpecsByVisualPattern($pattern);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($pattern);
 		
 		foreach ($expectedRunIdsAndSpecKeys as $runId => $expectedSpecKeys) {
 			$expectedSpecs = array();
@@ -1145,7 +1145,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetSpecsByRunId_IgnoreInitialAndEndingSpaces() {
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			  0
 			 / \
 			1   2
@@ -1156,7 +1156,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetSpecsByRunId_SpecIsNotRoot_ThrowsException() {
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			0
 			|
 			1
@@ -1191,7 +1191,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetSpecsByRunId_SpecWithDeclaredIndexIsNotExists_ThrowsException() {
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			0
 			|
 			1
@@ -1214,7 +1214,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetContextModifiers_UsesConfigForContextModifiersClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\ContextModifiers {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\ContextModifiers {}');
 		config::setClassReplacement('\spectrum\core\ContextModifiers', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getContextModifiers());
@@ -1230,7 +1230,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetData_UsesConfigForDataClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\Data {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Data {}');
 		config::setClassReplacement('\spectrum\core\Data', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getData());
@@ -1246,7 +1246,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetErrorHandling_UsesConfigForErrorHandlingClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\ErrorHandling {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\ErrorHandling {}');
 		config::setClassReplacement('\spectrum\core\ErrorHandling', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getErrorHandling());
@@ -1262,7 +1262,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetMatchers_UsesConfigForMatchersClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\Matchers {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Matchers {}');
 		config::setClassReplacement('\spectrum\core\Matchers', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getMatchers());
@@ -1278,7 +1278,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 
 	public function testGetMessages_UsesConfigForMessagesClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\Messages {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Messages {}');
 		config::setClassReplacement('\spectrum\core\Messages', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getMessages());
@@ -1294,7 +1294,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetResultBuffer_UsesConfigForResultBufferClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\ResultBuffer {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\ResultBuffer {}');
 		config::setClassReplacement('\spectrum\core\ResultBuffer', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getResultBuffer());
@@ -1310,7 +1310,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetExecutor_UsesConfigForExecutorClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\Executor {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Executor {}');
 		config::setClassReplacement('\spectrum\core\Executor', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getExecutor());
@@ -1513,7 +1513,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerGetRunId
 	 */
 	public function testGetRunId_SpecIsRunning_ReturnsUniqueId($pattern, $expectedRunIds) {
-		$specs = $this->createSpecsByVisualPattern($pattern);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($pattern);
 		$results = array();
 		
 		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$specs, &$results) {
@@ -1568,7 +1568,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerSpecsWithMoreThanOneRootAncestors
 	 */
 	public function testRun_SpecHasMoreThanOneRootAncestors_ThrowsException($specTreePattern) {
-		$specs = $this->createSpecsByListPattern($specTreePattern);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern($specTreePattern);
 		$specs['spec']->setName('aaa');
 		
 		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use($specs) {
@@ -1577,7 +1577,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_SpecHasMoreThanOneRootAncestors_StopsRunByExceptionThrowing() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			->->Spec(caller)
 			->Spec
 			->Spec
@@ -1625,7 +1625,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_SpecIsAlreadyRunning_StopsRunByExceptionThrowing() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(spec)
 			->->Spec
@@ -1655,7 +1655,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testRun_SpecHasAlreadyRunningSibling_ThrowsException() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(caller)
 			->Spec(callee)
@@ -1688,7 +1688,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(caller)
 			->->Spec
@@ -1996,7 +1996,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$calledSpecs[] = array_search($spec, $specs, true);
 		});
 		
-		$specs = $this->createSpecsByListPattern($specTreePattern, $specBindings);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern($specTreePattern, $specBindings);
 		$specs["callee"]->run();
 		
 		$this->assertSame($specStates, $specStates);
@@ -2007,7 +2007,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerChildSpecRunWithoutRunningParent
 	 */
 	public function testRun_ChildSpecRunWithoutRunningParent_EnablesDisabledSpecsAfterRun($specTreePattern, $specStates, $calledSpecs, $specBindings = array()) {
-		$specs = $this->createSpecsByListPattern($specTreePattern, $specBindings);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern($specTreePattern, $specBindings);
 		$specs["callee"]->run();
 		
 		foreach ($specs as $spec) {
@@ -2036,7 +2036,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerDisabledChildSpecs
 	 */
 	public function testRun_ChildSpecRunWithoutRunningParent_DoesNotEnableUserDisabledSpecsAfterRun($specTreePattern) {
-		$specs = $this->createSpecsByListPattern($specTreePattern);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern($specTreePattern);
 		$specs["disabled"]->disable();
 		$specs["callee"]->run();
 		
@@ -2044,10 +2044,10 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_ChildSpecRunWithoutRunningParent_ReturnsRootSpecRunResult() {
-		$resultBufferClassName = $this->createClass('
+		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\ResultBuffer {
 				public function getTotalResult() {
-					if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][0]) {
+					if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][0]) {
 						return true;
 					} else {
 						return false;
@@ -2058,13 +2058,13 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		\spectrum\tests\_testware\tools::$temp["specs"] = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
 		');
 		
-		$this->assertSame(true, \spectrum\tests\automatic\Test::$temp["specs"][2]->run());
+		$this->assertSame(true, \spectrum\tests\_testware\tools::$temp["specs"][2]->run());
 	}
 	
 	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_ThrowsException() {
@@ -2078,7 +2078,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec(caller)
 			->Spec
 			->->Spec
@@ -2093,7 +2093,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_ChildSpecRunWithoutRunningParent_RootIsAlreadyRunning_StopsRunByExceptionThrowing() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec(caller)
 			->Spec
 			->->Spec
@@ -2121,7 +2121,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testRun_RootSpecRun_EnablesRunningFlagDuringRun() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2150,7 +2150,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_DisablesRunningFlagAfterEachChildSpecRun() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2179,7 +2179,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2199,7 +2199,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2221,7 +2221,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -2235,10 +2235,10 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_ReturnsResultBufferTotalResult() {
-		$resultBufferClassName = $this->createClass('
+		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\ResultBuffer {
 				public function getTotalResult() {
-					return \spectrum\tests\automatic\Test::$temp["totalResult"];
+					return \spectrum\tests\_testware\tools::$temp["totalResult"];
 				}
 			}
 		');
@@ -2247,13 +2247,13 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		
-		\spectrum\tests\automatic\Test::$temp["totalResult"] = true;
+		\spectrum\tests\_testware\tools::$temp["totalResult"] = true;
 		$this->assertSame(true, $spec->run());
 		
-		\spectrum\tests\automatic\Test::$temp["totalResult"] = false;
+		\spectrum\tests\_testware\tools::$temp["totalResult"] = false;
 		$this->assertSame(false, $spec->run());
 		
-		\spectrum\tests\automatic\Test::$temp["totalResult"] = null;
+		\spectrum\tests\_testware\tools::$temp["totalResult"] = null;
 		$this->assertSame(null, $spec->run());
 	}
 	
@@ -2294,7 +2294,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testRun_RootSpecRun_ErrorHandling_GetsPhpErrorDetailsClassFromConfig() {
-		$phpErrorDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\PhpError {}');
+		$phpErrorDetailsClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\details\PhpError {}');
 		config::setClassReplacement('\spectrum\core\details\PhpError', $phpErrorDetailsClassName);
 
 		error_reporting(E_USER_WARNING);
@@ -2317,7 +2317,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_ErrorHandling_GetsErrorTypeFromAncestorOrSelf() {
 		$resultBuffers = array();
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2399,7 +2399,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->run();
 		
-		$this->assertSame($errorHandler, $this->getLastErrorHandler());
+		$this->assertSame($errorHandler, \spectrum\tests\_testware\tools::getLastErrorHandler());
 		
 		restore_error_handler();
 	}
@@ -2416,7 +2416,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		});
 		$spec->run();
 		
-		$this->assertSame($errorHandler, $this->getLastErrorHandler());
+		$this->assertSame($errorHandler, \spectrum\tests\_testware\tools::getLastErrorHandler());
 		
 		restore_error_handler();
 	}
@@ -2446,7 +2446,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_ErrorHandling_CatchesPhpErrorsFromTest() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffer"] = null;
+		\spectrum\tests\_testware\tools::$temp["resultBuffer"] = null;
 		
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
@@ -2486,20 +2486,20 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			array('result' => false, 'details' => 'Spectrum error handler was removed'),
 		), $resultBuffer->getResults());
 		
-		$this->assertSame($errorHandler3, $this->getLastErrorHandler());
+		$this->assertSame($errorHandler3, \spectrum\tests\_testware\tools::getLastErrorHandler());
 		restore_error_handler();
 		
-		$this->assertSame($errorHandler2, $this->getLastErrorHandler());
+		$this->assertSame($errorHandler2, \spectrum\tests\_testware\tools::getLastErrorHandler());
 		restore_error_handler();
 		
-		$this->assertSame($errorHandler1, $this->getLastErrorHandler());
+		$this->assertSame($errorHandler1, \spectrum\tests\_testware\tools::getLastErrorHandler());
 		restore_error_handler();
 	}
 		
 	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsIncludeTriggeredErrorType_CatchesPhpErrorsAndAddsFalseResultToResultBuffer() {
 		$resultBuffers = array();
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2604,7 +2604,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$callCount = -1;
 		$isExecuted = array();
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2672,12 +2672,12 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferWithProperLinkToOwnerSpecForEachSpec() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
+		\spectrum\tests\_testware\tools::$temp["resultBuffers"] = array();
 		
-		$resultBufferClassName = $this->createClass('
+		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\ResultBuffer {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = array(
+					\spectrum\tests\_testware\tools::$temp["resultBuffers"][] = array(
 						"resultBuffer" => $this,
 						"ownerSpec" => $ownerSpec,
 					);
@@ -2689,7 +2689,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2705,46 +2705,46 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs['parent1']->bindChildSpec($specs['childSpec2']);
 		$specs[0]->run();
 		
-		$this->assertSame(11, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
+		$this->assertSame(11, count(\spectrum\tests\_testware\tools::$temp["resultBuffers"]));
 		
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][2]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][3]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][4]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][5]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][6]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][7]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][8]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][9]["resultBuffer"]);
-		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\automatic\Test::$temp["resultBuffers"][10]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][3]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][4]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][5]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][6]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][7]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][8]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][9]["resultBuffer"]);
+		$this->assertInstanceOf($resultBufferClassName, \spectrum\tests\_testware\tools::$temp["resultBuffers"][10]["resultBuffer"]);
 		
-		$this->assertSame($specs[0], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]["ownerSpec"]);
-		$this->assertSame($specs[1], \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]["ownerSpec"]);
-		$this->assertSame($specs[2], \spectrum\tests\automatic\Test::$temp["resultBuffers"][2]["ownerSpec"]);
-		$this->assertSame($specs[3], \spectrum\tests\automatic\Test::$temp["resultBuffers"][3]["ownerSpec"]);
-		$this->assertSame($specs[4], \spectrum\tests\automatic\Test::$temp["resultBuffers"][4]["ownerSpec"]);
-		$this->assertSame($specs['parent1'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][5]["ownerSpec"]);
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][6]["ownerSpec"]);
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][7]["ownerSpec"]);
-		$this->assertSame($specs['parent2'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][8]["ownerSpec"]);
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][9]["ownerSpec"]);
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][10]["ownerSpec"]);
+		$this->assertSame($specs[0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]["ownerSpec"]);
+		$this->assertSame($specs[1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]["ownerSpec"]);
+		$this->assertSame($specs[2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]["ownerSpec"]);
+		$this->assertSame($specs[3], \spectrum\tests\_testware\tools::$temp["resultBuffers"][3]["ownerSpec"]);
+		$this->assertSame($specs[4], \spectrum\tests\_testware\tools::$temp["resultBuffers"][4]["ownerSpec"]);
+		$this->assertSame($specs['parent1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][5]["ownerSpec"]);
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][6]["ownerSpec"]);
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][7]["ownerSpec"]);
+		$this->assertSame($specs['parent2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][8]["ownerSpec"]);
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][9]["ownerSpec"]);
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][10]["ownerSpec"]);
 		
-		$this->assertSame($specs[0], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[1], \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[2], \spectrum\tests\automatic\Test::$temp["resultBuffers"][2]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[3], \spectrum\tests\automatic\Test::$temp["resultBuffers"][3]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs[4], \spectrum\tests\automatic\Test::$temp["resultBuffers"][4]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['parent1'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][5]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][6]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][7]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['parent2'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][8]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec1'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][9]["resultBuffer"]->getOwnerSpec());
-		$this->assertSame($specs['childSpec2'], \spectrum\tests\automatic\Test::$temp["resultBuffers"][10]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs[0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs[1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs[2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs[3], \spectrum\tests\_testware\tools::$temp["resultBuffers"][3]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs[4], \spectrum\tests\_testware\tools::$temp["resultBuffers"][4]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs['parent1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][5]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][6]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][7]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs['parent2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][8]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec1'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][9]["resultBuffer"]->getOwnerSpec());
+		$this->assertSame($specs['childSpec2'], \spectrum\tests\_testware\tools::$temp["resultBuffers"][10]["resultBuffer"]->getOwnerSpec());
 		
-		foreach (\spectrum\tests\automatic\Test::$temp["resultBuffers"] as $key => $val) {
-			foreach (\spectrum\tests\automatic\Test::$temp["resultBuffers"] as $key2 => $val2) {
+		foreach (\spectrum\tests\_testware\tools::$temp["resultBuffers"] as $key => $val) {
+			foreach (\spectrum\tests\_testware\tools::$temp["resultBuffers"] as $key2 => $val2) {
 				if ($key != $key2) {
 					$this->assertNotSame($val2["resultBuffer"], $val["resultBuffer"]);
 				}
@@ -2753,12 +2753,12 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_ResultBuffer_CreatesNewResultBufferForEachRun() {
-		\spectrum\tests\automatic\Test::$temp["resultBuffers"] = array();
+		\spectrum\tests\_testware\tools::$temp["resultBuffers"] = array();
 		
-		$resultBufferClassName = $this->createClass('
+		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
 			class ... implements \spectrum\core\ResultBufferInterface {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec) {
-					\spectrum\tests\automatic\Test::$temp["resultBuffers"][] = $this;
+					\spectrum\tests\_testware\tools::$temp["resultBuffers"][] = $this;
 				}
 			
 				public function getOwnerSpec(){}
@@ -2776,16 +2776,16 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec->run();
 		$spec->run();
 		
-		$this->assertSame(3, count(\spectrum\tests\automatic\Test::$temp["resultBuffers"]));
+		$this->assertSame(3, count(\spectrum\tests\_testware\tools::$temp["resultBuffers"]));
 
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["resultBuffers"][0], \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["resultBuffers"][0], \spectrum\tests\automatic\Test::$temp["resultBuffers"][2]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][0], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]);
 		
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["resultBuffers"][1], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["resultBuffers"][1], \spectrum\tests\automatic\Test::$temp["resultBuffers"][2]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][1], \spectrum\tests\_testware\tools::$temp["resultBuffers"][2]);
 		
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["resultBuffers"][2], \spectrum\tests\automatic\Test::$temp["resultBuffers"][0]);
-		$this->assertNotSame(\spectrum\tests\automatic\Test::$temp["resultBuffers"][2], \spectrum\tests\automatic\Test::$temp["resultBuffers"][1]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][0]);
+		$this->assertNotSame(\spectrum\tests\_testware\tools::$temp["resultBuffers"][2], \spectrum\tests\_testware\tools::$temp["resultBuffers"][1]);
 	}
 	
 	public function testRun_RootSpecRun_ResultBuffer_UnsetLinkToResultBufferBeforeRun() {
@@ -2826,7 +2826,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$resultBuffers[] = $spec->getResultBuffer();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2849,19 +2849,19 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_ResultBuffer_NotEndingSpec_PutsChildSpecRunResultWithChildSpecObjectToResultBufferForEachChildSpec() {
 		$resultBuffers = array();
 		config::registerEventListener('onSpecRunFinish', function(SpecInterface $spec) use(&$resultBuffers) {
-			if ($spec === \spectrum\tests\automatic\Test::$temp["specs"][0]) {
-				$resultBuffers[] = \spectrum\tests\automatic\Test::$temp["specs"][0]->getResultBuffer();
+			if ($spec === \spectrum\tests\_testware\tools::$temp["specs"][0]) {
+				$resultBuffers[] = \spectrum\tests\_testware\tools::$temp["specs"][0]->getResultBuffer();
 			}
 		});
 
-		$resultBufferClassName = $this->createClass('
+		$resultBufferClassName = \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\ResultBuffer {
 				public function getTotalResult() {
-					if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][1]) {
+					if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][1]) {
 						return true;
-					} else if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][2]) {
+					} else if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][2]) {
 						return false;
-					} else if ($this->getOwnerSpec() === \spectrum\tests\automatic\Test::$temp["specs"][3]) {
+					} else if ($this->getOwnerSpec() === \spectrum\tests\_testware\tools::$temp["specs"][3]) {
 						return null;
 					} else {
 						return call_user_func_array("parent::getTotalResult", func_get_args());
@@ -2872,26 +2872,26 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		config::setClassReplacement('\spectrum\core\ResultBuffer', $resultBufferClassName);
 		
-		\spectrum\tests\automatic\Test::$temp["specs"] = $this->createSpecsByListPattern('
+		\spectrum\tests\_testware\tools::$temp["specs"] = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
 			->Spec
 		');
 		
-		\spectrum\tests\automatic\Test::$temp["specs"][0]->run();
+		\spectrum\tests\_testware\tools::$temp["specs"][0]->run();
 		$this->assertSame(1, count($resultBuffers));
 		$this->assertSame(array(
-			array('result' => true, 'details' => \spectrum\tests\automatic\Test::$temp["specs"][1]),
-			array('result' => false, 'details' => \spectrum\tests\automatic\Test::$temp["specs"][2]),
-			array('result' => null, 'details' => \spectrum\tests\automatic\Test::$temp["specs"][3]),
+			array('result' => true, 'details' => \spectrum\tests\_testware\tools::$temp["specs"][1]),
+			array('result' => false, 'details' => \spectrum\tests\_testware\tools::$temp["specs"][2]),
+			array('result' => null, 'details' => \spectrum\tests\_testware\tools::$temp["specs"][3]),
 		), $resultBuffers[0]->getResults());
 	}
 
 /**/
 	
 	public function testRun_RootSpecRun_Test_CallsFunctionOnEndingSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2904,7 +2904,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_Test_DoesNotCallsFunctionOnNotEndingSpecs() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -2929,7 +2929,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_Test_GetsFunctionFromAncestorOrSelf() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -2947,7 +2947,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_Test_ApplyBeforeContextModifiersToDataBeforeFunctionCallAndInDirectOrder(){
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			0
 			|
 			1
@@ -2982,7 +2982,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_Test_ApplyAfterContextModifiersToDataAfterFunctionCallAndInBackwardOrder() {
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			0
 			|
 			1
@@ -3026,7 +3026,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRun_RootSpecRun_Test_FunctionThrowsException_ApplyAfterContextModifiersToDataAfterFunctionCallAndInBackwardOrder() {
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			0
 			|
 			1
@@ -3111,7 +3111,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$passedArguments[] = func_get_args();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3127,7 +3127,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3143,7 +3143,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$isRunningCallResults[] = $spec->isRunning();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3168,7 +3168,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$passedArguments[] = func_get_args();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3183,7 +3183,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3199,7 +3199,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$isRunningCallResults[] = $spec->isRunning();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3224,7 +3224,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$passedArguments[] = func_get_args();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3239,7 +3239,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3256,7 +3256,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$isRunningCallResults[] = $spec->isRunning();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3281,7 +3281,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$passedArguments[] = func_get_args();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3296,7 +3296,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3313,7 +3313,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$isRunningCallResults[] = $spec->isRunning();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3338,7 +3338,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$passedArguments[] = func_get_args();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3353,7 +3353,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3370,7 +3370,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$isRunningCallResults[] = $spec->isRunning();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3385,7 +3385,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -3411,7 +3411,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$passedArguments[] = func_get_args();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3426,7 +3426,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3443,7 +3443,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$isRunningCallResults[] = $spec->isRunning();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -3458,7 +3458,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -3496,7 +3496,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec
@@ -3616,7 +3616,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			$runSpecs[] = $spec;
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->->Spec

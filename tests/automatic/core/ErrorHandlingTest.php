@@ -93,7 +93,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 			$returnValues[] = $spec->getErrorHandling()->getCatchPhpErrorsThroughRunningAncestors();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)
@@ -184,7 +184,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 			$returnValues[] = $spec->getErrorHandling()->getBreakOnFirstPhpErrorThroughRunningAncestors();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)
@@ -274,7 +274,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 			$returnValues[] = $spec->getErrorHandling()->getBreakOnFirstMatcherFailThroughRunningAncestors();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)

@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../init.php';
 
 class MessageTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_AddsPassedMessageToMessagesInstanceOfCurrentRunningSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(ending1)
 			->Spec(parent1)

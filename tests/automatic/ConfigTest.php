@@ -307,7 +307,7 @@ class ConfigTest extends Test {
 /**/
 
 	public function testSetClassReplacement_ClassHasInterface_NewClassImplementsInterface_SetsNewClass() {
-		$className = $this->createClass('
+		$className = \spectrum\tests\_testware\tools::createClass('
 			class ... implements \spectrum\core\AssertionInterface {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue){}
 				public function __call($name, array $matcherArguments = array()){}
@@ -320,7 +320,7 @@ class ConfigTest extends Test {
 	}
 	
 	public function testSetClassReplacement_ClassHasInterface_NewClassDoesNotImplementInterface_ThrowsExceptionAndDoesNotChangeValue() {
-		$className = $this->createClass('class ... {}');
+		$className = \spectrum\tests\_testware\tools::createClass('class ... {}');
 		$this->assertThrowsException('\spectrum\Exception', 'Class "' . $className . '" does not implement "\spectrum\core\AssertionInterface"', function() use($className){
 			config::setClassReplacement('\spectrum\core\Assertion', $className);
 		});

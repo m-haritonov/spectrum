@@ -221,7 +221,7 @@ class TestTest extends \spectrum\tests\automatic\Test {
 	
 	public function providerVariantsOfArguments_BodyArgumentIsFunction2() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function() {
-			\spectrum\tests\automatic\Test::$temp['isCalled'] = true;
+			\spectrum\tests\_testware\tools::$temp['isCalled'] = true;
 		});
 	}
 
@@ -229,9 +229,9 @@ class TestTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerVariantsOfArguments_BodyArgumentIsFunction2
 	 */
 	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_DoesNotCallBodyFunction($arguments) {
-		\spectrum\tests\automatic\Test::$temp['isCalled'] = false;
+		\spectrum\tests\_testware\tools::$temp['isCalled'] = false;
 		call_user_func_array('\spectrum\builders\test', $arguments);
-		$this->assertSame(false, \spectrum\tests\automatic\Test::$temp['isCalled']);
+		$this->assertSame(false, \spectrum\tests\_testware\tools::$temp['isCalled']);
 	}
 	
 	public function providerVariantsOfArguments_SettingsArgumentIsInteger() {

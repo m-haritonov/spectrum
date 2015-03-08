@@ -291,7 +291,7 @@ class ContextModifiersTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetAllThroughRunningAncestors_TypeIsBefore_ReturnsRowsInOrderFromRootRunningAncestorToSelf() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec
@@ -410,7 +410,7 @@ class ContextModifiersTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetAllThroughRunningAncestors_TypeIsAfter_ReturnsRowsInOrderFromSelfToRootRunningAncestor() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec

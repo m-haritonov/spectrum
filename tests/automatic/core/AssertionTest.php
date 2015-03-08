@@ -17,7 +17,7 @@ require_once __DIR__ . '/../../init.php';
 
 class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_GetsMatcherCallDetailsClassFromConfig() {
-		$matcherCallDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\MatcherCall {}');
+		$matcherCallDetailsClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\details\MatcherCall {}');
 		config::setClassReplacement('\spectrum\core\details\MatcherCall', $matcherCallDetailsClassName);
 
 		$spec = new Spec();
@@ -34,7 +34,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testMatcherCall_GetsMatcherFunctionFromRunningAncestorOfOwnerSpecOrFromOwnerSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)
@@ -237,7 +237,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$callCount = -1;
 		$isExecuted = array();
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec

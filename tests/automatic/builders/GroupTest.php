@@ -114,8 +114,8 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 				'ccc' => array(),
 			),
 			function() {
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
 			}
 		);
 	}
@@ -127,7 +127,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$parentSpec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($parentSpec);
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		
 		$this->assertSame(array($groupSpec), $parentSpec->getChildSpecs());
@@ -150,7 +150,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame($contextEndingSpecs[1], $contextEndingSpecs[2]);
 		$this->assertSame($contextEndingSpecs[2], $contextEndingSpecs[0]);
 		
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
+		$this->assertSame(\spectrum\tests\_testware\tools::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
 	public function providerVariantsOfArguments_ContextsArgumentIsFunction() {
@@ -162,8 +162,8 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 				\spectrum\builders\group('ccc', null, function(){}, null);
 			},
 			function() {
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
 			}
 		);
 	}
@@ -175,7 +175,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$parentSpec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($parentSpec);
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		
 		$this->assertSame(array($groupSpec), $parentSpec->getChildSpecs());
@@ -198,7 +198,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame($contextEndingSpecs[1], $contextEndingSpecs[2]);
 		$this->assertSame($contextEndingSpecs[2], $contextEndingSpecs[0]);
 		
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
+		$this->assertSame(\spectrum\tests\_testware\tools::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
 	public function providerVariantsOfArguments_ContextsArgumentIsFunction2() {
@@ -217,8 +217,8 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 				\spectrum\builders\group('ddd', null, function(){}, null);
 			},
 			function() {
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
 			}
 		);
 	}
@@ -230,7 +230,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$parentSpec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($parentSpec);
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		
 		$this->assertSame(array($groupSpec), $parentSpec->getChildSpecs());
@@ -257,7 +257,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame($contextEndingSpecs[1], $contextEndingSpecs[2]);
 		$this->assertSame($contextEndingSpecs[2], $contextEndingSpecs[0]);
 		
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
+		$this->assertSame(\spectrum\tests\_testware\tools::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 	
 	public function providerVariantsOfArguments_ContextsArgumentIsFunction3() {
@@ -270,8 +270,8 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 				\spectrum\builders\test('ddd', null, function(){}, null);
 			},
 			function() {
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group(null, null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test(null, null, function(){}, null);
 			}
 		);
 	}
@@ -282,7 +282,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtBuildingState_VariantsOfArguments_ContextsArgumentIsFunction_DoesNotAddSpecsToTestSpecOfContext($arguments) {
 		\spectrum\_private\setCurrentBuildingSpec(new Spec());
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 		
 		$contextSpecs = $groupSpec->getChildSpecs();
@@ -302,16 +302,16 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		
 		$this->assertSame(2, count($contextEndingSpecs));
 		$this->assertSame($contextEndingSpecs[0], $contextEndingSpecs[1]);
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp, $contextEndingSpecs[0]->getChildSpecs());
+		$this->assertSame(\spectrum\tests\_testware\tools::$temp, $contextEndingSpecs[0]->getChildSpecs());
 	}
 		
 	public function providerVariantsOfArguments_BodyArgumentIsFunction() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, array(), function(){
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group('bbb', null, function(){}, null);
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test('ccc', null, function(){}, null);
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test('ddd', null, function(){}, null);
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group('eee', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group('bbb', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test('ccc', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test('ddd', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group('eee', null, function(){}, null);
 		});
 	}
 
@@ -319,10 +319,10 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider providerVariantsOfArguments_BodyArgumentIsFunction
 	 */
 	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsBodySpecsToGroupSpec($arguments) {
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp, $groupSpec->getChildSpecs());
+		$this->assertSame(\spectrum\tests\_testware\tools::$temp, $groupSpec->getChildSpecs());
 		
 		$specs = $groupSpec->getChildSpecs();
 		$this->assertSame(5, count($specs));
@@ -423,8 +423,8 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		
 	public function providerVariantsOfArguments_SettingsArgumentIsInteger() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
 		}, 8);
 	}
 
@@ -435,19 +435,19 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$parentSpec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($parentSpec);
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
 		$this->assertNotSame(8, $parentSpec->getErrorHandling()->getCatchPhpErrors());
 		$this->assertSame(8, $groupSpec->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(8, \spectrum\tests\automatic\Test::$temp[0]->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(8, \spectrum\tests\automatic\Test::$temp[1]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(8, \spectrum\tests\_testware\tools::$temp[0]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(8, \spectrum\tests\_testware\tools::$temp[1]->getErrorHandling()->getCatchPhpErrors());
 	}
 	
 	public function providerVariantsOfArguments_SettingsArgumentIsTrue() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
 		}, true);
 	}
 
@@ -458,19 +458,19 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$parentSpec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($parentSpec);
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
 		$this->assertNotSame(-1, $parentSpec->getErrorHandling()->getCatchPhpErrors());
 		$this->assertSame(-1, $groupSpec->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(-1, \spectrum\tests\automatic\Test::$temp[0]->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(-1, \spectrum\tests\automatic\Test::$temp[1]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(-1, \spectrum\tests\_testware\tools::$temp[0]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(-1, \spectrum\tests\_testware\tools::$temp[1]->getErrorHandling()->getCatchPhpErrors());
 	}
 	
 	public function providerVariantsOfArguments_SettingsArgumentIsFalse() {
 		return $this->getProviderWithCorrectArgumentsForGroupAndTestBuilders(null, null, function(){
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
-			\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
+			\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
 		}, false);
 	}
 
@@ -481,13 +481,13 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$parentSpec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($parentSpec);
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
 		$this->assertNotSame(0, $parentSpec->getErrorHandling()->getCatchPhpErrors());
 		$this->assertSame(0, $groupSpec->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(0, \spectrum\tests\automatic\Test::$temp[0]->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(0, \spectrum\tests\automatic\Test::$temp[1]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(0, \spectrum\tests\_testware\tools::$temp[0]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(0, \spectrum\tests\_testware\tools::$temp[1]->getErrorHandling()->getCatchPhpErrors());
 	}
 	
 	public function providerVariantsOfArguments_SettingsArgumentIsArray() {
@@ -495,8 +495,8 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 			null,
 			null,
 			function() {
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
-				\spectrum\tests\automatic\Test::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\group('aaa', null, function(){}, null);
+				\spectrum\tests\_testware\tools::$temp[] = \spectrum\builders\test('bbb', null, function(){}, null);
 			},
 			array(
 				'catchPhpErrors' => 8,
@@ -513,7 +513,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$parentSpec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($parentSpec);
 		
-		\spectrum\tests\automatic\Test::$temp = array();
+		\spectrum\tests\_testware\tools::$temp = array();
 		$groupSpec = call_user_func_array('\spectrum\builders\group', $arguments);
 
 		$this->assertNotSame(8, $parentSpec->getErrorHandling()->getCatchPhpErrors());
@@ -524,13 +524,13 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame(true, $groupSpec->getErrorHandling()->getBreakOnFirstPhpError());
 		$this->assertSame(true, $groupSpec->getErrorHandling()->getBreakOnFirstMatcherFail());
 		
-		$this->assertNotSame(8, \spectrum\tests\automatic\Test::$temp[0]->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(true, \spectrum\tests\automatic\Test::$temp[0]->getErrorHandling()->getBreakOnFirstPhpError());
-		$this->assertNotSame(true, \spectrum\tests\automatic\Test::$temp[0]->getErrorHandling()->getBreakOnFirstMatcherFail());
+		$this->assertNotSame(8, \spectrum\tests\_testware\tools::$temp[0]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(true, \spectrum\tests\_testware\tools::$temp[0]->getErrorHandling()->getBreakOnFirstPhpError());
+		$this->assertNotSame(true, \spectrum\tests\_testware\tools::$temp[0]->getErrorHandling()->getBreakOnFirstMatcherFail());
 		
-		$this->assertNotSame(8, \spectrum\tests\automatic\Test::$temp[1]->getErrorHandling()->getCatchPhpErrors());
-		$this->assertNotSame(true, \spectrum\tests\automatic\Test::$temp[1]->getErrorHandling()->getBreakOnFirstPhpError());
-		$this->assertNotSame(true, \spectrum\tests\automatic\Test::$temp[1]->getErrorHandling()->getBreakOnFirstMatcherFail());
+		$this->assertNotSame(8, \spectrum\tests\_testware\tools::$temp[1]->getErrorHandling()->getCatchPhpErrors());
+		$this->assertNotSame(true, \spectrum\tests\_testware\tools::$temp[1]->getErrorHandling()->getBreakOnFirstPhpError());
+		$this->assertNotSame(true, \spectrum\tests\_testware\tools::$temp[1]->getErrorHandling()->getBreakOnFirstMatcherFail());
 	}
 	
 /**/

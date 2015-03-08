@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../init.php';
 
 class DataTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_ReturnsDataOfCurrentRunningSpec() {
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			  __0__
 			 /  |  \
 			1   2   3

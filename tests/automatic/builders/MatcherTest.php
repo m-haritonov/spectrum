@@ -23,7 +23,7 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 	}
 
 	public function testCallsAtBuildingState_ReturnsReturnValueOfMatcherAddFunction() {
-		config::setClassReplacement('\spectrum\core\Matchers', $this->createClass('
+		config::setClassReplacement('\spectrum\core\Matchers', \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\Matchers {
 				public function add($name, $function) {
 					return "some text";

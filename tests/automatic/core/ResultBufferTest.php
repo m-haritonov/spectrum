@@ -145,7 +145,7 @@ class ResultBufferTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testGetTotalResult_AnyResultIsNotTrueAndNotNullAndNotFalse_ThrowsException() {
-		$resultBufferClass = $this->createClass('
+		$resultBufferClass = \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\ResultBuffer {
 				public function addResult($result, $details = null) {
 					$this->results[] = array(

@@ -69,7 +69,7 @@ class ExecutorTest extends \spectrum\tests\automatic\Test {
 			$returnValues[] = $spec->getExecutor()->getFunctionThroughRunningAncestors();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(endingSpec1)
 			->Spec(parent1)

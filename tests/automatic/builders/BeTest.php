@@ -29,7 +29,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_UsesConfigForAssertionClassGetting() {
-		$assertClassName = $this->createClass('class ... extends \spectrum\core\Assertion {}');
+		$assertClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Assertion {}');
 		config::setClassReplacement('\spectrum\core\Assertion', $assertClassName);
 
 		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
@@ -42,14 +42,14 @@ class BeTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_PassesToAssertionInstanceCurrentRunningSpecAndTestedValue() {
-		\spectrum\tests\automatic\Test::$temp["assertion"] = null;
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = null;
+		\spectrum\tests\_testware\tools::$temp["assertion"] = null;
+		\spectrum\tests\_testware\tools::$temp["passedArguments"] = null;
 		
-		config::setClassReplacement('\spectrum\core\Assertion', $this->createClass('
+		config::setClassReplacement('\spectrum\core\Assertion', \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\Assertion {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue) {
-					\spectrum\tests\automatic\Test::$temp["assertion"] = $this;
-					\spectrum\tests\automatic\Test::$temp["passedArguments"] = func_get_args();
+					\spectrum\tests\_testware\tools::$temp["assertion"] = $this;
+					\spectrum\tests\_testware\tools::$temp["passedArguments"] = func_get_args();
 				}
 			}
 		'));
@@ -62,12 +62,12 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_private\getRootSpec()->bindChildSpec($spec);
 		\spectrum\_private\getRootSpec()->run();
 
-		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\automatic\Test::$temp["assertion"]);
-		$this->assertSame(\spectrum\tests\automatic\Test::$temp["assertion"], $returnValue);
-		$this->assertSame(2, count(\spectrum\tests\automatic\Test::$temp["passedArguments"]));
-		$this->assertInstanceOf('\spectrum\core\Spec', \spectrum\tests\automatic\Test::$temp["passedArguments"][0]);
-		$this->assertSame($spec, \spectrum\tests\automatic\Test::$temp["passedArguments"][0]);
-		$this->assertSame('aaa', \spectrum\tests\automatic\Test::$temp["passedArguments"][1]);
+		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\_testware\tools::$temp["assertion"]);
+		$this->assertSame(\spectrum\tests\_testware\tools::$temp["assertion"], $returnValue);
+		$this->assertSame(2, count(\spectrum\tests\_testware\tools::$temp["passedArguments"]));
+		$this->assertInstanceOf('\spectrum\core\Spec', \spectrum\tests\_testware\tools::$temp["passedArguments"][0]);
+		$this->assertSame($spec, \spectrum\tests\_testware\tools::$temp["passedArguments"][0]);
+		$this->assertSame('aaa', \spectrum\tests\_testware\tools::$temp["passedArguments"][1]);
 	}
 	
 	public function testCallsAtBuildingState_ThrowsException() {

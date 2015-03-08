@@ -66,7 +66,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 	 */
 	public function testReturnsValueFromFirstRunningSpecFromSelfToUp($specVisualPattern, $values, $expectedReturnValues) {
 		$actualReturnValues = array();
-		$specs = $this->createSpecsByVisualPattern($specVisualPattern, array(), $this->createClass('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($specVisualPattern, array(), \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\Spec {
 				public $value = null;
 				
@@ -92,18 +92,18 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 	}
 	
 	public function testPassesArgumentsToCalleeMethod() {
-		\spectrum\tests\automatic\Test::$temp["passedArguments"] = array();
+		\spectrum\tests\_testware\tools::$temp["passedArguments"] = array();
 		
 		config::registerEventListener('onSpecRunStart', function(SpecInterface $spec) {
 			\spectrum\_private\callMethodThroughRunningAncestorSpecs($spec, "getValue", array("aaa", "bbb", "ccc"));
 		});
 		
-		$specClass = $this->createClass('
+		$specClass = \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\Spec {
 				public $value = null;
 				
 				public function getValue() {
-					\spectrum\tests\automatic\Test::$temp["passedArguments"][] = func_get_args();
+					\spectrum\tests\_testware\tools::$temp["passedArguments"][] = func_get_args();
 					return $this->value;
 				}
 			}
@@ -113,7 +113,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 		$spec = new $specClass();
 		$spec->run();
 		
-		$this->assertSame(array(array("aaa", "bbb", "ccc")), \spectrum\tests\automatic\Test::$temp["passedArguments"]);
+		$this->assertSame(array(array("aaa", "bbb", "ccc")), \spectrum\tests\_testware\tools::$temp["passedArguments"]);
 	}
 	
 	public function provider2() {
@@ -189,7 +189,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 			}
 		});
 		
-		$specs = $this->createSpecsByVisualPattern($specTreePattern, array(), $this->createClass('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($specTreePattern, array(), \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\Spec {
 				public $value = null;
 				
@@ -217,7 +217,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 			}
 		});
 		
-		$specs = $this->createSpecsByVisualPattern(
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern(
 			'
 				  __0__
 				 /     \
@@ -226,7 +226,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 				checkpoint
 			',
 			array(),
-			$this->createClass('
+			\spectrum\tests\_testware\tools::createClass('
 				class ... extends \spectrum\core\Spec {
 					public $value = null;
 					

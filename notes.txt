@@ -11,7 +11,6 @@ TODO: register vs add
 
 TODO: \spectrum\builders\* -> \spectrum\*
 TODO: create global run function
-TODO: rename _testware to _private???
 TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
 TODO: test matchers through Assertion
 
@@ -151,8 +150,8 @@ TODO: add "run this test in this context" and "run this test in all contexts" li
 
 TODO: создать функцию для автоматической генерации контекстов во всевозможных комбинациях на основе множества значений (предполагаемые названия функции: combine, generateContexts; в "\spectrum\tools\*" или в "\spectrum\builders\*")
 TODO: create \spectrum\tools\createTree function and similar auxiliary functions and classes?
-TODO: create \spectrum\tools\validateHtml('4.01', 'strict')
-TODO: create \spectrum\tools\validateXml('xhtml')
+TODO: create \spectrum\tools\validateHtml('strict') or be('')->validHtml('strict|http://...')
+TODO: create \spectrum\tools\validateXml('xhtml') or be('')->validXml('xhtml|http://...')
 TODO: create $mock = new \spectrum\tools\Mock(new Spec); $mock->__calls; $mock->__sets; $mock->__gets;
 
 

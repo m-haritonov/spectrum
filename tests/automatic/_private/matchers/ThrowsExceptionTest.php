@@ -11,8 +11,8 @@ require_once __DIR__ . '/../../../../spectrum/_private/matchers/throwsException.
 
 class ThrowsExceptionTest extends \spectrum\tests\automatic\Test {
 	public function providerMatcherCall() {
-		$level2Exception = $this->createClass('class ... extends \Exception {}');
-		$level3Exception = $this->createClass('class ... extends ' . $level2Exception . ' {}');
+		$level2Exception = \spectrum\tests\_testware\tools::createClass('class ... extends \Exception {}');
+		$level3Exception = \spectrum\tests\_testware\tools::createClass('class ... extends ' . $level2Exception . ' {}');
 		
 		return array(
 			array(true, array(function(){ throw new \Exception(); }, null, null, null)),

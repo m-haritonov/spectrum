@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../init.php';
 
 class FailTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_GetsUserFailDetailsClassFromConfig() {
-		$userFailDetailsClassName = $this->createClass('class ... extends \spectrum\core\details\UserFail {}');
+		$userFailDetailsClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\details\UserFail {}');
 		config::setClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
 
 		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$resultBuffer) {
@@ -29,7 +29,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_AddsFalseResultWithUserFailDetailsAndPassedMessageToResultBufferOfCurrentRunningSpec() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(ending1)
 			->Spec(parent1)

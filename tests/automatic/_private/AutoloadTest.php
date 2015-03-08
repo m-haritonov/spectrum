@@ -12,14 +12,14 @@ require_once __DIR__ . '/../../init.php';
 
 class AutoloadTest extends Test {
 	public function testNames_EntityNamesIsIdenticalToFileNames() {
-		foreach ($this->getDirectoryFilesRecursively(array(__DIR__ . '/../../../spectrum', __DIR__ . '/../../_testware', __DIR__ . '/../../automatic')) as $file) {
+		foreach (\spectrum\tests\_testware\tools::getDirectoryFilesRecursively(array(__DIR__ . '/../../../spectrum', __DIR__ . '/../../_testware', __DIR__ . '/../../automatic')) as $file) {
 			if (mb_substr($file, -4, mb_strlen($file, 'us-ascii'), 'us-ascii') === '.php') {
 				require_once $file;
 			}
 		}
 		
 		$foundEntitiesCount = 0;
-		foreach ($this->getDeclaredEntities() as $entity) {
+		foreach (\spectrum\tests\_testware\tools::getDeclaredEntities() as $entity) {
 			if (mb_stripos($entity['name'], 'spectrum\\', null, 'us-ascii') === 0 && mb_stripos($entity['name'], 'spectrum\tests\_testware\_dynamicClasses_\\', null, 'us-ascii') !== 0) {
 				$foundEntitiesCount++;
 				
@@ -45,56 +45,5 @@ class AutoloadTest extends Test {
 		}
 		
 		$this->assertGreaterThan(90, $foundEntitiesCount);
-	}
-	
-	private function getDeclaredEntities() {
-		$result = array();
-		
-		$declaredFunctions = get_defined_functions();
-		foreach ($declaredFunctions['user'] as $name) {
-			$result[] = array('name' => $name, 'type' => 'function');
-		}
-		
-		foreach (get_declared_interfaces() as $name) {
-			$result[] = array('name' => $name, 'type' => 'interface');
-		}
-		
-		foreach (get_declared_classes() as $name) {
-			$result[] = array('name' => $name, 'type' => 'class');
-		}
-		
-		if (function_exists('get_declared_traits')) {
-			foreach (get_declared_traits() as $name) {
-				$result[] = array('name' => $name, 'type' => 'trait');
-			}
-		}
-		
-		return $result;
-	}
-	
-	private function getDirectoryFilesRecursively($paths) {
-		$resultFiles = array();
-		
-		if (is_array($paths)) {
-			foreach ($paths as $path) {
-				$resultFiles = array_merge($resultFiles, $this->getDirectoryFilesRecursively($path));
-			}
-		} else {
-			foreach (scandir($paths) as $file) {
-				if (mb_substr($file, 0, 1, 'us-ascii') === '.') {
-					continue;
-				}
-
-				$file = $paths . '/' . $file;
-
-				if (is_dir($file)) {
-					$resultFiles = array_merge($resultFiles, $this->getDirectoryFilesRecursively($file));
-				} else {
-					$resultFiles[] = $file;
-				}
-			}
-		}
-		
-		return $resultFiles;
 	}
 }

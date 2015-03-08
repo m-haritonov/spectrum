@@ -26,7 +26,7 @@ class MessagesTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testAdd_SpecWithChildren_ThrowsExceptionAndDoesNotAddMessage() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');
@@ -40,7 +40,7 @@ class MessagesTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testAdd_SpecWithoutChildren_DoesNotThrowsExceptionAndAddsMessage() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 		');

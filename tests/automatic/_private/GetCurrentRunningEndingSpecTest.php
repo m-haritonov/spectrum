@@ -26,7 +26,7 @@ class GetCurrentRunningEndingSpecTest extends \spectrum\tests\automatic\Test {
 			$returnValues[] = \spectrum\_private\getCurrentRunningEndingSpec();
 		});
 		
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec
 			->Spec

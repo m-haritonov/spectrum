@@ -4,11 +4,13 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\_testware;
 
-require_once __DIR__ . '/../init.php';
+use spectrum\tests\automatic\Test;
 
-class TestTest extends Test {
+require_once __DIR__ . '/../../init.php';
+
+class ToolsTest extends Test {
 	public function providerCreateSpecsByVisualPattern() {
 		return array(
 			// One element only
@@ -453,7 +455,7 @@ class TestTest extends Test {
 	 * @dataProvider providerCreateSpecsByVisualPattern
 	 */
 	public function testCreateSpecsByVisualPattern_ReturnsUniqueSpecsWithProperRelations($pattern, array $expectedResult) {
-		$specs = $this->createSpecsByVisualPattern($pattern);
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($pattern);
 		
 		$expectedSpecKeys = array();
 		foreach ($expectedResult as $specKey => $relations) {
@@ -475,11 +477,11 @@ class TestTest extends Test {
 		}
 		
 		$this->assertSame($expectedSpecKeys, array_keys($specs));
-		$this->assertSame($this->getUniqueArrayElements($specs), $specs);
+		$this->assertSame(\spectrum\tests\_testware\tools::getUniqueArrayElements($specs), $specs);
 	}
 	
 	public function testCreateSpecsByVisualPattern_CreatesAdditionalRelations() {
-		$specs = $this->createSpecsByVisualPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 			  0
 			 / \
 			1   2
@@ -508,7 +510,7 @@ class TestTest extends Test {
 	
 	public function testCreateSpecsByVisualPattern_DuplicateNamesArePresent_ThrowsException() {
 		try {
-			$this->createSpecsByVisualPattern('
+			\spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 				   aaa
 				  /   \
 				aaa   bbb
@@ -523,7 +525,7 @@ class TestTest extends Test {
 	
 	public function testCreateSpecsByVisualPattern_UnknownRelationArePresent_ThrowsException() {
 		try {
-			$this->createSpecsByVisualPattern('
+			\spectrum\tests\_testware\tools::createSpecsByVisualPattern('
 				  0
 				 /*\
 				1   2
@@ -539,7 +541,7 @@ class TestTest extends Test {
 /**/
 	
 	public function testCreateSpecsByListPattern_ReverseOrder_AddsUpSpecsToBottomSpecsAsParents() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			->->Spec
 			->Spec(ccc)
 			->->->Spec
@@ -574,7 +576,7 @@ class TestTest extends Test {
 	
 	public function testCreateSpecsByListPattern_ReverseOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne() {
 		try {
-			$this->createSpecsByListPattern('
+			\spectrum\tests\_testware\tools::createSpecsByListPattern('
 				->->Spec
 				Spec
 			');
@@ -586,7 +588,7 @@ class TestTest extends Test {
 	}
 	
 	public function testCreateSpecsByListPattern_DirectOrder_AddsBottomSpecsToUpSpecsAsChildren() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
 			->Spec(aaa)
 			->Spec(bbb)
@@ -608,7 +610,7 @@ class TestTest extends Test {
 	
 	public function testCreateSpecsByListPattern_DirectOrder_ThrowsExceptionWhenDepthIsBreakMoreThenOne() {
 		try {
-			$this->createSpecsByListPattern('
+			\spectrum\tests\_testware\tools::createSpecsByListPattern('
 				Spec
 				->->Spec
 			');
@@ -620,7 +622,7 @@ class TestTest extends Test {
 	}
 
 	public function testCreateSpecsByListPattern_MixedOrder_AddsUpSpecsToBottomSpecsAsParentsAndAddsBottomSpecsToUpSpecsAsChildren() {
-		$specs = $this->createSpecsByListPattern('
+		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			->->Spec
 			->Spec
 			->->->Spec
@@ -680,7 +682,7 @@ class TestTest extends Test {
 
 	public function testCreateSpecsByListPattern_ThrowsExceptionWhenNameIsDuplicate() {
 		try {
-			$this->createSpecsByListPattern('
+			\spectrum\tests\_testware\tools::createSpecsByListPattern('
 				Spec(aaa)
 				->Spec(aaa)
 			');

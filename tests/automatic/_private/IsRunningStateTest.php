@@ -24,9 +24,9 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_CallsFromCustomSpecClass_ReturnsTrue() {
-		\spectrum\tests\automatic\Test::$temp["returnValue"] = null;
+		\spectrum\tests\_testware\tools::$temp["returnValue"] = null;
 		
-		$specClassName = $this->createClass('
+		$specClassName = \spectrum\tests\_testware\tools::createClass('
 			class ... implements \spectrum\core\SpecInterface {
 				public function enable(){}
 				public function disable(){}
@@ -67,7 +67,7 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 				public function getRunId(){}
 				public function isRunning(){}
 				public function run() {
-					\spectrum\tests\automatic\Test::$temp["returnValue"] = \spectrum\_private\isRunningState();
+					\spectrum\tests\_testware\tools::$temp["returnValue"] = \spectrum\_private\isRunningState();
 				}
 			}
 		');
@@ -75,6 +75,6 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 		$spec = new $specClassName();
 		$spec->run();
 		
-		$this->assertSame(true, \spectrum\tests\automatic\Test::$temp["returnValue"]);
+		$this->assertSame(true, \spectrum\tests\_testware\tools::$temp["returnValue"]);
 	}
 }
