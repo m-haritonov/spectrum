@@ -4,13 +4,15 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\_private;
 
-require_once __DIR__ . '/../init.php';
+use spectrum\tests\automatic\Test;
+
+require_once __DIR__ . '/../../init.php';
 
 class AutoloadTest extends Test {
 	public function testNames_EntityNamesIsIdenticalToFileNames() {
-		foreach ($this->getDirectoryFilesRecursively(array(__DIR__ . '/../../spectrum', __DIR__ . '/../_testware', __DIR__ . '/../automatic')) as $file) {
+		foreach ($this->getDirectoryFilesRecursively(array(__DIR__ . '/../../../spectrum', __DIR__ . '/../../_testware', __DIR__ . '/../../automatic')) as $file) {
 			if (mb_substr($file, -4, mb_strlen($file, 'us-ascii'), 'us-ascii') === '.php') {
 				require_once $file;
 			}
@@ -32,7 +34,7 @@ class AutoloadTest extends Test {
 				$originalFileName = $reflection->getFileName();
 				$originalFileName = str_replace('/', '\\', $originalFileName);
 				$originalFileName = mb_substr($originalFileName, 0, -4, 'us-ascii'); // Remove file extension
-				$originalFileName = mb_substr($originalFileName, mb_strlen(dirname(dirname(__DIR__)), 'us-ascii') + 1, mb_strlen($originalFileName, 'us-ascii'), 'us-ascii'); // Remove directory prefix
+				$originalFileName = mb_substr($originalFileName, mb_strlen(dirname(dirname(dirname(__DIR__))), 'us-ascii') + 1, mb_strlen($originalFileName, 'us-ascii'), 'us-ascii'); // Remove directory prefix
 				// Add prefix for files in "tests" directory
 				if (mb_stripos($originalFileName, 'spectrum\\', null, 'us-ascii') !== 0) {
 					$originalFileName = 'spectrum\\' . $originalFileName;
