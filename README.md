@@ -13,63 +13,34 @@ The framework requires PHP 5.3 or later.
   - Русский: http://m-haritonov.net/ru/projects/spectrum
 
 ##Example
-	<?php
-	require_once __DIR__ . '/spectrum/spectrum/init.php';
+```php
+<?php
+require_once __DIR__ . '/spectrum/spectrum/init.php';
 
-	group('"AddressBook" class', function(){
-		before(function(){
-			data()->addressBook = new AddressBook();
-		});
-		
-		group('"MySql" driver', function(){
-			before(function(){
-				data()->addressBook->setDriver(new drivers\MySql());
-			});
-		});
-	
-		group('"FileSystem" driver', function(){
-			before(function(){
-				data()->addressBook->setDriver(new drivers\FileSystem());
-			});
-		});
-	}, function(){
-		group('"findPerson" method', function(){
-			test('Returns person by first name', function(){
-				$person = data()->addressBook->findPerson('Bob');
-				be($person->firstName)->eq('Bob');
-			});
-		
-			test('Returns person by phone number', array(
-				array('phoneNumber' => '+7 (495) 123-456-7'),
-				array('phoneNumber' => '(495) 123-456-7'),
-				array('phoneNumber' => '123-456-7'),
-			), function(){
-				$person = data()->addressBook->findPerson(data()->phoneNumber);
-				be($person->phoneNumber)->eq('+74951234567');
-			});
-		});
+group('"AddressBook" class', function(){
+	before(function(){
+		data()->addressBook = new AddressBook();
 	});
 	
-	\spectrum\run();
+	group('"findPerson" method', function(){
+		test('Returns person by first name', function(){
+			$person = data()->addressBook->findPerson('Bob');
+			be($person->firstName)->eq('Bob');
+		});
+	
+		test('Returns person by phone number', array(
+			array('phoneNumber' => '+7 (495) 123-456-7'),
+			array('phoneNumber' => '(495) 123-456-7'),
+			array('phoneNumber' => '123-456-7'),
+		), function(){
+			$person = data()->addressBook->findPerson(data()->phoneNumber);
+			be($person->phoneNumber)->eq('+74951234567');
+		});
+	});
+});
 
-Result:
-
-	1. "AddressBook" class - success
-		1. "MySql" driver - success
-			1. "findPerson" method - success
-				1.  Returns person by first name - success
-				2. Returns person by phone number - success
-					1.  +7 (495) 123-456-7 - success
-					2.  (495) 123-456-7 - success
-					3.  123-456-7 - success
-		2. "FileSystem" driver - success
-			1. "findPerson" method - success
-				1.  Returns person by first name - success
-				2. Returns person by phone number - success
-					1.  +7 (495) 123-456-7 - success
-					2.  (495) 123-456-7 - success
-					3.  123-456-7 - success
-
+\spectrum\run();
+```
 
 ##Copyright, contacts and license
 Copyright (c) 2011-2014 Mihail Haritonov (<mail@m-haritonov.net>). All rights reserved.
