@@ -23,7 +23,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 		$dataObjects = array();
 		$returnValues = array();
 		foreach ($specs as $spec) {
-			$spec->getTest()->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
+			$spec->getExecutor()->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
 				$dataObjects[] = $spec->getData();
 				$returnValues[] = \spectrum\builders\data();
 			});

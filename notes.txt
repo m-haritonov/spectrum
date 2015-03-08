@@ -9,7 +9,6 @@ TODO: function -> callback
 TODO: remove vs removeAll
 TODO: register vs add
 
-TODO: Test -> Callback/Execution/Executor/Execute/ExecutionCallback
 TODO: \spectrum\builders\* -> \spectrum\*
 TODO: \spectrum\run -> \run
 TODO: matchers -> _private/matchers

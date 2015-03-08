@@ -8,7 +8,7 @@ namespace spectrum\core;
 
 use spectrum\config;
 
-class Test implements TestInterface {
+class Executor implements ExecutorInterface {
 	/**
 	 * @var null|\Closure
 	 */
@@ -45,6 +45,6 @@ class Test implements TestInterface {
 	 */
 	public function getFunctionThroughRunningAncestors() {
 		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_private\callMethodThroughRunningAncestorSpecs');
-		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getTest->getFunction');
+		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getExecutor->getFunction');
 	}
 }

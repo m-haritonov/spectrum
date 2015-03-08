@@ -16,7 +16,7 @@ use spectrum\core\Messages;
 use spectrum\core\ResultBuffer;
 use spectrum\core\Spec;
 use spectrum\core\SpecInterface;
-use spectrum\core\Test;
+use spectrum\core\Executor;
 
 require_once __DIR__ . '/../../init.php';
 
@@ -1302,18 +1302,18 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 /**/
 	
-	public function testGetTest_ReturnsSameTestForEachCall() {
+	public function testGetExecutor_ReturnsSameExecutorForEachCall() {
 		$spec = new Spec();
-		$test = $spec->getTest();
-		$this->assertTrue($test instanceof Test);
-		$this->assertSame($test, $spec->getTest());
+		$executor = $spec->getExecutor();
+		$this->assertTrue($executor instanceof Executor);
+		$this->assertSame($executor, $spec->getExecutor());
 	}
 	
-	public function testGetTest_UsesConfigForTestClassGetting() {
-		$className = $this->createClass('class ... extends \spectrum\core\Test {}');
-		config::setClassReplacement('\spectrum\core\Test', $className);
+	public function testGetExecutor_UsesConfigForExecutorClassGetting() {
+		$className = $this->createClass('class ... extends \spectrum\core\Executor {}');
+		config::setClassReplacement('\spectrum\core\Executor', $className);
 		$spec = new Spec();
-		$this->assertInstanceOf($className, $spec->getTest());
+		$this->assertInstanceOf($className, $spec->getExecutor());
 	}
 
 /**/
@@ -2262,7 +2262,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_Data_UnsetLinkToDataBeforeRun() {
 		$spec = new Spec();
 		$data1 = $spec->getData();
-		$spec->getTest()->setFunction(function() use(&$spec, &$data2) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$data2) {
 			$data2 = $spec->getData();
 		});
 		$spec->run();
@@ -2272,7 +2272,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_Data_UnsetLinkToDataAfterRun() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$data) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$data) {
 			$data = $spec->getData();
 		});
 		$spec->run();
@@ -2282,7 +2282,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_Data_DoesNotClearDataContentsAfterRun() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$data) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$data) {
 			$data = $spec->getData();
 			$data->aaa = 111;
 		});
@@ -2301,7 +2301,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			trigger_error("aaa", E_USER_NOTICE);
 		});
@@ -2328,7 +2328,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs[1]->getErrorHandling()->setCatchPhpErrors(E_USER_NOTICE);
 		$specs[2]->getErrorHandling()->setCatchPhpErrors(E_USER_WARNING);
 		$specs[3]->getErrorHandling()->setCatchPhpErrors(E_USER_ERROR);
-		$specs[0]->getTest()->setFunction(function() use(&$specs, &$resultBuffers) {
+		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$resultBuffers) {
 			$resultBuffers[] = $specs[0]->getRunningDescendantEndingSpec()->getResultBuffer();
 			trigger_error("aaa", E_USER_NOTICE);
 			trigger_error("bbb", E_USER_WARNING);
@@ -2354,7 +2354,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_ErrorHandling_TakesInAccountDefinedOnRunErrorReportingValue() {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			error_reporting(E_USER_WARNING);
 			trigger_error("aaa", E_USER_NOTICE);
@@ -2369,7 +2369,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			trigger_error("aaa", E_USER_NOTICE);
 		});
@@ -2409,7 +2409,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		set_error_handler($errorHandler);
 		
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() {
+		$spec->getExecutor()->setFunction(function() {
 			set_error_handler(function($errorSeverity, $errorMessage){});
 			set_error_handler(function($errorSeverity, $errorMessage){});
 			set_error_handler(function($errorSeverity, $errorMessage){});
@@ -2426,7 +2426,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
 		$spec->getContextModifiers()->add(function(){ trigger_error("aaa", E_USER_NOTICE); }, 'before');
 		$spec->getContextModifiers()->add(function(){ trigger_error("bbb", E_USER_WARNING); }, 'after');
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 		});
 		$spec->run();
@@ -2450,7 +2450,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			trigger_error("aaa", E_USER_NOTICE);
 		});
@@ -2476,7 +2476,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		set_error_handler($errorHandler3);
 		
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			restore_error_handler();
 		});
@@ -2512,7 +2512,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs[2]->getErrorHandling()->setCatchPhpErrors(E_USER_WARNING);
 		$specs[3]->getErrorHandling()->setCatchPhpErrors(E_ALL);
 		$specs[4]->getErrorHandling()->setCatchPhpErrors(-1);
-		$specs[0]->getTest()->setFunction(function() use(&$specs, &$resultBuffers) {
+		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$resultBuffers) {
 			$resultBuffers[] = $specs[0]->getRunningDescendantEndingSpec()->getResultBuffer();
 			trim($aaa);
 			trigger_error("bbb", E_USER_WARNING);
@@ -2565,7 +2565,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_ErrorHandling_ErrorTypeIsNotIncludeTriggeredErrorType_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(0);
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			trigger_error("aaa", E_USER_WARNING);
 		});
@@ -2577,7 +2577,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_ErrorHandling_ExpressionWithErrorControlOperator_CatchesPhpErrorsAndDoesNotAddResultsToResultBuffer() {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			@trim($aaa);
 			@trigger_error("aaa");
@@ -2591,7 +2591,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setBreakOnFirstPhpError(true);
 		$spec->getErrorHandling()->setCatchPhpErrors(-1);
-		$spec->getTest()->setFunction(function() use(&$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use(&$isExecuted) {
 			trigger_error("aaa");
 			$isExecuted = true;
 		});
@@ -2618,7 +2618,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs[2]->getErrorHandling()->setBreakOnFirstPhpError(false);
 		$specs[3]->getErrorHandling()->setBreakOnFirstPhpError(true);
 		$specs[4]->getErrorHandling()->setBreakOnFirstPhpError(false);
-		$specs[0]->getTest()->setFunction(function() use(&$callCount, &$isExecuted) {
+		$specs[0]->getExecutor()->setFunction(function() use(&$callCount, &$isExecuted) {
 			$callCount++;
 			
 			$isExecuted[$callCount][] = 1;
@@ -2640,7 +2640,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_Messages_UnsetLinkToMessagesBeforeRun() {
 		$spec = new Spec();
 		$messages1 = $spec->getMessages();
-		$spec->getTest()->setFunction(function() use(&$spec, &$messages2) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$messages2) {
 			$messages2 = $spec->getMessages();
 		});
 		$spec->run();
@@ -2650,7 +2650,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_Messages_UnsetLinkToMessagesAfterRun() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$messages) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$messages) {
 			$messages = $spec->getMessages();
 		});
 		$spec->run();
@@ -2660,7 +2660,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_Messages_DoesNotClearMessagesContentsAfterRun() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$messages) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$messages) {
 			$messages = $spec->getMessages();
 			$messages->add('aaa');
 		});
@@ -2791,7 +2791,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_ResultBuffer_UnsetLinkToResultBufferBeforeRun() {
 		$spec = new Spec();
 		$resultBuffer1 = $spec->getResultBuffer();
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer2) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer2) {
 			$resultBuffer2 = $spec->getResultBuffer();
 		});
 		$spec->run();
@@ -2801,7 +2801,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_ResultBuffer_UnsetLinkToResultBufferAfterRun() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 		});
 		$spec->run();
@@ -2897,7 +2897,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 
 		$callCount = 0;
-		$specs[1]->getTest()->setFunction(function() use(&$callCount){ $callCount++; });
+		$specs[1]->getExecutor()->setFunction(function() use(&$callCount){ $callCount++; });
 		$specs[0]->run();
 		
 		$this->assertSame(1, $callCount);
@@ -2910,8 +2910,8 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		');
 
 		$callCount = array('notEndingSpec' => 0, 'endingSpec' => 0);
-		$specs[0]->getTest()->setFunction(function() use(&$callCount){ $callCount['notEndingSpec']++; });
-		$specs[1]->getTest()->setFunction(function() use(&$callCount){ $callCount['endingSpec']++; });
+		$specs[0]->getExecutor()->setFunction(function() use(&$callCount){ $callCount['notEndingSpec']++; });
+		$specs[1]->getExecutor()->setFunction(function() use(&$callCount){ $callCount['endingSpec']++; });
 		$specs[0]->run();
 		
 		$this->assertSame(array('notEndingSpec' => 0, 'endingSpec' => 1), $callCount);
@@ -2920,7 +2920,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_Test_DoesNotPassArgumentsToFunction() {
 		$spec = new Spec();
 		$passedArguments = array();
-		$spec->getTest()->setFunction(function() use(&$passedArguments){
+		$spec->getExecutor()->setFunction(function() use(&$passedArguments){
 			$passedArguments[] = func_get_args();
 		});
 		
@@ -2938,9 +2938,9 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		', array(2 => 4));
 
 		$calls = array();
-		$specs[0]->getTest()->setFunction(function() use(&$calls){ $calls[] = 0; });
-		$specs[1]->getTest()->setFunction(function() use(&$calls){ $calls[] = 1; });
-		$specs[2]->getTest()->setFunction(function() use(&$calls){ $calls[] = 2; });
+		$specs[0]->getExecutor()->setFunction(function() use(&$calls){ $calls[] = 0; });
+		$specs[1]->getExecutor()->setFunction(function() use(&$calls){ $calls[] = 1; });
+		$specs[2]->getExecutor()->setFunction(function() use(&$calls){ $calls[] = 2; });
 		$specs[0]->run();
 		
 		$this->assertSame(array(1, 2, 0), $calls);
@@ -2972,7 +2972,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs[1]->getContextModifiers()->add(function() use($appendValueToDataVariable){ $appendValueToDataVariable('8'); }, 'before');
 		
 		$properties = array();
-		$specs[1]->getTest()->setFunction(function() use(&$properties, $specs) {
+		$specs[1]->getExecutor()->setFunction(function() use(&$properties, $specs) {
 			$properties[] = get_object_vars($specs[1]->getData());
 		});
 		
@@ -3008,7 +3008,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$properties = array();
 		$dataItems = array();
-		$specs[1]->getTest()->setFunction(function() use(&$properties, &$dataItems, $specs) {
+		$specs[1]->getExecutor()->setFunction(function() use(&$properties, &$dataItems, $specs) {
 			$properties[] = get_object_vars($specs[1]->getData());
 			$dataItems[] = $specs[1]->getData();
 		});
@@ -3021,7 +3021,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_Test_FunctionIsNotSet_DoesNotTryToCallFunction() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(null);
+		$spec->getExecutor()->setFunction(null);
 		$spec->run();
 	}
 	
@@ -3052,7 +3052,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$properties = array();
 		$dataItems = array();
-		$specs[1]->getTest()->setFunction(function() use(&$properties, &$dataItems, $specs){
+		$specs[1]->getExecutor()->setFunction(function() use(&$properties, &$dataItems, $specs){
 			$properties[] = get_object_vars($specs[1]->getData());
 			$dataItems[] = $specs[1]->getData();
 			throw new \Exception();
@@ -3718,7 +3718,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		config::setOutputFormat('html');
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() { throw new \Exception('<>&"\''); });
+		$spec->getExecutor()->setFunction(function() { throw new \Exception('<>&"\''); });
 		$spec->run();
 		
 		ob_end_clean();
@@ -3747,7 +3747,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->getMatchers()->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
-		$spec->getTest()->setFunction(function() use($spec) {
+		$spec->getExecutor()->setFunction(function() use($spec) {
 			$assert = new Assertion($spec, null);
 			$assert->__call('<>&"\'');
 		});
@@ -3755,7 +3755,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->getMatchers()->add('<>&"\'', function(){ return '<>&"\''; });
-		$spec->getTest()->setFunction(function() use($spec) {
+		$spec->getExecutor()->setFunction(function() use($spec) {
 			$object = new \stdClass();
 			$object->{'<>&"\''} = '<>&"\'';
 			$object->aaa = array('<>&"\'' => '<>&"\'');
@@ -3770,18 +3770,18 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){ throw new \Exception('<>&"\''); });
+		$spec->getExecutor()->setFunction(function(){ throw new \Exception('<>&"\''); });
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
 		$spec->getErrorHandling()->setCatchPhpErrors(true);
-		$spec->getTest()->setFunction(function(){ trigger_error('<>&"\''); });
+		$spec->getExecutor()->setFunction(function(){ trigger_error('<>&"\''); });
 		
 		// Tests for generating data by context modifiers with "before" type
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getMatchers()->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
 		$spec->getContextModifiers()->add(function() use($spec) {
 			$assert = new Assertion($spec, null);
@@ -3790,7 +3790,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getMatchers()->add('<>&"\'', function(){ return '<>&"\''; });
 		$spec->getContextModifiers()->add(function() use($spec) {
 			$object = new \stdClass();
@@ -3807,12 +3807,12 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getContextModifiers()->add(function(){ throw new \Exception('<>&"\''); }, 'before');
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getErrorHandling()->setCatchPhpErrors(true);
 		$spec->getContextModifiers()->add(function(){ trigger_error('<>&"\''); }, 'before');
 		
@@ -3820,7 +3820,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getMatchers()->add('<>&"\'', function(){ throw new \Exception('<>&"\''); });
 		$spec->getContextModifiers()->add(function() use($spec){
 			$assert = new Assertion($spec, null);
@@ -3829,7 +3829,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getMatchers()->add('<>&"\'', function(){ return '<>&"\''; });
 		$spec->getContextModifiers()->add(function() use($spec){
 			$object = new \stdClass();
@@ -3846,12 +3846,12 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getContextModifiers()->add(function(){ throw new \Exception('<>&"\''); }, 'after');
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function(){});
+		$spec->getExecutor()->setFunction(function(){});
 		$spec->getErrorHandling()->setCatchPhpErrors(true);
 		$spec->getContextModifiers()->add(function(){ trigger_error('<>&"\''); }, 'after');
 		
@@ -3859,7 +3859,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->bindParentSpec($groupSpec);
-		$spec->getTest()->setFunction(function() use($spec){
+		$spec->getExecutor()->setFunction(function() use($spec){
 			$details = new \spectrum\core\details\MatcherCall();
 			$details->setTestedValue('<>&"\'');
 			$details->setNot('<>&"\'');
@@ -3887,7 +3887,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec3 = new Spec();
 		$spec3->bindParentSpec($spec1);
 		$spec3->bindParentSpec($spec2);
-		$spec3->getTest()->setFunction(function(){});
+		$spec3->getExecutor()->setFunction(function(){});
 		
 		//
 		

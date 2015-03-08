@@ -118,6 +118,11 @@ interface SpecInterface {
 	public function getErrorHandling();
 	
 	/**
+	 * @return ExecutorInterface
+	 */
+	public function getExecutor();
+	
+	/**
 	 * @return MatchersInterface
 	 */
 	public function getMatchers();
@@ -131,11 +136,6 @@ interface SpecInterface {
 	 * @return null|ResultBufferInterface
 	 */
 	public function getResultBuffer();
-	
-	/**
-	 * @return TestInterface
-	 */
-	public function getTest();
 
 /**/
 

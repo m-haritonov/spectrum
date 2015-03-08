@@ -49,7 +49,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		$dataObjects = array();
 		foreach ($specs as $spec) {
 			\spectrum\_private\getRootSpec()->bindChildSpec($spec);
-			$spec->getTest()->setFunction(function() use(&$dataObjects, $spec) {
+			$spec->getExecutor()->setFunction(function() use(&$dataObjects, $spec) {
 				$dataObjects[] = $spec->getData();
 			});
 		}
@@ -168,7 +168,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		$dataObjects = array();
 		foreach ($specs as $spec) {
 			\spectrum\_private\getRootSpec()->bindChildSpec($spec);
-			$spec->getTest()->setFunction(function() use(&$dataObjects, $spec) {
+			$spec->getExecutor()->setFunction(function() use(&$dataObjects, $spec) {
 				$dataObjects[] = $spec->getData();
 			});
 		}
@@ -256,7 +256,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		$dataObjects = array();
 		foreach ($specs as $spec) {
 			\spectrum\_private\getRootSpec()->bindChildSpec($spec);
-			$spec->getTest()->setFunction(function() use(&$dataObjects, $spec) {
+			$spec->getExecutor()->setFunction(function() use(&$dataObjects, $spec) {
 				$dataObjects[] = $spec->getData();
 			});
 		}

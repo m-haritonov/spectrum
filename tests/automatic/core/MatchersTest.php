@@ -42,7 +42,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 	
 	public function testAdd_CallOnRun_ThrowsExceptionAndDoesNotAddMatcher() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$exception) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$exception) {
 			try {
 				$spec->getMatchers()->add("aaa", function(){});
 			} catch (\Exception $e) {
@@ -105,7 +105,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 		$specs['parent1']->getMatchers()->add('aaa', $function3);
 		$specs['parent2']->getMatchers()->add('aaa', $function4);
 		
-		$specs[0]->getTest()->setFunction(function() use(&$specs, &$returnValues) {
+		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$returnValues) {
 			$returnValues[] = $specs[0]->getRunningDescendantEndingSpec()->getMatchers()->getThroughRunningAncestors("aaa");
 		});
 		
@@ -171,7 +171,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getMatchers()->add('aaa', $function1);
-		$spec->getTest()->setFunction(function() use(&$spec, &$exception) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$exception) {
 			try {
 				$spec->getMatchers()->remove("aaa");
 			} catch (\Exception $e) {
@@ -208,7 +208,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getMatchers()->add('aaa', $function1);
-		$spec->getTest()->setFunction(function() use(&$spec, &$exception) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$exception) {
 			try {
 				$spec->getMatchers()->removeAll();
 			} catch (\Exception $e) {

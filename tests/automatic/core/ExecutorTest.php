@@ -12,34 +12,34 @@ use spectrum\core\SpecInterface;
 
 require_once __DIR__ . '/../../init.php';
 
-class TestTest extends \spectrum\tests\automatic\Test {
+class ExecutorTest extends \spectrum\tests\automatic\Test {
 	public function testSetFunction_SetsNewFunction() {
 		$function1 = function(){};
 		$function2 = function(){};
 		
 		$spec = new Spec();
-		$spec->getTest()->setFunction($function1);
-		$this->assertSame($function1, $spec->getTest()->getFunction());
+		$spec->getExecutor()->setFunction($function1);
+		$this->assertSame($function1, $spec->getExecutor()->getFunction());
 		
-		$spec->getTest()->setFunction($function2);
-		$this->assertSame($function2, $spec->getTest()->getFunction());
+		$spec->getExecutor()->setFunction($function2);
+		$this->assertSame($function2, $spec->getExecutor()->getFunction());
 	}
 	
 	public function testSetFunction_CallOnRun_ThrowsExceptionAndDoesNotChangeFunction() {
 		$spec = new Spec();
 		$function = function() use(&$spec, &$exception) {
 			try {
-				$spec->getTest()->setFunction(function(){});
+				$spec->getExecutor()->setFunction(function(){});
 			} catch (\Exception $e) {
 				$exception = $e;
 			}
 		};
-		$spec->getTest()->setFunction($function);
+		$spec->getExecutor()->setFunction($function);
 		$spec->run();
 		
 		$this->assertInstanceOf('\spectrum\Exception', $exception);
-		$this->assertSame('Call of "\spectrum\core\Test::setFunction" method is forbidden on run', $exception->getMessage());
-		$this->assertSame($function, $spec->getTest()->getFunction());
+		$this->assertSame('Call of "\spectrum\core\Executor::setFunction" method is forbidden on run', $exception->getMessage());
+		$this->assertSame($function, $spec->getExecutor()->getFunction());
 	}
 	
 /**/
@@ -49,24 +49,24 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		$function2 = function(){};
 		
 		$spec = new Spec();
-		$spec->getTest()->setFunction($function1);
-		$this->assertSame($function1, $spec->getTest()->getFunction());
+		$spec->getExecutor()->setFunction($function1);
+		$this->assertSame($function1, $spec->getExecutor()->getFunction());
 		
-		$spec->getTest()->setFunction($function2);
-		$this->assertSame($function2, $spec->getTest()->getFunction());
+		$spec->getExecutor()->setFunction($function2);
+		$this->assertSame($function2, $spec->getExecutor()->getFunction());
 	}
 	
 	public function testGetFunction_ReturnsNullByDefault() {
 		$spec = new Spec();
-		$this->assertSame(null, $spec->getTest()->getFunction());
+		$this->assertSame(null, $spec->getExecutor()->getFunction());
 	}
 
 /**/
 	
 	public function testGetFunctionThroughRunningAncestors_ReturnsFunctionFromRunningAncestorOrFromSelf() {
 		$returnValues = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
-			$returnValues[] = $spec->getTest()->getFunctionThroughRunningAncestors();
+		config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
+			$returnValues[] = $spec->getExecutor()->getFunctionThroughRunningAncestors();
 		});
 		
 		$specs = $this->createSpecsByListPattern('
@@ -83,10 +83,10 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		$function3 = function(){};
 		$function4 = function(){};
 		
-		$specs[0]->getTest()->setFunction($function1);
-		$specs['endingSpec1']->getTest()->setFunction($function2);
-		$specs['parent1']->getTest()->setFunction($function3);
-		$specs['parent2']->getTest()->setFunction($function4);
+		$specs[0]->getExecutor()->setFunction($function1);
+		$specs['endingSpec1']->getExecutor()->setFunction($function2);
+		$specs['parent1']->getExecutor()->setFunction($function3);
+		$specs['parent2']->getExecutor()->setFunction($function4);
 		
 		$specs[0]->run();
 		
@@ -95,6 +95,6 @@ class TestTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetFunctionThroughRunningAncestors_ReturnsNullByDefault() {
 		$spec = new Spec();
-		$this->assertSame(null, $spec->getTest()->getFunctionThroughRunningAncestors());
+		$this->assertSame(null, $spec->getExecutor()->getFunctionThroughRunningAncestors());
 	}
 }

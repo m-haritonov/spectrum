@@ -12,7 +12,7 @@ require_once __DIR__ . '/../init.php';
 
 class RunTest extends Test {
 	public function testRunsRootSpec() {
-		\spectrum\_private\getRootSpec()->getTest()->setFunction(function() use(&$isRootSpecRun) {
+		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function() use(&$isRootSpecRun) {
 			$isRootSpecRun = true;
 		});
 		
@@ -22,19 +22,19 @@ class RunTest extends Test {
 	}
 	
 	public function testReturnsRootSpecRunResult() {
-		\spectrum\_private\getRootSpec()->getTest()->setFunction(function(){
+		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
 			\spectrum\_private\getRootSpec()->getResultBuffer()->addResult(false);
 		});
 		
 		$this->assertFalse(\spectrum\run());
 		
-		\spectrum\_private\getRootSpec()->getTest()->setFunction(function(){
+		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
 			\spectrum\_private\getRootSpec()->getResultBuffer()->addResult(true);
 		});
 		
 		$this->assertTrue(\spectrum\run());
 		
-		\spectrum\_private\getRootSpec()->getTest()->setFunction(function(){
+		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
 			\spectrum\_private\getRootSpec()->getResultBuffer()->addResult(null);
 		});
 		
@@ -42,7 +42,7 @@ class RunTest extends Test {
 	}
 	
 	public function testLocksConfigBeforeRun() {
-		\spectrum\_private\getRootSpec()->getTest()->setFunction(function() use(&$isLocked) {
+		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function() use(&$isLocked) {
 			$isLocked = config::isLocked();
 		});
 		

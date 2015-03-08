@@ -22,7 +22,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			$assert = new Assertion($spec, null);
 			$assert->zzz();
@@ -49,7 +49,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$specs['parent1']->getMatchers()->add('zzz', function() use(&$calls){ $calls[] = 'ccc'; });
 		$specs['parent2']->getMatchers()->add('zzz', function() use(&$calls){ $calls[] = 'ddd'; });
 		
-		$specs[0]->getTest()->setFunction(function() use(&$specs) {
+		$specs[0]->getExecutor()->setFunction(function() use(&$specs) {
 			$assert = new Assertion($specs[0]->getRunningDescendantEndingSpec(), "aaa");
 			$assert->zzz();
 		});
@@ -65,7 +65,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec->getMatchers()->add('zzz', function() use(&$passedArguments){
 			$passedArguments[] = func_get_args();
 		});
-		$spec->getTest()->setFunction(function() use(&$spec) {
+		$spec->getExecutor()->setFunction(function() use(&$spec) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz("bbb", "ccc", "ddd");
 		});
@@ -78,7 +78,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_ReturnsAssertionInstance() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){});
-		$spec->getTest()->setFunction(function() use($spec, &$assertion, &$returnValue) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$assertion, &$returnValue) {
 			$assertion = new Assertion($spec, "aaa");
 			$returnValue = $assertion->zzz();
 		});
@@ -91,7 +91,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_ResetsNotFlagAfterCall() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, null);
@@ -110,7 +110,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->getMatchers()->add('aaa', function(){ return true; });
 		$spec->getMatchers()->add('bbb', function(){ return false; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			
 			$assert = new Assertion($spec, null);
@@ -135,7 +135,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsFalse_AddsFalseWithMatcherCallDetailsToResultBuffer() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return false; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer, &$file, &$line) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer, &$file, &$line) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, "aaa bbb");
@@ -164,7 +164,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsFalse_CastsResultToFalse() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return 0; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			$assert = new Assertion($spec, "aaa bbb");
 			$assert->zzz();
@@ -181,7 +181,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsFalse_DoesNotBreakExecution() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return false; });
-		$spec->getTest()->setFunction(function() use($spec, &$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$isExecuted) {
 			$assert = new Assertion($spec, "aaa bbb");
 			$assert->zzz();
 			$isExecuted = true;
@@ -194,7 +194,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsFalse_NotFlagIsEnabled_AddsTrueWithMatcherCallDetailsToResultBuffer() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return false; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer, &$file, &$line) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer, &$file, &$line) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, "aaa bbb");
@@ -224,7 +224,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setBreakOnFirstMatcherFail(true);
 		$spec->getMatchers()->add('zzz', function(){ return false; });
-		$spec->getTest()->setFunction(function() use($spec, &$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$isExecuted) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
 			$isExecuted = true;
@@ -248,7 +248,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$specs[0]->getErrorHandling()->setCatchPhpErrors(0);
 		$specs[0]->getMatchers()->add('failMatcher', function(){ return false; });
-		$specs[0]->getTest()->setFunction(function() use(&$specs, &$callCount, &$isExecuted) {
+		$specs[0]->getExecutor()->setFunction(function() use(&$specs, &$callCount, &$isExecuted) {
 			$callCount++;
 			
 			$isExecuted[$callCount][] = 1;
@@ -275,7 +275,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsTrue_AddsTrueWithMatcherCallDetailsToResultBuffer() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, "aaa bbb");
@@ -304,7 +304,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsTrue_CastsResultToTrue() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return 1; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, "aaa bbb");
@@ -322,7 +322,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsTrue_DoesNotBreakExecution() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$isExecuted) {
 			$assert = new Assertion($spec, "aaa bbb");
 			$assert->zzz();
 			$isExecuted = true;
@@ -335,7 +335,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsTrue_NotFlagIsEnabled_AddsFalseWithMatcherCallDetailsToResultBuffer() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, "aaa bbb");
@@ -365,7 +365,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setBreakOnFirstMatcherFail(true);
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$isExecuted) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
 			$isExecuted = true;
@@ -378,7 +378,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$exception = new \Exception('Something wrong');
 		$spec->getMatchers()->add('zzz', function() use($exception){ throw $exception; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, "aaa bbb");
@@ -408,7 +408,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherThrowsException_DoesNotBreakExecution() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ throw new \Exception(); });
-		$spec->getTest()->setFunction(function() use($spec, &$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$isExecuted) {
 			$assert = new Assertion($spec, "aaa bbb");
 			$assert->zzz();
 			$isExecuted = true;
@@ -422,7 +422,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$exception = new \Exception('Something wrong');
 		$spec->getMatchers()->add('zzz', function() use($exception){ throw $exception; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer, &$line, &$file) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, "aaa bbb");
@@ -453,7 +453,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setBreakOnFirstMatcherFail(true);
 		$spec->getMatchers()->add('zzz', function(){ throw new \Exception(); });
-		$spec->getTest()->setFunction(function() use($spec, &$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$isExecuted) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
 			$isExecuted = true;
@@ -465,7 +465,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherNotExists_AddsFalseResultToResultBuffer() {
 		$spec = new Spec();
 		$spec->getMatchers()->remove('zzz');
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
@@ -482,7 +482,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherNotExists_DoesNotBreakExecution() {
 		$spec = new Spec();
 		$spec->getMatchers()->remove('zzz');
-		$spec->getTest()->setFunction(function() use($spec, &$isExecuted) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$isExecuted) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
 			$isExecuted = true;
@@ -495,7 +495,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherNotExists_ReturnsAssertionInstance() {
 		$spec = new Spec();
 		$spec->getMatchers()->remove('zzz');
-		$spec->getTest()->setFunction(function() use($spec, &$assertion, &$returnValue) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$assertion, &$returnValue) {
 			$assertion = new Assertion($spec, "aaa");
 			$returnValue = $assertion->zzz();
 		});
@@ -530,7 +530,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function() use(&$calls) { $calls[] = "matcher"; });
-		$spec->getTest()->setFunction(function() use(&$spec) {
+		$spec->getExecutor()->setFunction(function() use(&$spec) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
 		});
@@ -546,7 +546,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return 'rrr'; });
-		$spec->getTest()->setFunction(function() use($spec, &$line, &$file) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$line, &$file) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz("bbb", "ccc", "ddd"); $line = __LINE__;
 			$file = __FILE__;
@@ -573,7 +573,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function() use(&$calls) { $calls[] = "matcher"; });
-		$spec->getTest()->setFunction(function() use(&$spec) {
+		$spec->getExecutor()->setFunction(function() use(&$spec) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
 		});
@@ -589,7 +589,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function() { return false; });
-		$spec->getTest()->setFunction(function() use(&$spec) {
+		$spec->getExecutor()->setFunction(function() use(&$spec) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz();
 		});
@@ -611,7 +611,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer, &$assertion) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer, &$assertion) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assertion = new Assertion($spec, null);
@@ -633,7 +633,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->getErrorHandling()->setBreakOnFirstMatcherFail(true);
 		$spec->getMatchers()->add('zzz', function(){ return false; });
-		$spec->getTest()->setFunction(function() use(&$spec) {
+		$spec->getExecutor()->setFunction(function() use(&$spec) {
 			$assertion = new Assertion($spec, null);
 			$assertion->zzz();
 		});
@@ -649,7 +649,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return 'rrr'; });
-		$spec->getTest()->setFunction(function() use($spec, &$line, &$file) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$line, &$file) {
 			$assert = new Assertion($spec, "aaa");
 			$assert->zzz("bbb", "ccc", "ddd"); $line = __LINE__;
 			$file = __FILE__;
@@ -680,7 +680,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testPropertyAccess_Not_InvertsNotFlag() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
-		$spec->getTest()->setFunction(function() use($spec, &$resultBuffer) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
 		
 			$assert = new Assertion($spec, null);
@@ -695,7 +695,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	
 	public function testPropertyAccess_Not_ReturnsAssertionInstance() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use($spec, &$assertion, &$returnValue) {
+		$spec->getExecutor()->setFunction(function() use($spec, &$assertion, &$returnValue) {
 			$assertion = new Assertion($spec, "aaa");
 			$returnValue = $assertion->not;
 		});

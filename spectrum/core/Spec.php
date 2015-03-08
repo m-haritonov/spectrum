@@ -46,6 +46,11 @@ class Spec implements SpecInterface {
 	protected $errorHandling;
 
 	/**
+	 * @var null|ExecutorInterface
+	 */
+	protected $executor;
+	
+	/**
 	 * @var null|MatchersInterface
 	 */
 	protected $matchers;
@@ -59,11 +64,6 @@ class Spec implements SpecInterface {
 	 * @var null|ResultBufferInterface
 	 */
 	protected $resultBuffer;
-	
-	/**
-	 * @var null|TestInterface
-	 */
-	protected $test;
 
 	/**
 	 * @var bool
@@ -423,6 +423,18 @@ class Spec implements SpecInterface {
 	}
 	
 	/**
+	 * @return ExecutorInterface
+	 */
+	public function getExecutor() {
+		if (!$this->executor) {
+			$testClass = config::getClassReplacement('\spectrum\core\Executor');
+			$this->executor = new $testClass($this);
+		}
+		
+		return $this->executor;
+	}
+	
+	/**
 	 * @return MatchersInterface
 	 */
 	public function getMatchers() {
@@ -456,18 +468,6 @@ class Spec implements SpecInterface {
 		}
 		
 		return $this->resultBuffer;
-	}
-	
-	/**
-	 * @return TestInterface
-	 */
-	public function getTest() {
-		if (!$this->test) {
-			$testClass = config::getClassReplacement('\spectrum\core\Test');
-			$this->test = new $testClass($this);
-		}
-		
-		return $this->test;
 	}
 
 /**/
@@ -619,7 +619,7 @@ class Spec implements SpecInterface {
 		$this->registerErrorHandler();
 		$this->dispatchEventAndCatchExceptions('onEndingSpecExecuteBefore', array($this));
 		
-		$function = $this->getTest()->getFunctionThroughRunningAncestors();
+		$function = $this->getExecutor()->getFunctionThroughRunningAncestors();
 		if ($function) {
 			foreach ($this->getContextModifiers()->getAllThroughRunningAncestors('before') as $contextModifier) {
 				$this->executeCallback($contextModifier['function']);

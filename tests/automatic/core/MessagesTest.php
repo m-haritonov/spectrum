@@ -51,7 +51,7 @@ class MessagesTest extends \spectrum\tests\automatic\Test {
 	
 	public function testAdd_CallOnRun_DoesNotThrowsExceptionAndAddsMessage() {
 		$spec = new Spec();
-		$spec->getTest()->setFunction(function() use(&$spec, &$messages, &$exception) {
+		$spec->getExecutor()->setFunction(function() use(&$spec, &$messages, &$exception) {
 			$messages = $spec->getMessages();
 			
 			try {

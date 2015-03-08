@@ -198,8 +198,8 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame('aaa', $contextSpecs[0]->getName());
 		$this->assertSame(array(), $contextSpecs[0]->getChildSpecs());
 		
-		$bodyFunction = $contextSpecs[0]->getTest()->getFunction();
-		$this->assertNotSame($testSpec->getTest()->getFunction(), $bodyFunction);
+		$bodyFunction = $contextSpecs[0]->getExecutor()->getFunction();
+		$this->assertNotSame($testSpec->getExecutor()->getFunction(), $bodyFunction);
 		$this->assertSame('zzz', $bodyFunction());
 	}
 	
@@ -213,9 +213,9 @@ class TestTest extends \spectrum\tests\automatic\Test {
 	 */
 	public function testCallsAtBuildingState_VariantsOfArguments_BodyArgumentIsFunction_AddsBodyFunctionToTest($arguments) {
 		$testSpec = call_user_func_array('\spectrum\builders\test', $arguments);
-		$this->assertInstanceOf('\Closure', $testSpec->getTest()->getFunction());
+		$this->assertInstanceOf('\Closure', $testSpec->getExecutor()->getFunction());
 		
-		$function = $testSpec->getTest()->getFunction();
+		$function = $testSpec->getExecutor()->getFunction();
 		$this->assertSame($function(), $function);
 	}
 	

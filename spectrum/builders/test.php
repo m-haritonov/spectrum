@@ -35,7 +35,7 @@ function test($name = null, $contexts = null, $body = null, $settings = null) {
 	}
 	
 	if ($body) {
-		$builderSpec->getTest()->setFunction($body);
+		$builderSpec->getExecutor()->setFunction($body);
 	}
 	
 	$setSettingsToSpecFunction = config::getFunctionReplacement('\spectrum\_private\setSettingsToSpec');

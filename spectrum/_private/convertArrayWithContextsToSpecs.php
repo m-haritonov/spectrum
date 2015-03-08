@@ -12,7 +12,7 @@ use spectrum\Exception;
 
 /**
  * @access private
- * @return array
+ * @return SpecInterface[]
  */
 function convertArrayWithContextsToSpecs(array $contexts) {
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
