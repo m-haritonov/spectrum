@@ -120,4 +120,4 @@ test('Contexts', array(
 	'some name' => array('value1' => 'ccc'),
 ), function(){});
 
-\spectrum\run();
+run();

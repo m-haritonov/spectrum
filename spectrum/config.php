@@ -155,6 +155,7 @@ final class config {
 		'\spectrum\group' => '\spectrum\group',
 		'\spectrum\matcher' => '\spectrum\matcher',
 		'\spectrum\message' => '\spectrum\message',
+		'\spectrum\run' => '\spectrum\run',
 		'\spectrum\self' => '\spectrum\self',
 		'\spectrum\test' => '\spectrum\test',
 	);

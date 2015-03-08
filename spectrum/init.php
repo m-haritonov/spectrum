@@ -47,18 +47,6 @@ require_once __DIR__ . '/_private/setSettingsToSpec.php';
 require_once __DIR__ . '/_private/translate.php';
 require_once __DIR__ . '/_private/usortWithOriginalSequencePreserving.php';
 
-if (!function_exists('matcher')) {
-	/**
-	 * Adds matcher to current group.
-	 * @throws \spectrum\Exception If called not at building state
-	 * @param string $name
-	 * @param callable $function
-	 */
-	function matcher($name, $function) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\matcher'), func_get_args());
-	}
-}
-
 if (!function_exists('after')) {
 	/**
 	 * Adds "after" context modifier.
@@ -129,6 +117,18 @@ if (!function_exists('group')) {
 	}
 }
 
+if (!function_exists('matcher')) {
+	/**
+	 * Adds matcher to current group.
+	 * @throws \spectrum\Exception If called not at building state
+	 * @param string $name
+	 * @param callable $function
+	 */
+	function matcher($name, $function) {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\matcher'), func_get_args());
+	}
+}
+
 if (!function_exists('message')) {
 	/**
 	 * Adds message to current test.
@@ -136,6 +136,15 @@ if (!function_exists('message')) {
 	 */
 	function message($message) {
 		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\message'), func_get_args());
+	}
+}
+
+if (!function_exists('run')) {
+	/**
+	 * Runs tests.
+	 */
+	function run() {
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\run'), func_get_args());
 	}
 }
 

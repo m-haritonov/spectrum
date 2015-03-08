@@ -9,8 +9,6 @@ TODO: function -> callback
 TODO: remove vs removeAll
 TODO: register vs add
 
-TODO: create run replacement
-TODO: create global run function
 TODO: ResultBuffer -> Results, result buffer -> results, getResults -> getAll, add
 TODO: test matchers through Assertion
 

@@ -39,7 +39,7 @@ group('"AddressBook" class', function(){
 	});
 });
 
-\spectrum\run();
+run();
 ```
 
 ##Copyright, contacts and license
