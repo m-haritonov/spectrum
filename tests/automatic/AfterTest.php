@@ -4,12 +4,12 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\builders;
+namespace spectrum\tests\automatic;
 
 use spectrum\config;
 use spectrum\core\Spec;
 
-require_once __DIR__ . '/../../init.php';
+require_once __DIR__ . '/../init.php';
 
 class AfterTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtBuildingState_AddsContextFunctionWithAfterTypeToCurrentBuildingSpec() {
@@ -18,8 +18,8 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 		
 		$function1 = function(){};
 		$function2 = function(){};
-		\spectrum\builders\after($function1);
-		\spectrum\builders\after($function2);
+		\spectrum\after($function1);
+		\spectrum\after($function2);
 
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'after'),
@@ -36,13 +36,13 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 			}
 		'));
 		
-		$this->assertSame('some text', \spectrum\builders\after(function(){}));
+		$this->assertSame('some text', \spectrum\after(function(){}));
 	}
 	
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
-				\spectrum\builders\after(function(){});
+				\spectrum\after(function(){});
 			} catch (\Exception $e) {
 				$exception = $e;
 			}

@@ -4,23 +4,24 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\builders;
+namespace spectrum;
 
 use spectrum\config;
 use spectrum\Exception;
 
 /**
- * Adds to result buffer of current test false result wits message as details.
+ * Creates assertion.
  * @throws \spectrum\Exception If called not at running state
- * @param null|string $message
+ * @param mixed $testedValue
+ * @return \spectrum\core\AssertionInterface
  */
-function fail($message = null) {
+function be($testedValue) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "fail" should be call only at running state');
+		throw new Exception('Builder "be" should be call only at running state');
 	}
 
+	$assertionClass = config::getClassReplacement('\spectrum\core\Assertion');
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');
-	$userFailDetailsClass = config::getClassReplacement('\spectrum\core\details\UserFail');
-	$getCurrentRunningEndingSpecFunction()->getResultBuffer()->addResult(false, new $userFailDetailsClass($message));
+	return new $assertionClass($getCurrentRunningEndingSpecFunction(), $testedValue);
 }

@@ -7,17 +7,17 @@ see the "README.md" file that was distributed with this source code.
 require_once __DIR__ . '/_private/autoload.php';
 require_once __DIR__ . '/_private/exceptionHandler.php';
 
+require_once __DIR__ . '/after.php';
+require_once __DIR__ . '/be.php';
+require_once __DIR__ . '/before.php';
+require_once __DIR__ . '/data.php';
+require_once __DIR__ . '/fail.php';
+require_once __DIR__ . '/group.php';
+require_once __DIR__ . '/matcher.php';
+require_once __DIR__ . '/message.php';
 require_once __DIR__ . '/run.php';
-require_once __DIR__ . '/builders/after.php';
-require_once __DIR__ . '/builders/be.php';
-require_once __DIR__ . '/builders/before.php';
-require_once __DIR__ . '/builders/data.php';
-require_once __DIR__ . '/builders/fail.php';
-require_once __DIR__ . '/builders/group.php';
-require_once __DIR__ . '/builders/matcher.php';
-require_once __DIR__ . '/builders/message.php';
-require_once __DIR__ . '/builders/self.php';
-require_once __DIR__ . '/builders/test.php';
+require_once __DIR__ . '/self.php';
+require_once __DIR__ . '/test.php';
 
 require_once __DIR__ . '/_private/addTestSpec.php';
 require_once __DIR__ . '/_private/callFunctionOnCurrentBuildingSpec.php';
@@ -55,7 +55,7 @@ if (!function_exists('matcher')) {
 	 * @param callable $function
 	 */
 	function matcher($name, $function) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\matcher'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\matcher'), func_get_args());
 	}
 }
 
@@ -66,7 +66,7 @@ if (!function_exists('after')) {
 	 * @param callable $function
 	 */
 	function after($function) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\after'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\after'), func_get_args());
 	}
 }
 
@@ -78,7 +78,7 @@ if (!function_exists('be')) {
 	 * @return \spectrum\core\AssertionInterface
 	 */
 	function be($testedValue) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\be'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\be'), func_get_args());
 	}
 }
 
@@ -89,7 +89,7 @@ if (!function_exists('before')) {
 	 * @param callable $function
 	 */
 	function before($function) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\before'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\before'), func_get_args());
 	}
 }
 
@@ -100,7 +100,7 @@ if (!function_exists('data')) {
 	 * @return \spectrum\core\DataInterface
 	 */
 	function data() {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\data'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\data'), func_get_args());
 	}
 }
 
@@ -111,7 +111,7 @@ if (!function_exists('fail')) {
 	 * @param null|string $message
 	 */
 	function fail($message = null) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\fail'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\fail'), func_get_args());
 	}
 }
 
@@ -125,7 +125,7 @@ if (!function_exists('group')) {
 	 * @return \spectrum\core\SpecInterface
 	 */
 	function group($name = null, $contexts = null, $body = null, $settings = null) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\group'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\group'), func_get_args());
 	}
 }
 
@@ -135,7 +135,7 @@ if (!function_exists('message')) {
 	 * @throws \spectrum\Exception If called not at running state
 	 */
 	function message($message) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\message'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\message'), func_get_args());
 	}
 }
 
@@ -145,7 +145,7 @@ if (!function_exists('self')) {
 	 * @return \spectrum\core\SpecInterface
 	 */
 	function self() {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\self'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\self'), func_get_args());
 	}
 }
 
@@ -159,6 +159,6 @@ if (!function_exists('test')) {
 	 * @return \spectrum\core\SpecInterface
 	 */
 	function test($name = null, $contexts = null, $body = null, $settings = null) {
-		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\builders\test'), func_get_args());
+		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\test'), func_get_args());
 	}
 }

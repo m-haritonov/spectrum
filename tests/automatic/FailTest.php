@@ -4,12 +4,12 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\builders;
+namespace spectrum\tests\automatic;
 
 use spectrum\config;
 use spectrum\core\SpecInterface;
 
-require_once __DIR__ . '/../../init.php';
+require_once __DIR__ . '/../init.php';
 
 class FailTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_GetsUserFailDetailsClassFromConfig() {
@@ -18,7 +18,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 
 		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$resultBuffer) {
 			$resultBuffer = $spec->getResultBuffer();
-			\spectrum\builders\fail("some fail message");
+			\spectrum\fail("some fail message");
 		});
 		
 		\spectrum\_private\getRootSpec()->run();
@@ -43,7 +43,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 			
 			$selfSpecKey = array_search($spec, $specs, true);
 			$parentSpecKey = array_search($spec->getRunningParentSpec(), $specs, true);
-			\spectrum\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
+			\spectrum\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 		});
 		
 		\spectrum\_private\getRootSpec()->bindChildSpec($specs[0]);
@@ -74,7 +74,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		$resultBuffers = array();
 		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$resultBuffers) {
 			$resultBuffers[] = $spec->getResultBuffer();
-			\spectrum\builders\fail();
+			\spectrum\fail();
 		});
 		
 		\spectrum\_private\getRootSpec()->run();
@@ -90,7 +90,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Builder "fail" should be call only at running state', function(){
-			\spectrum\builders\fail("aaa");
+			\spectrum\fail("aaa");
 		});
 	}
 }

@@ -146,7 +146,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 		$specs = \spectrum\_private\convertArrayWithContextsToSpecs(array(
 			function(){},
 			function() use(&$isCalled) { $isCalled = true; },
-			function() { \spectrum\builders\data()->aaa = 'bbb'; },
+			function() { \spectrum\data()->aaa = 'bbb'; },
 		));
 		
 		$this->assertSame(3, count($specs));
@@ -221,7 +221,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 			function() use(&$isCalled) { $isCalled = true; },
 			array('bbb', 'ccc'),
 			function(){},
-			function(){ \spectrum\builders\data()->aaa = 'bbb'; },
+			function(){ \spectrum\data()->aaa = 'bbb'; },
 			array('aaa1', 'aaa2' => 'aaa3', 'aaa4' => 'aaa5'),
 		));
 		

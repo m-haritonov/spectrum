@@ -4,9 +4,9 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\builders;
+namespace spectrum\tests\automatic;
 
-require_once __DIR__ . '/../../init.php';
+require_once __DIR__ . '/../init.php';
 
 class DataTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_ReturnsDataOfCurrentRunningSpec() {
@@ -25,7 +25,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 		foreach ($specs as $spec) {
 			$spec->getExecutor()->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
 				$dataObjects[] = $spec->getData();
-				$returnValues[] = \spectrum\builders\data();
+				$returnValues[] = \spectrum\data();
 			});
 		}
 		
@@ -35,7 +35,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\Exception', 'Builder "data" should be call only at running state', function(){
-			\spectrum\builders\data();
+			\spectrum\data();
 		});
 	}
 }
