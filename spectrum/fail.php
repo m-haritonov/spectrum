@@ -6,24 +6,11 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
-use spectrum\core\config;
-use spectrum\core\Exception;
-use spectrum\core\SpecInterface;
-
 /**
  * Adds to results of current test false result wits message as details.
  * @throws \spectrum\core\Exception If called not at running state
  * @param null|string $message
  */
 function fail($message = null) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
-	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "fail" should be call only at running state');
-	}
-
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');
-	$userFailDetailsClass = config::getClassReplacement('\spectrum\core\details\UserFail');
-	/** @var SpecInterface $spec */
-	$spec = $getCurrentRunningEndingSpecFunction();
-	$spec->getResults()->add(false, new $userFailDetailsClass($message));
+	return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\fail'), func_get_args());
 }

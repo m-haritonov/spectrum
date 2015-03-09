@@ -4,26 +4,26 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\core\builders;
 
 use spectrum\core\config;
 use spectrum\core\Spec;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../../init.php';
 
-class BeforeTest extends \spectrum\tests\automatic\Test {
-	public function testCallsAtBuildingState_AddsContextFunctionWithBeforeTypeToCurrentBuildingSpec() {
+class AfterTest extends \spectrum\tests\automatic\Test {
+	public function testCallsAtBuildingState_AddsContextFunctionWithAfterTypeToCurrentBuildingSpec() {
 		$spec = new Spec();
 		\spectrum\_private\setCurrentBuildingSpec($spec);
 		
 		$function1 = function(){};
 		$function2 = function(){};
-		\spectrum\before($function1);
-		\spectrum\before($function2);
+		\spectrum\core\builders\after($function1);
+		\spectrum\core\builders\after($function2);
 
 		$this->assertSame(array(
-			array('function' => $function1, 'type' => 'before'),
-			array('function' => $function2, 'type' => 'before'),
+			array('function' => $function1, 'type' => 'after'),
+			array('function' => $function2, 'type' => 'after'),
 		), $spec->getContextModifiers()->getAll());
 	}
 
@@ -36,13 +36,13 @@ class BeforeTest extends \spectrum\tests\automatic\Test {
 			}
 		'));
 		
-		$this->assertSame('some text', \spectrum\before(function(){}));
+		$this->assertSame('some text', \spectrum\core\builders\after(function(){}));
 	}
 	
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
-				\spectrum\before(function(){});
+				\spectrum\core\builders\after(function(){});
 			} catch (\Exception $e) {
 				$exception = $e;
 			}
@@ -51,6 +51,6 @@ class BeforeTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_private\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
-		$this->assertSame('Builder "before" should be call only at building state', $exception->getMessage());
+		$this->assertSame('Builder "after" should be call only at building state', $exception->getMessage());
 	}
 }

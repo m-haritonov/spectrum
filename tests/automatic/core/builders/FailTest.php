@@ -4,13 +4,13 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\core\builders;
 
 use spectrum\core\config;
 use spectrum\core\ResultsInterface;
 use spectrum\core\SpecInterface;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../../init.php';
 
 class FailTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_GetsUserFailDetailsClassFromConfig() {
@@ -20,7 +20,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		/** @var ResultsInterface $results */
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
 			$results = $spec->getResults();
-			\spectrum\fail("some fail message");
+			\spectrum\core\builders\fail("some fail message");
 		});
 		
 		\spectrum\_private\getRootSpec()->run();
@@ -46,7 +46,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 			
 			$selfSpecKey = array_search($spec, $specs, true);
 			$parentSpecKey = array_search($spec->getRunningParentSpec(), $specs, true);
-			\spectrum\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
+			\spectrum\core\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 		});
 		
 		\spectrum\_private\getRootSpec()->bindChildSpec($specs[0]);
@@ -78,7 +78,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		$results = array();
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
 			$results[] = $spec->getResults();
-			\spectrum\fail();
+			\spectrum\core\builders\fail();
 		});
 		
 		\spectrum\_private\getRootSpec()->run();
@@ -94,7 +94,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\core\Exception', 'Builder "fail" should be call only at running state', function(){
-			\spectrum\fail("aaa");
+			\spectrum\core\builders\fail("aaa");
 		});
 	}
 }

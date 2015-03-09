@@ -69,12 +69,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		$values = array(
 			'name' => array('some name text', 123),
 			'contexts' => array(array(), array('aaa' => array('bbb', 'ccc')), function(){}, function(){
-				\spectrum\group(null, null, function(){}, null);
-				\spectrum\test(null, null, function(){}, null);
+				\spectrum\core\builders\group(null, null, function(){}, null);
+				\spectrum\core\builders\test(null, null, function(){}, null);
 			}),
 			'body' => array(function(){}, function(){
-				\spectrum\group(null, null, function(){}, null);
-				\spectrum\test(null, null, function(){}, null);
+				\spectrum\core\builders\group(null, null, function(){}, null);
+				\spectrum\core\builders\test(null, null, function(){}, null);
 			}),
 			'settings' => array(true, false, 8, array(), array('breakOnFirstPhpError' => false), array(
 				'catchPhpErrors' => 8,

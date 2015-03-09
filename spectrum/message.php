@@ -6,19 +6,10 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
-use spectrum\core\Exception;
-use spectrum\core\config;
-
 /**
  * Adds message to current test.
  * @throws \spectrum\core\Exception If called not at running state
  */
 function message($message) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
-	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "message" should be call only at running state');
-	}
-	
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');
-	$getCurrentRunningEndingSpecFunction()->getMessages()->add($message);
+	return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\message'), func_get_args());
 }

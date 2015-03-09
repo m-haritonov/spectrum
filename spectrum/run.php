@@ -6,17 +6,10 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
-use spectrum\core\config;
-
 /**
  * Runs tests.
  * @return null|bool
  */
 function run() {
-	if (!config::isLocked()) {
-		config::lock();
-	}
-	
-	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\_private\getRootSpec');
-	return $getRootSpecFunction()->run();
+	return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\run'), func_get_args());
 }

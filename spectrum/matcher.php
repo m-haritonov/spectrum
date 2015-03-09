@@ -5,8 +5,6 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum;
-use spectrum\core\config;
-use spectrum\core\Exception;
 
 /**
  * Adds matcher to current group.
@@ -15,11 +13,5 @@ use spectrum\core\Exception;
  * @param callable $function
  */
 function matcher($name, $function) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
-	if ($isRunningStateFunction()) {
-		throw new Exception('Builder "matcher" should be call only at building state');
-	}
-
-	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentBuildingSpec');
-	return $getCurrentBuildingSpecFunction()->getMatchers()->add($name, $function);
+	return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\matcher'), func_get_args());
 }

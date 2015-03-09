@@ -4,12 +4,12 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\core\builders;
 
 use spectrum\core\config;
 use spectrum\core\Spec;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../../init.php';
 
 class MatcherTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtBuildingState_AddsMatcherFunctionToCurrentBuildingSpec() {
@@ -17,7 +17,7 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_private\setCurrentBuildingSpec($spec);
 		
 		$function = function(){};
-		\spectrum\matcher('aaa', $function);
+		\spectrum\core\builders\matcher('aaa', $function);
 
 		$this->assertSame($function, $spec->getMatchers()->get('aaa'));
 	}
@@ -33,13 +33,13 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 		
 		\spectrum\_private\setCurrentBuildingSpec(new Spec());
 		
-		$this->assertSame('some text', \spectrum\matcher('aaa', function(){}));
+		$this->assertSame('some text', \spectrum\core\builders\matcher('aaa', function(){}));
 	}
 	
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
-				\spectrum\matcher("aaa", function(){});
+				\spectrum\core\builders\matcher("aaa", function(){});
 			} catch (\Exception $e) {
 				$exception = $e;
 			}

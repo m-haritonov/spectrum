@@ -6,9 +6,6 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
-use spectrum\core\Exception;
-use spectrum\core\config;
-
 /**
  * Creates assertion.
  * @throws \spectrum\core\Exception If called not at running state
@@ -16,12 +13,5 @@ use spectrum\core\config;
  * @return \spectrum\core\AssertionInterface
  */
 function be($testedValue) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
-	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "be" should be call only at running state');
-	}
-
-	$assertionClass = config::getClassReplacement('\spectrum\core\Assertion');
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');
-	return new $assertionClass($getCurrentRunningEndingSpecFunction(), $testedValue);
+	return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\be'), func_get_args());
 }

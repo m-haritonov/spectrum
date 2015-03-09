@@ -1,5 +1,5 @@
 <?php
-if (!function_exists('\spectrum\run')) {
+if (!function_exists('\spectrum\core\builders\run')) {
 	exit('This file is not allowed to direct call');
 }
 

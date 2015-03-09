@@ -4,11 +4,11 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\core\builders;
 
 use spectrum\core\SpecInterface;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../../init.php';
 
 class MessageTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_AddsPassedMessageToMessagesInstanceOfCurrentRunningSpec() {
@@ -24,7 +24,7 @@ class MessageTest extends \spectrum\tests\automatic\Test {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$messages) {
 			$selfSpecKey = array_search($spec, $specs, true);
 			$parentSpecKey = array_search($spec->getRunningParentSpec(), $specs, true);
-			\spectrum\message("some message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
+			\spectrum\core\builders\message("some message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 			
 			$messages[] = $spec->getMessages()->getAll();
 		});
@@ -41,7 +41,7 @@ class MessageTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\core\Exception', 'Builder "message" should be call only at running state', function(){
-			\spectrum\message("aaa");
+			\spectrum\core\builders\message("aaa");
 		});
 	}
 }

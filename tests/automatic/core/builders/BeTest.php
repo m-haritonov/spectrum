@@ -4,20 +4,20 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\core\builders;
 
 use spectrum\core\config;
 use spectrum\core\Spec;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../../init.php';
 
 class BeTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_ReturnsNewAssertionInstance() {
 		$returnValues = array();
 		
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValues) {
-			$returnValues[] = \spectrum\be("aaa");
-			$returnValues[] = \spectrum\be("aaa");
+			$returnValues[] = \spectrum\core\builders\be("aaa");
+			$returnValues[] = \spectrum\core\builders\be("aaa");
 		});
 		
 		\spectrum\_private\getRootSpec()->run();
@@ -33,7 +33,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		config::setClassReplacement('\spectrum\core\Assertion', $assertClassName);
 
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
-			$returnValue = \spectrum\be("aaa");
+			$returnValue = \spectrum\core\builders\be("aaa");
 		});
 		
 		\spectrum\_private\getRootSpec()->run();
@@ -55,7 +55,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		'));
 		
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
-			$returnValue = \spectrum\be("aaa");
+			$returnValue = \spectrum\core\builders\be("aaa");
 		});
 		
 		$spec = new Spec();
@@ -72,7 +72,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\core\Exception', 'Builder "be" should be call only at running state', function(){
-			\spectrum\be("aaa");
+			\spectrum\core\builders\be("aaa");
 		});
 	}
 }
