@@ -18,7 +18,7 @@ use spectrum\core\config;
 function after($function) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if ($isRunningStateFunction()) {
-		throw new Exception('Builder "after" should be call only at building state');
+		throw new Exception('Function "after" should be call only at building state');
 	}
 
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentBuildingSpec');

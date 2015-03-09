@@ -329,6 +329,6 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_private\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
-		$this->assertSame('Builder "test" should be call only at building state', $exception->getMessage());
+		$this->assertSame('Function "test" should be call only at building state', $exception->getMessage());
 	}
 }

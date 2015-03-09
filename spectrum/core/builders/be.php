@@ -18,7 +18,7 @@ use spectrum\core\config;
 function be($testedValue) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "be" should be call only at running state');
+		throw new Exception('Function "be" should be call only at running state');
 	}
 
 	$assertionClass = config::getClassReplacement('\spectrum\core\Assertion');

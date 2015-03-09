@@ -18,7 +18,7 @@ use spectrum\core\SpecInterface;
 function fail($message = null) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "fail" should be call only at running state');
+		throw new Exception('Function "fail" should be call only at running state');
 	}
 
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');

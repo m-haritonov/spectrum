@@ -71,7 +71,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtBuildingState_ThrowsException() {
-		$this->assertThrowsException('\spectrum\core\Exception', 'Builder "be" should be call only at running state', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Function "be" should be call only at running state', function(){
 			\spectrum\core\builders\be("aaa");
 		});
 	}

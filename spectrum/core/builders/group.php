@@ -21,7 +21,7 @@ use spectrum\core\SpecInterface;
 function group($name = null, $contexts = null, $body = null, $settings = null) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if ($isRunningStateFunction()) {
-		throw new Exception('Builder "group" should be call only at building state');
+		throw new Exception('Function "group" should be call only at building state');
 	}
 
 	$convertArgumentsForSpecFunction = config::getFunctionReplacement('\spectrum\_private\convertArgumentsForSpec');

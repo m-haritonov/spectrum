@@ -20,7 +20,7 @@ use spectrum\core\SpecInterface;
 function test($name = null, $contexts = null, $body = null, $settings = null) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if ($isRunningStateFunction()) {
-		throw new Exception('Builder "test" should be call only at building state');
+		throw new Exception('Function "test" should be call only at building state');
 	}
 
 	$convertArgumentsForSpecFunction = config::getFunctionReplacement('\spectrum\_private\convertArgumentsForSpec');

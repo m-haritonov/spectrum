@@ -18,7 +18,7 @@ use spectrum\core\Exception;
 function data() {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "data" should be call only at running state');
+		throw new Exception('Function "data" should be call only at running state');
 	}
 
 	$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentData');

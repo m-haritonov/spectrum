@@ -16,7 +16,7 @@ use spectrum\core\config;
 function message($message) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
-		throw new Exception('Builder "message" should be call only at running state');
+		throw new Exception('Function "message" should be call only at running state');
 	}
 	
 	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');

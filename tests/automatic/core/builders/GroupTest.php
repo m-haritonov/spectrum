@@ -555,6 +555,6 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_private\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
-		$this->assertSame('Builder "group" should be call only at building state', $exception->getMessage());
+		$this->assertSame('Function "group" should be call only at building state', $exception->getMessage());
 	}
 }

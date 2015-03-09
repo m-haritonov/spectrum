@@ -17,7 +17,7 @@ use spectrum\core\Exception;
 function before($function) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
 	if ($isRunningStateFunction()) {
-		throw new Exception('Builder "before" should be call only at building state');
+		throw new Exception('Function "before" should be call only at building state');
 	}
 
 	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentBuildingSpec');
