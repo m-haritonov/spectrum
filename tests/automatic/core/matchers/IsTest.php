@@ -4,10 +4,10 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\_private\matchers;
+namespace spectrum\tests\automatic\core\matchers;
 
 require_once __DIR__ . '/../../../init.php';
-require_once __DIR__ . '/../../../../spectrum/_private/matchers/is.php';
+require_once __DIR__ . '/../../../../spectrum/core/matchers/is.php';
 
 class IsTest extends \spectrum\tests\automatic\Test {
 	public function provider() {
@@ -88,6 +88,6 @@ class IsTest extends \spectrum\tests\automatic\Test {
 	 * @dataProvider provider
 	 */
 	public function test($heir, $parent, $result) {
-		$this->assertSame($result, \spectrum\_private\matchers\is(new \spectrum\core\details\MatcherCall(), $heir, $parent));
+		$this->assertSame($result, \spectrum\core\matchers\is(new \spectrum\core\details\MatcherCall(), $heir, $parent));
 	}
 }

@@ -23,8 +23,8 @@ function loadBaseMatchers() {
 	);
 	
 	foreach ($matchers as $matcherName => $functionName) {
-		$fileName = __DIR__ . '/matchers/' . $matcherName . '.php';
-		$functionName = '\spectrum\_private\matchers\\' . $matcherName;
+		$fileName = __DIR__ . '/../core/matchers/' . $matcherName . '.php';
+		$functionName = '\spectrum\core\matchers\\' . $matcherName;
 		
 		require_once $fileName;
 		$matchers[$matcherName] = $functionName;

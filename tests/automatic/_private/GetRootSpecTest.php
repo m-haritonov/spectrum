@@ -20,14 +20,14 @@ class GetRootSpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_AddsToSpecBaseMatchers() {
 		$this->assertSame(array(
-			'eq' => '\spectrum\_private\matchers\eq',
-			'gt' => '\spectrum\_private\matchers\gt',
-			'gte' => '\spectrum\_private\matchers\gte',
-			'ident' => '\spectrum\_private\matchers\ident',
-			'is' => '\spectrum\_private\matchers\is',
-			'lt' => '\spectrum\_private\matchers\lt',
-			'lte' => '\spectrum\_private\matchers\lte',
-			'throwsException' => '\spectrum\_private\matchers\throwsException',
+			'eq' => '\spectrum\core\matchers\eq',
+			'gt' => '\spectrum\core\matchers\gt',
+			'gte' => '\spectrum\core\matchers\gte',
+			'ident' => '\spectrum\core\matchers\ident',
+			'is' => '\spectrum\core\matchers\is',
+			'lt' => '\spectrum\core\matchers\lt',
+			'lte' => '\spectrum\core\matchers\lte',
+			'throwsException' => '\spectrum\core\matchers\throwsException',
 		), \spectrum\_private\getRootSpec()->getMatchers()->getAll());
 	}
 }
