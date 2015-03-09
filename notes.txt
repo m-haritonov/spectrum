@@ -8,8 +8,6 @@ TODO: remove vs removeAll
 
 TODO: ContextModifiers::addBefore(), addAfter???
 TODO: _private to core
-TODO: function replacement for matchers
-TODO: loadBaseMatchers -> getBaseMatchers
 TODO: setCoreClassReplacement
 TODO: matchers - вместо передачи details передавать значения по ссылке
 TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener

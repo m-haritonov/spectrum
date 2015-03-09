@@ -21,8 +21,8 @@ function getRootSpec() {
 		/** @var SpecInterface $rootSpec */
 		$rootSpec = new $specClass();
 		
-		$loadBaseMatchersFunction = config::getFunctionReplacement('\spectrum\_private\loadBaseMatchers');
-		foreach ($loadBaseMatchersFunction() as $name => $function) {
+		$getBaseMatchersFunction = config::getFunctionReplacement('\spectrum\_private\getBaseMatchers');
+		foreach ($getBaseMatchersFunction() as $name => $function) {
 			$rootSpec->getMatchers()->add($name, $function);
 		}
 	}

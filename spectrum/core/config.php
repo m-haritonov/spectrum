@@ -141,13 +141,14 @@ class config {
 		'\spectrum\_private\getTestSpecs' => '\spectrum\_private\getTestSpecs',
 		'\spectrum\_private\handleSpecModifyDeny' => '\spectrum\_private\handleSpecModifyDeny',
 		'\spectrum\_private\isRunningState' => '\spectrum\_private\isRunningState',
-		'\spectrum\_private\loadBaseMatchers' => '\spectrum\_private\loadBaseMatchers',
+		'\spectrum\_private\getBaseMatchers' => '\spectrum\_private\getBaseMatchers',
 		'\spectrum\_private\normalizeSettings' => '\spectrum\_private\normalizeSettings',
 		'\spectrum\_private\removeSubsequentErrorHandlers' => '\spectrum\_private\removeSubsequentErrorHandlers',
 		'\spectrum\_private\setCurrentBuildingSpec' => '\spectrum\_private\setCurrentBuildingSpec',
 		'\spectrum\_private\setSettingsToSpec' => '\spectrum\_private\setSettingsToSpec',
 		'\spectrum\_private\translate' => '\spectrum\_private\translate',
 		'\spectrum\_private\usortWithOriginalSequencePreserving' => '\spectrum\_private\usortWithOriginalSequencePreserving',
+		
 		'\spectrum\core\builders\after' => '\spectrum\core\builders\after',
 		'\spectrum\core\builders\be' => '\spectrum\core\builders\be',
 		'\spectrum\core\builders\before' => '\spectrum\core\builders\before',
@@ -159,6 +160,15 @@ class config {
 		'\spectrum\core\builders\run' => '\spectrum\core\builders\run',
 		'\spectrum\core\builders\self' => '\spectrum\core\builders\self',
 		'\spectrum\core\builders\test' => '\spectrum\core\builders\test',
+		
+		'\spectrum\core\matchers\eq' => '\spectrum\core\matchers\eq',
+		'\spectrum\core\matchers\gt' => '\spectrum\core\matchers\gt',
+		'\spectrum\core\matchers\gte' => '\spectrum\core\matchers\gte',
+		'\spectrum\core\matchers\ident' => '\spectrum\core\matchers\ident',
+		'\spectrum\core\matchers\is' => '\spectrum\core\matchers\is',
+		'\spectrum\core\matchers\lt' => '\spectrum\core\matchers\lt',
+		'\spectrum\core\matchers\lte' => '\spectrum\core\matchers\lte',
+		'\spectrum\core\matchers\throwsException' => '\spectrum\core\matchers\throwsException',
 	);
 	
 	/**
