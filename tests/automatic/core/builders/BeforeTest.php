@@ -27,18 +27,6 @@ class BeforeTest extends \spectrum\tests\automatic\Test {
 		), $spec->getContextModifiers()->getAll());
 	}
 
-	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction() {
-		config::setCoreClassReplacement('\spectrum\core\ContextModifiers', \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\ContextModifiers {
-				public function add($function, $type = "before") {
-					return "some text";
-				}
-			}
-		'));
-		
-		$this->assertSame('some text', \spectrum\core\builders\before(function(){}));
-	}
-	
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {

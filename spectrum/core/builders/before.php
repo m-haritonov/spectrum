@@ -21,5 +21,5 @@ function before($function) {
 	}
 
 	$getCurrentBuildingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentBuildingSpec');
-	return $getCurrentBuildingSpecFunction()->getContextModifiers()->add($function, 'before');
+	$getCurrentBuildingSpecFunction()->getContextModifiers()->add($function, 'before');
 }

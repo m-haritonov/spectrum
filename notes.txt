@@ -9,11 +9,10 @@ TODO: remove vs removeAll
 TODO: ContextModifiers::addBefore(), addAfter???
 TODO: matchers - вместо передачи details передавать значения по ссылке
 TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener
-TODO: избавиться от _private тестов??
 
 TODO: config::enableReports()
 TODO: setReportsClass(class), \core\ReportsInterface, Spec::getReports
-TODO: before, after, matcher should be return null
+TODO: добавить doc комментарии для поддержки рефакторинга
 
 TODO: doc: you can create own functions like describe/it
 TODO: doc: you can use be() in contexts and matchers

@@ -22,20 +22,6 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 		$this->assertSame($function, $spec->getMatchers()->get('aaa'));
 	}
 
-	public function testCallsAtBuildingState_ReturnsReturnValueOfMatcherAddFunction() {
-		config::setCoreClassReplacement('\spectrum\core\Matchers', \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\Matchers {
-				public function add($name, $function) {
-					return "some text";
-				}
-			}
-		'));
-		
-		\spectrum\core\_private\setCurrentBuildingSpec(new Spec());
-		
-		$this->assertSame('some text', \spectrum\core\builders\matcher('aaa', function(){}));
-	}
-	
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
