@@ -13,6 +13,12 @@ use spectrum\core\SpecInterface;
  * @see getCurrentBuildingSpec()
  */
 function setCurrentBuildingSpec(SpecInterface $spec = null) {
-	static $buildingSpec = null;
-	$buildingSpec = $spec;
+	// This variable is used by getCurrentBuildingSpec function
+	static $data;
+	
+	if (!$data) {
+		$data = new \stdClass();
+	}
+	
+	$data->buildingSpec = $spec;
 }

@@ -13,11 +13,15 @@ use spectrum\core\config;
  * @return array
  */
 function getTestSpecs() {
-	$reflection = new \ReflectionFunction(config::getCoreFunctionReplacement('\spectrum\core\_private\addTestSpec'));
-	$staticVariables = $reflection->getStaticVariables();
+	static $data;
+	if (!$data) {
+		$reflection = new \ReflectionFunction(config::getCoreFunctionReplacement('\spectrum\core\_private\addTestSpec'));
+		$staticVariables = $reflection->getStaticVariables();
+		$data = $staticVariables['data'];
+	}
 	
-	if (isset($staticVariables['specs'])) {
-		return $staticVariables['specs'];
+	if (isset($data->specs)) {
+		return $data->specs;
 	} else {
 		return array();
 	}

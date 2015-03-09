@@ -17,11 +17,11 @@ class SetCurrentBuildingSpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		\spectrum\core\_private\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertSame($spec, $staticVariables['buildingSpec']);
+		$this->assertSame($spec, $staticVariables['data']->buildingSpec);
 		
 		\spectrum\core\_private\setCurrentBuildingSpec(null);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertSame(null, $staticVariables['buildingSpec']);
+		$this->assertSame(null, $staticVariables['data']->buildingSpec);
 	}
 	
 	public function testCallsAtBuildingState_ArgumentIsSpec_SetsSpecToStaticVariable() {
@@ -30,20 +30,20 @@ class SetCurrentBuildingSpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		\spectrum\core\_private\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertSame($spec, $staticVariables['buildingSpec']);
+		$this->assertSame($spec, $staticVariables['data']->buildingSpec);
 		
 		$spec = new Spec();
 		\spectrum\core\_private\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertSame($spec, $staticVariables['buildingSpec']);
+		$this->assertSame($spec, $staticVariables['data']->buildingSpec);
 		
 		\spectrum\core\_private\setCurrentBuildingSpec(null);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertSame(null, $staticVariables['buildingSpec']);
+		$this->assertSame(null, $staticVariables['data']->buildingSpec);
 		
 		$spec = new Spec();
 		\spectrum\core\_private\setCurrentBuildingSpec($spec);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertSame($spec, $staticVariables['buildingSpec']);
+		$this->assertSame($spec, $staticVariables['data']->buildingSpec);
 	}
 }

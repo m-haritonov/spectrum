@@ -12,6 +12,12 @@ use spectrum\core\SpecInterface;
  * @access private
  */
 function addTestSpec(SpecInterface $spec) {
-	static $specs = array();
-	$specs[] = $spec;
+	// This variable is used by getTestSpecs function
+	static $data;
+	
+	if (!$data) {
+		$data = new \stdClass();
+	}
+	
+	$data->specs[] = $spec;
 }

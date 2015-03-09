@@ -14,19 +14,7 @@ TODO: избавиться от _private тестов??
 TODO: config::enableReports()
 TODO: setReportsClass(class), \core\ReportsInterface, Spec::getReports
 TODO: before, after, matcher should be return null
-TODO: getTestSpecs и getCurrentBuildingSpec:
-	function set() {
-		/* @var This variable is used by ... function */
-		static $data;
-	}
-	
-	function get() {
-		static $data;
-		if (!$data) {
-			$data = ...reflection...;
-		}
-	}
-	
+
 TODO: doc: you can create own functions like describe/it
 TODO: doc: you can use be() in contexts and matchers
 TODO: doc: extension/package use init.php, put private files to _private directory

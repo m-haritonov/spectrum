@@ -20,17 +20,17 @@ class AddTestSpecTest extends \spectrum\tests\automatic\Test {
 		
 		\spectrum\core\_private\addTestSpec($spec1);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertTrue(in_array($spec1, $staticVariables['specs']));
+		$this->assertTrue(in_array($spec1, $staticVariables['data']->specs));
 		
 		\spectrum\core\_private\addTestSpec($spec2);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertTrue(in_array($spec1, $staticVariables['specs']));
-		$this->assertTrue(in_array($spec2, $staticVariables['specs']));
+		$this->assertTrue(in_array($spec1, $staticVariables['data']->specs));
+		$this->assertTrue(in_array($spec2, $staticVariables['data']->specs));
 		
 		\spectrum\core\_private\addTestSpec($spec3);
 		$staticVariables = $reflection->getStaticVariables();
-		$this->assertTrue(in_array($spec1, $staticVariables['specs']));
-		$this->assertTrue(in_array($spec2, $staticVariables['specs']));
-		$this->assertTrue(in_array($spec3, $staticVariables['specs']));
+		$this->assertTrue(in_array($spec1, $staticVariables['data']->specs));
+		$this->assertTrue(in_array($spec2, $staticVariables['data']->specs));
+		$this->assertTrue(in_array($spec3, $staticVariables['data']->specs));
 	}
 }

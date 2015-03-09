@@ -14,11 +14,15 @@ use spectrum\core\SpecInterface;
  * @return SpecInterface
  */
 function getCurrentBuildingSpec() {
-	$reflection = new \ReflectionFunction(config::getCoreFunctionReplacement('\spectrum\core\_private\setCurrentBuildingSpec'));
-	$staticVariables = $reflection->getStaticVariables();
+	static $data;
+	if (!$data) {
+		$reflection = new \ReflectionFunction(config::getCoreFunctionReplacement('\spectrum\core\_private\setCurrentBuildingSpec'));
+		$staticVariables = $reflection->getStaticVariables();
+		$data = $staticVariables['data'];
+	}
 	
-	if (isset($staticVariables['buildingSpec'])) {
-		return $staticVariables['buildingSpec'];
+	if (isset($data->buildingSpec)) {
+		return $data->buildingSpec;
 	} else {
 		$getRootSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getRootSpec');
 		return $getRootSpecFunction();
