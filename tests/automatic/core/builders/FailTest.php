@@ -23,7 +23,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 			\spectrum\core\builders\fail("some fail message");
 		});
 		
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->run();
 		
 		$resultsContent = $results->getAll();
 		$this->assertInstanceOf($userFailDetailsClassName, $resultsContent[0]->getDetails());
@@ -49,8 +49,8 @@ class FailTest extends \spectrum\tests\automatic\Test {
 			\spectrum\core\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 		});
 		
-		\spectrum\_private\getRootSpec()->bindChildSpec($specs[0]);
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->bindChildSpec($specs[0]);
+		\spectrum\core\_private\getRootSpec()->run();
 
 		$this->assertSame(3, count($results));
 		
@@ -81,7 +81,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 			\spectrum\core\builders\fail();
 		});
 		
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->run();
 
 		$this->assertSame(1, count($results));
 		

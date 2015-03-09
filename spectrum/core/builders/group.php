@@ -19,12 +19,12 @@ use spectrum\core\SpecInterface;
  * @return \spectrum\core\SpecInterface
  */
 function group($name = null, $contexts = null, $body = null, $settings = null) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\core\_private\isRunningState');
 	if ($isRunningStateFunction()) {
 		throw new Exception('Function "group" should be call only at building state');
 	}
 
-	$convertArgumentsForSpecFunction = config::getFunctionReplacement('\spectrum\_private\convertArgumentsForSpec');
+	$convertArgumentsForSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\convertArgumentsForSpec');
 	list($name, $contexts, $body, $settings) = $convertArgumentsForSpecFunction(func_get_args(), 'group');
 	
 	$specClass = config::getClassReplacement('\spectrum\core\Spec');
@@ -35,26 +35,26 @@ function group($name = null, $contexts = null, $body = null, $settings = null) {
 		$builderSpec->setName($name);
 	}
 
-	$setSettingsToSpecFunction = config::getFunctionReplacement('\spectrum\_private\setSettingsToSpec');
+	$setSettingsToSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\setSettingsToSpec');
 	$setSettingsToSpecFunction($builderSpec, $settings);
 	
-	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentBuildingSpec');
+	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentBuildingSpec');
 	$getCurrentBuildingSpecFunction()->bindChildSpec($builderSpec);
 
 	if ($contexts) {
 		if (is_array($contexts)) {
 			$contextEndingSpec = new $specClass();
-			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\_private\convertArrayWithContextsToSpecs');
+			$convertArrayWithContextsToSpecsFunction = config::getFunctionReplacement('\spectrum\core\_private\convertArrayWithContextsToSpecs');
 			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $contextSpec) {
 				/** @var SpecInterface $contextSpec */
 				$builderSpec->bindChildSpec($contextSpec);
 				$contextSpec->bindChildSpec($contextEndingSpec);
 			}
 		} else {
-			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\callFunctionOnCurrentBuildingSpec');
+			$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\callFunctionOnCurrentBuildingSpec');
 			$callFunctionOnCurrentBuildingSpecFunction($contexts, $builderSpec);
 			
-			$getTestSpecsFunction = config::getFunctionReplacement('\spectrum\_private\getTestSpecs');
+			$getTestSpecsFunction = config::getFunctionReplacement('\spectrum\core\_private\getTestSpecs');
 			$testSpecs = $getTestSpecsFunction();
 			/** @var SpecInterface $contextEndingSpec */
 			$contextEndingSpec = new $specClass();
@@ -69,7 +69,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null) {
 	}
 	
 	if ($body) {
-		$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\callFunctionOnCurrentBuildingSpec');
+		$callFunctionOnCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\callFunctionOnCurrentBuildingSpec');
 		$callFunctionOnCurrentBuildingSpecFunction($body, $contextEndingSpec);
 	}
 

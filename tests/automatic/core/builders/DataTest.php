@@ -18,7 +18,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 			      4
 		');
 		
-		\spectrum\_private\getRootSpec()->bindChildSpec($specs[0]);
+		\spectrum\core\_private\getRootSpec()->bindChildSpec($specs[0]);
 		
 		$dataObjects = array();
 		$returnValues = array();
@@ -29,7 +29,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 			});
 		}
 		
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->run();
 		$this->assertSame($dataObjects, $returnValues);
 	}
 	

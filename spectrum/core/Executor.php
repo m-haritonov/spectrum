@@ -25,7 +25,7 @@ class Executor implements ExecutorInterface {
 	 * @param \Closure $function
 	 */
 	public function setFunction($function) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		$this->function = $function;
@@ -42,7 +42,7 @@ class Executor implements ExecutorInterface {
 	 * @return null|\Closure
 	 */
 	public function getFunctionThroughRunningAncestors() {
-		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\_private\callMethodThroughRunningAncestorSpecs');
+		$callMethodThroughRunningAncestorSpecsFunction = config::getFunctionReplacement('\spectrum\core\_private\callMethodThroughRunningAncestorSpecs');
 		return $callMethodThroughRunningAncestorSpecsFunction($this->ownerSpec, 'getExecutor->getFunction');
 	}
 }

@@ -330,59 +330,59 @@ class ConfigTest extends Test {
 	}
 
 	public function testSetClassReplacement_ClassHasNoInterface_NewClassDoesNotImplementInterface_SetsNewClass() {
-		config::setClassReplacement('\spectrum\_private\reports\html\driver', '\aaa');
-		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\_private\reports\html\driver'));
+		config::setClassReplacement('\spectrum\core\_private\reports\html\driver', '\aaa');
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\_private\reports\html\driver'));
 	}
 	
 	public function testSetClassReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue() {
-		config::setClassReplacement('\spectrum\_private\reports\html\driver', '\aaa');
+		config::setClassReplacement('\spectrum\core\_private\reports\html\driver', '\aaa');
 		config::lock();
 
 		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
-			config::setClassReplacement('\spectrum\_private\reports\html\driver', '\bbb');
+			config::setClassReplacement('\spectrum\core\_private\reports\html\driver', '\bbb');
 		});
 
-		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\_private\reports\html\driver'));
+		$this->assertSame('\aaa', config::getClassReplacement('\spectrum\core\_private\reports\html\driver'));
 	}
 	
 /**/
 	
 	public function testGetClassReplacement_ReturnsSpectrumClassByDefault() {
-		$this->assertSame('\spectrum\_private\reports\html\driver', config::getClassReplacement('\spectrum\_private\reports\html\driver'));
+		$this->assertSame('\spectrum\core\_private\reports\html\driver', config::getClassReplacement('\spectrum\core\_private\reports\html\driver'));
 	}
 	
 	public function testGetClassReplacement_ConfigIsLocked_DoesNotThrowException() {
 		config::lock();
-		config::getClassReplacement('\spectrum\_private\reports\html\driver');
+		config::getClassReplacement('\spectrum\core\_private\reports\html\driver');
 	}
 	
 /**/
 
 	public function testSetFunctionReplacement_SetsNewClass() {
-		config::setFunctionReplacement('\spectrum\_private\translate', '\aaa');
-		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\_private\translate'));
+		config::setFunctionReplacement('\spectrum\core\_private\translate', '\aaa');
+		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\core\_private\translate'));
 	}
 
 	public function testSetFunctionReplacement_ConfigIsLocked_ThrowsExceptionAndDoesNotChangeValue() {
-		config::setFunctionReplacement('\spectrum\_private\translate', '\aaa');
+		config::setFunctionReplacement('\spectrum\core\_private\translate', '\aaa');
 		config::lock();
 
 		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
-			config::setFunctionReplacement('\spectrum\_private\translate', '\bbb');
+			config::setFunctionReplacement('\spectrum\core\_private\translate', '\bbb');
 		});
 
-		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\_private\translate'));
+		$this->assertSame('\aaa', config::getFunctionReplacement('\spectrum\core\_private\translate'));
 	}
 	
 /**/
 	
 	public function testGetFunctionReplacement_ReturnsSpectrumClassByDefault() {
-		$this->assertSame('\spectrum\_private\translate', config::getFunctionReplacement('\spectrum\_private\translate'));
+		$this->assertSame('\spectrum\core\_private\translate', config::getFunctionReplacement('\spectrum\core\_private\translate'));
 	}
 	
 	public function testGetFunctionReplacement_ConfigIsLocked_DoesNotThrowException() {
 		config::lock();
-		config::getFunctionReplacement('\spectrum\_private\translate');
+		config::getFunctionReplacement('\spectrum\core\_private\translate');
 	}
 	
 /**/

@@ -13,12 +13,12 @@ use spectrum\core\config;
  * @return \spectrum\core\SpecInterface
  */
 function self() {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\core\_private\isRunningState');
 	if ($isRunningStateFunction()) {
-		$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentRunningEndingSpec');
+		$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
 		return $getCurrentRunningEndingSpecFunction();
 	} else {
-		$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentBuildingSpec');
+		$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentBuildingSpec');
 		return $getCurrentBuildingSpecFunction();
 	}
 }

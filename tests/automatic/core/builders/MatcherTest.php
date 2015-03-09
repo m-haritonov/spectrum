@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../../init.php';
 class MatcherTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtBuildingState_AddsMatcherFunctionToCurrentBuildingSpec() {
 		$spec = new Spec();
-		\spectrum\_private\setCurrentBuildingSpec($spec);
+		\spectrum\core\_private\setCurrentBuildingSpec($spec);
 		
 		$function = function(){};
 		\spectrum\core\builders\matcher('aaa', $function);
@@ -31,7 +31,7 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 			}
 		'));
 		
-		\spectrum\_private\setCurrentBuildingSpec(new Spec());
+		\spectrum\core\_private\setCurrentBuildingSpec(new Spec());
 		
 		$this->assertSame('some text', \spectrum\core\builders\matcher('aaa', function(){}));
 	}
@@ -45,7 +45,7 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 			}
 		});
 		
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Function "matcher" should be call only at building state', $exception->getMessage());

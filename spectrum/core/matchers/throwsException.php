@@ -40,7 +40,7 @@ function throwsException(\spectrum\core\details\MatcherCallInterface $marcherCal
 		$expectedClass = '\\' . $expectedClass;
 	}
 
-	$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\_private\convertLatinCharsToLowerCase');
+	$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
 	
 	// Class names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
 	$expectedClassWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction($expectedClass);

@@ -20,7 +20,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 			$returnValues[] = \spectrum\core\builders\be("aaa");
 		});
 		
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->run();
 		
 		$this->assertSame(2, count($returnValues));
 		$this->assertInstanceOf('\spectrum\core\Assertion', $returnValues[0]);
@@ -36,7 +36,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 			$returnValue = \spectrum\core\builders\be("aaa");
 		});
 		
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->run();
 		
 		$this->assertInstanceOf($assertClassName, $returnValue);
 	}
@@ -59,8 +59,8 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		});
 		
 		$spec = new Spec();
-		\spectrum\_private\getRootSpec()->bindChildSpec($spec);
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->bindChildSpec($spec);
+		\spectrum\core\_private\getRootSpec()->run();
 
 		$this->assertInstanceOf('\spectrum\core\Assertion', \spectrum\tests\_testware\tools::$temp["assertion"]);
 		$this->assertSame(\spectrum\tests\_testware\tools::$temp["assertion"], $returnValue);

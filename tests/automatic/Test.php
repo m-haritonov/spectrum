@@ -12,25 +12,25 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 		
-		\spectrum\_private\setCurrentBuildingSpec(null);
+		\spectrum\core\_private\setCurrentBuildingSpec(null);
 		
-		\spectrum\tests\_testware\tools::backupObjectProperties(\spectrum\_private\getRootSpec());
+		\spectrum\tests\_testware\tools::backupObjectProperties(\spectrum\core\_private\getRootSpec());
 		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\core\config');
-		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\_private\reports\html\components\specList');
-		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\_private\reports\html\components\code\variable');
-		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\_private\reports\text\components\specList');
-		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\_private\reports\text\components\code\variable');
+		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\core\_private\reports\html\components\specList');
+		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\core\_private\reports\html\components\code\variable');
+		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\core\_private\reports\text\components\specList');
+		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\core\_private\reports\text\components\code\variable');
 		
 		\spectrum\tests\_testware\tools::$temp = null;
 	}
 	
 	protected function tearDown() {
-		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\_private\reports\text\components\code\variable');
-		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\_private\reports\text\components\specList');
-		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\_private\reports\html\components\code\variable');
-		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\_private\reports\html\components\specList');
+		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\core\_private\reports\text\components\code\variable');
+		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\core\_private\reports\text\components\specList');
+		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\core\_private\reports\html\components\code\variable');
+		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\core\_private\reports\html\components\specList');
 		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\core\config');
-		\spectrum\tests\_testware\tools::restoreObjectProperties(\spectrum\_private\getRootSpec());
+		\spectrum\tests\_testware\tools::restoreObjectProperties(\spectrum\core\_private\getRootSpec());
 
 		parent::tearDown();
 	}

@@ -17,6 +17,6 @@ function run() {
 		config::lock();
 	}
 	
-	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\_private\getRootSpec');
+	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getRootSpec');
 	return $getRootSpecFunction()->run();
 }

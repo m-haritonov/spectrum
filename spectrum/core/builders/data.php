@@ -16,11 +16,11 @@ use spectrum\core\Exception;
  * @return DataInterface
  */
 function data() {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');
+	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\core\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
 		throw new Exception('Function "data" should be call only at running state');
 	}
 
-	$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\_private\getCurrentData');
+	$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentData');
 	return $getCurrentDataFunction();
 }

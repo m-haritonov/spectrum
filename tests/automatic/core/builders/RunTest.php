@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../../init.php';
 
 class RunTest extends \spectrum\tests\automatic\Test {
 	public function testRunsRootSpec() {
-		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function() use(&$isRootSpecRun) {
+		\spectrum\core\_private\getRootSpec()->getExecutor()->setFunction(function() use(&$isRootSpecRun) {
 			$isRootSpecRun = true;
 		});
 		
@@ -22,27 +22,27 @@ class RunTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testReturnsRootSpecRunResult() {
-		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
-			\spectrum\_private\getRootSpec()->getResults()->add(false);
+		\spectrum\core\_private\getRootSpec()->getExecutor()->setFunction(function(){
+			\spectrum\core\_private\getRootSpec()->getResults()->add(false);
 		});
 		
 		$this->assertFalse(\spectrum\core\builders\run());
 		
-		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
-			\spectrum\_private\getRootSpec()->getResults()->add(true);
+		\spectrum\core\_private\getRootSpec()->getExecutor()->setFunction(function(){
+			\spectrum\core\_private\getRootSpec()->getResults()->add(true);
 		});
 		
 		$this->assertTrue(\spectrum\core\builders\run());
 		
-		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function(){
-			\spectrum\_private\getRootSpec()->getResults()->add(null);
+		\spectrum\core\_private\getRootSpec()->getExecutor()->setFunction(function(){
+			\spectrum\core\_private\getRootSpec()->getResults()->add(null);
 		});
 		
 		$this->assertNull(\spectrum\core\builders\run());
 	}
 	
 	public function testLocksConfigBeforeRun() {
-		\spectrum\_private\getRootSpec()->getExecutor()->setFunction(function() use(&$isLocked) {
+		\spectrum\core\_private\getRootSpec()->getExecutor()->setFunction(function() use(&$isLocked) {
 			$isLocked = config::isLocked();
 		});
 		

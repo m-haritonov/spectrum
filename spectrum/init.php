@@ -4,8 +4,8 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-require_once __DIR__ . '/_private/autoload.php';
-require_once __DIR__ . '/_private/exceptionHandler.php';
+require_once __DIR__ . '/core/_private/autoload.php';
+require_once __DIR__ . '/core/_private/exceptionHandler.php';
 
 require_once __DIR__ . '/core/builders/after.php';
 require_once __DIR__ . '/core/builders/be.php';
@@ -40,33 +40,33 @@ require_once __DIR__ . '/run.php';
 require_once __DIR__ . '/self.php';
 require_once __DIR__ . '/test.php';
 
-require_once __DIR__ . '/_private/addTestSpec.php';
-require_once __DIR__ . '/_private/callFunctionOnCurrentBuildingSpec.php';
-require_once __DIR__ . '/_private/callMethodThroughRunningAncestorSpecs.php';
-require_once __DIR__ . '/_private/convertArguments.php';
-require_once __DIR__ . '/_private/convertArgumentsForSpec.php';
-require_once __DIR__ . '/_private/convertArrayWithContextsToSpecs.php';
-require_once __DIR__ . '/_private/convertCharset.php';
-require_once __DIR__ . '/_private/convertLatinCharsToLowerCase.php';
-require_once __DIR__ . '/_private/dispatchEvent.php';
-require_once __DIR__ . '/_private/formatTextForOutput.php';
-require_once __DIR__ . '/_private/getArrayWithContextsElementTitle.php';
-require_once __DIR__ . '/_private/getBaseMatchers.php';
-require_once __DIR__ . '/_private/getCurrentBuildingSpec.php';
-require_once __DIR__ . '/_private/getCurrentData.php';
-require_once __DIR__ . '/_private/getCurrentRunningEndingSpec.php';
-require_once __DIR__ . '/_private/getLastErrorHandler.php';
-require_once __DIR__ . '/_private/getReportClass.php';
-require_once __DIR__ . '/_private/getRootSpec.php';
-require_once __DIR__ . '/_private/getTestSpecs.php';
-require_once __DIR__ . '/_private/handleSpecModifyDeny.php';
-require_once __DIR__ . '/_private/isRunningState.php';
-require_once __DIR__ . '/_private/normalizeSettings.php';
-require_once __DIR__ . '/_private/removeSubsequentErrorHandlers.php';
-require_once __DIR__ . '/_private/setCurrentBuildingSpec.php';
-require_once __DIR__ . '/_private/setSettingsToSpec.php';
-require_once __DIR__ . '/_private/translate.php';
-require_once __DIR__ . '/_private/usortWithOriginalSequencePreserving.php';
+require_once __DIR__ . '/core/_private/addTestSpec.php';
+require_once __DIR__ . '/core/_private/callFunctionOnCurrentBuildingSpec.php';
+require_once __DIR__ . '/core/_private/callMethodThroughRunningAncestorSpecs.php';
+require_once __DIR__ . '/core/_private/convertArguments.php';
+require_once __DIR__ . '/core/_private/convertArgumentsForSpec.php';
+require_once __DIR__ . '/core/_private/convertArrayWithContextsToSpecs.php';
+require_once __DIR__ . '/core/_private/convertCharset.php';
+require_once __DIR__ . '/core/_private/convertLatinCharsToLowerCase.php';
+require_once __DIR__ . '/core/_private/dispatchEvent.php';
+require_once __DIR__ . '/core/_private/formatTextForOutput.php';
+require_once __DIR__ . '/core/_private/getArrayWithContextsElementTitle.php';
+require_once __DIR__ . '/core/_private/getBaseMatchers.php';
+require_once __DIR__ . '/core/_private/getCurrentBuildingSpec.php';
+require_once __DIR__ . '/core/_private/getCurrentData.php';
+require_once __DIR__ . '/core/_private/getCurrentRunningEndingSpec.php';
+require_once __DIR__ . '/core/_private/getLastErrorHandler.php';
+require_once __DIR__ . '/core/_private/getReportClass.php';
+require_once __DIR__ . '/core/_private/getRootSpec.php';
+require_once __DIR__ . '/core/_private/getTestSpecs.php';
+require_once __DIR__ . '/core/_private/handleSpecModifyDeny.php';
+require_once __DIR__ . '/core/_private/isRunningState.php';
+require_once __DIR__ . '/core/_private/normalizeSettings.php';
+require_once __DIR__ . '/core/_private/removeSubsequentErrorHandlers.php';
+require_once __DIR__ . '/core/_private/setCurrentBuildingSpec.php';
+require_once __DIR__ . '/core/_private/setSettingsToSpec.php';
+require_once __DIR__ . '/core/_private/translate.php';
+require_once __DIR__ . '/core/_private/usortWithOriginalSequencePreserving.php';
 
 if (!function_exists('after')) {
 	/**

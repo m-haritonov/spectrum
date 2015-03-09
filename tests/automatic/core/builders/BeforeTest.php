@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../../init.php';
 class BeforeTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtBuildingState_AddsContextFunctionWithBeforeTypeToCurrentBuildingSpec() {
 		$spec = new Spec();
-		\spectrum\_private\setCurrentBuildingSpec($spec);
+		\spectrum\core\_private\setCurrentBuildingSpec($spec);
 		
 		$function1 = function(){};
 		$function2 = function(){};
@@ -48,7 +48,7 @@ class BeforeTest extends \spectrum\tests\automatic\Test {
 			}
 		});
 		
-		\spectrum\_private\getRootSpec()->run();
+		\spectrum\core\_private\getRootSpec()->run();
 		
 		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Function "before" should be call only at building state', $exception->getMessage());
