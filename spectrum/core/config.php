@@ -319,9 +319,7 @@ class config {
 	 * @param string $newClassName
 	 */
 	static public function setClassReplacement($className, $newClassName) {
-		if (static::$locked) {
-			throw new Exception('\spectrum\core\config is locked');
-		}
+		static::throwExceptionIfLocked();
 		
 		$interface = $className . 'Interface';
 		if (interface_exists($interface)) {
@@ -356,10 +354,7 @@ class config {
 	 * @param callable $newFunction
 	 */
 	static public function setFunctionReplacement($functionName, $newFunction) {
-		if (static::$locked) {
-			throw new Exception('\spectrum\core\config is locked');
-		}
-		
+		static::throwExceptionIfLocked();
 		static::$functionReplacements[$functionName] = $newFunction;
 	}
 
@@ -381,9 +376,7 @@ class config {
 /**/
 	
 	static public function registerEventListener($event, $callback, $order = 100) {
-		if (static::$locked) {
-			throw new Exception('\spectrum\core\config is locked');
-		}
+		static::throwExceptionIfLocked();
 		
 		static::$eventListeners[] = array('event' => $event, 'callback' => $callback, 'order' => $order);
 		
@@ -400,9 +393,7 @@ class config {
 	}
 
 	static public function unregisterEventListener($event, $callback = null) {
-		if (static::$locked) {
-			throw new Exception('\spectrum\core\config is locked');
-		}
+		static::throwExceptionIfLocked();
 		
 		if (is_string($callback)) {
 			// Function names are case-insensitive for A-Z chars and case-sensitive for chars with codes from 127 through 255 (0x7f-0xff)
@@ -425,10 +416,7 @@ class config {
 	}
 	
 	static public function unregisterEventListeners() {
-		if (static::$locked) {
-			throw new Exception('\spectrum\core\config is locked');
-		}
-
+		static::throwExceptionIfLocked();
 		static::$eventListeners = array();
 	}
 
