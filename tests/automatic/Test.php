@@ -15,7 +15,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		\spectrum\_private\setCurrentBuildingSpec(null);
 		
 		\spectrum\tests\_testware\tools::backupObjectProperties(\spectrum\_private\getRootSpec());
-		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\config');
+		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\core\config');
 		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\_private\reports\html\components\specList');
 		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\_private\reports\html\components\code\variable');
 		\spectrum\tests\_testware\tools::backupClassStaticProperties('\spectrum\_private\reports\text\components\specList');
@@ -29,7 +29,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\_private\reports\text\components\specList');
 		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\_private\reports\html\components\code\variable');
 		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\_private\reports\html\components\specList');
-		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\config');
+		\spectrum\tests\_testware\tools::restoreClassStaticProperties('\spectrum\core\config');
 		\spectrum\tests\_testware\tools::restoreObjectProperties(\spectrum\_private\getRootSpec());
 
 		parent::tearDown();

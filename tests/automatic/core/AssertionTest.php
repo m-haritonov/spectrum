@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\automatic\core;
 
-use spectrum\config;
+use spectrum\core\config;
 use spectrum\core\Assertion;
 use spectrum\core\AssertionInterface;
 use spectrum\core\details\MatcherCall;

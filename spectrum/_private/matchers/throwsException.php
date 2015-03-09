@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_private\matchers;
 
-use spectrum\config;
+use spectrum\core\config;
 use spectrum\core\types\FunctionType;
 use spectrum\core\Exception;
 

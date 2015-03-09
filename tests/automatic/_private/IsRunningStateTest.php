@@ -14,7 +14,7 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_ReturnsTrue() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
 			$returnValue = \spectrum\_private\isRunningState();
 		});
 		

@@ -544,7 +544,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testCallsAtRunningState_ThrowsException() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
 				\spectrum\group();
 			} catch (\Exception $e) {

@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\automatic;
 
-use spectrum\config;
+use spectrum\core\config;
 
 require_once __DIR__ . '/../init.php';
 

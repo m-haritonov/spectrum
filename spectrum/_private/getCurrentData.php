@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_private;
 
-use spectrum\config;
+use spectrum\core\config;
 use spectrum\core\DataInterface;
 use spectrum\core\SpecInterface;
 

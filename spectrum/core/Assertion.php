@@ -6,8 +6,6 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-use spectrum\config;
-
 /**
  * @property Assertion $not
  * @method Assertion eq($expected)
@@ -101,7 +99,7 @@ class Assertion implements AssertionInterface {
 	 * @return \spectrum\core\details\MatcherCallInterface
 	 */
 	protected function createMatcherCallDetails() {
-		$callDetailsClass = \spectrum\config::getClassReplacement('\spectrum\core\details\MatcherCall');
+		$callDetailsClass = \spectrum\core\config::getClassReplacement('\spectrum\core\details\MatcherCall');
 		return new $callDetailsClass();
 	}
 }

@@ -318,7 +318,7 @@ class TestTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testCallsAtRunningState_ThrowsException() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
 				\spectrum\test();
 			} catch (\Exception $e) {

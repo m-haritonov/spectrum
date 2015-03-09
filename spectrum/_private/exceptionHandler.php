@@ -5,9 +5,9 @@ see the "README.md" file that was distributed with this source code.
 */
 
 set_exception_handler(function(\Exception $exception) {
-	$inputCharset = \spectrum\config::getInputCharset();
-	$outputCharset = \spectrum\config::getOutputCharset();
-	$outputNewline = \spectrum\config::getOutputNewline();
+	$inputCharset = \spectrum\core\config::getInputCharset();
+	$outputCharset = \spectrum\core\config::getOutputCharset();
+	$outputNewline = \spectrum\core\config::getOutputNewline();
 	
 	$exceptionClass = mb_convert_encoding(get_class($exception), $outputCharset, $inputCharset);
 	$exceptionMessage = mb_convert_encoding($exception->getMessage(), $outputCharset, $inputCharset);
@@ -16,7 +16,7 @@ set_exception_handler(function(\Exception $exception) {
 	$exceptionLine = mb_convert_encoding($exception->getLine(), $outputCharset, $inputCharset);
 	$exceptionTrace = mb_convert_encoding($exception->getTraceAsString(), $outputCharset, 'utf-8');
 	
-	if ((string) \spectrum\config::getOutputFormat() === 'html') {
+	if ((string) \spectrum\core\config::getOutputFormat() === 'html') {
 		$outputNewline = '<br />' . $outputNewline;
 		
 		$exceptionClass = htmlspecialchars($exceptionClass, ENT_QUOTES, 'iso-8859-1');

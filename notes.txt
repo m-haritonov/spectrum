@@ -7,7 +7,7 @@ TODO: function -> callback
 TODO: remove vs removeAll
 
 TODO: ContextModifiers::addBefore(), addAfter???
-TODO: config to core
+TODO: _private to core
 TODO: builders to core
 TODO: setCoreClassReplacement
 TODO: Builder "after" -> Function "after"

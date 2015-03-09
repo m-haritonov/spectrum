@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\automatic;
 
-use spectrum\config;
+use spectrum\core\config;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../init.php';
@@ -40,7 +40,7 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtRunningState_ThrowsException() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
 				\spectrum\after(function(){});
 			} catch (\Exception $e) {

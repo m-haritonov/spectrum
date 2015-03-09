@@ -6,8 +6,6 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-use spectrum\config;
-
 class ContextModifiers implements ContextModifiersInterface {
 	/**
 	 * @var array

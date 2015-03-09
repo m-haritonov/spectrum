@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../init.php';
 
 class GetCurrentRunningEndingSpecTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_RootSpecHasNoChildren_ReturnsRootSpec() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
 			$returnValue = \spectrum\_private\getCurrentRunningEndingSpec();
 		});
 		
@@ -22,7 +22,7 @@ class GetCurrentRunningEndingSpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtRunningState_RootSpecHasChildren_ReturnsEndingRunningSpec() {
 		$returnValues = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValues) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValues) {
 			$returnValues[] = \spectrum\_private\getCurrentRunningEndingSpec();
 		});
 		

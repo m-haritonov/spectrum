@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\automatic;
 
-use spectrum\config;
+use spectrum\core\config;
 use spectrum\core\ResultsInterface;
 use spectrum\core\SpecInterface;
 
@@ -18,7 +18,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		config::setClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
 
 		/** @var ResultsInterface $results */
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
 			$results = $spec->getResults();
 			\spectrum\fail("some fail message");
 		});
@@ -41,7 +41,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		
 		/** @var ResultsInterface[] $results */
 		$results = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results, $specs) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results, $specs) {
 			$results[] = $spec->getResults();
 			
 			$selfSpecKey = array_search($spec, $specs, true);
@@ -76,7 +76,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_MessageIsNotSet_AddsFalseResultWithUserFailDetailsAndEmptyMessageToResultsOfCurrentRunningSpec() {
 		/** @var ResultsInterface[] $results */
 		$results = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
 			$results[] = $spec->getResults();
 			\spectrum\fail();
 		});

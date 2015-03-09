@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\automatic\core;
 
-use spectrum\config;
+use spectrum\core\config;
 use spectrum\core\Spec;
 use spectrum\core\SpecInterface;
 
@@ -39,7 +39,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testSetCatchPhpErrors_CallOnRun_ThrowsExceptionAndDoesNotChangeValue() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
 			try {
 				$spec->getErrorHandling()->setCatchPhpErrors(0);
 			} catch (\Exception $e) {
@@ -89,7 +89,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetCatchPhpErrorsThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf() {
 		$returnValues = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
 			$returnValues[] = $spec->getErrorHandling()->getCatchPhpErrorsThroughRunningAncestors();
 		});
 		
@@ -130,7 +130,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testSetBreakOnFirstPhpError_CallOnRun_ThrowsExceptionAndDoesNotChangeValue() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
 			try {
 				$spec->getErrorHandling()->setBreakOnFirstPhpError(false);
 			} catch (\Exception $e) {
@@ -180,7 +180,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetBreakOnFirstPhpErrorThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf() {
 		$returnValues = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
 			$returnValues[] = $spec->getErrorHandling()->getBreakOnFirstPhpErrorThroughRunningAncestors();
 		});
 		
@@ -219,7 +219,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testSetBreakOnFirstMatcherFail_CallOnRun_ThrowsExceptionAndDoesNotChangeValue() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
 			try {
 				$spec->getErrorHandling()->setBreakOnFirstMatcherFail(false);
 			} catch (\Exception $e) {
@@ -270,7 +270,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 	public function testGetBreakOnFirstMatcherFailThroughRunningAncestors_ReturnsValueFromRunningAncestorOrFromSelf() {
 		$returnValues = array();
 		
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$returnValues) {
 			$returnValues[] = $spec->getErrorHandling()->getBreakOnFirstMatcherFailThroughRunningAncestors();
 		});
 		

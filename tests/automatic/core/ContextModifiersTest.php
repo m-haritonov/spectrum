@@ -47,7 +47,7 @@ class ContextModifiersTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testAdd_CallOnRun_ThrowsExceptionAndDoesNotAddValue() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
 			try {
 				$spec->getContextModifiers()->add(function(){}, "before");
 			} catch (\Exception $e) {
@@ -299,7 +299,7 @@ class ContextModifiersTest extends \spectrum\tests\automatic\Test {
 		', array(1 => 'checkpoint'));
 		
 		$returnValues = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$returnValues) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$returnValues) {
 			if ($spec === $specs["checkpoint"]) {
 				$returnValues[] = $spec->getContextModifiers()->getAllThroughRunningAncestors("before");
 			}
@@ -418,7 +418,7 @@ class ContextModifiersTest extends \spectrum\tests\automatic\Test {
 		', array(1 => 'checkpoint'));
 		
 		$returnValues = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$returnValues) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$returnValues) {
 			if ($spec === $specs["checkpoint"]) {
 				$returnValues[] = $spec->getContextModifiers()->getAllThroughRunningAncestors("after");
 			}
@@ -537,7 +537,7 @@ class ContextModifiersTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRemove_CallOnRun_ThrowsExceptionAndDoesNotRemoveValue() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
 			try {
 				$spec->getContextModifiers()->remove(0);
 			} catch (\Exception $e) {
@@ -584,7 +584,7 @@ class ContextModifiersTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testRemoveAll_CallOnRun_ThrowsExceptionAndDoesNotRemoveValues() {
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$exception) {
 			try {
 				$spec->getContextModifiers()->removeAll();
 			} catch (\Exception $e) {

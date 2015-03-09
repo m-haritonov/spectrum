@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_private\reports\html\components\code\variables;
 
-use spectrum\config;
+use spectrum\core\config;
 
 class stringVar extends \spectrum\_private\reports\html\components\component {
 	/**

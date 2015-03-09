@@ -21,7 +21,7 @@ class MessageTest extends \spectrum\tests\automatic\Test {
 		', array('parent1' => 'ending2'));
 		
 		$messages = array();
-		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$messages) {
+		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$messages) {
 			$selfSpecKey = array_search($spec, $specs, true);
 			$parentSpecKey = array_search($spec->getRunningParentSpec(), $specs, true);
 			\spectrum\message("some message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);

@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_private\reports\text\components;
 
-use spectrum\config;
+use spectrum\core\config;
 use spectrum\core\details\MatcherCallInterface;
 use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;

@@ -4,11 +4,12 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic;
+namespace spectrum\tests\automatic\core;
 
-use spectrum\config;
+use spectrum\core\config;
+use spectrum\tests\automatic\Test;
 
-require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../../init.php';
 
 class ConfigTest extends Test {
 	public function testSetInputCharset_SetsNewValue() {
@@ -23,7 +24,7 @@ class ConfigTest extends Test {
 		config::setInputCharset('utf-8');
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setInputCharset('windows-1251');
 		});
 
@@ -55,7 +56,7 @@ class ConfigTest extends Test {
 		config::setOutputCharset('utf-8');
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setOutputCharset('windows-1251');
 		});
 
@@ -87,7 +88,7 @@ class ConfigTest extends Test {
 		config::setOutputFormat('html');
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setOutputFormat('text');
 		});
 
@@ -121,7 +122,7 @@ class ConfigTest extends Test {
 	public function testSetOutputIndention_IncorrectCharIsPassed_ThrowsExceptionAndDoesNotChangeValue() {
 		config::setOutputIndention("\t");
 
-		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect char is passed to "\spectrum\config::setOutputIndention" method (only "\t" and " " chars are allowed)', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect char is passed to "\spectrum\core\config::setOutputIndention" method (only "\t" and " " chars are allowed)', function(){
 			config::setOutputIndention('z');
 		});
 
@@ -132,7 +133,7 @@ class ConfigTest extends Test {
 		config::setOutputIndention("\t");
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setOutputIndention('    ');
 		});
 
@@ -166,7 +167,7 @@ class ConfigTest extends Test {
 	public function testSetOutputNewline_IncorrectCharIsPassed_ThrowsExceptionAndDoesNotChangeValue() {
 		config::setOutputNewline("\n");
 
-		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect char is passed to "\spectrum\config::setOutputNewline" method (only "\r" and "\n" chars are allowed)', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect char is passed to "\spectrum\core\config::setOutputNewline" method (only "\r" and "\n" chars are allowed)', function(){
 			config::setOutputNewline('z');
 		});
 
@@ -177,7 +178,7 @@ class ConfigTest extends Test {
 		config::setOutputNewline("\r\n");
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setOutputNewline("\n");
 		});
 
@@ -211,7 +212,7 @@ class ConfigTest extends Test {
 	public function testSetOutputResults_IncorrectValueIsPassed_ThrowsExceptionAndDoesNotChangeValue() {
 		config::setOutputResults('all');
 
-		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect value is passed to "\spectrum\config::setOutputResults" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect value is passed to "\spectrum\core\config::setOutputResults" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)', function(){
 			config::setOutputResults('z');
 		});
 
@@ -222,7 +223,7 @@ class ConfigTest extends Test {
 		config::setOutputResults('all');
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setOutputResults('fail');
 		});
 
@@ -265,7 +266,7 @@ class ConfigTest extends Test {
 	}
 	
 	public function testSetOutputResults_IncorrectValueIsPassed_ThrowsException() {
-		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect value is passed to "\spectrum\config::hasOutputResults" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect value is passed to "\spectrum\core\config::hasOutputResults" method (only combination of "all", "fail", "success", "empty", "unknown" strings are allowed)', function(){
 			config::hasOutputResults('z');
 		});
 	}
@@ -286,7 +287,7 @@ class ConfigTest extends Test {
 		config::setAllowErrorHandlingModify(true);
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setAllowErrorHandlingModify(false);
 		});
 
@@ -337,7 +338,7 @@ class ConfigTest extends Test {
 		config::setClassReplacement('\spectrum\_private\reports\html\driver', '\aaa');
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setClassReplacement('\spectrum\_private\reports\html\driver', '\bbb');
 		});
 
@@ -366,7 +367,7 @@ class ConfigTest extends Test {
 		config::setFunctionReplacement('\spectrum\_private\translate', '\aaa');
 		config::lock();
 
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::setFunctionReplacement('\spectrum\_private\translate', '\bbb');
 		});
 
@@ -436,7 +437,7 @@ class ConfigTest extends Test {
 		$backup = config::getRegisteredEventListeners();
 		config::lock();
 		
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function() {
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function() {
 			config::registerEventListener('onSpecRunAfter', function(){}, 100);
 		});
 
@@ -571,7 +572,7 @@ class ConfigTest extends Test {
 		$backup = config::getRegisteredEventListeners();
 		
 		config::lock();
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function() use($function){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function() use($function){
 			config::unregisterEventListener('onSpecRunAfter', $function);
 		});
 
@@ -598,7 +599,7 @@ class ConfigTest extends Test {
 		$backup = config::getRegisteredEventListeners();
 		
 		config::lock();
-		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\config is locked', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', '\spectrum\core\config is locked', function(){
 			config::unregisterEventListeners();
 		});
 
