@@ -51,7 +51,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 		$spec->getErrorHandling()->setCatchPhpErrors(1);
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Call of "\spectrum\core\ErrorHandling::setCatchPhpErrors" method is forbidden on run', $exception->getMessage());
 		$this->assertSame(1, $spec->getErrorHandling()->getCatchPhpErrors());
 	}
@@ -62,7 +62,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 		
 		config::setAllowErrorHandlingModify(false);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Error handling modify deny in config', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Error handling modify deny in config', function() use($spec){
 			$spec->getErrorHandling()->setCatchPhpErrors(0);
 		});
 		
@@ -142,7 +142,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 		$spec->getErrorHandling()->setBreakOnFirstPhpError(true);
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Call of "\spectrum\core\ErrorHandling::setBreakOnFirstPhpError" method is forbidden on run', $exception->getMessage());
 		$this->assertSame(true, $spec->getErrorHandling()->getBreakOnFirstPhpError());
 	}
@@ -153,7 +153,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 		
 		config::setAllowErrorHandlingModify(false);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Error handling modify deny in config', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Error handling modify deny in config', function() use($spec){
 			$spec->getErrorHandling()->setBreakOnFirstPhpError(false);
 		});
 		
@@ -231,7 +231,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 		$spec->getErrorHandling()->setBreakOnFirstMatcherFail(true);
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Call of "\spectrum\core\ErrorHandling::setBreakOnFirstMatcherFail" method is forbidden on run', $exception->getMessage());
 		$this->assertSame(true, $spec->getErrorHandling()->getBreakOnFirstMatcherFail());
 	}
@@ -242,7 +242,7 @@ class ErrorHandlingTest extends \spectrum\tests\automatic\Test {
 		
 		config::setAllowErrorHandlingModify(false);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Error handling modify deny in config', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Error handling modify deny in config', function() use($spec){
 			$spec->getErrorHandling()->setBreakOnFirstMatcherFail(false);
 		});
 		

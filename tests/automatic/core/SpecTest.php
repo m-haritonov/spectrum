@@ -73,7 +73,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$specs[1]->disable();
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::enable" method is forbidden on run', function() use($specs) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::enable" method is forbidden on run', function() use($specs) {
 			$specs[0]->run();
 		});
 		
@@ -96,7 +96,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		});
 		
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::disable" method is forbidden on run', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::disable" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -136,7 +136,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->setName('aaa');
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::setName" method is forbidden on run', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::setName" method is forbidden on run', function() use($spec){
 			$spec->run();
 		});
 		
@@ -272,7 +272,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		});
 		$spec = new Spec();
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindParentSpec" method is forbidden on run', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::bindParentSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -356,7 +356,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->bindParentSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindParentSpec" method is forbidden on run', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindParentSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -422,7 +422,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->bindParentSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindAllParentSpecs" method is forbidden on run', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindAllParentSpecs" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -480,7 +480,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		});
 		
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::bindChildSpec" method is forbidden on run', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::bindChildSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -564,7 +564,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->bindChildSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindChildSpec" method is forbidden on run', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindChildSpec" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -630,7 +630,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$spec->bindChildSpec($newSpec);
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::unbindAllChildSpecs" method is forbidden on run', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::unbindAllChildSpecs" method is forbidden on run', function() use($spec) {
 			$spec->run();
 		});
 		
@@ -1163,7 +1163,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			1
 		');
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Method "\spectrum\core\Spec::getSpecsByRunId" should be called from root spec only', function() use($specs){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Method "\spectrum\core\Spec::getSpecsByRunId" should be called from root spec only', function() use($specs){
 			$specs['1']->getSpecsByRunId('r');
 		});
 	}
@@ -1186,7 +1186,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	 */
 	public function testGetSpecsByRunId_RunIdIsIncorrect_ThrowsException($runId) {
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Incorrect run id "' . $runId . '" (id should be in format "r_<number>_<number>_...")', function() use($spec, $runId){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect run id "' . $runId . '" (id should be in format "r_<number>_<number>_...")', function() use($spec, $runId){
 			$spec->getSpecsByRunId($runId);
 		});
 	}
@@ -1200,7 +1200,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			2
 		');
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Spec with index "1" on "2" position of run id "r_1_0" is not exists', function() use($specs){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Spec with index "1" on "2" position of run id "r_1_0" is not exists', function() use($specs){
 			$specs['0']->getSpecsByRunId('r_1_0');
 		});
 	}
@@ -1529,7 +1529,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetRunId_SpecIsNotRunning_ThrowsException() {
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Call of "\spectrum\core\Spec::getRunId" method is available on run only', function() use($spec){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Call of "\spectrum\core\Spec::getRunId" method is available on run only', function() use($spec){
 			$spec->getRunId();
 		});
 	}
@@ -1572,7 +1572,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern($specTreePattern);
 		$specs['spec']->setName('aaa');
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use($specs) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use($specs) {
 			$specs['spec']->run();
 		});
 	}
@@ -1597,7 +1597,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 
 		$specs["callee"]->setName('aaa');
 
-		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use(&$specs) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Spec "aaa" has more than one root ancestors, but for run needs only one general root', function() use(&$specs) {
 			$specs["caller"]->run();
 		});
 		
@@ -1621,7 +1621,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$spec->setName('aaa');
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Spec "aaa" is already running', $exception->getMessage());
 	}
 	
@@ -1643,7 +1643,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$specs["spec"]->setName('aaa');
 
-		$this->assertThrowsException('\spectrum\Exception', 'Spec "aaa" is already running', function() use($specs) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Spec "aaa" is already running', function() use($specs) {
 			$specs[0]->run();
 		});
 		
@@ -1675,7 +1675,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs['callee']->setName('aaa');
 		$specs[0]->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Sibling spec of spec "aaa" is already running', $exception->getMessage());
 	}
 	
@@ -1698,7 +1698,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$specs["callee"]->setName('aaa');
 
-		$this->assertThrowsException('\spectrum\Exception', 'Sibling spec of spec "aaa" is already running', function() use(&$specs) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Sibling spec of spec "aaa" is already running', function() use(&$specs) {
 			$specs[0]->run();
 		});
 		
@@ -2089,7 +2089,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		$specs["callee"]->setName('aaa');
 		$specs["caller"]->run();
 
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Root spec of spec "aaa" is already running', $exception->getMessage());
 	}
 	
@@ -2112,7 +2112,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 		
 		$specs["callee"]->setName('aaa');
 
-		$this->assertThrowsException('\spectrum\Exception', 'Root spec of spec "aaa" is already running', function() use(&$specs) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Root spec of spec "aaa" is already running', function() use(&$specs) {
 			$specs["caller"]->run();
 		});
 		
@@ -3937,7 +3937,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	public function testRun_RootSpecRun_Reports_OutputFormatIsNotSupported_ThrowsException() {
 		config::setOutputFormat('aaa');
 		$spec = new Spec();
-		$this->assertThrowsException('\spectrum\Exception', 'Output format "aaa" is not supported', function() use($spec) {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Output format "aaa" is not supported', function() use($spec) {
 			$spec->run();
 		});
 	}

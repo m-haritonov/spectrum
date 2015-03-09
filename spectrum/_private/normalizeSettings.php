@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\_private;
 
-use spectrum\Exception;
+use spectrum\core\Exception;
 
 /**
  * @example

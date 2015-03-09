@@ -93,7 +93,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtBuildingState_ThrowsException() {
-		$this->assertThrowsException('\spectrum\Exception', 'Builder "fail" should be call only at running state', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Builder "fail" should be call only at running state', function(){
 			\spectrum\fail("aaa");
 		});
 	}

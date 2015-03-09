@@ -5,10 +5,11 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum;
+use spectrum\core\Exception;
 
 /**
  * Adds matcher to current group.
- * @throws \spectrum\Exception If called not at building state
+ * @throws \spectrum\core\Exception If called not at building state
  * @param string $name
  * @param callable $function
  */

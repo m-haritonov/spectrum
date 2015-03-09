@@ -34,7 +34,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testCallsAtBuildingState_ThrowsException() {
-		$this->assertThrowsException('\spectrum\Exception', 'Builder "data" should be call only at running state', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Builder "data" should be call only at running state', function(){
 			\spectrum\data();
 		});
 	}

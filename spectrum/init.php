@@ -50,7 +50,7 @@ require_once __DIR__ . '/_private/usortWithOriginalSequencePreserving.php';
 if (!function_exists('after')) {
 	/**
 	 * Adds "after" context modifier.
-	 * @throws \spectrum\Exception If called not at building state
+	 * @throws \spectrum\core\Exception If called not at building state
 	 * @param callable $function
 	 */
 	function after($function) {
@@ -61,7 +61,7 @@ if (!function_exists('after')) {
 if (!function_exists('be')) {
 	/**
 	 * Creates assertion.
-	 * @throws \spectrum\Exception If called not at running state
+	 * @throws \spectrum\core\Exception If called not at running state
 	 * @param mixed $testedValue
 	 * @return \spectrum\core\AssertionInterface
 	 */
@@ -73,7 +73,7 @@ if (!function_exists('be')) {
 if (!function_exists('before')) {
 	/**
 	 * Adds "before" context modifier.
-	 * @throws \spectrum\Exception If called not at building state
+	 * @throws \spectrum\core\Exception If called not at building state
 	 * @param callable $function
 	 */
 	function before($function) {
@@ -88,7 +88,7 @@ if (!class_exists('config')) {
 if (!function_exists('data')) {
 	/**
 	 * Returns data instance of current test.
-	 * @throws \spectrum\Exception If called not at running state
+	 * @throws \spectrum\core\Exception If called not at running state
 	 * @return \spectrum\core\DataInterface
 	 */
 	function data() {
@@ -99,7 +99,7 @@ if (!function_exists('data')) {
 if (!function_exists('fail')) {
 	/**
 	 * Adds to results of current test false result wits message as details.
-	 * @throws \spectrum\Exception If called not at running state
+	 * @throws \spectrum\core\Exception If called not at running state
 	 * @param null|string $message
 	 */
 	function fail($message = null) {
@@ -124,7 +124,7 @@ if (!function_exists('group')) {
 if (!function_exists('matcher')) {
 	/**
 	 * Adds matcher to current group.
-	 * @throws \spectrum\Exception If called not at building state
+	 * @throws \spectrum\core\Exception If called not at building state
 	 * @param string $name
 	 * @param callable $function
 	 */
@@ -136,7 +136,7 @@ if (!function_exists('matcher')) {
 if (!function_exists('message')) {
 	/**
 	 * Adds message to current test.
-	 * @throws \spectrum\Exception If called not at running state
+	 * @throws \spectrum\core\Exception If called not at running state
 	 */
 	function message($message) {
 		return call_user_func_array(\spectrum\config::getFunctionReplacement('\spectrum\message'), func_get_args());

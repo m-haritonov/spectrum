@@ -7,10 +7,11 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum;
 
 use spectrum\core\DataInterface;
+use spectrum\core\Exception;
 
 /**
  * Returns data instance of current test.
- * @throws \spectrum\Exception If called not at running state
+ * @throws \spectrum\core\Exception If called not at running state
  * @return DataInterface
  */
 function data() {

@@ -44,7 +44,7 @@ class ResultTest extends \spectrum\tests\automatic\Test {
 	public function testSetValue_ResultIsNotTrueAndIsNotFalseAndIsNotNull_ThrowsExceptionAndDoesNotSetResult($wrongValue) {
 		$result = new Result();
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Value accepts only "true", "false" or "null"', function() use($result, $wrongValue){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Value accepts only "true", "false" or "null"', function() use($result, $wrongValue){
 			$result->setValue($wrongValue);
 		});
 		

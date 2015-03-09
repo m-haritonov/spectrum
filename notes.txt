@@ -6,7 +6,15 @@ TODO: удалить unknown, в драйверах вместо задания 
 TODO: function -> callback
 TODO: remove vs removeAll
 
+TODO: ContextModifiers::addBefore(), addAfter???
+TODO: config to core
+TODO: builders to core
+TODO: setCoreClassReplacement
+TODO: Builder "after" -> Function "after"
+TODO: function replacement for matchers
+TODO: loadBaseMatchers -> getBaseMatchers
 TODO: matchers - вместо передачи details передавать значения по ссылке
+TODO: matchers to core?
 TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener
 TODO: test matchers through Assertion
 TODO: избавиться от _private тестов??
@@ -34,6 +42,13 @@ TODO: doc: extension/package use init.php, put private files to _private directo
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
 TODO: обрезать параметры функции при выводе в reports
 
+TODO: config for group:
+	group(function() {
+		config::setOutputNewline();
+		config::setBreakOnFirstPhpError();
+	});
+	
+	Spec::getConfig()
 
 TODO: be()->throwsException vs be()->throws() vs be()->throwing() vs be()->throw()
 TODO: create be()->triggersError/triggers($errorType = null, $errorMessage = null)  ???

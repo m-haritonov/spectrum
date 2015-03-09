@@ -8,7 +8,7 @@ namespace spectrum\_private\matchers;
 
 use spectrum\config;
 use spectrum\core\types\FunctionType;
-use spectrum\Exception;
+use spectrum\core\Exception;
 
 /**
  * Returns true when code in $functionWithTestCode throws exception instance of $expectedClass (if not null) with

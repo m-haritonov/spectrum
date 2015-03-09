@@ -310,7 +310,7 @@ class TestTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testCallsAtBuildingState_BadArgumentsPassed_ThrowsException() {
-		$this->assertThrowsException('\spectrum\Exception', 'Incorrect arguments in "test" builder', function(){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect arguments in "test" builder', function(){
 			\spectrum\test(null, null, function(){}, null, null, null, null);
 		});
 	}
@@ -328,7 +328,7 @@ class TestTest extends \spectrum\tests\automatic\Test {
 		
 		\spectrum\_private\getRootSpec()->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Builder "test" should be call only at building state', $exception->getMessage());
 	}
 }

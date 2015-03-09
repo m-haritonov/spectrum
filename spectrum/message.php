@@ -5,10 +5,11 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum;
+use spectrum\core\Exception;
 
 /**
  * Adds message to current test.
- * @throws \spectrum\Exception If called not at running state
+ * @throws \spectrum\core\Exception If called not at running state
  */
 function message($message) {
 	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\_private\isRunningState');

@@ -536,7 +536,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 /**/
 	
 	public function testCallsAtBuildingState_BadArgumentsPassed_ThrowsException() {
-		$this->assertThrowsException('\spectrum\Exception', 'Incorrect arguments in "group" builder', function() {
+		$this->assertThrowsException('\spectrum\core\Exception', 'Incorrect arguments in "group" builder', function() {
 			\spectrum\group(null, null, function(){}, null, null, null, null);
 		});
 	}
@@ -554,7 +554,7 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		
 		\spectrum\_private\getRootSpec()->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Builder "group" should be call only at building state', $exception->getMessage());
 	}
 }

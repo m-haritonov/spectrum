@@ -37,7 +37,7 @@ class ExecutorTest extends \spectrum\tests\automatic\Test {
 		$spec->getExecutor()->setFunction($function);
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Call of "\spectrum\core\Executor::setFunction" method is forbidden on run', $exception->getMessage());
 		$this->assertSame($function, $spec->getExecutor()->getFunction());
 	}

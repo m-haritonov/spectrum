@@ -8,7 +8,7 @@ namespace spectrum\_private;
 
 use spectrum\config;
 use spectrum\core\SpecInterface;
-use spectrum\Exception;
+use spectrum\core\Exception;
 
 /**
  * @access private

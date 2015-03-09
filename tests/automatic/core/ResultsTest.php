@@ -73,7 +73,7 @@ class ResultsTest extends \spectrum\tests\automatic\Test {
 	public function testAdd_ResultIsNotTrueAndIsNotFalseAndIsNotNull_ThrowsExceptionAndDoesNotAddResult($wrongValue) {
 		$results = new Results(new Spec());
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Value accepts only "true", "false" or "null"', function() use($results, $wrongValue){
+		$this->assertThrowsException('\spectrum\core\Exception', 'Value accepts only "true", "false" or "null"', function() use($results, $wrongValue){
 			$results->add($wrongValue);
 		});
 		

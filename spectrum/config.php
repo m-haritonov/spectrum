@@ -6,6 +6,8 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum;
 
+use spectrum\core\Exception;
+
 class config {
 	/**
 	 * @var string

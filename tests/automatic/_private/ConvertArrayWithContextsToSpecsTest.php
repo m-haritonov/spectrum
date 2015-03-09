@@ -275,7 +275,7 @@ class ConvertArrayWithContextsToSpecsTest extends \spectrum\tests\automatic\Test
 /**/
 	
 	public function testCallsAtBuildingState_ElementIsNotArrayAndNotFunction_ThrowsException() {
-		$this->assertThrowsException('\spectrum\Exception', 'The context row #2 should be an array', function() {
+		$this->assertThrowsException('\spectrum\core\Exception', 'The context row #2 should be an array', function() {
 			\spectrum\_private\convertArrayWithContextsToSpecs(array(
 				'some name 1' => array('a' => 'aaa'),
 				'some name 2' => 'aaa',

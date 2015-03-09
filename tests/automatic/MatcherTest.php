@@ -47,7 +47,7 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 		
 		\spectrum\_private\getRootSpec()->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Builder "matcher" should be call only at building state', $exception->getMessage());
 	}
 }

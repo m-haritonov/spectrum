@@ -6,8 +6,6 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-use spectrum\Exception;
-
 /**
  * Be carefully, this exception not adds to Results and should be throw only for softly break execution.
  */

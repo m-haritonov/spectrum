@@ -51,7 +51,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 		});
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Call of "\spectrum\core\Matchers::add" method is forbidden on run', $exception->getMessage());
 		$this->assertSame(array(), $spec->getMatchers()->getAll());
 	}
@@ -180,7 +180,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 		});
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Call of "\spectrum\core\Matchers::remove" method is forbidden on run', $exception->getMessage());
 		$this->assertSame(array('aaa' => $function1), $spec->getMatchers()->getAll());
 	}
@@ -217,7 +217,7 @@ class MatchersTest extends \spectrum\tests\automatic\Test {
 		});
 		$spec->run();
 		
-		$this->assertInstanceOf('\spectrum\Exception', $exception);
+		$this->assertInstanceOf('\spectrum\core\Exception', $exception);
 		$this->assertSame('Call of "\spectrum\core\Matchers::removeAll" method is forbidden on run', $exception->getMessage());
 		$this->assertSame(array('aaa' => $function1), $spec->getMatchers()->getAll());
 	}
