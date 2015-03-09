@@ -10,6 +10,7 @@ use spectrum\config;
 use spectrum\core\details\MatcherCallInterface;
 use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;
+use spectrum\core\ResultInterface;
 use spectrum\core\SpecInterface;
 
 class results extends \spectrum\_private\reports\html\components\component {
@@ -114,6 +115,7 @@ class results extends \spectrum\_private\reports\html\components\component {
 	}
 
 	/**
+	 * @param ResultInterface[] $results
 	 * @return string
 	 */
 	static protected function getContentForResults(array $results) {
@@ -122,18 +124,19 @@ class results extends \spectrum\_private\reports\html\components\component {
 		$num = 0;
 		foreach ($results as $result) {
 			$num++;
+			$value = $result->getValue();
 			
-			if (!(($result['result'] === false && config::hasOutputResults('all fail')) || ($result['result'] === true && config::hasOutputResults('all success')) || ($result['result'] === null && config::hasOutputResults('all empty')) || ($result['result'] !== false && $result['result'] !== true && $result['result'] !== null && config::hasOutputResults('all unknown')))) {
+			if (!(($value === false && config::hasOutputResults('all fail')) || ($value === true && config::hasOutputResults('all success')) || ($value === null && config::hasOutputResults('all empty')) || ($value !== false && $value !== true && $value !== null && config::hasOutputResults('all unknown')))) {
 				continue;
 			}
 			
-			$content .= '<div class="result ' . static::getResultValueName($result['result']) . '">';
+			$content .= '<div class="result ' . static::getResultValueName($value) . '">';
 			$content .= '<a href="#" class="expand" title="' . static::translateAndEscapeHtml('Show/hide full details (also available by mouse middle click on the card)') . '">' . static::translateAndEscapeHtml('Expand/collapse') . '</a>';
 			$content .= '<div class="num" title="' . static::translateAndEscapeHtml('Order') . '">' . static::translateAndEscapeHtml('No.') . ' ' . $num . '</div>';
-			$content .= '<div class="value" title="' . static::translateAndEscapeHtml('Result') . '">' . static::escapeHtml(static::getResultValueName($result['result'])) . '</div>';
-			$content .= '<div class="type" title="' . static::translateAndEscapeHtml('Type') . '">' . static::translateAndEscapeHtml(static::getType($result['details'])) . '</div>';
+			$content .= '<div class="value" title="' . static::translateAndEscapeHtml('Result') . '">' . static::escapeHtml(static::getResultValueName($value)) . '</div>';
+			$content .= '<div class="type" title="' . static::translateAndEscapeHtml('Type') . '">' . static::translateAndEscapeHtml(static::getType($result->getDetails())) . '</div>';
 			$content .= '<div class="details">';
-			$content .= static::getContentForResultDetails($result['details']);
+			$content .= static::getContentForResultDetails($result->getDetails());
 			$content .= '</div>';
 			$content .= '</div>';
 		}

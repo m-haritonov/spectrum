@@ -6,9 +6,12 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core;
 
-use spectrum\Exception;
+use spectrum\config;
 
 class Results implements ResultsInterface {
+	/**
+	 * @var ResultInterface[]
+	 */
 	protected $results = array();
 
 	/**
@@ -28,22 +31,20 @@ class Results implements ResultsInterface {
 	}
 
 	/**
-	 * @param null|bool $result
+	 * @param null|bool $value
 	 * @param mixed $details Exception object, some string, backtrace info, etc.
 	 */
-	public function add($result, $details = null) {
-		if ($result !== true && $result !== false && $result !== null) {
-			throw new Exception('Results is accept only "true", "false" or "null"');
-		}
-		
-		$this->results[] = array(
-			'result' => $result,
-			'details' => $details,
-		);
+	public function add($value, $details = null) {
+		$resultClass = config::getClassReplacement('\spectrum\core\Result');
+		/** @var ResultInterface $result */
+		$result = new $resultClass;
+		$result->setValue($value);
+		$result->setDetails($details);
+		$this->results[] = $result;
 	}
 
 	/**
-	 * @return array
+	 * @return ResultInterface[]
 	 */
 	public function getAll() {
 		return $this->results;
@@ -55,12 +56,11 @@ class Results implements ResultsInterface {
 	public function getTotal() {
 		$hasNull = false;
 		foreach ($this->results as $result) {
-			if ($result['result'] === false) {
+			$value = $result->getValue();
+			if ($value === false) {
 				return false;
-			} else if ($result['result'] === null) {
+			} else if ($value === null) {
 				$hasNull = true;
-			} else if ($result['result'] !== true) {
-				throw new Exception('Results should be contain "true", "false" or "null" values only (now it is contain value of "' . gettype($result['result']) . '" type)');
 			}
 		}
 

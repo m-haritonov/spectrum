@@ -112,6 +112,7 @@ class config {
 		'\spectrum\core\Executor'         => '\spectrum\core\Executor',
 		'\spectrum\core\Matchers'         => '\spectrum\core\Matchers',
 		'\spectrum\core\Messages'         => '\spectrum\core\Messages',
+		'\spectrum\core\Result'           => '\spectrum\core\Result',
 		'\spectrum\core\Results'          => '\spectrum\core\Results',
 		'\spectrum\core\Spec'             => '\spectrum\core\Spec',
 	);

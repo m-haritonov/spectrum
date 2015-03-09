@@ -10,6 +10,8 @@ use spectrum\config;
 use spectrum\core\Assertion;
 use spectrum\core\AssertionInterface;
 use spectrum\core\details\MatcherCall;
+use spectrum\core\ResultInterface;
+use spectrum\core\ResultsInterface;
 use spectrum\core\Spec;
 use spectrum\core\SpecInterface;
 
@@ -22,6 +24,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results) {
 			$results = $spec->getResults();
 			$assert = new Assertion($spec, null);
@@ -30,7 +33,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec->run();
 		
 		$resultsContent = $results->getAll();
-		$this->assertInstanceOf($matcherCallDetailsClassName, $resultsContent[0]['details']);
+		$this->assertInstanceOf($matcherCallDetailsClassName, $resultsContent[0]->getDetails());
 	}
 	
 	public function testMatcherCall_GetsMatcherFunctionFromRunningAncestorOfOwnerSpecOrFromOwnerSpec() {
@@ -91,6 +94,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_ResetsNotFlagAfterCall() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results) {
 			$results = $spec->getResults();
 		
@@ -102,14 +106,15 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results->getAll();
 		$this->assertSame(2, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertSame(true, $resultsContent[1]['result']);
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertSame(true, $resultsContent[1]->getValue());
 	}
 	
 	public function testMatcherCall_SupportsChainCall() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('aaa', function(){ return true; });
 		$spec->getMatchers()->add('bbb', function(){ return false; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results) {
 			$results = $spec->getResults();
 			
@@ -125,16 +130,17 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results->getAll();
 		$this->assertSame(5, count($resultsContent));
-		$this->assertSame(true, $resultsContent[0]['result']);
-		$this->assertSame(false, $resultsContent[1]['result']);
-		$this->assertSame(false, $resultsContent[2]['result']);
-		$this->assertSame(true, $resultsContent[3]['result']);
-		$this->assertSame(false, $resultsContent[4]['result']);
+		$this->assertSame(true, $resultsContent[0]->getValue());
+		$this->assertSame(false, $resultsContent[1]->getValue());
+		$this->assertSame(false, $resultsContent[2]->getValue());
+		$this->assertSame(true, $resultsContent[3]->getValue());
+		$this->assertSame(false, $resultsContent[4]->getValue());
 	}
 	
 	public function testMatcherCall_MatcherReturnsFalse_AddsFalseWithMatcherCallDetailsToResults() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return false; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results, &$file, &$line) {
 			$results = $spec->getResults();
 		
@@ -147,23 +153,24 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
 		
-		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertSame(false, $resultsContent[0]->getValue());
 		
-		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]['details']);
-		$this->assertSame('aaa bbb', $resultsContent[0]['details']->getTestedValue());
-		$this->assertSame(false, $resultsContent[0]['details']->getNot());
-		$this->assertSame(false, $resultsContent[0]['details']->getResult());
-		$this->assertSame('zzz', $resultsContent[0]['details']->getMatcherName());
-		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]['details']->getMatcherArguments());
-		$this->assertSame(false, $resultsContent[0]['details']->getMatcherReturnValue());
-		$this->assertSame(null, $resultsContent[0]['details']->getMatcherException());
-		$this->assertSame($file, $resultsContent[0]['details']->getFile());
-		$this->assertSame($line, $resultsContent[0]['details']->getLine());
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]->getDetails());
+		$this->assertSame('aaa bbb', $resultsContent[0]->getDetails()->getTestedValue());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getNot());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame('zzz', $resultsContent[0]->getDetails()->getMatcherName());
+		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]->getDetails()->getMatcherArguments());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getMatcherReturnValue());
+		$this->assertSame(null, $resultsContent[0]->getDetails()->getMatcherException());
+		$this->assertSame($file, $resultsContent[0]->getDetails()->getFile());
+		$this->assertSame($line, $resultsContent[0]->getDetails()->getLine());
 	}
 	
 	public function testMatcherCall_MatcherReturnsFalse_CastsResultToFalse() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return 0; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results) {
 			$results = $spec->getResults();
 			$assert = new Assertion($spec, "aaa bbb");
@@ -173,9 +180,9 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertSame(false, $resultsContent[0]['details']->getResult());
-		$this->assertSame(0, $resultsContent[0]['details']->getMatcherReturnValue());
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame(0, $resultsContent[0]->getDetails()->getMatcherReturnValue());
 	}
 	
 	public function testMatcherCall_MatcherReturnsFalse_DoesNotBreakExecution() {
@@ -194,6 +201,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsFalse_NotFlagIsEnabled_AddsTrueWithMatcherCallDetailsToResults() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return false; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results, &$file, &$line) {
 			$results = $spec->getResults();
 		
@@ -206,18 +214,18 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
 		
-		$this->assertSame(true, $resultsContent[0]['result']);
+		$this->assertSame(true, $resultsContent[0]->getValue());
 		
-		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]['details']);
-		$this->assertSame('aaa bbb', $resultsContent[0]['details']->getTestedValue());
-		$this->assertSame(true, $resultsContent[0]['details']->getNot());
-		$this->assertSame(true, $resultsContent[0]['details']->getResult());
-		$this->assertSame('zzz', $resultsContent[0]['details']->getMatcherName());
-		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]['details']->getMatcherArguments());
-		$this->assertSame(false, $resultsContent[0]['details']->getMatcherReturnValue());
-		$this->assertSame(null, $resultsContent[0]['details']->getMatcherException());
-		$this->assertSame($file, $resultsContent[0]['details']->getFile());
-		$this->assertSame($line, $resultsContent[0]['details']->getLine());
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]->getDetails());
+		$this->assertSame('aaa bbb', $resultsContent[0]->getDetails()->getTestedValue());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getNot());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame('zzz', $resultsContent[0]->getDetails()->getMatcherName());
+		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]->getDetails()->getMatcherArguments());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getMatcherReturnValue());
+		$this->assertSame(null, $resultsContent[0]->getDetails()->getMatcherException());
+		$this->assertSame($file, $resultsContent[0]->getDetails()->getFile());
+		$this->assertSame($line, $resultsContent[0]->getDetails()->getLine());
 	}
 	
 	public function testMatcherCall_MatcherReturnsFalse_BreakOnFirstMatcherFailIsTrue_BreaksExecution() {
@@ -275,6 +283,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsTrue_AddsTrueWithMatcherCallDetailsToResults() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results, &$line, &$file) {
 			$results = $spec->getResults();
 		
@@ -287,23 +296,24 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
 		
-		$this->assertSame(true, $resultsContent[0]['result']);
+		$this->assertSame(true, $resultsContent[0]->getValue());
 		
-		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]['details']);
-		$this->assertSame('aaa bbb', $resultsContent[0]['details']->getTestedValue());
-		$this->assertSame(false, $resultsContent[0]['details']->getNot());
-		$this->assertSame(true, $resultsContent[0]['details']->getResult());
-		$this->assertSame('zzz', $resultsContent[0]['details']->getMatcherName());
-		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]['details']->getMatcherArguments());
-		$this->assertSame(true, $resultsContent[0]['details']->getMatcherReturnValue());
-		$this->assertSame(null, $resultsContent[0]['details']->getMatcherException());
-		$this->assertSame($file, $resultsContent[0]['details']->getFile());
-		$this->assertSame($line, $resultsContent[0]['details']->getLine());
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]->getDetails());
+		$this->assertSame('aaa bbb', $resultsContent[0]->getDetails()->getTestedValue());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getNot());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame('zzz', $resultsContent[0]->getDetails()->getMatcherName());
+		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]->getDetails()->getMatcherArguments());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getMatcherReturnValue());
+		$this->assertSame(null, $resultsContent[0]->getDetails()->getMatcherException());
+		$this->assertSame($file, $resultsContent[0]->getDetails()->getFile());
+		$this->assertSame($line, $resultsContent[0]->getDetails()->getLine());
 	}
 	
 	public function testMatcherCall_MatcherReturnsTrue_CastsResultToTrue() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return 1; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results) {
 			$results = $spec->getResults();
 		
@@ -314,9 +324,9 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(true, $resultsContent[0]['result']);
-		$this->assertSame(true, $resultsContent[0]['details']->getResult());
-		$this->assertSame(1, $resultsContent[0]['details']->getMatcherReturnValue());
+		$this->assertSame(true, $resultsContent[0]->getValue());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame(1, $resultsContent[0]->getDetails()->getMatcherReturnValue());
 	}
 	
 	public function testMatcherCall_MatcherReturnsTrue_DoesNotBreakExecution() {
@@ -335,6 +345,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherReturnsTrue_NotFlagIsEnabled_AddsFalseWithMatcherCallDetailsToResults() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results, &$line, &$file) {
 			$results = $spec->getResults();
 		
@@ -347,18 +358,18 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
 		
-		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertSame(false, $resultsContent[0]->getValue());
 		
-		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]['details']);
-		$this->assertSame('aaa bbb', $resultsContent[0]['details']->getTestedValue());
-		$this->assertSame(true, $resultsContent[0]['details']->getNot());
-		$this->assertSame(false, $resultsContent[0]['details']->getResult());
-		$this->assertSame('zzz', $resultsContent[0]['details']->getMatcherName());
-		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]['details']->getMatcherArguments());
-		$this->assertSame(true, $resultsContent[0]['details']->getMatcherReturnValue());
-		$this->assertSame(null, $resultsContent[0]['details']->getMatcherException());
-		$this->assertSame($file, $resultsContent[0]['details']->getFile());
-		$this->assertSame($line, $resultsContent[0]['details']->getLine());
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]->getDetails());
+		$this->assertSame('aaa bbb', $resultsContent[0]->getDetails()->getTestedValue());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getNot());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame('zzz', $resultsContent[0]->getDetails()->getMatcherName());
+		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]->getDetails()->getMatcherArguments());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getMatcherReturnValue());
+		$this->assertSame(null, $resultsContent[0]->getDetails()->getMatcherException());
+		$this->assertSame($file, $resultsContent[0]->getDetails()->getFile());
+		$this->assertSame($line, $resultsContent[0]->getDetails()->getLine());
 	}
 	
 	public function testMatcherCall_MatcherReturnsTrue_BreakOnFirstMatcherFailIsTrue_DoesNotBreakExecution() {
@@ -377,6 +388,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherThrowsException_AddsFalseWithMatcherCallDetailsToResults() {
 		$spec = new Spec();
 		$exception = new \Exception('Something wrong');
+		/** @var ResultsInterface $results */
 		$spec->getMatchers()->add('zzz', function() use($exception){ throw $exception; });
 		$spec->getExecutor()->setFunction(function() use($spec, &$results, &$line, &$file) {
 			$results = $spec->getResults();
@@ -390,19 +402,19 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
 		
-		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertSame(false, $resultsContent[0]->getValue());
 		
-		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]['details']);
-		$this->assertSame('aaa bbb', $resultsContent[0]['details']->getTestedValue());
-		$this->assertSame(false, $resultsContent[0]['details']->getNot());
-		$this->assertSame(false, $resultsContent[0]['details']->getResult());
-		$this->assertSame('zzz', $resultsContent[0]['details']->getMatcherName());
-		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]['details']->getMatcherArguments());
-		$this->assertSame(null, $resultsContent[0]['details']->getMatcherReturnValue());
-		$this->assertSame($exception, $resultsContent[0]['details']->getMatcherException());
-		$this->assertSame('Something wrong', $resultsContent[0]['details']->getMatcherException()->getMessage());
-		$this->assertSame($file, $resultsContent[0]['details']->getFile());
-		$this->assertSame($line, $resultsContent[0]['details']->getLine());
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]->getDetails());
+		$this->assertSame('aaa bbb', $resultsContent[0]->getDetails()->getTestedValue());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getNot());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame('zzz', $resultsContent[0]->getDetails()->getMatcherName());
+		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]->getDetails()->getMatcherArguments());
+		$this->assertSame(null, $resultsContent[0]->getDetails()->getMatcherReturnValue());
+		$this->assertSame($exception, $resultsContent[0]->getDetails()->getMatcherException());
+		$this->assertSame('Something wrong', $resultsContent[0]->getDetails()->getMatcherException()->getMessage());
+		$this->assertSame($file, $resultsContent[0]->getDetails()->getFile());
+		$this->assertSame($line, $resultsContent[0]->getDetails()->getLine());
 	}
 	
 	public function testMatcherCall_MatcherThrowsException_DoesNotBreakExecution() {
@@ -422,6 +434,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec = new Spec();
 		$exception = new \Exception('Something wrong');
 		$spec->getMatchers()->add('zzz', function() use($exception){ throw $exception; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results, &$line, &$file) {
 			$results = $spec->getResults();
 		
@@ -434,19 +447,19 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
 		
-		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertSame(false, $resultsContent[0]->getValue());
 		
-		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]['details']);
-		$this->assertSame('aaa bbb', $resultsContent[0]['details']->getTestedValue());
-		$this->assertSame(true, $resultsContent[0]['details']->getNot());
-		$this->assertSame(false, $resultsContent[0]['details']->getResult());
-		$this->assertSame('zzz', $resultsContent[0]['details']->getMatcherName());
-		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]['details']->getMatcherArguments());
-		$this->assertSame(null, $resultsContent[0]['details']->getMatcherReturnValue());
-		$this->assertSame($exception, $resultsContent[0]['details']->getMatcherException());
-		$this->assertSame('Something wrong', $resultsContent[0]['details']->getMatcherException()->getMessage());
-		$this->assertSame($file, $resultsContent[0]['details']->getFile());
-		$this->assertSame($line, $resultsContent[0]['details']->getLine());
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $resultsContent[0]->getDetails());
+		$this->assertSame('aaa bbb', $resultsContent[0]->getDetails()->getTestedValue());
+		$this->assertSame(true, $resultsContent[0]->getDetails()->getNot());
+		$this->assertSame(false, $resultsContent[0]->getDetails()->getResult());
+		$this->assertSame('zzz', $resultsContent[0]->getDetails()->getMatcherName());
+		$this->assertSame(array('ccc', 'ddd', 'eee'), $resultsContent[0]->getDetails()->getMatcherArguments());
+		$this->assertSame(null, $resultsContent[0]->getDetails()->getMatcherReturnValue());
+		$this->assertSame($exception, $resultsContent[0]->getDetails()->getMatcherException());
+		$this->assertSame('Something wrong', $resultsContent[0]->getDetails()->getMatcherException()->getMessage());
+		$this->assertSame($file, $resultsContent[0]->getDetails()->getFile());
+		$this->assertSame($line, $resultsContent[0]->getDetails()->getLine());
 	}
 	
 	public function testMatcherCall_MatcherThrowsException_BreakOnFirstMatcherFailIsTrue_BreaksExecution() {
@@ -465,6 +478,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_MatcherNotExists_AddsFalseResultToResults() {
 		$spec = new Spec();
 		$spec->getMatchers()->remove('zzz');
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results) {
 			$results = $spec->getResults();
 			$assert = new Assertion($spec, "aaa");
@@ -474,9 +488,9 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertInstanceOf('\spectrum\Exception', $resultsContent[0]['details']);
-		$this->assertSame('Matcher "zzz" not exists', $resultsContent[0]['details']->getMessage());
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertInstanceOf('\spectrum\Exception', $resultsContent[0]->getDetails());
+		$this->assertSame('Matcher "zzz" not exists', $resultsContent[0]->getDetails()->getMessage());
 	}
 	
 	public function testMatcherCall_MatcherNotExists_DoesNotBreakExecution() {
@@ -583,6 +597,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	}
 	
 	public function testEventDispatch_OnMatcherCallFinish_IsDispatchedAfterResultAddToResults() {
+		/** @var ResultInterface[] $results */
 		config::registerEventListener('onMatcherCallFinish', function(SpecInterface $spec) use(&$results) {
 			$results = $spec->getResults()->getAll();
 		});
@@ -596,9 +611,9 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		$spec->run();
 		
 		$this->assertSame(1, count($results));
-		$this->assertSame(false, $results[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]['details']);
-		$this->assertSame('zzz', $results[0]['details']->getMatcherName());
+		$this->assertSame(false, $results[0]->getValue());
+		$this->assertInstanceOf('\spectrum\core\details\MatcherCall', $results[0]->getDetails());
+		$this->assertSame('zzz', $results[0]->getDetails()->getMatcherName());
 	}
 	
 	public function testEventDispatch_OnMatcherCallFinish_IsDispatchedAfterNotFlagReset() {
@@ -611,6 +626,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results, &$assertion) {
 			$results = $spec->getResults();
 		
@@ -621,8 +637,8 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results->getAll();
 		$this->assertSame(2, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertSame(true, $resultsContent[1]['result']);
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertSame(true, $resultsContent[1]->getValue());
 	}
 	
 	public function testEventDispatch_OnMatcherCallFinish_IsDispatchedBeforeExecutionBreak() {
@@ -680,6 +696,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testPropertyAccess_Not_InvertsNotFlag() {
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });
+		/** @var ResultsInterface $results */
 		$spec->getExecutor()->setFunction(function() use($spec, &$results) {
 			$results = $spec->getResults();
 		
@@ -690,7 +707,7 @@ class AssertionTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
+		$this->assertSame(false, $resultsContent[0]->getValue());
 	}
 	
 	public function testPropertyAccess_Not_ReturnsAssertionInstance() {

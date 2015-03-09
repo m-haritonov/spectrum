@@ -5,8 +5,8 @@ see the "README.md" file that was distributed with this source code.
 */
 
 namespace spectrum\tests\automatic\core;
+use spectrum\core\Result;
 use spectrum\core\Results;
-use spectrum\core\ResultsInterface;
 use spectrum\core\Spec;
 
 require_once __DIR__ . '/../../init.php';
@@ -19,6 +19,17 @@ class ResultsTest extends \spectrum\tests\automatic\Test {
 	}
 	
 /**/
+	
+	public function testAdd_AddsResultObjectWithPassedValueAndDetails() {
+		$results = new Results(new Spec());
+		$results->add(true, 'aaa');
+		
+		$resultsContent = $results->getAll();
+		$this->assertSame(1, count($resultsContent));
+		$this->assertTrue($resultsContent[0] instanceof Result);
+		$this->assertSame(true, $resultsContent[0]->getValue());
+		$this->assertSame('aaa', $resultsContent[0]->getDetails());
+	}
 	
 	public function testAdd_AcceptsTrueOrFalseOrNullWithDetailsOrWithoutDetails() {
 		$results = new Results(new Spec());
@@ -39,19 +50,7 @@ class ResultsTest extends \spectrum\tests\automatic\Test {
 		$results->add(false);
 		$results->add(null);
 
-		$this->assertSame(array(
-			array('result' => true, 'details' => $object1),
-			array('result' => false, 'details' => $object2),
-			array('result' => null, 'details' => $object3),
-			
-			array('result' => true, 'details' => 'aaa'),
-			array('result' => false, 'details' => 'bbb'),
-			array('result' => null, 'details' => 'ccc'),
-			
-			array('result' => true, 'details' => null),
-			array('result' => false, 'details' => null),
-			array('result' => null, 'details' => null),
-		), $results->getAll());
+		$this->assertSame(9, count($results->getAll()));
 	}
 	
 	public function providerBadResultValues() {
@@ -71,11 +70,11 @@ class ResultsTest extends \spectrum\tests\automatic\Test {
 	/**
 	 * @dataProvider providerBadResultValues
 	 */
-	public function testAdd_ResultIsNotTrueAndIsNotFalseAndIsNotNull_ThrowsExceptionAndDoesNotAddResult($badResultValue) {
+	public function testAdd_ResultIsNotTrueAndIsNotFalseAndIsNotNull_ThrowsExceptionAndDoesNotAddResult($wrongValue) {
 		$results = new Results(new Spec());
 		
-		$this->assertThrowsException('\spectrum\Exception', 'Results is accept only "true", "false" or "null"', function() use($results, $badResultValue){
-			$results->add($badResultValue);
+		$this->assertThrowsException('\spectrum\Exception', 'Value accepts only "true", "false" or "null"', function() use($results, $wrongValue){
+			$results->add($wrongValue);
 		});
 		
 		$this->assertSame(array(), $results->getAll());
@@ -90,15 +89,16 @@ class ResultsTest extends \spectrum\tests\automatic\Test {
 
 	public function testGetAll_ReturnsAddedResults() {
 		$results = new Results(new Spec());
+		
 		$results->add(true, 'aaa');
 		$results->add(false, 'bbb');
-		$results->add(null, 'ccc');
-
-		$this->assertSame(array(
-			array('result' => true, 'details' => 'aaa'),
-			array('result' => false, 'details' => 'bbb'),
-			array('result' => null, 'details' => 'ccc'),
-		), $results->getAll());
+		$resultsContent = $results->getAll();
+		
+		$this->assertSame(2, count($resultsContent));
+		$this->assertSame(true, $resultsContent[0]->getValue());
+		$this->assertSame('aaa', $resultsContent[0]->getDetails());
+		$this->assertSame(false, $resultsContent[1]->getValue());
+		$this->assertSame('bbb', $resultsContent[1]->getDetails());
 	}
 
 /**/
@@ -143,27 +143,6 @@ class ResultsTest extends \spectrum\tests\automatic\Test {
 		}
 
 		$this->assertSame(false, $results->getTotal());
-	}
-	
-	public function testGetTotal_AnyResultIsNotTrueAndNotNullAndNotFalse_ThrowsException() {
-		$resultsClass = \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\Results {
-				public function add($result, $details = null) {
-					$this->results[] = array(
-						"result" => $result,
-						"details" => $details,
-					);
-				}
-			}
-		');
-		
-		/** @var ResultsInterface $results */
-		$results = new $resultsClass(new Spec());
-		$results->add('aaa');
-
-		$this->assertThrowsException('\spectrum\Exception', 'Results should be contain "true", "false" or "null" values only (now it is contain value of "string" type)', function() use($results){
-			$results->getTotal();
-		});
 	}
 
 	public function providerTrueResult() {

@@ -10,6 +10,7 @@ use spectrum\config;
 use spectrum\core\details\MatcherCallInterface;
 use spectrum\core\details\PhpErrorInterface;
 use spectrum\core\details\UserFailInterface;
+use spectrum\core\ResultInterface;
 use spectrum\core\SpecInterface;
 
 class results extends \spectrum\_private\reports\text\components\component {
@@ -33,6 +34,7 @@ class results extends \spectrum\_private\reports\text\components\component {
 	}
 
 	/**
+	 * @param ResultInterface[] $results
 	 * @return string
 	 */
 	static protected function getContentForResults(array $results) {
@@ -42,8 +44,9 @@ class results extends \spectrum\_private\reports\text\components\component {
 		$hasPreviousResult = false;
 		foreach ($results as $result) {
 			$num++;
+			$value = $result->getValue();
 			
-			if (!(($result['result'] === false && config::hasOutputResults('all fail')) || ($result['result'] === true && config::hasOutputResults('all success')) || ($result['result'] === null && config::hasOutputResults('all empty')) || ($result['result'] !== false && $result['result'] !== true && $result['result'] !== null && config::hasOutputResults('all unknown')))) {
+			if (!(($value === false && config::hasOutputResults('all fail')) || ($value === true && config::hasOutputResults('all success')) || ($value === null && config::hasOutputResults('all empty')) || ($value !== false && $value !== true && $value !== null && config::hasOutputResults('all unknown')))) {
 				continue;
 			}
 			
@@ -52,9 +55,9 @@ class results extends \spectrum\_private\reports\text\components\component {
 			}
 			
 			$content .= static::translate('Order') . ': ' . $num . static::getOutputNewline();
-			$content .= static::translate('Result') . ': ' . static::getResultValueName($result['result']) . static::getOutputNewline();
-			$content .= static::translate('Type') . ': ' . static::translate(static::getType($result['details'])) . static::getOutputNewline();
-			$content .= static::getContentForResultDetails($result['details']);
+			$content .= static::translate('Result') . ': ' . static::getResultValueName($value) . static::getOutputNewline();
+			$content .= static::translate('Type') . ': ' . static::translate(static::getType($result->getDetails())) . static::getOutputNewline();
+			$content .= static::getContentForResultDetails($result->getDetails());
 			
 			$hasPreviousResult = true;
 		}

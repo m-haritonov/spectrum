@@ -17,6 +17,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		$userFailDetailsClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\details\UserFail {}');
 		config::setClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
 
+		/** @var ResultsInterface $results */
 		\spectrum\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
 			$results = $spec->getResults();
 			\spectrum\fail("some fail message");
@@ -25,8 +26,8 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		\spectrum\_private\getRootSpec()->run();
 		
 		$resultsContent = $results->getAll();
-		$this->assertInstanceOf($userFailDetailsClassName, $resultsContent[0]['details']);
-		$this->assertSame('some fail message', $resultsContent[0]['details']->getMessage());
+		$this->assertInstanceOf($userFailDetailsClassName, $resultsContent[0]->getDetails());
+		$this->assertSame('some fail message', $resultsContent[0]->getDetails()->getMessage());
 	}
 	
 	public function testCallsAtRunningState_AddsFalseResultWithUserFailDetailsAndPassedMessageToResultsOfCurrentRunningSpec() {
@@ -55,21 +56,21 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results[0]->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]['details']);
-		$this->assertSame('some fail message for spec ending1 of spec 0', $resultsContent[0]['details']->getMessage());
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]->getDetails());
+		$this->assertSame('some fail message for spec ending1 of spec 0', $resultsContent[0]->getDetails()->getMessage());
 		
 		$resultsContent = $results[1]->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]['details']);
-		$this->assertSame('some fail message for spec ending2 of spec parent1', $resultsContent[0]['details']->getMessage());
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]->getDetails());
+		$this->assertSame('some fail message for spec ending2 of spec parent1', $resultsContent[0]->getDetails()->getMessage());
 		
 		$resultsContent = $results[2]->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]['details']);
-		$this->assertSame('some fail message for spec ending2 of spec parent2', $resultsContent[0]['details']->getMessage());
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]->getDetails());
+		$this->assertSame('some fail message for spec ending2 of spec parent2', $resultsContent[0]->getDetails()->getMessage());
 	}
 	
 	public function testCallsAtRunningState_MessageIsNotSet_AddsFalseResultWithUserFailDetailsAndEmptyMessageToResultsOfCurrentRunningSpec() {
@@ -86,9 +87,9 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		
 		$resultsContent = $results[0]->getAll();
 		$this->assertSame(1, count($resultsContent));
-		$this->assertSame(false, $resultsContent[0]['result']);
-		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]['details']);
-		$this->assertSame(null, $resultsContent[0]['details']->getMessage());
+		$this->assertSame(false, $resultsContent[0]->getValue());
+		$this->assertInstanceOf('\spectrum\core\details\UserFail', $resultsContent[0]->getDetails());
+		$this->assertSame(null, $resultsContent[0]->getDetails()->getMessage());
 	}
 	
 	public function testCallsAtBuildingState_ThrowsException() {

@@ -15,13 +15,13 @@ interface ResultsInterface {
 	public function getOwnerSpec();
 	
 	/**
-	 * @param null|bool $result
-	 * @param mixed $details
+	 * @param null|bool $value
+	 * @param mixed $details Exception object, some string, backtrace info, etc.
 	 */
-	public function add($result, $details = null);
+	public function add($value, $details = null);
 	
 	/**
-	 * @return array
+	 * @return ResultInterface[]
 	 */
 	public function getAll();
 
