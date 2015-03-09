@@ -12,5 +12,5 @@ namespace spectrum;
  * @param null|string $message
  */
 function fail($message = null) {
-	return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\fail'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\fail'), func_get_args());
 }

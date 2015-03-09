@@ -78,21 +78,21 @@ class Spec implements SpecInterface {
 	protected $previousErrorReporting;
 	
 	public function __construct() {
-		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\core\_private\dispatchEvent');
+		$dispatchEventFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\dispatchEvent');
 		$dispatchEventFunction('onSpecConstruct', array($this));
 	}
 
 /**/
 
 	public function enable() {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		$this->isEnabled = true;
 	}
 
 	public function disable() {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		$this->isEnabled = false;
@@ -111,7 +111,7 @@ class Spec implements SpecInterface {
 	 * @param string $name
 	 */
 	public function setName($name) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		$this->name = $name;
@@ -152,7 +152,7 @@ class Spec implements SpecInterface {
 	}
 
 	public function bindParentSpec(SpecInterface $spec) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		if (!$this->hasParentSpec($spec)) {
@@ -165,7 +165,7 @@ class Spec implements SpecInterface {
 	}
 	
 	public function unbindParentSpec(SpecInterface $spec) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		$parentSpecKey = array_search($spec, $this->parentSpecs, true);
@@ -180,7 +180,7 @@ class Spec implements SpecInterface {
 	}
 
 	public function unbindAllParentSpecs() {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		foreach ($this->parentSpecs as $spec) {
@@ -211,7 +211,7 @@ class Spec implements SpecInterface {
 	}
 	
 	public function bindChildSpec(SpecInterface $spec) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		if (!$this->hasChildSpec($spec)) {
@@ -224,7 +224,7 @@ class Spec implements SpecInterface {
 	}
 	
 	public function unbindChildSpec(SpecInterface $spec) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		$childSpecKey = array_search($spec, $this->childSpecs, true);
@@ -239,7 +239,7 @@ class Spec implements SpecInterface {
 	}
 
 	public function unbindAllChildSpecs() {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this, $this, __FUNCTION__);
 		
 		foreach ($this->childSpecs as $spec) {
@@ -388,7 +388,7 @@ class Spec implements SpecInterface {
 	 */
 	public function getContextModifiers() {
 		if (!$this->contextModifiers) {
-			$contextModifiersClass = config::getClassReplacement('\spectrum\core\ContextModifiers');
+			$contextModifiersClass = config::getCoreClassReplacement('\spectrum\core\ContextModifiers');
 			$this->contextModifiers = new $contextModifiersClass($this);
 		}
 		
@@ -400,7 +400,7 @@ class Spec implements SpecInterface {
 	 */
 	public function getData() {
 		if (!$this->data) {
-			$dataClass = config::getClassReplacement('\spectrum\core\Data');
+			$dataClass = config::getCoreClassReplacement('\spectrum\core\Data');
 			$this->data = new $dataClass();
 		}
 		
@@ -412,7 +412,7 @@ class Spec implements SpecInterface {
 	 */
 	public function getErrorHandling() {
 		if (!$this->errorHandling) {
-			$errorHandlingClass = config::getClassReplacement('\spectrum\core\ErrorHandling');
+			$errorHandlingClass = config::getCoreClassReplacement('\spectrum\core\ErrorHandling');
 			$this->errorHandling = new $errorHandlingClass($this);
 		}
 		
@@ -424,7 +424,7 @@ class Spec implements SpecInterface {
 	 */
 	public function getExecutor() {
 		if (!$this->executor) {
-			$testClass = config::getClassReplacement('\spectrum\core\Executor');
+			$testClass = config::getCoreClassReplacement('\spectrum\core\Executor');
 			$this->executor = new $testClass($this);
 		}
 		
@@ -436,7 +436,7 @@ class Spec implements SpecInterface {
 	 */
 	public function getMatchers() {
 		if (!$this->matchers) {
-			$matchersClass = config::getClassReplacement('\spectrum\core\Matchers');
+			$matchersClass = config::getCoreClassReplacement('\spectrum\core\Matchers');
 			$this->matchers = new $matchersClass($this);
 		}
 		
@@ -448,7 +448,7 @@ class Spec implements SpecInterface {
 	 */
 	public function getMessages() {
 		if (!$this->messages) {
-			$messagesClass = config::getClassReplacement('\spectrum\core\Messages');
+			$messagesClass = config::getCoreClassReplacement('\spectrum\core\Messages');
 			$this->messages = new $messagesClass($this);
 		}
 		
@@ -460,7 +460,7 @@ class Spec implements SpecInterface {
 	 */
 	public function getResults() {
 		if (!$this->results) {
-			$resultsClass = config::getClassReplacement('\spectrum\core\Results');
+			$resultsClass = config::getCoreClassReplacement('\spectrum\core\Results');
 			$this->results = new $resultsClass($this);
 		}
 		
@@ -530,7 +530,7 @@ class Spec implements SpecInterface {
 		// Now (after foregoing checks) we knows that this spec is spec without parent or with running parent (and the 
 		// parent for a while has no running children)
 		
-		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\core\_private\dispatchEvent');
+		$dispatchEventFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\dispatchEvent');
 		
 		if (!$this->parentSpecs) {
 			$dispatchEventFunction('onRootSpecRunBefore', array($this));
@@ -590,14 +590,14 @@ class Spec implements SpecInterface {
 	}
 	
 	protected function outputReportBefore() {
-		$getReportClassFunction = config::getFunctionReplacement('\spectrum\core\_private\getReportClass');
+		$getReportClassFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getReportClass');
 		$reportClass = $getReportClassFunction();
 		print $reportClass::getContentBeforeSpec($this);
 		flush();
 	}
 	
 	protected function outputReportAfter() {
-		$getReportClassFunction = config::getFunctionReplacement('\spectrum\core\_private\getReportClass');
+		$getReportClassFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getReportClass');
 		$reportClass = $getReportClassFunction();
 		print $reportClass::getContentAfterSpec($this);
 		flush();
@@ -640,7 +640,7 @@ class Spec implements SpecInterface {
 				return;
 			}
 			
-			$phpErrorDetailsClass = config::getClassReplacement('\spectrum\core\details\PhpError');
+			$phpErrorDetailsClass = config::getCoreClassReplacement('\spectrum\core\details\PhpError');
 			$thisObj->getResults()->add(false, new $phpErrorDetailsClass($errorLevel, $errorMessage, $file, $line));
 
 			if ($thisObj->getErrorHandling()->getBreakOnFirstPhpErrorThroughRunningAncestors()) {
@@ -653,8 +653,8 @@ class Spec implements SpecInterface {
 	}
 	
 	protected function restoreErrorHandler() {
-		$removeSubsequentErrorHandlersFunction = config::getFunctionReplacement('\spectrum\core\_private\removeSubsequentErrorHandlers');
-		$getLastErrorHandlerFunction = config::getFunctionReplacement('\spectrum\core\_private\getLastErrorHandler');
+		$removeSubsequentErrorHandlersFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\removeSubsequentErrorHandlers');
+		$getLastErrorHandlerFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getLastErrorHandler');
 		
 		$removeSubsequentErrorHandlersFunction($this->errorHandler);
 		
@@ -684,7 +684,7 @@ class Spec implements SpecInterface {
 	 * @param string $event
 	 */
 	protected function dispatchEventAndCatchExceptions($event, array $arguments = array()) {
-		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\core\_private\dispatchEvent');
+		$dispatchEventFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\dispatchEvent');
 		$spec = $this;
 		$dispatchEventFunction($event, $arguments, function(\Exception $e) use($spec) {
 			if ($e instanceof BreakException) {

@@ -26,10 +26,10 @@ class ContextModifiers implements ContextModifiersInterface {
 	 * @param string $type "before" or "after"
 	 */
 	public function add($function, $type = 'before') {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
-		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction($type);
 		
 		$this->checkType($type, __FUNCTION__);
@@ -48,7 +48,7 @@ class ContextModifiers implements ContextModifiersInterface {
 		if ($type === null) {
 			return $this->items;
 		} else {
-			$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
+			$convertLatinCharsToLowerCaseFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
 			$type = $convertLatinCharsToLowerCaseFunction($type);
 			
 			$this->checkType($type, __FUNCTION__);
@@ -69,7 +69,7 @@ class ContextModifiers implements ContextModifiersInterface {
 	 * @return array
 	 */
 	public function getAllThroughRunningAncestors($type = 'before') {
-		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction($type);
 		
 		$this->checkType($type, __FUNCTION__);
@@ -93,14 +93,14 @@ class ContextModifiers implements ContextModifiersInterface {
 	 * @param int $index
 	 */
 	public function remove($index) {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		unset($this->items[$index]);
 	}
 
 	public function removeAll() {
-		$handleSpecModifyDenyFunction = config::getFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
+		$handleSpecModifyDenyFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\handleSpecModifyDeny');
 		$handleSpecModifyDenyFunction($this->ownerSpec, $this, __FUNCTION__);
 		
 		$this->items = array();

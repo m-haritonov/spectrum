@@ -28,7 +28,7 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 	}
 
 	public function testCallsAtBuildingState_ReturnsReturnValueOfContextAddFunction() {
-		config::setClassReplacement('\spectrum\core\ContextModifiers', \spectrum\tests\_testware\tools::createClass('
+		config::setCoreClassReplacement('\spectrum\core\ContextModifiers', \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\ContextModifiers {
 				public function add($function, $type = "before") {
 					return "some text";

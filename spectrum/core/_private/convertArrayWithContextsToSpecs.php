@@ -15,7 +15,7 @@ use spectrum\core\Exception;
  * @return SpecInterface[]
  */
 function convertArrayWithContextsToSpecs(array $contexts) {
-	$specClass = config::getClassReplacement('\spectrum\core\Spec');
+	$specClass = config::getCoreClassReplacement('\spectrum\core\Spec');
 	$specs = array();
 	$function = function(){};
 	
@@ -23,11 +23,11 @@ function convertArrayWithContextsToSpecs(array $contexts) {
 	foreach ($contexts as $title => $values) {
 		$num++;
 		if (is_array($values)) {
-			$getArrayWithContextsElementTitleFunction = config::getFunctionReplacement('\spectrum\core\_private\getArrayWithContextsElementTitle');
+			$getArrayWithContextsElementTitleFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getArrayWithContextsElementTitle');
 			$title = $getArrayWithContextsElementTitleFunction($title, $values);
 			
 			$contextModifierFunction = function() use($values){
-				$getCurrentDataFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentData');
+				$getCurrentDataFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentData');
 				$data = $getCurrentDataFunction();
 				foreach ($values as $propertyName => $value) {
 					$data->$propertyName = $value;

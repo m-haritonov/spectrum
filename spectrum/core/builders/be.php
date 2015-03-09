@@ -16,12 +16,12 @@ use spectrum\core\config;
  * @return \spectrum\core\AssertionInterface
  */
 function be($testedValue) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\core\_private\isRunningState');
+	$isRunningStateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
 		throw new Exception('Function "be" should be call only at running state');
 	}
 
-	$assertionClass = config::getClassReplacement('\spectrum\core\Assertion');
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
+	$assertionClass = config::getCoreClassReplacement('\spectrum\core\Assertion');
+	$getCurrentRunningEndingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
 	return new $assertionClass($getCurrentRunningEndingSpecFunction(), $testedValue);
 }

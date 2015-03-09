@@ -20,7 +20,7 @@ require_once __DIR__ . '/../../init.php';
 class AssertionTest extends \spectrum\tests\automatic\Test {
 	public function testMatcherCall_GetsMatcherCallDetailsClassFromConfig() {
 		$matcherCallDetailsClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\details\MatcherCall {}');
-		config::setClassReplacement('\spectrum\core\details\MatcherCall', $matcherCallDetailsClassName);
+		config::setCoreClassReplacement('\spectrum\core\details\MatcherCall', $matcherCallDetailsClassName);
 
 		$spec = new Spec();
 		$spec->getMatchers()->add('zzz', function(){ return true; });

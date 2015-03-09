@@ -13,7 +13,7 @@ use spectrum\core\config;
  * @param callable $checkErrorHandler
  */
 function removeSubsequentErrorHandlers($checkErrorHandler) {
-	$getLastErrorHandlerFunction = config::getFunctionReplacement('\spectrum\core\_private\getLastErrorHandler');
+	$getLastErrorHandlerFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getLastErrorHandler');
 	
 	$errorHandlers = array();
 	while ($lastErrorHandler = $getLastErrorHandlerFunction()) {

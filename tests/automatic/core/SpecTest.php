@@ -1216,7 +1216,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetContextModifiers_UsesConfigForContextModifiersClassGetting() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\ContextModifiers {}');
-		config::setClassReplacement('\spectrum\core\ContextModifiers', $className);
+		config::setCoreClassReplacement('\spectrum\core\ContextModifiers', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getContextModifiers());
 	}
@@ -1232,7 +1232,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetData_UsesConfigForDataClassGetting() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Data {}');
-		config::setClassReplacement('\spectrum\core\Data', $className);
+		config::setCoreClassReplacement('\spectrum\core\Data', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getData());
 	}
@@ -1248,7 +1248,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetErrorHandling_UsesConfigForErrorHandlingClassGetting() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\ErrorHandling {}');
-		config::setClassReplacement('\spectrum\core\ErrorHandling', $className);
+		config::setCoreClassReplacement('\spectrum\core\ErrorHandling', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getErrorHandling());
 	}
@@ -1264,7 +1264,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetMatchers_UsesConfigForMatchersClassGetting() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Matchers {}');
-		config::setClassReplacement('\spectrum\core\Matchers', $className);
+		config::setCoreClassReplacement('\spectrum\core\Matchers', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getMatchers());
 	}
@@ -1280,7 +1280,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 
 	public function testGetMessages_UsesConfigForMessagesClassGetting() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Messages {}');
-		config::setClassReplacement('\spectrum\core\Messages', $className);
+		config::setCoreClassReplacement('\spectrum\core\Messages', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getMessages());
 	}
@@ -1296,7 +1296,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetResults_UsesConfigForResultsClassGetting() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Results {}');
-		config::setClassReplacement('\spectrum\core\Results', $className);
+		config::setCoreClassReplacement('\spectrum\core\Results', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getResults());
 	}
@@ -1312,7 +1312,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testGetExecutor_UsesConfigForExecutorClassGetting() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Executor {}');
-		config::setClassReplacement('\spectrum\core\Executor', $className);
+		config::setCoreClassReplacement('\spectrum\core\Executor', $className);
 		$spec = new Spec();
 		$this->assertInstanceOf($className, $spec->getExecutor());
 	}
@@ -2057,7 +2057,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
+		config::setCoreClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		\spectrum\tests\_testware\tools::$temp["specs"] = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
@@ -2244,7 +2244,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
+		config::setCoreClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		$spec = new Spec();
 		
@@ -2296,7 +2296,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 	
 	public function testRun_RootSpecRun_ErrorHandling_GetsPhpErrorDetailsClassFromConfig() {
 		$phpErrorDetailsClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\details\PhpError {}');
-		config::setClassReplacement('\spectrum\core\details\PhpError', $phpErrorDetailsClassName);
+		config::setCoreClassReplacement('\spectrum\core\details\PhpError', $phpErrorDetailsClassName);
 
 		error_reporting(E_USER_WARNING);
 		
@@ -2695,7 +2695,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
+		config::setCoreClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		$specs = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec
@@ -2777,7 +2777,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
+		config::setCoreClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		$spec = new Spec();
 		$spec->run();
@@ -2888,7 +2888,7 @@ class SpecTest extends \spectrum\tests\automatic\Test {
 			}
 		');
 		
-		config::setClassReplacement('\spectrum\core\Results', $resultsClassName);
+		config::setCoreClassReplacement('\spectrum\core\Results', $resultsClassName);
 		
 		\spectrum\tests\_testware\tools::$temp["specs"] = \spectrum\tests\_testware\tools::createSpecsByListPattern('
 			Spec

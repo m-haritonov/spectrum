@@ -17,11 +17,11 @@ function getRootSpec() {
 	static $rootSpec = null;
 	
 	if (!isset($rootSpec)) {
-		$specClass = config::getClassReplacement('\spectrum\core\Spec');
+		$specClass = config::getCoreClassReplacement('\spectrum\core\Spec');
 		/** @var SpecInterface $rootSpec */
 		$rootSpec = new $specClass();
 		
-		$getBaseMatchersFunction = config::getFunctionReplacement('\spectrum\core\_private\getBaseMatchers');
+		$getBaseMatchersFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getBaseMatchers');
 		foreach ($getBaseMatchersFunction() as $name => $function) {
 			$rootSpec->getMatchers()->add($name, $function);
 		}

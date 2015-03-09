@@ -15,7 +15,7 @@ use spectrum\core\Exception;
  * @return array
  */
 function convertArgumentsForSpec(array $arguments, $builderName) {
-	$convertArgumentsFunction = config::getFunctionReplacement('\spectrum\core\_private\convertArguments');
+	$convertArgumentsFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertArguments');
 	$arguments = $convertArgumentsFunction($arguments, array(
 		array('closure:body'),                                                                                  // function(\Closure $body)
 		array('closure:body', 'null|scalar|array:settings'),                                                    // function(\Closure $body, null|scalar|array $settings)

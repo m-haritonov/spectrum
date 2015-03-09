@@ -14,11 +14,11 @@ use spectrum\core\config;
  * @throws \spectrum\core\Exception If called not at running state
  */
 function message($message) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\core\_private\isRunningState');
+	$isRunningStateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
 		throw new Exception('Function "message" should be call only at running state');
 	}
 	
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
+	$getCurrentRunningEndingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
 	$getCurrentRunningEndingSpecFunction()->getMessages()->add($message);
 }

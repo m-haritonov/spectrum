@@ -245,7 +245,7 @@ class driver {
 	 */
 	static protected function collectAllComponentStyles() {
 		$content = '';
-		foreach (config::getAllClassReplacements() as $class) {
+		foreach (config::getAllCoreClassReplacements() as $class) {
 			if (mb_stripos($class, '\spectrum\core\_private\reports\html\components\\', null, 'us-ascii') === 0) {
 				$styles = $class::getStyles();
 				if ($styles != '') {
@@ -262,7 +262,7 @@ class driver {
 	 */
 	static protected function collectAllComponentScripts() {
 		$content = '';
-		foreach (config::getAllClassReplacements() as $class) {
+		foreach (config::getAllCoreClassReplacements() as $class) {
 			if (mb_stripos($class, '\spectrum\core\_private\reports\html\components\\', null, 'us-ascii') === 0) {
 				$scripts = $class::getScripts();
 				if ($scripts != '') {
@@ -280,7 +280,7 @@ class driver {
 	 * @return mixed
 	 */
 	static protected function callComponentMethod($componentShortName, $methodName, array $arguments = array()) {
-		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\_private\reports\html\components\\' . $componentShortName), $methodName), $arguments);
+		return call_user_func_array(array(config::getCoreClassReplacement('\spectrum\core\_private\reports\html\components\\' . $componentShortName), $methodName), $arguments);
 	}
 
 	/**
@@ -328,7 +328,7 @@ class driver {
 	 * @return string
 	 */
 	static protected function formatTextForOutput($text, $indentionToRemoveCount = 0) {
-		$formatTextForOutputFunction = config::getFunctionReplacement('\spectrum\core\_private\formatTextForOutput');
+		$formatTextForOutputFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\formatTextForOutput');
 		return $formatTextForOutputFunction($text, $indentionToRemoveCount, "\t", "\n", static::escapeHtml(config::getOutputIndention()), static::escapeHtml(config::getOutputNewline()));
 	}
 
@@ -337,7 +337,7 @@ class driver {
 	 * @return string
 	 */
 	static protected function translateAndEscapeHtml($string, array $replacements = array()) {
-		$translateFunction = config::getFunctionReplacement('\spectrum\core\_private\translate');
+		$translateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\translate');
 		return static::escapeHtml($translateFunction($string, $replacements));
 	}
 
@@ -347,7 +347,7 @@ class driver {
 	 * @return string
 	 */
 	static protected function convertToOutputCharset($string, $inputCharset = null) {
-		$convertCharsetFunction = config::getFunctionReplacement('\spectrum\core\_private\convertCharset');
+		$convertCharsetFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertCharset');
 		return $convertCharsetFunction($string, $inputCharset);
 	}
 }

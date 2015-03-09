@@ -21,7 +21,7 @@ class variable extends \spectrum\core\_private\reports\html\components\component
 	 * @return string
 	 */
 	static public function getContent($variable, $depth = 0, $inputCharset = null) {
-		$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
 		$type = $convertLatinCharsToLowerCaseFunction(gettype($variable));
 		
 		if (is_object($variable)) {

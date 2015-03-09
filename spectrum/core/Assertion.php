@@ -53,7 +53,7 @@ class Assertion implements AssertionInterface {
 		$matcherCallDetails->setFile($trace[0]['file']);
 		$matcherCallDetails->setLine($trace[0]['line']);
 		
-		$dispatchEventFunction = config::getFunctionReplacement('\spectrum\core\_private\dispatchEvent');
+		$dispatchEventFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\dispatchEvent');
 		$dispatchEventFunction('onMatcherCallStart', array($this->ownerSpec, $this, $matcherCallDetails));
 		
 		$matcherFunction = $this->ownerSpec->getMatchers()->getThroughRunningAncestors($matcherName);
@@ -99,7 +99,7 @@ class Assertion implements AssertionInterface {
 	 * @return \spectrum\core\details\MatcherCallInterface
 	 */
 	protected function createMatcherCallDetails() {
-		$callDetailsClass = \spectrum\core\config::getClassReplacement('\spectrum\core\details\MatcherCall');
+		$callDetailsClass = \spectrum\core\config::getCoreClassReplacement('\spectrum\core\details\MatcherCall');
 		return new $callDetailsClass();
 	}
 }

@@ -16,13 +16,13 @@ use spectrum\core\SpecInterface;
  * @param null|string $message
  */
 function fail($message = null) {
-	$isRunningStateFunction = config::getFunctionReplacement('\spectrum\core\_private\isRunningState');
+	$isRunningStateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\isRunningState');
 	if (!$isRunningStateFunction()) {
 		throw new Exception('Function "fail" should be call only at running state');
 	}
 
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
-	$userFailDetailsClass = config::getClassReplacement('\spectrum\core\details\UserFail');
+	$getCurrentRunningEndingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
+	$userFailDetailsClass = config::getCoreClassReplacement('\spectrum\core\details\UserFail');
 	/** @var SpecInterface $spec */
 	$spec = $getCurrentRunningEndingSpecFunction();
 	$spec->getResults()->add(false, new $userFailDetailsClass($message));

@@ -12,5 +12,5 @@ namespace spectrum;
  * @param callable $function
  */
 function after($function) {
-	return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\after'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\after'), func_get_args());
 }

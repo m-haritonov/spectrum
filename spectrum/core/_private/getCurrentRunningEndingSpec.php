@@ -14,7 +14,7 @@ use spectrum\core\SpecInterface;
  * @return null|SpecInterface
  */
 function getCurrentRunningEndingSpec() {
-	$getRootSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getRootSpec');
+	$getRootSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getRootSpec');
 	/** @var SpecInterface $rootSpec */
 	$rootSpec = $getRootSpecFunction();
 	if ($rootSpec->isRunning() && !$rootSpec->getChildSpecs()) {

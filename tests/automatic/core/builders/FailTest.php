@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../../init.php';
 class FailTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_GetsUserFailDetailsClassFromConfig() {
 		$userFailDetailsClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\details\UserFail {}');
-		config::setClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
+		config::setCoreClassReplacement('\spectrum\core\details\UserFail', $userFailDetailsClassName);
 
 		/** @var ResultsInterface $results */
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {

@@ -61,7 +61,7 @@ class driver {
 	 * @return mixed
 	 */
 	static protected function callComponentMethod($componentShortName, $methodName, array $arguments = array()) {
-		return call_user_func_array(array(config::getClassReplacement('\spectrum\core\_private\reports\text\components\\' . $componentShortName), $methodName), $arguments);
+		return call_user_func_array(array(config::getCoreClassReplacement('\spectrum\core\_private\reports\text\components\\' . $componentShortName), $methodName), $arguments);
 	}
 
 	/**
@@ -100,7 +100,7 @@ class driver {
 	 * @return string
 	 */
 	static protected function translate($string, array $replacements = array()) {
-		$translateFunction = config::getFunctionReplacement('\spectrum\core\_private\translate');
+		$translateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\translate');
 		return $translateFunction($string, $replacements);
 	}
 
@@ -110,7 +110,7 @@ class driver {
 	 * @return string
 	 */
 	static protected function convertToOutputCharset($string, $inputCharset = null) {
-		$convertCharsetFunction = config::getFunctionReplacement('\spectrum\core\_private\convertCharset');
+		$convertCharsetFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertCharset');
 		return $convertCharsetFunction($string, $inputCharset);
 	}
 }

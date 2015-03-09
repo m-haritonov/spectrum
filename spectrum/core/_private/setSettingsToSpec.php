@@ -14,7 +14,7 @@ use spectrum\core\SpecInterface;
  * @param null|int|bool|array $settings
  */
 function setSettingsToSpec(SpecInterface $spec, $settings) {
-	$normalizeSettingsFunction = config::getFunctionReplacement('\spectrum\core\_private\normalizeSettings');
+	$normalizeSettingsFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\normalizeSettings');
 	$settings = $normalizeSettingsFunction($settings);
 	
 	if ($settings['catchPhpErrors'] !== null) {

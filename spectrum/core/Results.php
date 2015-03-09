@@ -33,7 +33,7 @@ class Results implements ResultsInterface {
 	 * @param mixed $details Exception object, some string, backtrace info, etc.
 	 */
 	public function add($value, $details = null) {
-		$resultClass = config::getClassReplacement('\spectrum\core\Result');
+		$resultClass = config::getCoreClassReplacement('\spectrum\core\Result');
 		/** @var ResultInterface $result */
 		$result = new $resultClass;
 		$result->setValue($value);

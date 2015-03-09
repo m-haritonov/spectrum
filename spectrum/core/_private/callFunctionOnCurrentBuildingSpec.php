@@ -15,10 +15,10 @@ use spectrum\core\SpecInterface;
  * @return mixed
  */
 function callFunctionOnCurrentBuildingSpec($function, SpecInterface $spec) {
-	$getCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentBuildingSpec');
+	$getCurrentBuildingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentBuildingSpec');
 	$specBackup = $getCurrentBuildingSpecFunction();
 	
-	$setCurrentBuildingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\setCurrentBuildingSpec');
+	$setCurrentBuildingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\setCurrentBuildingSpec');
 	$setCurrentBuildingSpecFunction($spec);
 	$returnValue = $function();
 	$setCurrentBuildingSpecFunction($specBackup);

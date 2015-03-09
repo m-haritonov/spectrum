@@ -75,7 +75,7 @@ if (!function_exists('after')) {
 	 * @param callable $function
 	 */
 	function after($function) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\after'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\after'), func_get_args());
 	}
 }
 
@@ -87,7 +87,7 @@ if (!function_exists('be')) {
 	 * @return \spectrum\core\AssertionInterface
 	 */
 	function be($testedValue) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\be'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\be'), func_get_args());
 	}
 }
 
@@ -98,7 +98,7 @@ if (!function_exists('before')) {
 	 * @param callable $function
 	 */
 	function before($function) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\before'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\before'), func_get_args());
 	}
 }
 
@@ -113,7 +113,7 @@ if (!function_exists('data')) {
 	 * @return \spectrum\core\DataInterface
 	 */
 	function data() {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\data'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\data'), func_get_args());
 	}
 }
 
@@ -124,7 +124,7 @@ if (!function_exists('fail')) {
 	 * @param null|string $message
 	 */
 	function fail($message = null) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\fail'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\fail'), func_get_args());
 	}
 }
 
@@ -138,7 +138,7 @@ if (!function_exists('group')) {
 	 * @return \spectrum\core\SpecInterface
 	 */
 	function group($name = null, $contexts = null, $body = null, $settings = null) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\group'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\group'), func_get_args());
 	}
 }
 
@@ -150,7 +150,7 @@ if (!function_exists('matcher')) {
 	 * @param callable $function
 	 */
 	function matcher($name, $function) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\matcher'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\matcher'), func_get_args());
 	}
 }
 
@@ -160,7 +160,7 @@ if (!function_exists('message')) {
 	 * @throws \spectrum\core\Exception If called not at running state
 	 */
 	function message($message) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\message'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\message'), func_get_args());
 	}
 }
 
@@ -169,7 +169,7 @@ if (!function_exists('run')) {
 	 * Runs tests.
 	 */
 	function run() {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\run'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\run'), func_get_args());
 	}
 }
 
@@ -179,7 +179,7 @@ if (!function_exists('self')) {
 	 * @return \spectrum\core\SpecInterface
 	 */
 	function self() {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\self'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\self'), func_get_args());
 	}
 }
 
@@ -193,6 +193,6 @@ if (!function_exists('test')) {
 	 * @return \spectrum\core\SpecInterface
 	 */
 	function test($name = null, $contexts = null, $body = null, $settings = null) {
-		return call_user_func_array(\spectrum\core\config::getFunctionReplacement('\spectrum\core\builders\test'), func_get_args());
+		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\test'), func_get_args());
 	}
 }

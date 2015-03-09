@@ -7,7 +7,6 @@ TODO: function -> callback
 TODO: remove vs removeAll
 
 TODO: ContextModifiers::addBefore(), addAfter???
-TODO: setCoreClassReplacement
 TODO: matchers - вместо передачи details передавать значения по ссылке
 TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener
 TODO: избавиться от _private тестов??

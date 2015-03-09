@@ -14,13 +14,13 @@ use spectrum\core\Exception;
  * @return string
  */
 function getReportClass() {
-	$convertLatinCharsToLowerCaseFunction = config::getFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
+	$convertLatinCharsToLowerCaseFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
 	$outputFormatWithLatinLowerCase = $convertLatinCharsToLowerCaseFunction(config::getOutputFormat());
 	
 	if ($outputFormatWithLatinLowerCase === 'html') {
-		return config::getClassReplacement('\spectrum\core\_private\reports\html\driver');
+		return config::getCoreClassReplacement('\spectrum\core\_private\reports\html\driver');
 	} else if ($outputFormatWithLatinLowerCase === 'text') {
-		return config::getClassReplacement('\spectrum\core\_private\reports\text\driver');
+		return config::getCoreClassReplacement('\spectrum\core\_private\reports\text\driver');
 	} else {
 		throw new Exception('Output format "' . config::getOutputFormat() . '" is not supported');
 	}

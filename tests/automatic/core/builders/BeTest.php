@@ -30,7 +30,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtRunningState_UsesConfigForAssertionClassGetting() {
 		$assertClassName = \spectrum\tests\_testware\tools::createClass('class ... extends \spectrum\core\Assertion {}');
-		config::setClassReplacement('\spectrum\core\Assertion', $assertClassName);
+		config::setCoreClassReplacement('\spectrum\core\Assertion', $assertClassName);
 
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
 			$returnValue = \spectrum\core\builders\be("aaa");
@@ -45,7 +45,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		\spectrum\tests\_testware\tools::$temp["assertion"] = null;
 		\spectrum\tests\_testware\tools::$temp["passedArguments"] = null;
 		
-		config::setClassReplacement('\spectrum\core\Assertion', \spectrum\tests\_testware\tools::createClass('
+		config::setCoreClassReplacement('\spectrum\core\Assertion', \spectrum\tests\_testware\tools::createClass('
 			class ... extends \spectrum\core\Assertion {
 				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue) {
 					\spectrum\tests\_testware\tools::$temp["assertion"] = $this;

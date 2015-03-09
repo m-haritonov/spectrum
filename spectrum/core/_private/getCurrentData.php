@@ -15,7 +15,7 @@ use spectrum\core\SpecInterface;
  * @return null|DataInterface
  */
 function getCurrentData() {
-	$getCurrentRunningEndingSpecFunction = config::getFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
+	$getCurrentRunningEndingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
 	/** @var null|SpecInterface $spec */
 	$spec = $getCurrentRunningEndingSpecFunction();
 	if ($spec) {

@@ -14,13 +14,13 @@ use spectrum\core\config;
  */
 function getBaseMatchers() {
 	return array(
-		'eq' => config::getFunctionReplacement('\spectrum\core\matchers\eq'),
-		'gt' => config::getFunctionReplacement('\spectrum\core\matchers\gt'),
-		'gte' => config::getFunctionReplacement('\spectrum\core\matchers\gte'),
-		'ident' => config::getFunctionReplacement('\spectrum\core\matchers\ident'),
-		'is' => config::getFunctionReplacement('\spectrum\core\matchers\is'),
-		'lt' => config::getFunctionReplacement('\spectrum\core\matchers\lt'),
-		'lte' => config::getFunctionReplacement('\spectrum\core\matchers\lte'),
-		'throwsException' => config::getFunctionReplacement('\spectrum\core\matchers\throwsException'),
+		'eq' => config::getCoreFunctionReplacement('\spectrum\core\matchers\eq'),
+		'gt' => config::getCoreFunctionReplacement('\spectrum\core\matchers\gt'),
+		'gte' => config::getCoreFunctionReplacement('\spectrum\core\matchers\gte'),
+		'ident' => config::getCoreFunctionReplacement('\spectrum\core\matchers\ident'),
+		'is' => config::getCoreFunctionReplacement('\spectrum\core\matchers\is'),
+		'lt' => config::getCoreFunctionReplacement('\spectrum\core\matchers\lt'),
+		'lte' => config::getCoreFunctionReplacement('\spectrum\core\matchers\lte'),
+		'throwsException' => config::getCoreFunctionReplacement('\spectrum\core\matchers\throwsException'),
 	);
 }

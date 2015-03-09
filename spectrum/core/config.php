@@ -45,7 +45,7 @@ class config {
 	/**
 	 * @var array
 	 */
-	static protected $classReplacements = array(
+	static protected $coreClassReplacements = array(
 		'\spectrum\core\_private\reports\html\driver'                                 => '\spectrum\core\_private\reports\html\driver',
 		'\spectrum\core\_private\reports\html\components\detailsControl'              => '\spectrum\core\_private\reports\html\components\detailsControl',
 		'\spectrum\core\_private\reports\html\components\messages'                    => '\spectrum\core\_private\reports\html\components\messages',
@@ -120,7 +120,7 @@ class config {
 	/**
 	 * @var array
 	 */
-	static protected $functionReplacements = array(
+	static protected $coreFunctionReplacements = array(
 		'\spectrum\core\_private\addTestSpec' => '\spectrum\core\_private\addTestSpec',
 		'\spectrum\core\_private\callFunctionOnCurrentBuildingSpec' => '\spectrum\core\_private\callFunctionOnCurrentBuildingSpec',
 		'\spectrum\core\_private\callMethodThroughRunningAncestorSpecs' => '\spectrum\core\_private\callMethodThroughRunningAncestorSpecs',
@@ -328,7 +328,7 @@ class config {
 	 * @param string $className
 	 * @param string $newClassName
 	 */
-	static public function setClassReplacement($className, $newClassName) {
+	static public function setCoreClassReplacement($className, $newClassName) {
 		static::throwExceptionIfLocked();
 		
 		$interface = $className . 'Interface';
@@ -339,22 +339,22 @@ class config {
 			}
 		}
 		
-		static::$classReplacements[$className] = $newClassName;
+		static::$coreClassReplacements[$className] = $newClassName;
 	}
 
 	/**
 	 * @param string $className
 	 * @return string
 	 */
-	static public function getClassReplacement($className) {
-		return static::$classReplacements[$className];
+	static public function getCoreClassReplacement($className) {
+		return static::$coreClassReplacements[$className];
 	}
 
 	/**
 	 * @return array
 	 */
-	static public function getAllClassReplacements() {
-		return static::$classReplacements;
+	static public function getAllCoreClassReplacements() {
+		return static::$coreClassReplacements;
 	}
 	
 /**/
@@ -363,24 +363,24 @@ class config {
 	 * @param string $functionName
 	 * @param callable $newFunction
 	 */
-	static public function setFunctionReplacement($functionName, $newFunction) {
+	static public function setCoreFunctionReplacement($functionName, $newFunction) {
 		static::throwExceptionIfLocked();
-		static::$functionReplacements[$functionName] = $newFunction;
+		static::$coreFunctionReplacements[$functionName] = $newFunction;
 	}
 
 	/**
 	 * @param string $functionName
 	 * @return callable
 	 */
-	static public function getFunctionReplacement($functionName) {
-		return static::$functionReplacements[$functionName];
+	static public function getCoreFunctionReplacement($functionName) {
+		return static::$coreFunctionReplacements[$functionName];
 	}
 
 	/**
 	 * @return array
 	 */
-	static public function getAllFunctionReplacements() {
-		return static::$functionReplacements;
+	static public function getAllCoreFunctionReplacements() {
+		return static::$coreFunctionReplacements;
 	}
 	
 /**/
@@ -390,7 +390,7 @@ class config {
 		
 		static::$eventListeners[] = array('event' => $event, 'callback' => $callback, 'order' => $order);
 		
-		$usortWithOriginalSequencePreservingFunction = config::getFunctionReplacement('\spectrum\core\_private\usortWithOriginalSequencePreserving');
+		$usortWithOriginalSequencePreservingFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\usortWithOriginalSequencePreserving');
 		$usortWithOriginalSequencePreservingFunction(static::$eventListeners, function($a, $b) {
 			if ($a['order'] == $b['order']) {
 				return 0;
@@ -493,7 +493,7 @@ class config {
 	 * @return string
 	 */
 	static protected function convertLatinCharsToLowerCase($string) {
-		$convertLatinCharsToLowerCaseFunction = static::getFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
+		$convertLatinCharsToLowerCaseFunction = static::getCoreFunctionReplacement('\spectrum\core\_private\convertLatinCharsToLowerCase');
 		return $convertLatinCharsToLowerCaseFunction($string);
 	}
 }

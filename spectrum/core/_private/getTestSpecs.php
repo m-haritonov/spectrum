@@ -13,7 +13,7 @@ use spectrum\core\config;
  * @return array
  */
 function getTestSpecs() {
-	$reflection = new \ReflectionFunction(config::getFunctionReplacement('\spectrum\core\_private\addTestSpec'));
+	$reflection = new \ReflectionFunction(config::getCoreFunctionReplacement('\spectrum\core\_private\addTestSpec'));
 	$staticVariables = $reflection->getStaticVariables();
 	
 	if (isset($staticVariables['specs'])) {
