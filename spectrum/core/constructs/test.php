@@ -3,7 +3,7 @@
 This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
-namespace spectrum\core\builders;
+namespace spectrum\core\constructs;
 
 use spectrum\core\config;
 use spectrum\core\Exception;
@@ -27,37 +27,37 @@ function test($name = null, $contexts = null, $body = null, $settings = null) {
 	list($name, $contexts, $body, $settings) = $convertArgumentsForSpecFunction(func_get_args(), 'test');
 	
 	$specClass = config::getCoreClassReplacement('\spectrum\core\models\Spec');
-	/** @var SpecInterface $builderSpec */
-	$builderSpec = new $specClass();
+	/** @var SpecInterface $constructSpec */
+	$constructSpec = new $specClass();
 	
 	if ($name !== null) {
-		$builderSpec->setName($name);
+		$constructSpec->setName($name);
 	}
 	
 	if ($body) {
-		$builderSpec->getExecutor()->setFunction($body);
+		$constructSpec->getExecutor()->setFunction($body);
 	}
 	
 	$setSettingsToSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\setSettingsToSpec');
-	$setSettingsToSpecFunction($builderSpec, $settings);
+	$setSettingsToSpecFunction($constructSpec, $settings);
 	
 	$addTestSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\addTestSpec');
-	$addTestSpecFunction($builderSpec);
+	$addTestSpecFunction($constructSpec);
 	
 	$getCurrentBuildingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentBuildingSpec');
-	$getCurrentBuildingSpecFunction()->bindChildSpec($builderSpec);
+	$getCurrentBuildingSpecFunction()->bindChildSpec($constructSpec);
 	
 	if ($contexts) {
 		if (is_array($contexts)) {
 			$convertArrayWithContextsToSpecsFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertArrayWithContextsToSpecs');
 			foreach ($convertArrayWithContextsToSpecsFunction($contexts) as $contextSpec) {
-				$builderSpec->bindChildSpec($contextSpec);
+				$constructSpec->bindChildSpec($contextSpec);
 			}
 		} else {
 			$callFunctionOnCurrentBuildingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\callFunctionOnCurrentBuildingSpec');
-			$callFunctionOnCurrentBuildingSpecFunction($contexts, $builderSpec);
+			$callFunctionOnCurrentBuildingSpecFunction($contexts, $constructSpec);
 		}
 	}
 	
-	return $builderSpec;
+	return $constructSpec;
 }

@@ -11,5 +11,5 @@ namespace spectrum;
  * @return \spectrum\core\models\SpecInterface
  */
 function self() {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\self'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\self'), func_get_args());
 }

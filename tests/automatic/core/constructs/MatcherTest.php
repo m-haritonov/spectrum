@@ -4,7 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\core\builders;
+namespace spectrum\tests\automatic\core\constructs;
 
 use spectrum\core\config;
 use spectrum\core\models\Spec;
@@ -17,7 +17,7 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 		\spectrum\core\_private\setCurrentBuildingSpec($spec);
 		
 		$function = function(){};
-		\spectrum\core\builders\matcher('aaa', $function);
+		\spectrum\core\constructs\matcher('aaa', $function);
 
 		$this->assertSame($function, $spec->getMatchers()->get('aaa'));
 	}
@@ -25,7 +25,7 @@ class MatcherTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
-				\spectrum\core\builders\matcher("aaa", function(){});
+				\spectrum\core\constructs\matcher("aaa", function(){});
 			} catch (\Exception $e) {
 				$exception = $e;
 			}

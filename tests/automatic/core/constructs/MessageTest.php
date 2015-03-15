@@ -4,7 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\core\builders;
+namespace spectrum\tests\automatic\core\constructs;
 
 use spectrum\core\models\SpecInterface;
 
@@ -24,7 +24,7 @@ class MessageTest extends \spectrum\tests\automatic\Test {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use($specs, &$messages) {
 			$selfSpecKey = array_search($spec, $specs, true);
 			$parentSpecKey = array_search($spec->getRunningParentSpec(), $specs, true);
-			\spectrum\core\builders\message("some message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
+			\spectrum\core\constructs\message("some message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 			
 			$messages[] = $spec->getMessages()->getAll();
 		});
@@ -41,7 +41,7 @@ class MessageTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\core\Exception', 'Function "message" should be call only at running state', function(){
-			\spectrum\core\builders\message("aaa");
+			\spectrum\core\constructs\message("aaa");
 		});
 	}
 }

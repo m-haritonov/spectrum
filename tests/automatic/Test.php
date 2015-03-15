@@ -65,16 +65,16 @@ abstract class Test extends \PHPUnit_Framework_TestCase {
 		$this->fail('Exception "' . $expectedClass . '" not thrown');
 	}
 	
-	final protected function getProviderWithCorrectArgumentsForGroupAndTestBuilders($name = null, $contexts = null, $body = null, $settings = null) {
+	final protected function getProviderWithCorrectArgumentsForGroupAndTestConstructs($name = null, $contexts = null, $body = null, $settings = null) {
 		$values = array(
 			'name' => array('some name text', 123),
 			'contexts' => array(array(), array('aaa' => array('bbb', 'ccc')), function(){}, function(){
-				\spectrum\core\builders\group(null, null, function(){}, null);
-				\spectrum\core\builders\test(null, null, function(){}, null);
+				\spectrum\core\constructs\group(null, null, function(){}, null);
+				\spectrum\core\constructs\test(null, null, function(){}, null);
 			}),
 			'body' => array(function(){}, function(){
-				\spectrum\core\builders\group(null, null, function(){}, null);
-				\spectrum\core\builders\test(null, null, function(){}, null);
+				\spectrum\core\constructs\group(null, null, function(){}, null);
+				\spectrum\core\constructs\test(null, null, function(){}, null);
 			}),
 			'settings' => array(true, false, 8, array(), array('breakOnFirstPhpError' => false), array(
 				'catchPhpErrors' => 8,

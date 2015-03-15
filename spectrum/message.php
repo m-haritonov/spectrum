@@ -11,5 +11,5 @@ namespace spectrum;
  * @throws \spectrum\core\Exception If called not at running state
  */
 function message($message) {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\message'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\message'), func_get_args());
 }

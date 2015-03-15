@@ -4,7 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\core\builders;
+namespace spectrum\tests\automatic\core\constructs;
 
 use spectrum\core\config;
 
@@ -16,7 +16,7 @@ class RunTest extends \spectrum\tests\automatic\Test {
 			$isRootSpecRun = true;
 		});
 		
-		\spectrum\core\builders\run();
+		\spectrum\core\constructs\run();
 		
 		$this->assertTrue($isRootSpecRun);
 	}
@@ -26,19 +26,19 @@ class RunTest extends \spectrum\tests\automatic\Test {
 			\spectrum\core\_private\getRootSpec()->getResults()->add(false);
 		});
 		
-		$this->assertFalse(\spectrum\core\builders\run());
+		$this->assertFalse(\spectrum\core\constructs\run());
 		
 		\spectrum\core\_private\getRootSpec()->getExecutor()->setFunction(function(){
 			\spectrum\core\_private\getRootSpec()->getResults()->add(true);
 		});
 		
-		$this->assertTrue(\spectrum\core\builders\run());
+		$this->assertTrue(\spectrum\core\constructs\run());
 		
 		\spectrum\core\_private\getRootSpec()->getExecutor()->setFunction(function(){
 			\spectrum\core\_private\getRootSpec()->getResults()->add(null);
 		});
 		
-		$this->assertNull(\spectrum\core\builders\run());
+		$this->assertNull(\spectrum\core\constructs\run());
 	}
 	
 	public function testLocksConfigBeforeRun() {
@@ -48,7 +48,7 @@ class RunTest extends \spectrum\tests\automatic\Test {
 		
 		$this->assertFalse(config::isLocked());
 		
-		\spectrum\core\builders\run();
+		\spectrum\core\constructs\run();
 		
 		$this->assertTrue($isLocked);
 		$this->assertTrue(config::isLocked());

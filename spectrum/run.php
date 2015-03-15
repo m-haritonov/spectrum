@@ -11,5 +11,5 @@ namespace spectrum;
  * @return null|bool
  */
 function run() {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\run'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\run'), func_get_args());
 }

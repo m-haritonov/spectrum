@@ -13,5 +13,5 @@ namespace spectrum;
  * @return \spectrum\core\models\AssertionInterface
  */
 function be($testedValue) {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\be'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\be'), func_get_args());
 }

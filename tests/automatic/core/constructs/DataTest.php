@@ -4,7 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\core\builders;
+namespace spectrum\tests\automatic\core\constructs;
 
 require_once __DIR__ . '/../../../init.php';
 
@@ -25,7 +25,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 		foreach ($specs as $spec) {
 			$spec->getExecutor()->setFunction(function() use(&$dataObjects, &$returnValues, $spec) {
 				$dataObjects[] = $spec->getData();
-				$returnValues[] = \spectrum\core\builders\data();
+				$returnValues[] = \spectrum\core\constructs\data();
 			});
 		}
 		
@@ -35,7 +35,7 @@ class DataTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\core\Exception', 'Function "data" should be call only at running state', function(){
-			\spectrum\core\builders\data();
+			\spectrum\core\constructs\data();
 		});
 	}
 }

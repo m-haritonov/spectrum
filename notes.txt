@@ -1,7 +1,4 @@
-TODO: move builders/* to core
-
-
-TODO: change architecture from "first build all, then run all" to "build and run, build and run, etc.", change context feature, add combination feature, replace group and test builders to spec ..., replace ContextModifiers class to Befores and Afters classes
+TODO: change architecture from "first build all, then run all" to "build and run, build and run, etc.", change context feature, add combination feature, replace group and test constructs to spec ..., replace ContextModifiers class to Befores and Afters classes
 
 TODO: test('', array(
 	array('name', 'name', 'name),

@@ -11,10 +11,10 @@ use spectrum\core\Exception;
 
 /**
  * @access private
- * @param string $builderName
+ * @param string $constructName
  * @return array
  */
-function convertArgumentsForSpec(array $arguments, $builderName) {
+function convertArgumentsForSpec(array $arguments, $constructName) {
 	$convertArgumentsFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertArguments');
 	$arguments = $convertArgumentsFunction($arguments, array(
 		array('closure:body'),                                                                                  // function(\Closure $body)
@@ -33,7 +33,7 @@ function convertArgumentsForSpec(array $arguments, $builderName) {
 	));
 	
 	if ($arguments === null) {
-		throw new Exception('Incorrect arguments in "' . $builderName . '" builder');
+		throw new Exception('Incorrect arguments in "' . $constructName . '" construct');
 	}
 	
 	return $arguments;

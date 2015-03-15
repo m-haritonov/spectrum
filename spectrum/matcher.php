@@ -13,5 +13,5 @@ namespace spectrum;
  * @param callable $function
  */
 function matcher($name, $function) {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\matcher'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\matcher'), func_get_args());
 }

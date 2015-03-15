@@ -4,7 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\core\builders;
+namespace spectrum\tests\automatic\core\constructs;
 
 use spectrum\core\config;
 use spectrum\core\models\ResultsInterface;
@@ -20,7 +20,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		/** @var ResultsInterface $results */
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
 			$results = $spec->getResults();
-			\spectrum\core\builders\fail("some fail message");
+			\spectrum\core\constructs\fail("some fail message");
 		});
 		
 		\spectrum\core\_private\getRootSpec()->run();
@@ -46,7 +46,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 			
 			$selfSpecKey = array_search($spec, $specs, true);
 			$parentSpecKey = array_search($spec->getRunningParentSpec(), $specs, true);
-			\spectrum\core\builders\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
+			\spectrum\core\constructs\fail("some fail message for spec " . $selfSpecKey . " of spec " . $parentSpecKey);
 		});
 		
 		\spectrum\core\_private\getRootSpec()->bindChildSpec($specs[0]);
@@ -78,7 +78,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 		$results = array();
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function(SpecInterface $spec) use(&$results) {
 			$results[] = $spec->getResults();
-			\spectrum\core\builders\fail();
+			\spectrum\core\constructs\fail();
 		});
 		
 		\spectrum\core\_private\getRootSpec()->run();
@@ -94,7 +94,7 @@ class FailTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\core\Exception', 'Function "fail" should be call only at running state', function(){
-			\spectrum\core\builders\fail("aaa");
+			\spectrum\core\constructs\fail("aaa");
 		});
 	}
 }

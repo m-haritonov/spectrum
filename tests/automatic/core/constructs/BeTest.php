@@ -4,7 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\core\builders;
+namespace spectrum\tests\automatic\core\constructs;
 
 use spectrum\core\config;
 use spectrum\core\models\Spec;
@@ -16,8 +16,8 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		$returnValues = array();
 		
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValues) {
-			$returnValues[] = \spectrum\core\builders\be("aaa");
-			$returnValues[] = \spectrum\core\builders\be("aaa");
+			$returnValues[] = \spectrum\core\constructs\be("aaa");
+			$returnValues[] = \spectrum\core\constructs\be("aaa");
 		});
 		
 		\spectrum\core\_private\getRootSpec()->run();
@@ -33,7 +33,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		config::setCoreClassReplacement('\spectrum\core\models\Assertion', $assertClassName);
 
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
-			$returnValue = \spectrum\core\builders\be("aaa");
+			$returnValue = \spectrum\core\constructs\be("aaa");
 		});
 		
 		\spectrum\core\_private\getRootSpec()->run();
@@ -55,7 +55,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 		'));
 		
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$returnValue) {
-			$returnValue = \spectrum\core\builders\be("aaa");
+			$returnValue = \spectrum\core\constructs\be("aaa");
 		});
 		
 		$spec = new Spec();
@@ -72,7 +72,7 @@ class BeTest extends \spectrum\tests\automatic\Test {
 	
 	public function testCallsAtBuildingState_ThrowsException() {
 		$this->assertThrowsException('\spectrum\core\Exception', 'Function "be" should be call only at running state', function(){
-			\spectrum\core\builders\be("aaa");
+			\spectrum\core\constructs\be("aaa");
 		});
 	}
 }

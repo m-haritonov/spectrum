@@ -12,5 +12,5 @@ namespace spectrum;
  * @return \spectrum\core\models\DataInterface
  */
 function data() {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\data'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\data'), func_get_args());
 }

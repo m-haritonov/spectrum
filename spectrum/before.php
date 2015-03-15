@@ -12,5 +12,5 @@ namespace spectrum;
  * @param callable $function
  */
 function before($function) {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\before'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\before'), func_get_args());
 }

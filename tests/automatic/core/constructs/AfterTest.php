@@ -4,7 +4,7 @@ This file is part of the Spectrum. For the copyright and license information,
 see the "README.md" file that was distributed with this source code.
 */
 
-namespace spectrum\tests\automatic\core\builders;
+namespace spectrum\tests\automatic\core\constructs;
 
 use spectrum\core\config;
 use spectrum\core\models\Spec;
@@ -18,8 +18,8 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 		
 		$function1 = function(){};
 		$function2 = function(){};
-		\spectrum\core\builders\after($function1);
-		\spectrum\core\builders\after($function2);
+		\spectrum\core\constructs\after($function1);
+		\spectrum\core\constructs\after($function2);
 
 		$this->assertSame(array(
 			array('function' => $function1, 'type' => 'after'),
@@ -30,7 +30,7 @@ class AfterTest extends \spectrum\tests\automatic\Test {
 	public function testCallsAtRunningState_ThrowsException() {
 		\spectrum\core\config::registerEventListener('onEndingSpecExecuteBefore', function() use(&$exception) {
 			try {
-				\spectrum\core\builders\after(function(){});
+				\spectrum\core\constructs\after(function(){});
 			} catch (\Exception $e) {
 				$exception = $e;
 			}

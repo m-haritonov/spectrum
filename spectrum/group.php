@@ -15,5 +15,5 @@ namespace spectrum;
  * @return \spectrum\core\models\SpecInterface
  */
 function group($name = null, $contexts = null, $body = null, $settings = null) {
-	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\group'), func_get_args());
+	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\constructs\group'), func_get_args());
 }
