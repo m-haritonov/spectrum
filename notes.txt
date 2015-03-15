@@ -1,45 +1,7 @@
-TODO: move notes.txt content to README.md "Development notes" section
-TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
-TODO: fix reports in all browsers
-TODO: \spectrum\run должен возвращать строку вместо bool/null?
-TODO: удалить unknown, в драйверах вместо задания unknown выбрасывать исключение
-TODO: function -> callback
-TODO: remove vs removeAll
+TODO: move builders/* to core
 
-TODO: ContextModifiers::addBefore(), addAfter???
-TODO: matchers - вместо передачи details передавать значения по ссылке
-TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener
 
-TODO: config::enableReports()
-TODO: setReportsClass(class), \core\ReportsInterface, Spec::getReports
-TODO: добавить doc комментарии для поддержки рефакторинга
-
-TODO: doc: you can create own functions like describe/it
-TODO: doc: you can use be() in contexts and matchers
-TODO: doc: extension/package use init.php, put private files to _private directory
-
-TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
-TODO: обрезать параметры функции при выводе в reports
-
-TODO: config for group:
-	group(function() {
-		config::setOutputNewline();
-		config::setBreakOnFirstPhpError();
-	});
-	
-	Spec::getConfig()
-
-TODO: be()->throwsException vs be()->throws() vs be()->throwing() vs be()->throw()
-TODO: create be()->triggersError/triggers($errorType = null, $errorMessage = null)  ???
-TODO: create settings.captureOutput/Print (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов)
-TODO: create settings.backupGlobalVariables ???
-TODO: be(function(){})->outputs/prints('aaa a aaaaa ');
-
-TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
-TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
-TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
-TODO: set breakOnFirstMatcherFail to true by default
-TODO: add tests for charset usages
+TODO: change architecture from "first build all, then run all" to "build and run, build and run, etc.", change context feature, add combination feature, replace group and test builders to spec ..., replace ContextModifiers class to Befores and Afters classes
 
 TODO: test('', array(
 	array('name', 'name', 'name),
@@ -69,6 +31,7 @@ TODO: change context declaration style???
 	group('', function(){});
 	
 	
+	
 	// from:
 	test('', function(){}, function(){});
 	
@@ -77,6 +40,7 @@ TODO: change context declaration style???
 		contexts(function(){});
 		test('', function(){});
 	});
+	
 	
 	
 	// from:
@@ -105,6 +69,377 @@ TODO: change context declaration style???
 		// When there is one spec in group, then uses "down" type
 		test('', function(){});
 	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+spec('aaa', function() {
+	be(8)->eq('8');
+	
+	before(function() {
+		data()->aaa = 1;
+	});
+	
+	spec('bbb', function() {
+		be(8)->eq('8');
+	});
+	
+	spec('ccc', function() {
+		be(8)->eq('8');
+	});
+})
+
+
+
+
+spec('MySql', function() {
+	before(function() {
+		data()->aaa = 'MySql';
+	});
+	
+	spec('MyClass', function() {})
+})
+
+spec('Files', function() {
+	before(function() {
+		data()->aaa = 'files';
+	});
+	
+	spec('MyClass', function() {})
+})
+
+
+combine(function(){ spec('MySql'); spec('Files'); }, function(){ spec('MyClass'); });
+
+
+spec('SomeStorage', function() {
+	spec('MySql', function() {
+		before(function() {
+			data()->aaa = 'MySql';
+		});
+	});
+	
+	spec('Files', function() {
+		before(function() {
+			data()->aaa = 'files';
+		});
+	});
+}, function() {
+	spec('MyClass', function() {})
+});
+
+
+spec('SomeStorage', array(
+	function() {
+		spec('MySql', function() {
+			before(function() {
+				data()->aaa = 'MySql';
+			});
+		});
+		
+		spec('Files', function() {
+			before(function() {
+				data()->aaa = 'files';
+			});
+		});
+	},
+	function() {
+		spec('MyClass', function() {})
+	}
+));
+
+
+
+spec('someProject', function() {
+	spec('someFunction', array(
+		'aaa' => array(1, 2, 3),
+		'bbb' => function() { return array(); },
+		'ccc' => array(1, 2, 3),
+	), function() {
+		spec('ccc = 1', function() {
+			before(function() {
+				data()->ccc = 1;
+			});
+		});
+	}, function() {
+		be(\someProject\someFunction('aaa'))->ident('bbb');
+	});
+});
+
+
+spec('someProject', function() {
+	spec('someFunction', array(
+		'aaa' => array(1, 2, 3),
+		'bbb' => function() { return array(); },
+		'ccc' => array(1, 2, 3),
+	), function() {
+		be(\someProject\someFunction('aaa'))->ident('bbb');
+	});
+});
+
+spec('someProject', function() {
+	spec('someFunction', [
+		'aaa' => array(1, 2, 3),
+		'ccc' => array(1, 2, 3),
+		array(
+			array('priceInt' => 1, 'expectedPriceInt' => 1),
+			array('priceInt' => 10, 'expectedPriceInt' => 10),
+			array('priceInt' => 1000, 'expectedPriceInt' => '1 000'),
+		),
+		array(
+			array('priceFraction' => '.0', 'expectedPriceFraction' => '.00'),
+			array('priceFraction' => '.00', 'expectedPriceFraction' => '.00'),
+			array('priceFraction' => '.1000', 'expectedPriceFraction' => '.10'),
+		),
+		function() {
+			message(data()->expectedPriceInt . data()->expectedPriceFraction); // If you want see that you generate correct expected price
+			be(\currency\formatPrice(data()->priceInt . data()->priceFraction))->ident(data()->expectedPriceInt . data()->expectedPriceFraction);
+		},
+		function() {
+			be(\currency\formatPrice('aaa'))->ident('bbb');
+		}
+	]);
+});
+
+
+
+
+spec('someProject', function() {
+	spec('someFunction', array(
+		function() {
+			spec('aaaaaaa', function() {
+				before(function() {
+					data()->a = 1;
+					data()->b = 1;
+					data()->c = 1;
+				});
+			});
+			
+			spec('aaaaaaa', function() {
+				before(function() {
+					data()->a = 2;
+					data()->b = 2;
+					data()->c = 2;
+				});
+			});
+		},
+		function() {
+			spec('aaaaaaa', function() {
+				before(function() {
+					data()->a = 1;
+					data()->b = 1;
+					data()->c = 1;
+				});
+			});
+			
+			spec('aaaaaaa', function() {
+				before(function() {
+					data()->a = 2;
+					data()->b = 2;
+					data()->c = 2;
+				});
+			});
+		},
+		function() {
+			spec('aaaaaaa', function() {
+				before(function() {
+					data()->a = 1;
+					data()->b = 1;
+					data()->c = 1;
+				});
+				
+				spec('aaaaaaa', function() {
+					before(function() {
+						data()->a = 1;
+						data()->b = 1;
+						data()->c = 1;
+					});
+				});
+			});
+			
+			spec('aaaaaaa', function() {
+				before(function() {
+					data()->a = 2;
+					data()->b = 2;
+					data()->c = 2;
+				});
+			});
+		},
+		function() {
+			be(\someProject\someFunction('aaa'))->ident('bbb');
+		},
+		function() {
+			be(\someProject\someFunction('aaa'))->ident('bbb');
+		}
+	));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+spec('aaa', function() {
+	spec('1', function(){
+		before(function() {
+			data()->aaa = 1;
+		});
+	});
+	
+	spec('2', function(){
+		before(function() {
+			data()->aaa = 2;
+		});
+	});
+}, function() {
+	
+	be->eq('8');
+	
+	before(function() {
+		data()->qwe = 12;
+	});
+	
+	after(function() {
+		data()->qwe = 12;
+	});
+	
+	spec('', function() {});
+})
+	
+
+combine(function(){ spec('MySql'); spec('Files'); }, function(){ spec('MyClass'); });
+combine(function(){ spec('MySql'); }, function(){ spec('MyClass'); spec('MyClass'); spec('MyClass'); spec('MyClass'); });
+
+
+TODO:
+		combine(array('aaa' => array(1, 2, 3), function(){ spec(); spec(); }))
+		1
+			4
+				7
+				8
+				9
+			5
+				7
+				8
+				9
+			6
+				7
+				8
+				9
+		2
+			4
+				7
+				8
+				9
+			5
+				7
+				8
+				9
+			6
+				7
+				8
+				9
+		3
+			4
+				7
+				8
+				9
+			5
+				7
+				8
+				9
+			6
+				7
+				8
+				9
+		
+TODO: _private/registry
+TODO: throw exception if before/after is called after spec
+TODO: be()->eq() vs be()->equals(), be()->ident() vs be()->idents()	
+TODO: Assertion -> Be
+TODO: ContextModifiers -> Befores, Afters
+TODO: Assertion -> Be
+TODO: setBreakOnFirstUserFail
+TODO: pattern('aaa', function($a, $b) {}), pattern('aaa', array($a, $b))
+TODO: onSpecCallStart, onSpecCallFinish, onBeforeCallStart, onBeforeCallFinish, onAfterCallStart, onAfterCallFinish, onBeCallStart, onBeCallFinish, ...
+TODO: move notes.txt content to README.md "Development notes" section
+TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
+TODO: fix reports in all browsers
+TODO: \spectrum\run должен возвращать строку вместо bool/null?
+TODO: удалить unknown, в драйверах вместо задания unknown выбрасывать исключение
+TODO: function -> callback
+TODO: remove vs removeAll
+TODO: improve FunctionType
+
+TODO: ContextModifiers::addBefore(), addAfter???
+TODO: matchers - вместо передачи details передавать значения по ссылке
+TODO: hasRegisteredEventListener -> hasEventListener, unregisterEventListeners -> removeEventListeners, registerEventListener -> addEventListener
+
+TODO: config::enableReports()
+TODO: setReportsClass(class), \core\ReportsInterface, Spec::getReports
+TODO: добавить doc комментарии для поддержки рефакторинга
+
+TODO: doc: you can create own functions like describe/it
+TODO: doc: you can use be() in contexts and matchers
+TODO: doc: extension/package use init.php, put private files to _private directory
+
+TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
+TODO: обрезать параметры функции при выводе в reports
+
+TODO: config for group:
+	group(function() {
+		config::setOutputNewline();
+		config::setBreakOnFirstPhpError();
+	});
+	
+	Spec::getConfig()
+	
+	
+	
+
+
+TODO: be()->throwsException vs be()->throws() vs be()->throwing() vs be()->throw()
+TODO: create be()->triggersError/triggers/error($errorType = null, $errorMessage = null)  ???
+TODO: create settings.captureOutput/Print (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов)
+TODO: create settings.backupGlobalVariables ???
+TODO: be(function(){})->outputs/prints('aaa a aaaaa ');
+
+TODO: рядом с результатом (серым шрифтом) и в верхнем и нижнем блоке писать кол-во выполненных тестов, время выполнения каждого теста и группы тестов (время выполнения группы вычислять либо путём сложения времени детей либо замерять реальное время выполнения либо писать оба значения либо одно значение писать в title)
+TODO: проработать тексты сообщений в исключениях (возможно, привести к единому формату вида "function/method name: message")
+TODO: исправить грамматические ошибки в названиях классов, методов и функций, в сообщениях исключений, в тексте отчётов и т.п.
+TODO: set breakOnFirstMatcherFail to true by default
+TODO: add tests for charset usages
+
+
 
 
 

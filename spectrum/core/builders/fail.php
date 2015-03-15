@@ -8,7 +8,7 @@ namespace spectrum\core\builders;
 
 use spectrum\core\config;
 use spectrum\core\Exception;
-use spectrum\core\SpecInterface;
+use spectrum\core\models\SpecInterface;
 
 /**
  * Adds to results of current test false result wits message as details.
@@ -22,7 +22,7 @@ function fail($message = null) {
 	}
 
 	$getCurrentRunningEndingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
-	$userFailDetailsClass = config::getCoreClassReplacement('\spectrum\core\details\UserFail');
+	$userFailDetailsClass = config::getCoreClassReplacement('\spectrum\core\models\details\UserFail');
 	/** @var SpecInterface $spec */
 	$spec = $getCurrentRunningEndingSpecFunction();
 	$spec->getResults()->add(false, new $userFailDetailsClass($message));

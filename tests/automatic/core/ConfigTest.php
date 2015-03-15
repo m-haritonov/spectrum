@@ -309,24 +309,24 @@ class ConfigTest extends Test {
 
 	public function testSetCoreClassReplacement_ClassHasInterface_NewClassImplementsInterface_SetsNewClass() {
 		$className = \spectrum\tests\_testware\tools::createClass('
-			class ... implements \spectrum\core\AssertionInterface {
-				public function __construct(\spectrum\core\SpecInterface $ownerSpec, $testedValue){}
+			class ... implements \spectrum\core\models\AssertionInterface {
+				public function __construct(\spectrum\core\models\SpecInterface $ownerSpec, $testedValue){}
 				public function __call($name, array $matcherArguments = array()){}
 				public function __get($name){}
 			}
 		');
 		
-		config::setCoreClassReplacement('\spectrum\core\Assertion', $className);
-		$this->assertSame($className, config::getCoreClassReplacement('\spectrum\core\Assertion'));
+		config::setCoreClassReplacement('\spectrum\core\models\Assertion', $className);
+		$this->assertSame($className, config::getCoreClassReplacement('\spectrum\core\models\Assertion'));
 	}
 	
 	public function testSetCoreClassReplacement_ClassHasInterface_NewClassDoesNotImplementInterface_ThrowsExceptionAndDoesNotChangeValue() {
 		$className = \spectrum\tests\_testware\tools::createClass('class ... {}');
-		$this->assertThrowsException('\spectrum\core\Exception', 'Class "' . $className . '" does not implement "\spectrum\core\AssertionInterface"', function() use($className){
-			config::setCoreClassReplacement('\spectrum\core\Assertion', $className);
+		$this->assertThrowsException('\spectrum\core\Exception', 'Class "' . $className . '" does not implement "\spectrum\core\models\AssertionInterface"', function() use($className){
+			config::setCoreClassReplacement('\spectrum\core\models\Assertion', $className);
 		});
 
-		$this->assertSame('\spectrum\core\Assertion', config::getCoreClassReplacement('\spectrum\core\Assertion'));
+		$this->assertSame('\spectrum\core\models\Assertion', config::getCoreClassReplacement('\spectrum\core\models\Assertion'));
 	}
 
 	public function testSetCoreClassReplacement_ClassHasNoInterface_NewClassDoesNotImplementInterface_SetsNewClass() {

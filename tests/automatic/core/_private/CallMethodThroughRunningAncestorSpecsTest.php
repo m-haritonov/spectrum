@@ -7,7 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\tests\automatic\core\_private;
 
 use spectrum\core\config;
-use spectrum\core\SpecInterface;
+use spectrum\core\models\SpecInterface;
 
 require_once __DIR__ . '/../../../init.php';
 
@@ -67,7 +67,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 	public function testReturnsValueFromFirstRunningSpecFromSelfToUp($specVisualPattern, $values, $expectedReturnValues) {
 		$actualReturnValues = array();
 		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($specVisualPattern, array(), \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\Spec {
+			class ... extends \spectrum\core\models\Spec {
 				public $value = null;
 				
 				public function getValue() {
@@ -99,7 +99,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 		});
 		
 		$specClass = \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\Spec {
+			class ... extends \spectrum\core\models\Spec {
 				public $value = null;
 				
 				public function getValue() {
@@ -190,7 +190,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 		});
 		
 		$specs = \spectrum\tests\_testware\tools::createSpecsByVisualPattern($specTreePattern, array(), \spectrum\tests\_testware\tools::createClass('
-			class ... extends \spectrum\core\Spec {
+			class ... extends \spectrum\core\models\Spec {
 				public $value = null;
 				
 				public function getValue() {
@@ -227,7 +227,7 @@ class CallMethodThroughRunningAncestorSpecsTest extends \spectrum\tests\automati
 			',
 			array(),
 			\spectrum\tests\_testware\tools::createClass('
-				class ... extends \spectrum\core\Spec {
+				class ... extends \spectrum\core\models\Spec {
 					public $value = null;
 					
 					public function getValue() {

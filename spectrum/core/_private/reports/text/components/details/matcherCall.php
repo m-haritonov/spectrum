@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\core\_private\reports\text\components\details;
 
-use spectrum\core\details\MatcherCallInterface;
+use spectrum\core\models\details\MatcherCallInterface;
 
 class matcherCall extends \spectrum\core\_private\reports\text\components\component {
 	/**

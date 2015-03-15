@@ -11,7 +11,7 @@ namespace spectrum;
  * @param null|\Closure|array $contexts
  * @param null|\Closure $body
  * @param null|int|bool|array $settings
- * @return \spectrum\core\SpecInterface
+ * @return \spectrum\core\models\SpecInterface
  */
 function test($name = null, $contexts = null, $body = null, $settings = null) {
 	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\test'), func_get_args());

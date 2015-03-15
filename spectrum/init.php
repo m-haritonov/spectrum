@@ -84,7 +84,7 @@ if (!function_exists('be')) {
 	 * Creates assertion.
 	 * @throws \spectrum\core\Exception If called not at running state
 	 * @param mixed $testedValue
-	 * @return \spectrum\core\AssertionInterface
+	 * @return \spectrum\core\models\AssertionInterface
 	 */
 	function be($testedValue) {
 		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\be'), func_get_args());
@@ -110,7 +110,7 @@ if (!function_exists('data')) {
 	/**
 	 * Returns data instance of current test.
 	 * @throws \spectrum\core\Exception If called not at running state
-	 * @return \spectrum\core\DataInterface
+	 * @return \spectrum\core\models\DataInterface
 	 */
 	function data() {
 		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\data'), func_get_args());
@@ -135,7 +135,7 @@ if (!function_exists('group')) {
 	 * @param null|\Closure|array $contexts
 	 * @param null|\Closure $body
 	 * @param null|int|bool|array $settings
-	 * @return \spectrum\core\SpecInterface
+	 * @return \spectrum\core\models\SpecInterface
 	 */
 	function group($name = null, $contexts = null, $body = null, $settings = null) {
 		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\group'), func_get_args());
@@ -176,7 +176,7 @@ if (!function_exists('run')) {
 if (!function_exists('self')) {
 	/**
 	 * Returns current group or test spec.
-	 * @return \spectrum\core\SpecInterface
+	 * @return \spectrum\core\models\SpecInterface
 	 */
 	function self() {
 		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\self'), func_get_args());
@@ -190,7 +190,7 @@ if (!function_exists('test')) {
 	 * @param null|\Closure|array $contexts
 	 * @param null|\Closure $body
 	 * @param null|int|bool|array $settings
-	 * @return \spectrum\core\SpecInterface
+	 * @return \spectrum\core\models\SpecInterface
 	 */
 	function test($name = null, $contexts = null, $body = null, $settings = null) {
 		return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\test'), func_get_args());

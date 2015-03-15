@@ -10,7 +10,7 @@ use spectrum\core\config;
 
 /**
  * Returns current group or test spec.
- * @return \spectrum\core\SpecInterface
+ * @return \spectrum\core\models\SpecInterface
  */
 function self() {
 	$isRunningStateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\isRunningState');

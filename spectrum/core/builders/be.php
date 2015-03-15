@@ -13,7 +13,7 @@ use spectrum\core\config;
  * Creates assertion.
  * @throws \spectrum\core\Exception If called not at running state
  * @param mixed $testedValue
- * @return \spectrum\core\AssertionInterface
+ * @return \spectrum\core\models\AssertionInterface
  */
 function be($testedValue) {
 	$isRunningStateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\isRunningState');
@@ -21,7 +21,7 @@ function be($testedValue) {
 		throw new Exception('Function "be" should be call only at running state');
 	}
 
-	$assertionClass = config::getCoreClassReplacement('\spectrum\core\Assertion');
+	$assertionClass = config::getCoreClassReplacement('\spectrum\core\models\Assertion');
 	$getCurrentRunningEndingSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\getCurrentRunningEndingSpec');
 	return new $assertionClass($getCurrentRunningEndingSpecFunction(), $testedValue);
 }

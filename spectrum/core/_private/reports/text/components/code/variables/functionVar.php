@@ -8,12 +8,12 @@ namespace spectrum\core\_private\reports\text\components\code\variables;
 
 class functionVar extends \spectrum\core\_private\reports\text\components\component {
 	/**
-	 * @param \Closure|\spectrum\core\types\FunctionTypeInterface $variable
+	 * @param \Closure|\spectrum\core\models\types\FunctionTypeInterface $variable
 	 * @param null|string $inputCharset
 	 * @return string
 	 */
 	static public function getContent($variable, $inputCharset = null) {
-		if ($variable instanceof \spectrum\core\types\FunctionTypeInterface) {
+		if ($variable instanceof \spectrum\core\models\types\FunctionTypeInterface) {
 			return 'function(' . static::getContentForParameters($variable->getFunction(), $inputCharset) . '){ ' . static::getContentForBody($variable->getBodyCode(), $inputCharset) . ' }';
 		} else {
 			return 'function(' . static::getContentForParameters($variable, $inputCharset) . '){}';

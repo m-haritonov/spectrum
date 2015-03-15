@@ -11,9 +11,9 @@ require_once __DIR__ . '/../../../../spectrum/core/matchers/lte.php';
 
 class LteTest extends \spectrum\tests\automatic\Test {
 	public function test() {
-		$this->assertSame(true, \spectrum\core\matchers\lte(new \spectrum\core\details\MatcherCall(), 10, 20));
-		$this->assertSame(true, \spectrum\core\matchers\lte(new \spectrum\core\details\MatcherCall(), 10, 10));
+		$this->assertSame(true, \spectrum\core\matchers\lte(new \spectrum\core\models\details\MatcherCall(), 10, 20));
+		$this->assertSame(true, \spectrum\core\matchers\lte(new \spectrum\core\models\details\MatcherCall(), 10, 10));
 		
-		$this->assertSame(false, \spectrum\core\matchers\lte(new \spectrum\core\details\MatcherCall(), 20, 10));
+		$this->assertSame(false, \spectrum\core\matchers\lte(new \spectrum\core\models\details\MatcherCall(), 20, 10));
 	}
 }

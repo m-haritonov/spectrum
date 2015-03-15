@@ -7,7 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\_private;
 
 use spectrum\core\config;
-use spectrum\core\SpecInterface;
+use spectrum\core\models\SpecInterface;
 use spectrum\core\Exception;
 
 /**
@@ -15,7 +15,7 @@ use spectrum\core\Exception;
  * @return SpecInterface[]
  */
 function convertArrayWithContextsToSpecs(array $contexts) {
-	$specClass = config::getCoreClassReplacement('\spectrum\core\Spec');
+	$specClass = config::getCoreClassReplacement('\spectrum\core\models\Spec');
 	$specs = array();
 	$function = function(){};
 	

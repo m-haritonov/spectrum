@@ -20,14 +20,14 @@ class functionVar extends \spectrum\core\_private\reports\html\components\compon
 	}
 
 	/**
-	 * @param \Closure|\spectrum\core\types\FunctionTypeInterface $variable
+	 * @param \Closure|\spectrum\core\models\types\FunctionTypeInterface $variable
 	 * @param null|string $inputCharset
 	 * @return string
 	 */
 	static public function getContent($variable, $inputCharset = null) {
 		$content = '';
 		$content .= '<span class="app-code-variables-function">';
-		if ($variable instanceof \spectrum\core\types\FunctionTypeInterface) {
+		if ($variable instanceof \spectrum\core\models\types\FunctionTypeInterface) {
 			$content .= '<span class="type">function(' . static::getContentForParameters($variable->getFunction(), $inputCharset) . '){ ' . static::getContentForBody($variable->getBodyCode(), $inputCharset) . ' }</span>';
 		} else {
 			$content .= '<span class="type">function(' . static::getContentForParameters($variable, $inputCharset) . '){}</span>';

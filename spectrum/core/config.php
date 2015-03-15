@@ -101,20 +101,20 @@ class config {
 		'\spectrum\core\_private\reports\text\components\code\variables\stringVar'    => '\spectrum\core\_private\reports\text\components\code\variables\stringVar',
 		'\spectrum\core\_private\reports\text\components\code\variables\unknownVar'   => '\spectrum\core\_private\reports\text\components\code\variables\unknownVar',
 		
-		'\spectrum\core\details\MatcherCall' => '\spectrum\core\details\MatcherCall',
-		'\spectrum\core\details\PhpError'    => '\spectrum\core\details\PhpError',
-		'\spectrum\core\details\UserFail'    => '\spectrum\core\details\UserFail',
+		'\spectrum\core\models\details\MatcherCall' => '\spectrum\core\models\details\MatcherCall',
+		'\spectrum\core\models\details\PhpError'    => '\spectrum\core\models\details\PhpError',
+		'\spectrum\core\models\details\UserFail'    => '\spectrum\core\models\details\UserFail',
 		
-		'\spectrum\core\Assertion'        => '\spectrum\core\Assertion',
-		'\spectrum\core\ContextModifiers' => '\spectrum\core\ContextModifiers',
-		'\spectrum\core\Data'             => '\spectrum\core\Data',
-		'\spectrum\core\ErrorHandling'    => '\spectrum\core\ErrorHandling',
-		'\spectrum\core\Executor'         => '\spectrum\core\Executor',
-		'\spectrum\core\Matchers'         => '\spectrum\core\Matchers',
-		'\spectrum\core\Messages'         => '\spectrum\core\Messages',
-		'\spectrum\core\Result'           => '\spectrum\core\Result',
-		'\spectrum\core\Results'          => '\spectrum\core\Results',
-		'\spectrum\core\Spec'             => '\spectrum\core\Spec',
+		'\spectrum\core\models\Assertion'        => '\spectrum\core\models\Assertion',
+		'\spectrum\core\models\ContextModifiers' => '\spectrum\core\models\ContextModifiers',
+		'\spectrum\core\models\Data'             => '\spectrum\core\models\Data',
+		'\spectrum\core\models\ErrorHandling'    => '\spectrum\core\models\ErrorHandling',
+		'\spectrum\core\models\Executor'         => '\spectrum\core\models\Executor',
+		'\spectrum\core\models\Matchers'         => '\spectrum\core\models\Matchers',
+		'\spectrum\core\models\Messages'         => '\spectrum\core\models\Messages',
+		'\spectrum\core\models\Result'           => '\spectrum\core\models\Result',
+		'\spectrum\core\models\Results'          => '\spectrum\core\models\Results',
+		'\spectrum\core\models\Spec'             => '\spectrum\core\models\Spec',
 	);
 
 	/**

@@ -8,7 +8,7 @@ namespace spectrum\core\builders;
 
 use spectrum\core\config;
 use spectrum\core\Exception;
-use spectrum\core\SpecInterface;
+use spectrum\core\models\SpecInterface;
 
 /**
  * Creates group.
@@ -16,7 +16,7 @@ use spectrum\core\SpecInterface;
  * @param null|\Closure|array $contexts
  * @param null|\Closure $body
  * @param null|int|bool|array $settings
- * @return \spectrum\core\SpecInterface
+ * @return \spectrum\core\models\SpecInterface
  */
 function group($name = null, $contexts = null, $body = null, $settings = null) {
 	$isRunningStateFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\isRunningState');
@@ -27,7 +27,7 @@ function group($name = null, $contexts = null, $body = null, $settings = null) {
 	$convertArgumentsForSpecFunction = config::getCoreFunctionReplacement('\spectrum\core\_private\convertArgumentsForSpec');
 	list($name, $contexts, $body, $settings) = $convertArgumentsForSpecFunction(func_get_args(), 'group');
 	
-	$specClass = config::getCoreClassReplacement('\spectrum\core\Spec');
+	$specClass = config::getCoreClassReplacement('\spectrum\core\models\Spec');
 	/** @var SpecInterface $builderSpec */
 	$builderSpec = new $specClass();
 	

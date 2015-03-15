@@ -7,7 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\_private;
 
 use spectrum\core\config;
-use spectrum\core\SpecInterface;
+use spectrum\core\models\SpecInterface;
 
 /**
  * @access private

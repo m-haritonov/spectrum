@@ -11,14 +11,14 @@ use spectrum\core\Exception;
 /**
  * @example
  * \spectrum\core\_private\normalizeSettings(array(
- *     'catchPhpErrors' => -1,            // see \spectrum\core\ErrorHandling::setCatchPhpErrors()
- *     'breakOnFirstPhpError' => true,    // see \spectrum\core\ErrorHandling::setBreakOnFirstPhpError()
- *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\ErrorHandling::setBreakOnFirstMatcherFail()
+ *     'catchPhpErrors' => -1,            // see \spectrum\core\models\ErrorHandling::setCatchPhpErrors()
+ *     'breakOnFirstPhpError' => true,    // see \spectrum\core\models\ErrorHandling::setBreakOnFirstPhpError()
+ *     'breakOnFirstMatcherFail' => true, // see \spectrum\core\models\ErrorHandling::setBreakOnFirstMatcherFail()
  * ));
  *
  * @example
- * \spectrum\core\_private\normalizeSettings(E_ALL); // see \spectrum\core\ErrorHandling::setCatchPhpErrors()
- * \spectrum\core\_private\normalizeSettings(true);  // see \spectrum\core\ErrorHandling::setCatchPhpErrors()
+ * \spectrum\core\_private\normalizeSettings(E_ALL); // see \spectrum\core\models\ErrorHandling::setCatchPhpErrors()
+ * \spectrum\core\_private\normalizeSettings(true);  // see \spectrum\core\models\ErrorHandling::setCatchPhpErrors()
  *
  * @access private
  * @param null|int|bool|array $settings

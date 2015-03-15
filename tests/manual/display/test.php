@@ -99,7 +99,7 @@ group('Results', function(){
 	
 	test('Elements', function() use(&$test){
 		self()->getResults()->add(null, 'Some text');
-		self()->getResults()->add(null, new \spectrum\core\details\UserFail('Some text'));
+		self()->getResults()->add(null, new \spectrum\core\models\details\UserFail('Some text'));
 		
 		self()->getResults()->add(true, 'Some text');
 		be(1)->ident(1);

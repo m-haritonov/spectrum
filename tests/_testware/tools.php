@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\_testware;
 
-use spectrum\core\SpecInterface;
+use spectrum\core\models\SpecInterface;
 
 require_once __DIR__ . '/../init.php';
 
@@ -185,7 +185,7 @@ class tools {
 	 * 
 	 * @return SpecInterface[]
 	 */
-	static public function createSpecsByVisualPattern($pattern, array $additionalRelations = array(), $specClass = '\spectrum\core\Spec') {
+	static public function createSpecsByVisualPattern($pattern, array $additionalRelations = array(), $specClass = '\spectrum\core\models\Spec') {
 		$specs = array();
 		$lines = preg_split('/[\r\n]+/s', trim($pattern));
 		
@@ -346,7 +346,7 @@ class tools {
 				$depth = -$depth;
 			}
 			
-			$className = '\spectrum\core\\' . $className;
+			$className = '\spectrum\core\models\\' . $className;
 			
 			if ($name == '') {
 				$name = $key;

@@ -10,7 +10,7 @@ namespace spectrum;
  * Creates assertion.
  * @throws \spectrum\core\Exception If called not at running state
  * @param mixed $testedValue
- * @return \spectrum\core\AssertionInterface
+ * @return \spectrum\core\models\AssertionInterface
  */
 function be($testedValue) {
 	return call_user_func_array(\spectrum\core\config::getCoreFunctionReplacement('\spectrum\core\builders\be'), func_get_args());

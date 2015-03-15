@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\automatic\core\builders;
 
-use spectrum\core\Spec;
+use spectrum\core\models\Spec;
 
 require_once __DIR__ . '/../../../init.php';
 
@@ -27,11 +27,11 @@ class GroupTest extends \spectrum\tests\automatic\Test {
 		\spectrum\core\_private\setCurrentBuildingSpec($parentSpec);
 		
 		$groupSpec1 = call_user_func_array('\spectrum\core\builders\group', $arguments);
-		$this->assertInstanceOf('\spectrum\core\Spec', $groupSpec1);
+		$this->assertInstanceOf('\spectrum\core\models\Spec', $groupSpec1);
 		$this->assertNotSame($parentSpec, $groupSpec1);
 		
 		$groupSpec2 = call_user_func_array('\spectrum\core\builders\group', $arguments);
-		$this->assertInstanceOf('\spectrum\core\Spec', $groupSpec2);
+		$this->assertInstanceOf('\spectrum\core\models\Spec', $groupSpec2);
 		$this->assertNotSame($parentSpec, $groupSpec2);
 		$this->assertNotSame($groupSpec1, $groupSpec2);
 	}

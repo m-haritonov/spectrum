@@ -6,7 +6,7 @@ see the "README.md" file that was distributed with this source code.
 
 namespace spectrum\tests\automatic\core\_private;
 
-use spectrum\core\Spec;
+use spectrum\core\models\Spec;
 
 require_once __DIR__ . '/../../../init.php';
 

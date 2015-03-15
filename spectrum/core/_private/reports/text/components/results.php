@@ -7,11 +7,11 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\_private\reports\text\components;
 
 use spectrum\core\config;
-use spectrum\core\details\MatcherCallInterface;
-use spectrum\core\details\PhpErrorInterface;
-use spectrum\core\details\UserFailInterface;
-use spectrum\core\ResultInterface;
-use spectrum\core\SpecInterface;
+use spectrum\core\models\details\MatcherCallInterface;
+use spectrum\core\models\details\PhpErrorInterface;
+use spectrum\core\models\details\UserFailInterface;
+use spectrum\core\models\ResultInterface;
+use spectrum\core\models\SpecInterface;
 
 class results extends \spectrum\core\_private\reports\text\components\component {
 	/**

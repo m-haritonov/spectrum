@@ -12,6 +12,6 @@ namespace spectrum\core\matchers;
  * @param mixed $expected
  * @return bool
  */
-function gte(\spectrum\core\details\MatcherCallInterface $marcherCallDetails, $actual, $expected) {
+function gte(\spectrum\core\models\details\MatcherCallInterface $marcherCallDetails, $actual, $expected) {
 	return ($actual >= $expected);
 }

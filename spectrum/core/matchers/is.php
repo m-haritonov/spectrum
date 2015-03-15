@@ -12,7 +12,7 @@ namespace spectrum\core\matchers;
  * @param object|string $expected
  * @return bool
  */
-function is(\spectrum\core\details\MatcherCallInterface $marcherCallDetails, $actual, $expected) {
+function is(\spectrum\core\models\details\MatcherCallInterface $marcherCallDetails, $actual, $expected) {
 	if (is_object($actual)) {
 		$actual = get_class($actual);
 	}

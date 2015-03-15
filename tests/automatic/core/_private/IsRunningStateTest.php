@@ -27,7 +27,7 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 		\spectrum\tests\_testware\tools::$temp["returnValue"] = null;
 		
 		$specClassName = \spectrum\tests\_testware\tools::createClass('
-			class ... implements \spectrum\core\SpecInterface {
+			class ... implements \spectrum\core\models\SpecInterface {
 				public function enable(){}
 				public function disable(){}
 				public function isEnabled(){}
@@ -37,15 +37,15 @@ class IsRunningStateTest extends \spectrum\tests\automatic\Test {
 				public function isAnonymous(){}
 				
 				public function getParentSpecs(){}
-				public function hasParentSpec(\spectrum\core\SpecInterface $spec){}
-				public function bindParentSpec(\spectrum\core\SpecInterface $spec){}
-				public function unbindParentSpec(\spectrum\core\SpecInterface $spec){}
+				public function hasParentSpec(\spectrum\core\models\SpecInterface $spec){}
+				public function bindParentSpec(\spectrum\core\models\SpecInterface $spec){}
+				public function unbindParentSpec(\spectrum\core\models\SpecInterface $spec){}
 				public function unbindAllParentSpecs(){}
 			
 				public function getChildSpecs(){}
-				public function hasChildSpec(\spectrum\core\SpecInterface $spec){}
-				public function bindChildSpec(\spectrum\core\SpecInterface $spec){}
-				public function unbindChildSpec(\spectrum\core\SpecInterface $spec){}
+				public function hasChildSpec(\spectrum\core\models\SpecInterface $spec){}
+				public function bindChildSpec(\spectrum\core\models\SpecInterface $spec){}
+				public function unbindChildSpec(\spectrum\core\models\SpecInterface $spec){}
 				public function unbindAllChildSpecs(){}
 				
 				public function getAncestorRootSpecs(){}

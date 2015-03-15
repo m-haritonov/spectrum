@@ -7,7 +7,7 @@ see the "README.md" file that was distributed with this source code.
 namespace spectrum\core\builders;
 
 use spectrum\core\config;
-use spectrum\core\DataInterface;
+use spectrum\core\models\DataInterface;
 use spectrum\core\Exception;
 
 /**

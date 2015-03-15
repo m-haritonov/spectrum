@@ -44,7 +44,7 @@ class variable extends \spectrum\core\_private\reports\text\components\component
 			$result = static::callComponentMethod('code\variables\arrayVar', 'getContent', array($variable, $depth, $inputCharset));
 		} else if ($type === 'object') {
 			$function = function(){};
-			if ($variable instanceof $function || $variable instanceof \spectrum\core\types\FunctionTypeInterface) {
+			if ($variable instanceof $function || $variable instanceof \spectrum\core\models\types\FunctionTypeInterface) {
 				$result = static::callComponentMethod('code\variables\functionVar', 'getContent', array($variable, $inputCharset));
 			} else {
 				$result = static::callComponentMethod('code\variables\objectVar', 'getContent', array($variable, $depth, $inputCharset));
