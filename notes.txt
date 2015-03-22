@@ -1,13 +1,236 @@
 TODO: change architecture from "first build all, then run all" to "build and run, build and run, etc.", change context feature, add combination feature, replace group and test constructs to spec ..., replace ContextModifiers class to Befores and Afters classes
 
-TODO: test('', array(
-	array('name', 'name', 'name),
-	array('value', 'value', 'value'),
-	array('value', 'value', 'value'),
-	array('value', 'value', 'value'),
-	array('value', 'value', 'value'),
-), function(){}); ???
+TODO: contexts and combinations
+	spec('someProject', function() {
+		spec('someFunction', [
+			'aaa' => array(1, 2, 3),
+			'bbb' => function() { return array(1, 2, 3); },
+			function() { return array('ccc' => array(1, 2, 3)); },
+			array(
+				array('priceInt' => 1, 'expectedPriceInt' => 1), // неудобно переименовывать параметры
+				array('priceInt' => 10, 'expectedPriceInt' => 10),
+				array('priceInt' => 1000, 'expectedPriceInt' => '1 000'),
+			),
+			array(
+				array('priceFraction' => '.0', 'expectedPriceFraction' => '.00'), // неудобно переименовывать параметры
+				array('priceFraction' => '.00', 'expectedPriceFraction' => '.00'),
+				array('priceFraction' => '.1000', 'expectedPriceFraction' => '.10'),
+			),
+			array(
+				'priceFraction' => array('.0', '.00', '.1000'), // неудобно задавать большие объёмы данных горизонтально
+				'expectedPriceFraction' => array('.00', '.00', '.10'),
+			),
+			array(
+				array('priceFraction', 'expectedPriceFraction'),
+				array('.0',            '.00'),
+				array('.00',           '.00'),
+				array('.1000',         '.10'),
+			),
+			function() {
+				message(data()->expectedPriceInt . data()->expectedPriceFraction); // If you want see that you generate correct expected price
+				be(\currency\formatPrice(data()->priceInt . data()->priceFraction))->ident(data()->expectedPriceInt . data()->expectedPriceFraction);
+			},
+			function() {
+				be(\currency\formatPrice('aaa'))->ident('bbb');
+			}
+		]);
+	});
+	
+	spec('someProject', function() {
+		spec('someFunction', array(
+			function() {
+				spec('aaaaaaa', function() {
+					before(function() {
+						data()->a = 1;
+						data()->b = 1;
+						data()->c = 1;
+					});
+				});
+				
+				spec('aaaaaaa', function() {
+					before(function() {
+						data()->a = 2;
+						data()->b = 2;
+						data()->c = 2;
+					});
+				});
+			},
+			function() {
+				spec('aaaaaaa', function() {
+					before(function() {
+						data()->a = 1;
+						data()->b = 1;
+						data()->c = 1;
+					});
+				});
+				
+				spec('aaaaaaa', function() {
+					before(function() {
+						data()->a = 2;
+						data()->b = 2;
+						data()->c = 2;
+					});
+				});
+			},
+			function() {
+				spec('aaaaaaa', function() {
+					before(function() {
+						data()->a = 1;
+						data()->b = 1;
+						data()->c = 1;
+					});
+					
+					spec('aaaaaaa', function() {
+						before(function() {
+							data()->a = 1;
+							data()->b = 1;
+							data()->c = 1;
+						});
+					});
+				});
+				
+				spec('aaaaaaa', function() {
+					before(function() {
+						data()->a = 2;
+						data()->b = 2;
+						data()->c = 2;
+					});
+				});
+			},
+			function() {
+				be(\someProject\someFunction('aaa'))->ident('bbb');
+			},
+			function() {
+				be(\someProject\someFunction('aaa'))->ident('bbb');
+			}
+		));
+	});
 
+
+TODO: patterns
+	pattern('aaa', function($a, $b) {}), pattern('aaa', array($a, $b)) or spec('name', 'aaa', array($a, $b))
+	using different patterns in different contexts
+		spec('someFunction', array(
+			function() {
+				spec('aaaaaaa', function() {
+					pattern('aaa', function($a, $b) { /* aaa */ });
+				});
+				
+				spec('aaaaaaa', function() {
+					pattern('aaa', function($a, $b) { /* bbb */ });
+				});
+			},
+			function() {
+				spec('aaaaaaa', function() {
+					pattern('aaa', array('a', 'b'));
+				});
+			},
+		));
+	using patterns in spec function $bodies
+		spec('someFunction', [
+			':pattern' => array($arg1, $arg2),
+			function() {
+				pattern('name', array($arg1, $arg2));
+			},
+		])
+	or use data() for pattern emulating
+		spec('someFunction', array(
+			function() {
+				spec('aaaaaaa', function() {
+					data()->aaa = function($a) {
+						spec('aaa', function($a, $b) { /* aaa */ });
+					};
+				});
+				
+				spec('aaaaaaa', function() {
+					data()->aaa = function($a) {
+						spec('aaa', function($a, $b) { /* bbb */ });
+					};
+				});
+			},
+			function() {
+				spec('aaaaaaa', function() {
+					data()->aaa('a', 'b');
+				});
+			},
+		));
+		
+TODO: config:
+	spec(function() {
+		config::setOutputNewline();
+		config::setBreakOnFirstPhpError();
+	});
+	
+	Spec::getConfig()
+
+	////////////////
+	
+	config(array(
+		'inputCharset => 'utf-8',
+		'outputCharset => 'utf-8',
+		'outputFormat => 'html',
+		'outputIndention => "\t",
+		'outputNewline => "\n",
+		'outputResults => "\n",
+		'catchPhpErrors' => true,
+		'breakOnFirstPhpError' => true,
+		'breakOnFirstMatcherFail' => true,
+		'functions' => array(
+			   '\spectrum\core\be' => 'myBe',
+		),
+		'classes' => array(
+			   '\spectrum\core\Spec' => 'MyClass',
+		),
+		'eventListeners' => array(),
+		'allowOverride' => true,
+	), function(){
+		// ...
+	});
+	
+	spec(function(){
+		// ...
+	}, array(
+		'inputCharset => 'utf-8',
+		'outputCharset => 'utf-8',
+		'outputFormat => 'html',
+		'outputIndention => "\t",
+		'outputNewline => "\n",
+		'outputResults => "\n",
+		'catchPhpErrors' => true,
+		'breakOnFirstPhpError' => true,
+		'breakOnFirstMatcherFail' => true,
+		'functions' => array(
+			   '\spectrum\core\be' => 'myBe',
+		),
+		'classes' => array(
+			   '\spectrum\core\Spec' => 'MyClass',
+		),
+		'eventListeners' => array(),
+		'allowOverride' => true,
+	));
+	
+	тогда ErrorHandling перейдёт в Config
+	
+	self()->getConfig();
+	Spec::getConfig();
+	\spectrum\_internal\getCurrentConfig()
+	
+TODO: запретить вызовы before/after/addMatcher после первого вызова spec в body function
+TODO: анонимные спеки не выводят данных в отчёт, но в конце своего выполнения добавляют свои messages и results в ближайшую неанонимную родительскую спеку
+	 
+TODO: как обрабатывать ситуацию, когда глобальные функции фреймворка конфликтуют с функциями тестируемого кода
+	добавить переменную, по данным из которой будут отключаться глобальные алиасы в init.php. в конце init.php делать unset этой переменной
+
+TODO: reports
+	корневая спека без имени анонимной считаться не будет
+	details убрать, при сворачивании сворачивать всех потомков, при развоначивании разворачивать только детей, при двойном клике (мышкой или клавишей enter) разворачивать потомков (добавить информацию об этом в title)
+	результаты и сообщения спеки будут выводиться js-ом с опозданием, на время выполнения должен показываться загрузчик
+	белый и тёмный квадратики в правом верхнем углу, переключающие дизайн с белого на тёмный и сохраняющие выбранное значение в url fragment
+	внизу написать "Generated by Spectrum 1.0"
+	
+TODO: config::setLockOnFirstSpecCall() = true by default
+TODO: нужен ли свой exception handler? будет ли spec выбрасывать исключения или ограничится выводом текстового результата и возвратов false/true/null? 
+TODO: ThroughRunningAncestors -> ThroughAncestors
 TODO: array context group:
 	group('aaa', array(
 		'Номер мегафон' => array('code' => '495', 'phone' => '35861923'),
@@ -18,376 +241,254 @@ TODO: array context group:
 	), function(){
 		test('bbb', function(){});
 	});
-	
-TODO: change context declaration style???
-	// from:
-	group('', function(){}, function(){});
-	
-	// to:
-	contexts(function(){});
-	group('', function(){});
-	
-	
-	
-	// from:
-	test('', function(){}, function(){});
-	
-	// to:
-	group(function(){
-		contexts(function(){});
-		test('', function(){});
-	});
-	
-	
-	
-	// from:
-	test('', array(
-		array('aaa' => 'bbb'),
-		array('aaa' => 'bbb'),
-		array('aaa' => 'bbb'),
-		array('aaa' => 'bbb'),
-	), function(){});
-	
-	// to:
-	group(function(){
-		contexts(array(
-			array('aaa' => 'bbb'),
-			array('aaa' => 'bbb'),
-			array('aaa' => 'bbb'),
-			array('aaa' => 'bbb'),
-		), $addType = null);
-		
-		// Values: null, "up/wrap", "down/inject", "next"
-		// When $addType is "up", then specs is bound to contexts as children (to all descendant ending contexts)
-		// When $addType is "down", then contexts is bound to specs as children (to all descendant ending specs)
-		// When $addType is "next", then contexts is bound to next spec as children (to all descendant ending specs)
-		// When $addType is null, then:
-		// When there are many specs in group, then uses "up" type
-		// When there is one spec in group, then uses "down" type
-		test('', function(){});
-	});
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-spec('aaa', function() {
-	be(8)->eq('8');
-	
-	before(function() {
-		data()->aaa = 1;
-	});
-	
-	spec('bbb', function() {
-		be(8)->eq('8');
-	});
-	
-	spec('ccc', function() {
-		be(8)->eq('8');
-	});
-})
-
-
-
-
-spec('MySql', function() {
-	before(function() {
-		data()->aaa = 'MySql';
-	});
-	
-	spec('MyClass', function() {})
-})
-
-spec('Files', function() {
-	before(function() {
-		data()->aaa = 'files';
-	});
-	
-	spec('MyClass', function() {})
-})
-
-
-combine(function(){ spec('MySql'); spec('Files'); }, function(){ spec('MyClass'); });
-
-
-spec('SomeStorage', function() {
-	spec('MySql', function() {
-		before(function() {
-			data()->aaa = 'MySql';
-		});
-	});
-	
-	spec('Files', function() {
-		before(function() {
-			data()->aaa = 'files';
-		});
-	});
-}, function() {
-	spec('MyClass', function() {})
-});
-
-
-spec('SomeStorage', array(
-	function() {
-		spec('MySql', function() {
-			before(function() {
-				data()->aaa = 'MySql';
-			});
-		});
-		
-		spec('Files', function() {
-			before(function() {
-				data()->aaa = 'files';
-			});
-		});
-	},
-	function() {
-		spec('MyClass', function() {})
-	}
-));
-
-
-
-spec('someProject', function() {
-	spec('someFunction', array(
-		'aaa' => array(1, 2, 3),
-		'bbb' => function() { return array(); },
-		'ccc' => array(1, 2, 3),
-	), function() {
-		spec('ccc = 1', function() {
-			before(function() {
-				data()->ccc = 1;
-			});
-		});
-	}, function() {
-		be(\someProject\someFunction('aaa'))->ident('bbb');
-	});
-});
-
-
-spec('someProject', function() {
-	spec('someFunction', array(
-		'aaa' => array(1, 2, 3),
-		'bbb' => function() { return array(); },
-		'ccc' => array(1, 2, 3),
-	), function() {
-		be(\someProject\someFunction('aaa'))->ident('bbb');
-	});
-});
-
-spec('someProject', function() {
-	spec('someFunction', [
-		'aaa' => array(1, 2, 3),
-		'ccc' => array(1, 2, 3),
-		array(
-			array('priceInt' => 1, 'expectedPriceInt' => 1),
-			array('priceInt' => 10, 'expectedPriceInt' => 10),
-			array('priceInt' => 1000, 'expectedPriceInt' => '1 000'),
-		),
-		array(
-			array('priceFraction' => '.0', 'expectedPriceFraction' => '.00'),
-			array('priceFraction' => '.00', 'expectedPriceFraction' => '.00'),
-			array('priceFraction' => '.1000', 'expectedPriceFraction' => '.10'),
-		),
-		function() {
-			message(data()->expectedPriceInt . data()->expectedPriceFraction); // If you want see that you generate correct expected price
-			be(\currency\formatPrice(data()->priceInt . data()->priceFraction))->ident(data()->expectedPriceInt . data()->expectedPriceFraction);
-		},
-		function() {
-			be(\currency\formatPrice('aaa'))->ident('bbb');
-		}
-	]);
-});
-
-
-
-
-spec('someProject', function() {
-	spec('someFunction', array(
-		function() {
-			spec('aaaaaaa', function() {
-				before(function() {
-					data()->a = 1;
-					data()->b = 1;
-					data()->c = 1;
-				});
-			});
-			
-			spec('aaaaaaa', function() {
-				before(function() {
-					data()->a = 2;
-					data()->b = 2;
-					data()->c = 2;
-				});
-			});
-		},
-		function() {
-			spec('aaaaaaa', function() {
-				before(function() {
-					data()->a = 1;
-					data()->b = 1;
-					data()->c = 1;
-				});
-			});
-			
-			spec('aaaaaaa', function() {
-				before(function() {
-					data()->a = 2;
-					data()->b = 2;
-					data()->c = 2;
-				});
-			});
-		},
-		function() {
-			spec('aaaaaaa', function() {
-				before(function() {
-					data()->a = 1;
-					data()->b = 1;
-					data()->c = 1;
-				});
-				
-				spec('aaaaaaa', function() {
-					before(function() {
-						data()->a = 1;
-						data()->b = 1;
-						data()->c = 1;
-					});
-				});
-			});
-			
-			spec('aaaaaaa', function() {
-				before(function() {
-					data()->a = 2;
-					data()->b = 2;
-					data()->c = 2;
-				});
-			});
-		},
-		function() {
-			be(\someProject\someFunction('aaa'))->ident('bbb');
-		},
-		function() {
-			be(\someProject\someFunction('aaa'))->ident('bbb');
-		}
-	));
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-spec('aaa', function() {
-	spec('1', function(){
-		before(function() {
-			data()->aaa = 1;
-		});
-	});
-	
-	spec('2', function(){
-		before(function() {
-			data()->aaa = 2;
-		});
-	});
-}, function() {
-	
-	be->eq('8');
-	
-	before(function() {
-		data()->qwe = 12;
-	});
-	
-	after(function() {
-		data()->qwe = 12;
-	});
-	
-	spec('', function() {});
-})
-	
-
-combine(function(){ spec('MySql'); spec('Files'); }, function(){ spec('MyClass'); });
-combine(function(){ spec('MySql'); }, function(){ spec('MyClass'); spec('MyClass'); spec('MyClass'); spec('MyClass'); });
-
-
-TODO:
-		combine(array('aaa' => array(1, 2, 3), function(){ spec(); spec(); }))
-		1
-			4
-				7
-				8
-				9
-			5
-				7
-				8
-				9
-			6
-				7
-				8
-				9
-		2
-			4
-				7
-				8
-				9
-			5
-				7
-				8
-				9
-			6
-				7
-				8
-				9
-		3
-			4
-				7
-				8
-				9
-			5
-				7
-				8
-				9
-			6
-				7
-				8
-				9
-		
 TODO: _private/registry
 TODO: throw exception if before/after is called after spec
-TODO: be()->eq() vs be()->equals(), be()->ident() vs be()->idents()	
-TODO: Assertion -> Be
 TODO: ContextModifiers -> Befores, Afters
 TODO: Assertion -> Be
+
+TODO: config::setBreakOnFail('all matcher exception warning error notice -1')???
 TODO: setBreakOnFirstUserFail
-TODO: pattern('aaa', function($a, $b) {}), pattern('aaa', array($a, $b))
 TODO: onSpecCallStart, onSpecCallFinish, onBeforeCallStart, onBeforeCallFinish, onAfterCallStart, onAfterCallFinish, onBeCallStart, onBeCallFinish, ...
+
+=== Security problems ===
+	Case 1:
+		spec(function() {
+			include 'file.php';
+			// file.php contains:
+			// eval('namespace spectrum\core\models\Result {
+			//     public function setValue($value) { $this->value = true; }
+			// }');
+			
+			be(1)->eq(0); // Now result is true instead of false
+		});
+		
+		Solution:
+			Use direct class include in init.php instead of autoload feature
+		
+	Case 2:
+		config::lock();
+		spec(function() {
+			be(1)->eq(2);
+		
+			include 'file.php';
+			// file.php contains:
+			// Add event listener function(SpecInterface $spec) { /* Remove all results from spec or spec ascendants */ }) to \spectrum\config::$eventListeners through reflection 
+			
+			// Now test is passed
+		});
+		
+		Solution:
+			Save config properties to static variable in lock function on lock function call, get event listeners for dispatching from config::lock.static.$eventListeners
+			
+	Case 3:
+		config::lock();
+		spec(function() {
+			include 'file.php';
+			// file.php contains:
+			// Add class replacement to \spectrum\config::$coreClassReplacements through reflection 
+		});
+		
+		Solution:
+			Save config properties to static variable in lock function on lock function call, get class replacements from config::lock.static.$coreClassReplacements
+			
+	Case 4:
+		spec(function() {
+			message('some text');
+		
+			include 'file.php';
+			// file.php contains:
+			// \spectrum\core\_private\registry::$currentSpec->getMessages()->removeAll();
+			
+			// Now messages is empty
+		});
+		
+		Solution:
+			namespace spectrum\core\_private {
+				// Before spec run backup return value, after spec run compare backup with actual return value
+				function getConstructs() {
+					$registry = [];
+					return [
+						'spec' => function() use(&$registry) { return \spectrum\core\constructs\spec($registry); },
+						'matcher' => function() use(&$registry) { return \spectrum\core\constructs\matcher($registry); },
+					];
+				}
+			}
+			
+			\spectrum\core\_private\registry::$constructs = \spectrum\core\_private\getConstructs();
+			
+			function spec() {
+				return \spectrum\core\_private\registry::$constructs['spec']();
+			}
+			
+			function matcher() {
+				return \spectrum\core\_private\registry::$constructs['matcher']();
+			}
+			
+			Not worked for case:
+				spec(function() {
+					include 'file.php';
+					// file.php contains:
+					// \spectrum\core\_private\registry::$constructs = // some stub constructs
+					
+					message('some text');
+				
+					include 'file.php';
+					// file.php contains:
+					// \spectrum\core\_private\registry::$constructs = // backup of getConstructs() return value
+					
+					// Now messages is empty
+				});
+			
+	Case 5:
+		spec(function() {
+			be(1)->eq(2);
+		
+			include 'file.php';
+			// file.php contains:
+			// $be = be();
+			// And remove results from spec through reflection
+			
+			// Now test is passed
+		});
+		
+	Case 6:
+		spec(function() {
+			matcher('eq', function($a, $b) {
+				return ($a == $b);
+			});
+			
+			include 'file.php';
+			// file.php contains:
+			// matcher('eq', function() {
+			//     return true;
+			// });
+			
+			be(1)->eq(0); // Now result is true instead of false
+		});
+		
+		Solution:
+			matcher('eq', function($a, $b) {
+				return ($a == $b);
+			}, true); // Deny redefining
+	
+	Case 7:
+		spec(function() {
+			before(function() {
+				data()->defaultValue = 0;
+			});
+			
+			spec(function() {			
+				include 'file.php';
+				// file.php contains:
+				// before(function() {
+				//    data()->defaultValue = 1;
+				// });
+				
+				spec(function() {
+					be(data()->defaultValue)->eq(1); // Now result is true instead of false
+				});
+			});
+		});
+		
+	Case 8:
+		spec(function() {
+			before(function() {
+				data()->a = 0;
+			});
+			
+			spec(function() {
+				include 'file.php';
+				// file.php contains:
+				// data()->a = 1;
+				
+				be(data()->a)->eq(1); // Now result is true instead of false
+			});
+		});
+		
+		Solution 1:
+			spec(function() {
+				before(function($data) {
+					$data->a = 0;
+				});
+				
+				spec(function($data) {
+					$f = function() { include 'file.php'; };
+					$f();
+					
+					be($data->a)->eq(1);
+				});
+			});
+			
+		Solution 2:
+			spec(function() {
+				before(function() {
+					data()->a = 0;
+				});
+				
+				// Call data()->lock() after data preparing
+				spec(function() {
+					be(data()->a)->eq(1);
+					data()->a = 1; // Add fail after spec call
+					data()->b = 1; // Not add fail (adding new values to data is allowed)
+				});
+				// Check data values changing
+			});
+		
+	Case 9:
+		spec(function() {
+			function my(&$a) {
+				$a = 2;
+				return true;
+			}
+			
+			function my($a) {
+				return ($a == 1);
+			}
+			
+			data()->a = 1;
+			be(my(data()->a))->eq(true);
+			be(my2(data()->a))->eq(true);
+		});
+		
+		Solution:
+			class Data {
+				protected $values = array();
+				public function __get($name) {
+					return $this->values[$name];
+				}
+				
+				public function __set($name, $value) {
+					return $this->values[$name] = $value;
+				}
+			}
+
+	Universal solution 1:
+		spec(function() {
+			be('file.php')->not->containsAccessToFramework();
+			be('someProject/*.php')->not->containsAccessToFramework();
+			include 'someProject/file.php';
+		});
+		
+	Universal solution 2:
+		Use runkit sandbox for test code
+
+
+TODO: to doc: раздел примеры (пример с корневой анонимной спекой, пример с подключением autoload в начале спеки и прерыванием выполнения дочерних спек если подключение вызвало ошибку)
+TODO: to doc (или в примеры): два стиля выполнение сценариев (каждый тест все предыдущие шаги выполняются заново; шаги выполняются последовательно, а spec проверяет каждый из этапов (но тогда не будет данных вида "пользователь кликнул на ссылку в отчёте", но будут данные вида "кнопка купить -> должна добавлять товар в корзину; не должна добавлёть товар дважды при двойном клике"))
+TODO: to doc: в анонимную спеку можно обернуть несколько несвязанных общим именем спек
+TODO: to doc: файлы тестируемого кода следует подключать внутри spec 
+TODO: to doc: Security: подключайте используемые файлы внутри вызовов spec
+
+TODO: choose assert construct
+	test(function(){
+       the(getNameById($id))->not->eq("foo");
+       be(getNameById($id))->not->eq("foo");
+       assert(getNameById($id) != "foo");
+       verify(getNameById($id) != "foo");
+       check(getNameById($id) != "foo");
+       test(getNameById($id) != "foo");
+    });
+
 TODO: move notes.txt content to README.md "Development notes" section
 TODO: определить минимальную версию PHP. Пока это 5.3.9 из-за is_a
 TODO: fix reports in all browsers
@@ -410,21 +511,9 @@ TODO: doc: you can use be() in contexts and matchers
 TODO: doc: extension/package use init.php, put private files to _private directory
 
 TODO: писать ключ (key => value) в getArrayWithContextsElementTitle
-TODO: обрезать параметры функции при выводе в reports
-
-TODO: config for group:
-	group(function() {
-		config::setOutputNewline();
-		config::setBreakOnFirstPhpError();
-	});
+TODO: обрезать параметры функции при выводе в reports	
 	
-	Spec::getConfig()
-	
-	
-	
-
-
-TODO: be()->throwsException vs be()->throws() vs be()->throwing() vs be()->throw()
+TODO: be()->eq() vs be()->equals(), be()->ident() vs be()->idents(), be()->throwsException vs be()->throws() vs be()->throwing() vs be()->throw()
 TODO: create be()->triggersError/triggers/error($errorType = null, $errorMessage = null)  ???
 TODO: create settings.captureOutput/Print (плюс вывод в отчёте в отдельном блоке с заголовком "Output from test:" с визуализацией пробельных символов)
 TODO: create settings.backupGlobalVariables ???
@@ -473,56 +562,59 @@ TODO: create \spectrum\tools\createTree function and similar auxiliary functions
 TODO: create \spectrum\tools\validateHtml('strict') or be('')->validHtml('strict|http://...')
 TODO: create \spectrum\tools\validateXml('xhtml') or be('')->validXml('xhtml|http://...')
 TODO: create $mock = new \spectrum\tools\Mock(new Spec); $mock->__calls; $mock->__sets; $mock->__gets;
-
+TODO: \spectrum\tools\createClass
+TODO: \spectrum\tools\backup(class|object)
+TODO: \spectrum\tools\restore
+TODO: \spectrum\tools\Browser('selenium')->openUrl()
 
 
 === Multi-charset support problems ===
 
-group(function(){
-	before(function(){ $this->aaa = 'text in utf-8'; });
 	group(function(){
-		before(function(){ $this->bbb = 'text in cp1251'; });
+		before(function(){ $this->aaa = 'text in utf-8'; });
+		group(function(){
+			before(function(){ $this->bbb = 'text in cp1251'; });
+			test(function(){
+				// What is result must be added to Results (true or false)?
+				// How to detect correct charset for output and compare variables?
+				be($this->aaa)->eq($this->bbb);
+			});
+		}, 'cp1251');
+	}, 'utf-8');
+	
+	group(function(){
+		before(function(){ \projectName\SomeClass::setText('text in utf-8'); });
 		test(function(){
-			// What is result must be added to Results (true or false)?
-			// How to detect correct charset for output and compare variables?
-			be($this->aaa)->eq($this->bbb);
+			// What behaviour is expected?
+			if (\projectName\SomeClass::getText() != 'text in cp1251')
+				fail();
+		}, 'cp1251');
+	}, 'utf-8');
+	
+	group(function(){
+		before(function(){ $this->aaa = 'text in utf-8'; });
+		test(function(){
+			message($this->aaa); // Now message contains utf-8 text, but test charset is set to cp1251
+			message('text in cp1251: ' . $this->aaa); // Now message contains string in mixed charsets
+		}, 'cp1251');
+	}, 'utf-8');
+	
+	group(function(){
+		addMatcher('something', function($text){
+			return in_array($text, array('text in utf-8', 'text in utf-8', 'text in utf-8'));
 		});
-	}, 'cp1251');
-}, 'utf-8');
-
-group(function(){
-	before(function(){ $this->aaa = 'text in utf-8'; });
-	test(function(){
-		message($this->aaa); // Now message contains utf-8 text, but test charset is set to cp1251
-		message('aaa is: ' . $this->aaa); // Now message contains incorrect string (in mixed charsets)
-	}, 'cp1251');
-}, 'utf-8');
-
-group(function(){
-	before(function(){ \projectName\SomeClass::setText('text in utf-8'); });
-	test(function(){
-		// What behaviour is expected?
-		if (\projectName\SomeClass::getText() != 'text in cp1251')
-			fail();
-	}, 'cp1251');
-}, 'utf-8');
-
-group(function(){
-	addMatcher('something', function($text){
-		return in_array($text, array('text in utf-8', 'text in utf-8', 'text in utf-8'));
-	});
-	test(function(){
-		// What result is expected (true or false)?
-		// Pass charset to matcher function (and to "before/after" functions by analogy)? 
-		be('text in cp1251')->something();
-	}, 'cp1251');
-}, 'utf-8');
-
-group(function(){
-	addMatcher('matcherNameInUtf8', function(){});
-	test(function(){
-		be()->matcherNameInCp1251(); // Is matcher call handling (in "Assertion" class) need converting for matcher name?
-	}, 'cp1251');
-}, 'utf-8');
+		test(function(){
+			// What result is expected (true or false)?
+			// Pass charset to matcher function (and to "before/after" functions by analogy)? 
+			be('text in cp1251')->something();
+		}, 'cp1251');
+	}, 'utf-8');
+	
+	group(function(){
+		addMatcher('matcherNameInUtf8', function(){});
+		test(function(){
+			be()->matcherNameInCp1251(); // Is matcher call handling (in "Assertion" class) need converting for matcher name?
+		}, 'cp1251');
+	}, 'utf-8');
 
 TODO: add limited multi-charset support (with using input charset of each test/group for output/etc. and without using input charset for inner string transformation)???
