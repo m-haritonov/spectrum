@@ -1,18 +1,18 @@
-#Spectrum
+# Spectrum
 Spectrum is a PHP framework for test automation.
 
 Framework files are in the "US-ASCII" charset (file "notes.txt" is in the "UTF-8" charset).
 
 **Current version is alpha and not stable.**
 
-##System requirements
+## System requirements
 The framework requires PHP 5.3 or later.
 
-##Documentation
+## Documentation
   - English: http://m-haritonov.net/en/projects/spectrum
   - Русский: http://m-haritonov.net/ru/projects/spectrum
 
-##Example
+## Example
 ```php
 <?php
 require_once __DIR__ . '/spectrum/spectrum/init.php';
@@ -42,7 +42,7 @@ group('"AddressBook" class', function(){
 run();
 ```
 
-##Copyright, contacts and license
+## Copyright, contacts and license
 Copyright (c) 2011-2014 Mihail Haritonov (<mail@m-haritonov.net>). All rights reserved.
 
 The project is licensed under the "New BSD License" (see text below).
@@ -71,3 +71,6 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Donation
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](mail@m-haritonov.net)
